@@ -59,7 +59,7 @@
       }
     },
     {
-      "includes": ["**/build.ts", "**/seed.ts", "**/openapi-export.ts", "tools/**"],
+      "includes": ["**/build.ts", "**/seed.ts", "**/admin-grant.ts", "**/openapi-export.ts", "tools/**"],
       "linter": {
         "rules": {
           "suspicious": {

@@ -44,6 +44,8 @@ export const MeSchema = z.object({
   /** Métodos de acceso vinculados (sin exponer el identificador completo). */
   credentials: z.array(z.object({ provider: z.string(), hint: z.string() })),
   consents: z.array(ConsentStateSchema),
+  /** Roles operativos (consola). Un jugador no tiene roles. */
+  roles: z.array(z.string()),
 });
 export type Me = z.infer<typeof MeSchema>;
 

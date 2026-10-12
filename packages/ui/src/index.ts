@@ -31,6 +31,8 @@ export { TextField, type TextFieldProps } from './components/TextField.tsx';
 export { Toast, type ToastProps, type ToastTone } from './components/Toast.tsx';
 export { TopBar, type TopBarProps } from './components/TopBar.tsx';
 export { CODE_STATUS_COPY, type CodeStatus, VerificationSeal, type VerificationSealProps } from './components/VerificationSeal.tsx';
+// Consola (escritorio)
+export * from './console/index.ts';
 export { formatNumber, formatSigned } from './lib/format.ts';
 // Tema en tiempo de ejecución
 export { applyCampaignTheme, type CampaignTheme } from './lib/theme.ts';

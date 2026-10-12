@@ -1,0 +1,117 @@
+import type { ReactNode } from 'react';
+import { Icon } from '../components/Icon.tsx';
+import { cx } from '../lib/cx.ts';
+
+export type ConsoleSection = 'campanas' | 'juegos' | 'recompensas' | 'smart-tags' | 'comercios' | 'analitica' | 'auditoria';
+
+const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string; ready: boolean }> = [
+  { id: 'campanas', label: 'Campañas', icon: 'campaign', ready: true },
+  { id: 'juegos', label: 'Juegos', icon: 'sports_esports', ready: false },
+  { id: 'recompensas', label: 'Recompensas', icon: 'redeem', ready: false },
+  { id: 'smart-tags', label: 'Smart Tags', icon: 'qr_code_2', ready: false },
+  { id: 'comercios', label: 'Comercios', icon: 'storefront', ready: false },
+  { id: 'analitica', label: 'Analítica', icon: 'query_stats', ready: false },
+  { id: 'auditoria', label: 'Auditoría', icon: 'shield', ready: false },
+];
+
+export interface ConsoleLayoutProps {
+  active: ConsoleSection;
+  userAlias: string;
+  roleLabel: string;
+  onNavigate: (section: ConsoleSection) => void;
+  onLogout: () => void;
+  /** Migas de pan: último elemento = página actual. */
+  breadcrumbs?: Array<{ label: string; onSelect?: () => void }>;
+  children: ReactNode;
+}
+
+/**
+ * Marco de la consola (escritorio). Diseño: Stitch "16/17 · Consola". Tema claro con barra lateral verde
+ * bosque; las secciones de pasos posteriores aparecen deshabilitadas con la etiqueta "Próximamente".
+ */
+export function ConsoleLayout({ active, userAlias, roleLabel, onNavigate, onLogout, breadcrumbs = [], children }: ConsoleLayoutProps) {
+  return (
+    <div className="min-h-dvh flex bg-surface text-on-surface">
+      <aside className="w-64 shrink-0 bg-inverse-surface text-inverse-on-surface flex flex-col">
+        <div className="flex items-center gap-3 px-5 h-20 border-b border-white/10">
+          <span
+            aria-hidden="true"
+            className="w-10 h-10 rounded-full border border-inverse-primary/60 flex items-center justify-center font-headline text-[13px] font-bold text-inverse-primary"
+          >
+            ILC
+          </span>
+          <div>
+            <p className="font-headline-md text-[20px] leading-6 text-inverse-on-surface">Consola</p>
+            <p className="font-label-sm text-[10px] uppercase tracking-widest text-inverse-primary">Gobernanza y CMS</p>
+          </div>
+        </div>
+        <nav aria-label="Secciones" className="flex-1 py-4">
+          <ul className="space-y-1 px-3">
+            {NAV.map((item) => (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  disabled={!item.ready}
+                  aria-current={active === item.id ? 'page' : undefined}
+                  onClick={() => onNavigate(item.id)}
+                  className={cx(
+                    'w-full min-h-11 flex items-center gap-3 px-3 rounded-lg text-left font-label-lg text-[14px] transition-colors',
+                    active === item.id
+                      ? 'bg-inverse-primary text-inverse-surface'
+                      : 'text-inverse-on-surface/85 hover:bg-white/5 disabled:hover:bg-transparent',
+                    !item.ready && 'opacity-60 cursor-not-allowed',
+                  )}
+                >
+                  <Icon name={item.icon} className="text-[20px]" />
+                  <span className="flex-1">{item.label}</span>
+                  {!item.ready && <span className="font-label-sm text-[9px] uppercase tracking-wide">Próximamente</span>}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="px-5 py-4 border-t border-white/10 flex items-center gap-3">
+          <span aria-hidden="true" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center font-label-lg text-[13px]">
+            {userAlias.slice(0, 2).toUpperCase()}
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className="font-label-lg text-[14px] truncate">{userAlias}</p>
+            <p className="font-body-md text-[12px] text-inverse-on-surface/85 truncate">{roleLabel}</p>
+          </div>
+          <button
+            type="button"
+            aria-label="Cerrar sesión"
+            onClick={onLogout}
+            className="w-11 h-11 rounded-full flex items-center justify-center hover:bg-white/10"
+          >
+            <Icon name="logout" className="text-[20px]" />
+          </button>
+        </div>
+      </aside>
+      <div className="flex-1 min-w-0 flex flex-col">
+        <header className="h-14 px-8 flex items-center justify-between border-b border-outline-variant bg-surface-container-low">
+          <nav aria-label="Migas de pan">
+            <ol className="flex items-center gap-2 font-body-md text-[13px] text-on-surface-variant">
+              {breadcrumbs.map((b, i) => (
+                <li key={b.label} className="flex items-center gap-2">
+                  {i > 0 && <span aria-hidden="true">/</span>}
+                  {b.onSelect && i < breadcrumbs.length - 1 ? (
+                    <button type="button" onClick={b.onSelect} className="hover:text-primary underline-offset-4 hover:underline">
+                      {b.label}
+                    </button>
+                  ) : (
+                    <span aria-current={i === breadcrumbs.length - 1 ? 'page' : undefined} className="text-on-surface">
+                      {b.label}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <p className="font-label-sm text-[11px] text-on-surface-variant">Ley 30 de 1986 · Habeas Data (Ley 1581 de 2012)</p>
+        </header>
+        <main className="flex-1 px-8 py-6 max-w-[1280px] w-full">{children}</main>
+      </div>
+    </div>
+  );
+}

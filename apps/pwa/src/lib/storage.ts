@@ -22,4 +22,5 @@ export function writeLocal(key: string, value: unknown, store: 'local' | 'sessio
 export const KEYS = {
   referral: 'ilc.referral',
   returnTo: 'ilc.returnTo',
+  campaignTheme: 'ilc.campaignTheme',
 } as const;

@@ -1,3 +1,6 @@
+import './locale.ts';
+
+export * from './campaigns.ts';
 export * from './domain.ts';
 export * from './errors.ts';
 export * from './health.ts';

@@ -12,6 +12,7 @@ export function installFakeApi(options: { loggedIn?: boolean } = {}) {
     consentLog: [] as Array<{ purpose: string; granted: boolean; source: string }>,
     otpCode: '123456',
     requests: [] as string[],
+    lastAgeGate: undefined as unknown,
   };
   const consents = (): ConsentState[] =>
     purposes.map((purpose) => {
@@ -25,6 +26,7 @@ export function installFakeApi(options: { loggedIn?: boolean } = {}) {
     ageVerified: true,
     credentials: [],
     consents: consents(),
+    roles: [],
   });
   if (options.loggedIn) state.me = newMe();
 
@@ -40,7 +42,21 @@ export function installFakeApi(options: { loggedIn?: boolean } = {}) {
 
     if (url === '/config')
       return json(200, { currencyName: 'Puntos ILC', legalNoticeVersion: '1.0', minAge: 18, otpChannels: ['whatsapp', 'sms', 'email'], oauthProviders: [] });
+    if (url === '/campaigns/feria-cristal')
+      return json(200, {
+        slug: 'feria-cristal',
+        title: 'Feria con Cristal',
+        description: '',
+        route: 'B_EXPERIENCIAL',
+        minAge: 21,
+        startsAt: '2026-10-01T05:00:00.000Z',
+        endsAt: '2027-01-31T05:00:00.000Z',
+        theme: { mode: 'light', brand: 'aguardiente-cristal' },
+        energyMinutes: 45,
+        terms: '',
+      });
     if (url === '/age-gate' && method === 'POST') {
+      state.lastAgeGate = body;
       const year = Number(String(body.birthDate).slice(0, 4));
       if (new Date().getFullYear() - year < 18) return fail(403, 'AGE_REQUIREMENT_NOT_MET', 'Este contenido es solo para mayores de 18 años.');
       state.me = state.me ?? newMe();

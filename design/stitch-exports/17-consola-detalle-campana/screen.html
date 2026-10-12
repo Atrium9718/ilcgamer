@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>17 · Consola · Detalle de campaña y aprobaciones - ILC Origen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // Tema Claro ILC Origen
+            surface: {
+              DEFAULT: '#FAF7F0',
+              container: '#F1ECE0',
+              high: '#EAE4D6',
+              low: '#F5F1E8',
+              lowest: '#FFFFFF'
+            },
+            on: {
+              surface: '#13201B',
+              'surface-variant': '#475650'
+            },
+            primary: {
+              DEFAULT: '#6E561E',
+              container: '#E8DCB8',
+              foreground: '#FFFFFF'
+            },
+            secondary: {
+              DEFAULT: '#2F4941',
+              container: '#D0E0DA',
+              foreground: '#FFFFFF'
+            },
+            tertiary: {
+              DEFAULT: '#9A4F17',
+              container: '#FBE0D0',
+              foreground: '#FFFFFF'
+            },
+            outline: {
+              DEFAULT: '#C8C1B0',
+              variant: '#DFD8C9'
+            },
+            error: {
+              DEFAULT: '#B3261E',
+              container: '#F9DEDC',
+              foreground: '#FFFFFF'
+            },
+            // Sidebar Verde Bosque profundo institucional
+            sidebar: {
+              bg: '#0E1915',
+              surface: '#15241F',
+              border: '#1E322B',
+              active: '#1E352D',
+              text: '#E5ECE9',
+              muted: '#7F938C'
+            }
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="h-full bg-surface text-on-surface font-sans antialiased flex flex-row overflow-hidden selection:bg-primary/20 selection:text-primary">
+
+  <!-- BARRA LATERAL VERDE BOSQUE DE LA CONSOLA (ANCHO 260px) -->
+  <aside class="w-64 bg-sidebar-bg text-sidebar-text flex-shrink-0 flex flex-col justify-between border-r border-sidebar-border z-20">
+    <!-- Brand & Header -->
+    <div>
+      <div class="h-16 flex items-center px-6 gap-3 border-b border-sidebar-border/80">
+        <div class="w-9 h-9 rounded-full bg-[#1A2E27] border border-[#6E561E]/40 flex items-center justify-center text-primary-container font-serif font-bold text-sm tracking-wider">
+          ILC
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif font-bold tracking-wide text-sidebar-text text-base leading-none">ILC ORIGEN</span>
+          <span class="text-[11px] text-sidebar-muted font-sans mt-0.5 tracking-wider uppercase font-semibold">Consola Central B2B</span>
+        </div>
+      </div>
+
+      <!-- Menú de Navegación -->
+      <nav class="p-3 space-y-1">
+        <div class="px-3 py-2 text-[10px] font-bold tracking-widest text-sidebar-muted uppercase font-sans">
+          Gobernanza & Operación
+        </div>
+        
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">dashboard</span>
+          <span>Tablero General</span>
+        </a>
+
+        <!-- Pestaña Activa: Campañas -->
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-sidebar-active text-amber-200 font-semibold text-sm border-l-4 border-[#C7A75C]">
+          <span class="material-symbols-outlined text-[20px] fill text-amber-200">campaign</span>
+          <span>Campañas & CMS</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+          <span>Smart Tags & Lotes</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+          <span>Puntos & Ledger</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">redeem</span>
+          <span>Catálogo Recompensas</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">sports_esports</span>
+          <span>Catálogo de Juegos</span>
+        </a>
+
+        <div class="pt-3 px-3 py-2 text-[10px] font-bold tracking-widest text-sidebar-muted uppercase font-sans">
+          Red Comercial & Auditoría
+        </div>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">storefront</span>
+          <span>Dealers & Gastrobares</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-muted hover:bg-sidebar-surface hover:text-sidebar-text transition-colors text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">verified_user</span>
+          <span>Auditoría & Seguridad</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Perfil del Operador / Footer Sidebar -->
+    <div class="p-3 border-t border-sidebar-border/80 bg-sidebar-surface/60">
+      <div class="flex items-center gap-3 px-2 py-1.5">
+        <div class="w-8 h-8 rounded-full bg-secondary text-white font-bold text-xs flex items-center justify-center">
+          TM
+        </div>
+        <div class="flex flex-col min-w-0 flex-1">
+          <span class="text-xs font-semibold text-sidebar-text truncate">Trade Marketing ILC</span>
+          <span class="text-[10px] text-sidebar-muted truncate">Admin de Marca · v1.0</span>
+        </div>
+        <button title="Cerrar sesión" class="text-sidebar-muted hover:text-sidebar-text p-1">
+          <span class="material-symbols-outlined text-sm">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENEDOR PRINCIPAL (ESCRITORIO 1440px FLUIDO) -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden bg-surface">
+
+    <!-- BARRA SUPERIOR DE CONTEXTO / SEARCH -->
+    <header class="h-16 bg-surface-lowest border-b border-outline-variant flex items-center justify-between px-8 flex-shrink-0">
+      <div class="flex items-center gap-4 text-xs text-on-surface-variant">
+        <span class="flex items-center gap-1.5 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+          Ambiente: <strong>Staging / Pre-producción</strong>
+        </span>
+        <span class="text-outline">|</span>
+        <span class="text-on-surface-variant">Motor de Gobernanza: <strong>Guía Técnica v1.0 §5.11</strong></span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-xs font-medium text-secondary">
+          <span class="material-symbols-outlined text-sm">palette</span>
+          <span>Tema Claro: ILC Origen</span>
+        </div>
+        <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline hover:bg-surface-container text-xs font-semibold text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-sm">history_edu</span>
+          <span>Registro de Auditoría</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ÁREA DE CONTENIDO CON SCROLL -->
+    <main class="flex-1 overflow-y-auto px-8 py-6 max-w-7xl w-full mx-auto space-y-6">
+
+      <!-- ENCABEZADO DE CAMPAÑA -->
+      <section class="space-y-3 pb-2 border-b border-outline-variant">
+        <!-- Migas de pan -->
+        <nav class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+          <a href="#" class="hover:text-primary transition-colors">Campañas</a>
+          <span class="text-outline">/</span>
+          <span class="text-on-surface font-semibold">Temporada Fin de Año</span>
+        </nav>
+
+        <!-- Titular Serif, Chips y Selector de Versión -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center flex-wrap gap-3">
+            <h1 class="font-serif text-3xl lg:text-4xl font-bold text-on-surface tracking-tight">
+              Temporada Fin de Año
+            </h1>
+
+            <div class="flex items-center gap-2">
+              <!-- Chip Mixta -->
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-secondary/10 text-secondary border border-secondary/20">
+                <span class="material-symbols-outlined text-[14px]">tune</span>
+                Mixta
+              </span>
+
+              <!-- Chip Aguardiente Amarillo -->
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+                <span class="material-symbols-outlined text-[14px]">local_bar</span>
+                Aguardiente Amarillo
+              </span>
+
+              <!-- Chip Estado: Aprobada -->
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold tracking-wider bg-emerald-100 text-emerald-900 border border-emerald-300">
+                <span class="material-symbols-outlined text-[14px] text-emerald-700">check_circle</span>
+                Aprobada
+              </span>
+            </div>
+          </div>
+
+          <!-- Selector de Versión -->
+          <div class="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-lg border border-outline">
+            <span class="text-xs font-semibold text-on-surface-variant">Versión activa:</span>
+            <div class="flex items-center gap-1.5 text-xs font-bold text-on-surface">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span>v2 (en revisión: ninguna)</span>
+            </div>
+            <button class="ml-1 text-on-surface-variant hover:text-on-surface p-0.5">
+              <span class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYOUT PRINCIPAL: 2/3 COLUMNA PRINCIPAL Y 1/3 COLUMNA DERECHA -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+        <!-- COLUMNA PRINCIPAL (2/3) -->
+        <div class="lg:col-span-2 space-y-5">
+
+          <!-- BARRA DE PESTAÑAS (Resumen · Reglas · Tema · Historial) -->
+          <div class="bg-surface-container rounded-xl p-1 border border-outline-variant flex gap-1">
+            <button class="flex-1 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface rounded-lg transition-colors">
+              Resumen
+            </button>
+            <button class="flex-1 py-2 text-xs font-bold text-primary bg-surface-lowest rounded-lg shadow-sm border border-outline/40 flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">rule</span>
+              Reglas
+            </button>
+            <button class="flex-1 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface rounded-lg transition-colors">
+              Tema
+            </button>
+            <button class="flex-1 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface rounded-lg transition-colors">
+              Historial
+            </button>
+          </div>
+
+          <!-- CONTENIDO PESTAÑA REGLAS (Visible) -->
+          <div class="space-y-4">
+
+            <!-- TARJETA: Puntos por referencia (SKU) -->
+            <div class="bg-surface-lowest rounded-2xl p-5 border border-outline-variant shadow-sm space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-base">receipt_long</span>
+                  </div>
+                  <div>
+                    <h3 class="font-serif text-lg font-bold text-on-surface leading-snug">Puntos por referencia (SKU)</h3>
+                    <p class="text-xs text-on-surface-variant">Reglas de emisión en activaciones válidas de Smart Tag</p>
+                  </div>
+                </div>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-outline/50">
+                  Ruta A · Emisión Comercial
+                </span>
+              </div>
+
+              <!-- Tabla de SKUs -->
+              <div class="overflow-hidden border border-outline-variant rounded-xl bg-surface-low">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-surface-container text-on-surface-variant border-b border-outline-variant font-semibold">
+                      <th class="py-2.5 px-4">Código Referencia</th>
+                      <th class="py-2.5 px-4">Línea de Producto</th>
+                      <th class="py-2.5 px-4">Puntos Asignados</th>
+                      <th class="py-2.5 px-4 text-right">Equivalencia Est.</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-outline-variant font-medium">
+                    <tr class="hover:bg-surface-container/40 transition-colors">
+                      <td class="py-3 px-4 font-mono font-bold text-secondary">AA-750</td>
+                      <td class="py-3 px-4 text-on-surface">Aguardiente Amarillo de Manzanares 750ml</td>
+                      <td class="py-3 px-4">
+                        <span class="inline-flex items-center gap-1 font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
+                          <span class="material-symbols-outlined text-xs">toll</span>
+                          300 pts
+                        </span>
+                      </td>
+                      <td class="py-3 px-4 text-right text-on-surface-variant font-mono">~$3.000 COP</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container/40 transition-colors">
+                      <td class="py-3 px-4 font-mono font-bold text-secondary">RVC-8</td>
+                      <td class="py-3 px-4 text-on-surface">Ron Viejo de Caldas Gran Reserva Especial 8 Años</td>
+                      <td class="py-3 px-4">
+                        <span class="inline-flex items-center gap-1 font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
+                          <span class="material-symbols-outlined text-xs">toll</span>
+                          500 pts
+                        </span>
+                      </td>
+                      <td class="py-3 px-4 text-right text-on-surface-variant font-mono">~$5.000 COP</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Nota obligatoria de la Guía Técnica -->
+              <div class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-950 text-xs">
+                <span class="material-symbols-outlined text-amber-700 text-base flex-shrink-0 mt-0.5">info</span>
+                <div>
+                  <strong class="font-semibold">Salvaguarda §5.7:</strong> Valores de prueba: requieren aprobación de Finanzas antes de emisión en producción real.
+                </div>
+              </div>
+            </div>
+
+            <!-- TARJETA: Multiplicadores y Ventana Temporal -->
+            <div class="bg-surface-lowest rounded-2xl p-5 border border-outline-variant shadow-sm space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-outline-variant">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-base">bolt</span>
+                  </div>
+                  <div>
+                    <h3 class="font-serif text-lg font-bold text-on-surface">Multiplicadores de Puntos</h3>
+                    <p class="text-xs text-on-surface-variant">Ventana programada para fechas especiales</p>
+                  </div>
+                </div>
+                <span class="text-[11px] font-bold text-tertiary bg-tertiary-container/50 px-2 py-0.5 rounded border border-tertiary/20">
+                  Activo en calendario
+                </span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div class="p-3 bg-surface-container rounded-xl border border-outline-variant">
+                  <span class="text-[11px] text-on-surface-variant block font-medium">Factor Multiplicador</span>
+                  <span class="font-serif text-2xl font-bold text-tertiary">x1,5</span>
+                  <span class="text-[10px] text-on-surface-variant block mt-0.5">Sobre puntos base SKU</span>
+                </div>
+
+                <div class="p-3 bg-surface-container rounded-xl border border-outline-variant sm:col-span-2">
+                  <span class="text-[11px] text-on-surface-variant block font-medium">Ventana de Aplicación</span>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="material-symbols-outlined text-secondary text-sm">calendar_month</span>
+                    <span class="text-sm font-bold text-on-surface">24–26 dic.</span>
+                    <span class="text-xs text-on-surface-variant font-medium">(Nochebuena & Navidad)</span>
+                  </div>
+                  <span class="text-[10px] text-on-surface-variant block mt-0.5">Control de rate-limiting activo en backend</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GRID: Parche, Sesión y Límites Operativos -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+              <!-- Energía del Parche -->
+              <div class="bg-surface-lowest rounded-2xl p-4 border border-outline-variant shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between text-on-surface-variant mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">Duración Sesión</span>
+                    <span class="material-symbols-outlined text-secondary text-lg">timer</span>
+                  </div>
+                  <div class="font-serif text-2xl font-bold text-on-surface">45 min</div>
+                  <div class="text-xs font-semibold text-secondary mt-1">Energía del Parche</div>
+                </div>
+                <p class="text-[11px] text-on-surface-variant mt-3 pt-2 border-t border-outline-variant">
+                  Por botella validada. Configurable sin redeploy.
+                </p>
+              </div>
+
+              <!-- Cierre de Sesión -->
+              <div class="bg-surface-lowest rounded-2xl p-4 border border-outline-variant shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between text-on-surface-variant mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">Horario Límite</span>
+                    <span class="material-symbols-outlined text-primary text-lg">bedtime</span>
+                  </div>
+                  <div class="font-serif text-2xl font-bold text-on-surface">6:00 a. m.</div>
+                  <div class="text-xs font-semibold text-primary mt-1">Cierre de sesión</div>
+                </div>
+                <p class="text-[11px] text-on-surface-variant mt-3 pt-2 border-t border-outline-variant">
+                  Caducidad de sala grupal. Saldo individual intacto.
+                </p>
+              </div>
+
+              <!-- Límites por Persona -->
+              <div class="bg-surface-lowest rounded-2xl p-4 border border-outline-variant shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between text-on-surface-variant mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">Antifraude</span>
+                    <span class="material-symbols-outlined text-error text-lg">health_and_safety</span>
+                  </div>
+                  <div class="font-serif text-2xl font-bold text-on-surface">3 al día</div>
+                  <div class="text-xs font-semibold text-on-surface mt-1">Límites: activaciones</div>
+                </div>
+                <p class="text-[11px] text-on-surface-variant mt-3 pt-2 border-t border-outline-variant">
+                  Máximo 3 activaciones por persona al día.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA (1/3) -->
+        <div class="space-y-5">
+
+          <!-- PANEL: Aprobaciones de la versión 2 -->
+          <div class="bg-surface-lowest rounded-2xl p-5 border border-outline-variant shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+              <div>
+                <h3 class="font-serif text-lg font-bold text-on-surface leading-tight">Aprobaciones de la versión 2</h3>
+                <span class="text-[11px] text-on-surface-variant">Requisito §5.11 · Gobernanza obligatoria</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-sm">lock</span>
+              </span>
+            </div>
+
+            <!-- Tres Filas de Aprobaciones -->
+            <div class="space-y-3">
+              
+              <!-- Fila 1: Marca -->
+              <div class="p-3 bg-surface-container rounded-xl border border-outline-variant flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-sm">check</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-on-surface">Marca</span>
+                    <span class="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">✓ Aprobado</span>
+                  </div>
+                  <p class="text-[11px] text-on-surface-variant mt-0.5">
+                    Aprobado por Revisor de marca · 10 dic. 14:20
+                  </p>
+                </div>
+              </div>
+
+              <!-- Fila 2: Jurídica -->
+              <div class="p-3 bg-surface-container rounded-xl border border-outline-variant flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-sm">check</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-on-surface">Jurídica</span>
+                    <span class="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">✓ Aprobado</span>
+                  </div>
+                  <p class="text-[11px] text-on-surface-variant mt-0.5">
+                    Aprobado por Revisor jurídico · 11 dic. 09:05
+                  </p>
+                </div>
+              </div>
+
+              <!-- Fila 3: Privacidad -->
+              <div class="p-3 bg-surface-container rounded-xl border border-outline-variant flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-surface-high text-on-surface-variant flex items-center justify-center flex-shrink-0 mt-0.5 border border-outline">
+                  <span class="material-symbols-outlined text-sm">remove</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-on-surface">Privacidad</span>
+                    <span class="text-[10px] font-semibold text-on-surface-variant bg-surface-high px-1.5 py-0.2 rounded">Exento</span>
+                  </div>
+                  <p class="text-[11px] text-on-surface-variant mt-0.5">
+                    No aplica (sin ubicación ni datos adicionales)
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PANEL: Checklist antes de publicar -->
+          <div class="bg-surface-lowest rounded-2xl p-5 border border-outline-variant shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+              <div>
+                <h3 class="font-serif text-lg font-bold text-on-surface leading-tight">Checklist antes de publicar</h3>
+                <span class="text-[11px] text-on-surface-variant font-medium">Guía Técnica §16 · 4 de 6 verificados</span>
+              </div>
+              <span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                Faltan 2
+              </span>
+            </div>
+
+            <!-- 6 Casillas de Verificación (4 marcadas, 2 pendientes) -->
+            <div class="space-y-2.5">
+
+              <!-- 1. Marcada -->
+              <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-surface-container/50 transition-colors cursor-pointer">
+                <input type="checkbox" checked disabled class="mt-0.5 w-4 h-4 rounded text-secondary border-outline focus:ring-0 accent-secondary">
+                <span class="text-xs text-on-surface font-medium leading-tight">
+                  Público y medios minimizan exposición a menores
+                </span>
+              </label>
+
+              <!-- 2. Marcada -->
+              <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-surface-container/50 transition-colors cursor-pointer">
+                <input type="checkbox" checked disabled class="mt-0.5 w-4 h-4 rounded text-secondary border-outline focus:ring-0 accent-secondary">
+                <span class="text-xs text-on-surface font-medium leading-tight">
+                  Mecánica, límites y términos aprobados
+                </span>
+              </label>
+
+              <!-- 3. Marcada -->
+              <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-surface-container/50 transition-colors cursor-pointer">
+                <input type="checkbox" checked disabled class="mt-0.5 w-4 h-4 rounded text-secondary border-outline focus:ring-0 accent-secondary">
+                <span class="text-xs text-on-surface font-medium leading-tight">
+                  Ningún reto premia velocidad, intoxicación o presión social
+                </span>
+              </label>
+
+              <!-- 4. Marcada -->
+              <label class="flex items-start gap-2.5 p-2 rounded-lg hover:bg-surface-container/50 transition-colors cursor-pointer">
+                <input type="checkbox" checked disabled class="mt-0.5 w-4 h-4 rounded text-secondary border-outline focus:ring-0 accent-secondary">
+                <span class="text-xs text-on-surface font-medium leading-tight">
+                  Textos y assets autorizados
+                </span>
+              </label>
+
+              <!-- 5. Pendiente (Desmarcada) -->
+              <label class="flex items-start gap-2.5 p-2 rounded-lg bg-surface-container/70 border border-amber-300/80 cursor-pointer">
+                <input type="checkbox" disabled class="mt-0.5 w-4 h-4 rounded text-secondary border-outline focus:ring-0 accent-secondary">
+                <div class="flex-1">
+                  <span class="text-xs text-on-surface font-semibold leading-tight block">
+                    Advertencias legales visibles
+                  </span>
+                  <span class="text-[10px] text-amber-800 font-medium">Revisión de pie Ley 30 de 1986 en mockups</span>
+                </div>
+              </label>
+
+              <!-- 6. Pendiente (Desmarcada) -->
+              <label class="flex items-start gap-2.5 p-2 rounded-lg bg-surface-container/70 border border-amber-300/80 cursor-pointer">
+                <input type="checkbox" disabled class="mt-0.5 w-4 h-4 rounded text-secondary border-outline focus:ring-0 accent-secondary">
+                <div class="flex-1">
+                  <span class="text-xs text-on-surface font-semibold leading-tight block">
+                    Inventario y responsables de premios confirmados
+                  </span>
+                  <span class="text-[10px] text-amber-800 font-medium">Pendiente visto bueno de Operaciones Trade</span>
+                </div>
+              </label>
+
+            </div>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="pt-3 border-t border-outline-variant space-y-2.5">
+              <!-- Botón Primario DESHABILITADO con tooltip/indicador de bloqueo -->
+              <div class="relative group">
+                <button disabled class="w-full py-3 px-4 rounded-xl bg-surface-high text-on-surface-variant font-bold text-xs flex items-center justify-center gap-2 cursor-not-allowed border border-outline opacity-80">
+                  <span class="material-symbols-outlined text-sm">lock</span>
+                  <span>Publicar versión 2</span>
+                  <span class="text-[11px] font-medium text-error bg-error-container/40 px-2 py-0.5 rounded ml-1">
+                    Completa el checklist (faltan 2)
+                  </span>
+                </button>
+              </div>
+
+              <!-- Botones Secundarios -->
+              <div class="grid grid-cols-2 gap-2">
+                <button class="w-full py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-high border border-outline text-xs font-semibold text-on-surface transition-colors flex items-center justify-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">content_copy</span>
+                  <span>Crear nueva versión</span>
+                </button>
+                <button class="w-full py-2.5 px-3 rounded-xl bg-surface-container hover:bg-red-50 hover:text-error hover:border-red-200 border border-outline text-xs font-semibold text-on-surface-variant transition-colors flex items-center justify-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">archive</span>
+                  <span>Archivar</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Pie del Panel -->
+            <div class="pt-2 text-center border-t border-outline-variant">
+              <p class="text-[11px] text-on-surface-variant leading-relaxed italic">
+                «Cualquier cambio crea una nueva versión y requiere nuevas aprobaciones.»
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

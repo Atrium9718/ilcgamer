@@ -41,3 +41,13 @@ describe('identidad', () => {
     expect(OtpVerifySchema.safeParse({ channel: 'whatsapp', destination: '3001234567', code: '12345a' }).success).toBe(false);
   });
 });
+
+describe('mensajes de validación', () => {
+  it('están en español', async () => {
+    const { CampaignDraftSchema } = await import('../src/index.ts');
+    const r = CampaignDraftSchema.safeParse({});
+    expect(r.success).toBe(false);
+    expect(r.error?.issues.map((i) => i.message).join(' ')).toMatch(/inválida/);
+    expect(r.error?.issues.map((i) => i.message).join(' ')).not.toMatch(/expected|Invalid input|Too small/);
+  });
+});

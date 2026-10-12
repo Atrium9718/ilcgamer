@@ -90,10 +90,11 @@ export class IdentityController {
     return this.identity.recordConsent(auth.user.id, body);
   }
 
+  /** Sin sesión previa: permite iniciar sesión en cuentas existentes (personal de consola, otro dispositivo). */
   @Post('auth/otp/request')
   @HttpCode(200)
   @RouteConfig(STRICT)
-  @UseGuards(AuthGuard)
+  @UseGuards(OptionalAuthGuard)
   @ApiCookieAuth()
   requestOtp(@Body(new ZodValidationPipe(OtpRequestSchema)) body: OtpRequest) {
     return this.otp.request(body.channel, body.destination);
@@ -102,11 +103,11 @@ export class IdentityController {
   @Post('auth/otp/verify')
   @HttpCode(200)
   @RouteConfig(STRICT)
-  @UseGuards(AuthGuard)
+  @UseGuards(OptionalAuthGuard)
   @ApiCookieAuth()
   async verifyOtp(
     @Body(new ZodValidationPipe(OtpVerifySchema)) body: OtpVerify,
-    @Auth() auth: AuthContext,
+    @Auth() auth: AuthContext | null,
     @Req() req: FastifyRequest,
     @Res({ passthrough: true }) reply: FastifyReply,
   ): Promise<Me> {

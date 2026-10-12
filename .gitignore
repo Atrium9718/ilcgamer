@@ -20,3 +20,4 @@ docs/fuentes/
 
 # Cliente Prisma generado
 apps/api/src/generated/
+dump.rdb

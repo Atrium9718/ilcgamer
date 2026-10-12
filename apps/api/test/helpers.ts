@@ -46,7 +46,7 @@ export function browser(app: NestFastifyApplication, origin = 'http://localhost:
   const fastify = app.getHttpAdapter().getInstance();
   return {
     jar,
-    async request(method: 'GET' | 'POST' | 'PATCH' | 'DELETE', url: string, body?: unknown, extraHeaders: Record<string, string> = {}) {
+    async request(method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', url: string, body?: unknown, extraHeaders: Record<string, string> = {}) {
       const cookie = [...jar].map(([k, v]) => `${k}=${v}`).join('; ');
       const res = await fastify.inject({
         method,

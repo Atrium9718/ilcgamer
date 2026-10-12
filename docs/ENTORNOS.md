@@ -24,7 +24,7 @@ ni campañas sin aprobación (§4.4).
 | `DATABASE_URL` | sí | PostgreSQL. En prod: usuario con privilegios mínimos (sin DDL fuera de migraciones). |
 | `REDIS_URL` | sí | Sesiones del Parche, límites de intentos, tiempo real. |
 | `APP_SECRET` | sí | ≥ 32 caracteres. HMAC de PIN y hashes de tokens. **La API no arranca en producción con el valor de ejemplo.** Rotación documentada por TI. |
-| `CORS_ORIGINS` | sí | Dominios exactos de la PWA y la consola, separados por coma. También es la lista de orígenes de la protección CSRF: una operación desde otro origen recibe 403. En local: `http://localhost:5173,http://localhost:4173`. |
+| `CORS_ORIGINS` | sí | Dominios exactos de la PWA y la consola, separados por coma. También es la lista de orígenes de la protección CSRF: una operación desde otro origen recibe 403. En local: PWA `5173`/`4173` y consola `5174`/`4174` (ver `.env.example`). |
 | `OPENAPI_UI` | no | Publica `/api/docs`. Siempre desactivado en producción (el JSON `/api/v1/openapi.json` sigue disponible). |
 | `RATE_LIMIT_PER_MINUTE` | no | Límite base por cliente (por defecto 120). Los endpoints sensibles tienen límites propios. |
 | `LOG_LEVEL` | no | `info` por defecto. Los logs redactan tokens, PIN, cookies, códigos OTP, destinos, fechas de nacimiento y claves de idempotencia. |
@@ -68,7 +68,22 @@ pnpm build                                   # tokens, contratos, cliente Prisma
 pnpm db:migrate && pnpm --filter @ilc/api db:seed
 pnpm dev:api                                 # http://localhost:3000/api/v1/health · /api/docs
 pnpm dev:pwa                                 # http://localhost:5173 (proxy /api → 3000)
+pnpm dev:console                             # http://localhost:5174 consola de administración
 ```
+
+### Acceso a la consola
+
+La consola no tiene registro: TI asigna los roles por línea de comandos (queda en auditoría).
+
+```bash
+pnpm --filter @ilc/api build
+pnpm --filter @ilc/api admin:grant -- --email persona@ilc.com.co --role ADMIN_MARCA
+pnpm --filter @ilc/api admin:grant -- --email persona@ilc.com.co --role ADMIN_MARCA --revoke
+```
+
+Roles: `ADMIN_MARCA` (crea, publica y opera), `EDITOR_CONTENIDO` (crea y edita borradores), `REVISOR_MARCA`, `REVISOR_JURIDICO`,
+`RESPONSABLE_PRIVACIDAD` (aprueban su parte), `SUPERADMIN`. Quien crea o envía una versión no puede aprobarla.
+La persona entra con el código enviado a su correo (en local, aparece en el log de la API).
 
 Acceso por código en local: con `OTP_PROVIDER=console` el código aparece en el log de la API
 (`[solo desarrollo] código 123456 por whatsapp`).

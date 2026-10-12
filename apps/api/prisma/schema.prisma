@@ -33,6 +33,14 @@ enum CampaignStatus {
   ARCHIVADA
 }
 
+enum CampaignVersionState {
+  BORRADOR
+  EN_REVISION
+  APROBADA
+  PUBLICADA
+  REEMPLAZADA
+}
+
 enum Channel {
   ON_PREMISE
   OFF_PREMISE
@@ -391,8 +399,21 @@ model CampaignVersion {
   endsAt      DateTime
   rules       Json
   themeId     String?          @db.VarChar(60)
+  /// Estado editorial de esta versión (§5.11). Solo BORRADOR es editable.
+  state       CampaignVersionState @default(BORRADOR)
+  /// Contenido completo validado (CampaignDraftSchema). Los campos de arriba son copia para consultas.
+  content     Json
+  /// SHA-256 del contenido canónico: una aprobación solo vale para este hash exacto (§5.11).
+  contentHash String           @db.VarChar(64)
   createdById String?          @db.Uuid
   createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @default(now()) @updatedAt
+  submittedAt   DateTime?
+  submittedById String?        @db.Uuid
+  publishedAt   DateTime?
+  publishedById String?        @db.Uuid
+  /// Confirmaciones del checklist §16 hechas por quien publicó.
+  publishChecklist Json?
   approvals   ApprovalRecord[]
   claims      Claim[]
   missions    MissionProgress[]
@@ -410,6 +431,8 @@ model ApprovalRecord {
   moduleVersion     ModuleVersion?   @relation(fields: [moduleVersionId], references: [id])
   kind              ApprovalKind
   decision          ApprovalDecision
+  /// Hash del contenido revisado: si la versión cambia, la aprobación deja de valer.
+  contentHash       String           @db.VarChar(64)
   approverId        String           @db.Uuid
   note              String?
   createdAt         DateTime         @default(now())

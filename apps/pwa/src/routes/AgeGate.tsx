@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { checkBirthDate } from '../lib/age.ts';
 import { ApiRequestError } from '../lib/api.ts';
+import { campaignSlugFromPath } from '../lib/campaign.ts';
 import { identityApi } from '../lib/identity.ts';
 import { useSession } from '../lib/session.tsx';
 import { KEYS, readLocal } from '../lib/storage.ts';
@@ -41,9 +42,15 @@ export function AgeGateRoute() {
     setSubmitting(true);
     setServerError(undefined);
     try {
-      const me = await identityApi.ageGate({ birthDate: `${birthDate.year}-${pad(birthDate.month)}-${pad(birthDate.day)}`, declaration: true });
-      setMe(me);
       const returnTo = readLocal<string>(KEYS.returnTo, '/', 'session');
+      // Una campaña puede exigir más de 18 años: el servidor aplica su edad mínima (Guía Técnica §5.1).
+      const campaignSlug = campaignSlugFromPath(returnTo);
+      const me = await identityApi.ageGate({
+        birthDate: `${birthDate.year}-${pad(birthDate.month)}-${pad(birthDate.day)}`,
+        declaration: true,
+        ...(campaignSlug ? { campaignSlug } : {}),
+      });
+      setMe(me);
       navigate(returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/', { replace: true });
     } catch (err) {
       if (err instanceof ApiRequestError && err.code === 'AGE_REQUIREMENT_NOT_MET') navigate('/menor-de-edad', { replace: true });

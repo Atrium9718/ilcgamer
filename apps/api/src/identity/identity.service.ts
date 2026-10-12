@@ -61,10 +61,11 @@ export class IdentityService {
   }
 
   async me(user: User): Promise<Me> {
-    const [credentials, consents, pii] = await Promise.all([
+    const [credentials, consents, pii, roles] = await Promise.all([
       this.prisma.identityCredential.findMany({ where: { userId: user.id }, select: { provider: true } }),
       this.consentState(user.id),
       this.prisma.userPii.findUnique({ where: { userId: user.id }, select: { phone: true, email: true } }),
+      this.prisma.userRole.findMany({ where: { userId: user.id }, select: { role: true } }),
     ]);
     return {
       id: user.id,
@@ -77,6 +78,7 @@ export class IdentityService {
         return { provider: c.provider, hint: value ? maskDestination(channel, value) : '' };
       }),
       consents,
+      roles: [...new Set(roles.map((r) => r.role))],
     };
   }
 
@@ -111,7 +113,7 @@ export class IdentityService {
    * (inicio de sesión en un dispositivo nuevo). La fusión de progreso de la cuenta temporal se define en el Paso 7.
    */
   async completeOtpLogin(
-    auth: AuthContext,
+    auth: AuthContext | null,
     channel: OtpChannel,
     destination: string,
     destinationId: string,
@@ -124,12 +126,13 @@ export class IdentityService {
       include: { user: true },
     });
 
-    if (existing && existing.userId !== auth.user.id) {
+    if (existing && existing.userId !== auth?.user.id) {
       if (existing.user.status === 'ELIMINADA' || existing.user.status === 'SUSPENDIDA')
         throw new DomainError('ACCOUNT_UNAVAILABLE', 'Esta cuenta no está disponible.');
       await this.prisma.$transaction(async (tx) => {
-        await this.sessions.revoke(auth.sessionId, reply, tx);
+        if (auth) await this.sessions.revoke(auth.sessionId, reply, tx);
         await this.sessions.create(existing.userId, reply, tx);
+        if (!existing.verifiedAt) await tx.identityCredential.update({ where: { id: existing.id }, data: { verifiedAt: new Date() } });
         await this.audit.record(
           {
             actorId: existing.userId,
@@ -137,7 +140,7 @@ export class IdentityService {
             resource: 'user',
             resourceId: existing.userId,
             requestId,
-            metadata: { provider, abandonedTemporaryUserId: auth.user.id },
+            metadata: { provider, abandonedTemporaryUserId: auth?.user.id ?? null },
           },
           tx,
         );
@@ -145,6 +148,8 @@ export class IdentityService {
       return this.me(existing.user);
     }
 
+    // Una cuenta nueva exige haber pasado el control de edad en este navegador.
+    if (!auth) throw new DomainError('AGE_GATE_REQUIRED', 'Confirma tu edad para crear tu cuenta.');
     const consents = await this.consentState(auth.user.id);
     if (!consents.find((c) => c.purpose === 'TERMINOS_Y_PRIVACIDAD')?.granted) {
       throw new DomainError('CONSENT_REQUIRED', 'Acepta los términos y el aviso de privacidad para crear tu cuenta.');

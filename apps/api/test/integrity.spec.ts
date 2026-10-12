@@ -37,6 +37,8 @@ async function campaignWithCode() {
       startsAt: new Date(),
       endsAt: new Date(Date.now() + day),
       rules: {},
+      content: {},
+      contentHash: '0'.repeat(64),
     },
   });
   const code = await db.campaignCode.create({ data: { codeHash: 'a'.repeat(64), codeHint: 'aaaa', campaignId: campaign.id, status: 'DISPONIBLE' } });
@@ -144,6 +146,8 @@ describe('campañas y consentimientos', () => {
       channels: [],
       territories: [],
       rules: {},
+      content: {},
+      contentHash: '0'.repeat(64),
       startsAt: new Date(),
       endsAt: new Date(Date.now() + day),
     };

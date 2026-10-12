@@ -1,0 +1,130 @@
+import type { CampaignDetailData } from './CampaignDetailView.tsx';
+import type { CampaignEditorValue } from './CampaignEditorView.tsx';
+import type { CampaignRow } from './CampaignListView.tsx';
+
+/** Datos ilustrativos para Storybook y pruebas (no son valores aprobados por ILC). */
+export const CHECKLIST_DEMO = [
+  { key: 'menores', label: 'Público, canales y distribución minimizan exposición a menores.' },
+  { key: 'mecanica', label: 'La mecánica comercial, límites, multiplicadores y términos están aprobados.' },
+  { key: 'sinPresion', label: 'Ningún reto premia velocidad de ingesta, intoxicación, tolerancia o presión social.' },
+  { key: 'assets', label: 'Textos, logos, fotografía, música y assets están autorizados.' },
+  { key: 'legales', label: 'Control de edad y advertencias legales aplicables están implementados.' },
+  { key: 'premios', label: 'Los premios tienen inventario, condiciones, fechas, topes y responsable de entrega.' },
+];
+
+export const ROWS_DEMO: CampaignRow[] = [
+  {
+    slug: 'feria-manizales-2027',
+    internalName: 'Feria de Manizales 2027',
+    route: 'A_COMERCIAL',
+    status: 'ACTIVA',
+    brandLabels: ['Ron Viejo de Caldas'],
+    windowLabel: '2–12 ene. 2027',
+    version: 3,
+    approvals: [
+      { kind: 'MARCA', status: 'approved' },
+      { kind: 'JURIDICA', status: 'approved' },
+      { kind: 'PRIVACIDAD', status: 'not_required' },
+    ],
+  },
+  {
+    slug: 'ruta-origen',
+    internalName: 'Ruta del Origen',
+    route: 'B_EXPERIENCIAL',
+    status: 'EN_REVISION',
+    brandLabels: ['ILC corporativo'],
+    windowLabel: '1 nov.–31 dic. 2026',
+    version: 1,
+    approvals: [
+      { kind: 'MARCA', status: 'approved' },
+      { kind: 'JURIDICA', status: 'pending' },
+      { kind: 'PRIVACIDAD', status: 'pending' },
+    ],
+  },
+  {
+    slug: 'piloto-pereira',
+    internalName: 'Piloto Pereira',
+    route: 'A_COMERCIAL',
+    status: 'BORRADOR',
+    brandLabels: ['Aguardiente Cristal'],
+    windowLabel: '1–28 feb. 2027',
+    version: 1,
+    approvals: [
+      { kind: 'MARCA', status: 'pending' },
+      { kind: 'JURIDICA', status: 'pending' },
+      { kind: 'PRIVACIDAD', status: 'not_required' },
+    ],
+  },
+];
+
+export const DETAIL_DEMO: CampaignDetailData = {
+  slug: 'fin-de-ano-2026',
+  internalName: 'Temporada Fin de Año',
+  publicTitle: 'Fin de año con historia',
+  publicDescription: 'Explora el origen y activa tus códigos en establecimientos aliados.',
+  objective: 'Activaciones comerciales válidas y exploración de la Ruta del Origen',
+  kpi: 'Activaciones válidas y misiones completadas',
+  ownerTeam: 'Trade Marketing',
+  route: 'MIXTA',
+  status: 'APROBADA',
+  brandLabels: ['Aguardiente Amarillo de Manzanares'],
+  channelLabels: ['On-premise', 'Eventos'],
+  territories: ['Caldas', 'Risaralda'],
+  windowLabel: '15–31 dic. 2026',
+  minAge: 18,
+  terms: 'Términos de prueba pendientes de revisión jurídica.',
+  activeVersion: null,
+  working: { version: 2, state: 'APROBADA', stateLabel: 'Aprobada' },
+  versions: [
+    { version: 2, stateLabel: 'Aprobada', createdLabel: '10 dic. 2026' },
+    { version: 1, stateLabel: 'Reemplazada', createdLabel: '2 dic. 2026' },
+  ],
+  rules: {
+    pointsBySku: [
+      { sku: 'AA-750', points: 300 },
+      { sku: 'RVC-8', points: 500 },
+    ],
+    multipliers: [{ label: 'Navidad', factor: 1.5, windowLabel: '24–26 dic.' }],
+    energyMinutes: 45,
+    sessionEndsAtLocalTime: '06:00',
+    activationsPerUserPerDay: 3,
+  },
+  theme: { mode: 'dark', brand: 'aguardiente-amarillo' },
+  dataUsage: { location: false, extraData: false },
+};
+
+export const EDITOR_DEMO: CampaignEditorValue = {
+  slug: 'fin-de-ano-2026',
+  route: 'MIXTA',
+  internalName: 'Temporada Fin de Año',
+  publicTitle: 'Fin de año con historia',
+  publicDescription: '',
+  objective: 'Activaciones comerciales válidas',
+  kpi: 'Activaciones válidas',
+  ownerTeam: 'Trade Marketing',
+  brandSlugs: ['aguardiente-amarillo'],
+  channels: ['ON_PREMISE'],
+  territoriesText: 'Caldas, Risaralda',
+  minAge: 18,
+  startsAt: '2026-12-15T00:00',
+  endsAt: '2026-12-31T23:59',
+  terms: '',
+  points: [{ sku: 'AA-750', points: 300 }],
+  multipliers: [],
+  energyMinutes: 45,
+  sessionEndsAtLocalTime: '06:00',
+  pointsExpiryDays: null,
+  activationsPerUserPerDay: 3,
+  themeMode: 'dark',
+  themeBrand: 'aguardiente-amarillo',
+  accent: null,
+  location: false,
+  extraData: false,
+};
+
+export const BRAND_OPTIONS = [
+  { slug: 'ilc', label: 'ILC corporativo' },
+  { slug: 'ron-viejo-de-caldas', label: 'Ron Viejo de Caldas' },
+  { slug: 'aguardiente-amarillo', label: 'Aguardiente Amarillo de Manzanares' },
+  { slug: 'aguardiente-cristal', label: 'Aguardiente Cristal' },
+];

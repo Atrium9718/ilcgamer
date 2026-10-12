@@ -91,6 +91,8 @@ describe('control de edad (Instrucciones §5 paso 3; Guía Técnica §5.2, §9.4
         channels: [],
         territories: [],
         rules: {},
+        content: {},
+        contentHash: '0'.repeat(64),
         minAge: 21,
         startsAt: new Date(),
         endsAt: new Date(Date.now() + 86_400_000),

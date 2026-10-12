@@ -1,6 +1,7 @@
-import { applyCampaignTheme, Button, type NavTab, OfflineBanner, StatusMessage } from '@ilc/ui';
+import { Button, type NavTab, OfflineBanner, StatusMessage } from '@ilc/ui';
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
+import { applyStoredTheme } from '../lib/campaign.ts';
 import { data } from '../lib/data.ts';
 import { useSession } from '../lib/session.tsx';
 import { KEYS, writeLocal } from '../lib/storage.ts';
@@ -17,7 +18,7 @@ export function useTabNavigate() {
 export function RootLayout() {
   const online = useOnline();
   useEffect(() => {
-    applyCampaignTheme({ mode: 'dark', brand: 'ilc' });
+    applyStoredTheme();
   }, []);
   return (
     <>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>16 · Consola · Lista de campañas - ILC Origen</title>
+  <!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Material Symbols Outlined -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#FAF7F0',
+              surface: '#F1ECE0',
+              surfaceAlt: '#EAE4D6',
+              sidebar: '#13201B',
+              text: '#13201B',
+              textMuted: '#52635B',
+              primaryGold: '#6E561E',
+              goldHover: '#584416',
+              forest: '#2F4941',
+              forestLight: '#E3EBE7',
+              oak: '#9A4F17',
+              oakLight: '#FBEFE6',
+              error: '#B3261E',
+              errorLight: '#FDF2F2',
+              border: '#DDD6C6',
+              goldChip: '#F5EEDC',
+              goldBorder: '#D8C394',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAF7F0;
+      color: #13201B;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    .material-symbols-outlined.fill-1 {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex bg-brand-bg text-brand-text antialiased selection:bg-brand-primaryGold selection:text-white">
+
+  <!-- BARRA LATERAL IZQUIERDA (Verde Bosque Institucional #13201B) -->
+  <aside class="w-64 bg-brand-sidebar text-white flex flex-col justify-between shrink-0 min-h-screen border-r border-[#20332B] select-none sticky top-0 h-screen z-20">
+    <!-- Top Branding & Navigation -->
+    <div class="flex flex-col">
+      <!-- Sello ILC & Título Consola -->
+      <div class="h-20 flex items-center px-6 border-b border-[#23382F] gap-3">
+        <div class="w-10 h-10 rounded-full border border-[#D4B673]/60 bg-[#1A2C25] flex items-center justify-center shrink-0 shadow-inner">
+          <span class="font-serif text-[#E5CA8F] text-sm font-bold tracking-widest pl-0.5">ILC</span>
+        </div>
+        <div>
+          <span class="font-serif text-xl tracking-wider text-[#F1ECE0] font-semibold block leading-tight">Consola</span>
+          <span class="text-[11px] text-[#8EA39A] font-medium tracking-wide uppercase">Gobernanza & CMS</span>
+        </div>
+      </div>
+
+      <!-- Menú de Navegación -->
+      <nav class="p-4 space-y-1.5" aria-label="Navegación principal de consola">
+        <!-- Campañas (Activa) -->
+        <a href="#campanas" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#24372F] text-[#F3E7C9] border-l-4 border-[#C9A865] font-semibold text-sm transition-all shadow-sm">
+          <span class="material-symbols-outlined text-[#D4B673] fill-1 text-[20px]">campaign</span>
+          <span>Campañas</span>
+        </a>
+
+        <!-- Juegos -->
+        <a href="#juegos" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#AFC0B8] hover:text-[#FAF7F0] hover:bg-[#1C2C25] font-medium text-sm transition-colors">
+          <span class="material-symbols-outlined text-[20px]">sports_esports</span>
+          <span>Juegos</span>
+        </a>
+
+        <!-- Recompensas -->
+        <a href="#recompensas" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#AFC0B8] hover:text-[#FAF7F0] hover:bg-[#1C2C25] font-medium text-sm transition-colors">
+          <span class="material-symbols-outlined text-[20px]">featured_seasonal_and_gifts</span>
+          <span>Recompensas</span>
+        </a>
+
+        <!-- Smart Tags -->
+        <a href="#smarttags" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#AFC0B8] hover:text-[#FAF7F0] hover:bg-[#1C2C25] font-medium text-sm transition-colors">
+          <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+          <span>Smart Tags</span>
+        </a>
+
+        <!-- Comercios -->
+        <a href="#comercios" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#AFC0B8] hover:text-[#FAF7F0] hover:bg-[#1C2C25] font-medium text-sm transition-colors">
+          <span class="material-symbols-outlined text-[20px]">storefront</span>
+          <span>Comercios</span>
+        </a>
+
+        <!-- Analítica -->
+        <a href="#analitica" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#AFC0B8] hover:text-[#FAF7F0] hover:bg-[#1C2C25] font-medium text-sm transition-colors">
+          <span class="material-symbols-outlined text-[20px]">query_stats</span>
+          <span>Analítica</span>
+        </a>
+
+        <!-- Auditoría -->
+        <a href="#auditoria" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[#AFC0B8] hover:text-[#FAF7F0] hover:bg-[#1C2C25] font-medium text-sm transition-colors">
+          <span class="material-symbols-outlined text-[20px]">shield</span>
+          <span>Auditoría</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Bottom User Bar (Laura · Admin de Marca) -->
+    <div class="p-4 border-t border-[#23382F] bg-[#0E1814]/60">
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-[#182620]">
+        <div class="w-9 h-9 rounded-full bg-[#2A3E36] border border-[#3E564C] flex items-center justify-center text-[#E5CA8F] font-bold text-xs">
+          LM
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-[#F1ECE0] truncate">Laura M.</p>
+          <p class="text-[11px] text-[#8EA39A] truncate">Admin de Marca</p>
+        </div>
+        <button title="Cerrar sesión" class="text-[#8EA39A] hover:text-[#EAA29A] p-1 rounded hover:bg-[#203028] transition-colors">
+          <span class="material-symbols-outlined text-[19px]">logout</span>
+        </button>
+      </div>
+      <div class="mt-2.5 px-2 flex justify-between items-center text-[10px] text-[#697E75]">
+        <span>Entorno: Producción</span>
+        <span>v1.0.4 · CMS</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL (1440px desktop view) -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <!-- Topbar Institucional y Aviso de Cumplimiento -->
+    <header class="bg-brand-surface border-b border-brand-border px-8 py-3.5 flex items-center justify-between sticky top-0 z-10">
+      <div class="flex items-center gap-3 text-xs text-brand-textMuted font-medium">
+        <span class="text-brand-forest font-semibold">ILC Origen</span>
+        <span>/</span>
+        <span class="text-brand-forest font-semibold">Consola Central</span>
+        <span>/</span>
+        <span class="text-brand-text font-bold">Gestión de Campañas</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <!-- Badge de Salvaguarda Regulatoria -->
+        <div class="flex items-center gap-2 px-3 py-1 bg-brand-surfaceAlt border border-brand-border rounded-full text-xs text-brand-forest">
+          <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+          <span class="font-medium text-[11px]">Ley 30 de 1986 &amp; Habeas Data (Ley 1581) Vigente</span>
+        </div>
+        <button class="flex items-center justify-center w-8 h-8 rounded-lg border border-brand-border hover:bg-brand-surfaceAlt text-brand-text transition-colors">
+          <span class="material-symbols-outlined text-[18px]">help</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="p-8 max-w-7xl w-full mx-auto space-y-6">
+      
+      <!-- SECCIÓN ENCABEZADO: Título Serif + Botón Primario Oro Oscuro -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
+        <div>
+          <h1 class="font-serif text-3xl sm:text-4xl font-bold text-brand-text tracking-tight">Campañas</h1>
+          <p class="text-sm text-brand-textMuted mt-1">
+            Administra temporadas, módulos interactivos, ventanas de vigencia y aprobaciones editoriales sin despliegues de código (Instrucciones §2, Guía Técnica §5.3).
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-brand-border bg-brand-surface text-brand-forest hover:bg-brand-surfaceAlt font-semibold text-xs tracking-wide transition-all shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">tune</span>
+            <span>Reglas Globales</span>
+          </button>
+          <!-- Botón primario: Oro oscuro #6E561E con texto blanco -->
+          <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-primaryGold hover:bg-brand-goldHover text-white font-semibold text-sm tracking-wide shadow transition-all active:scale-[0.99]">
+            <span class="material-symbols-outlined text-[20px]">add_circle</span>
+            <span>Nueva campaña</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen Métrico Rápido de Gobernanza -->
+      <div class="grid grid-cols-4 gap-4">
+        <div class="bg-brand-surface border border-brand-border rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-textMuted">Total Campañas</p>
+            <p class="text-2xl font-serif font-bold text-brand-text mt-0.5">14</p>
+            <p class="text-[11px] text-brand-textMuted mt-1">4 temporadas vigentes</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-brand-surfaceAlt border border-brand-border flex items-center justify-center text-brand-forest">
+            <span class="material-symbols-outlined">folder_special</span>
+          </div>
+        </div>
+
+        <div class="bg-brand-surface border border-brand-border rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-textMuted">Activas al Aire</p>
+            <p class="text-2xl font-serif font-bold text-emerald-800 mt-0.5">3</p>
+            <p class="text-[11px] text-emerald-700 font-medium mt-1">Validación en mesas</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-800">
+            <span class="material-symbols-outlined">sensors</span>
+          </div>
+        </div>
+
+        <div class="bg-brand-surface border border-brand-border rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-textMuted">En Revisión</p>
+            <p class="text-2xl font-serif font-bold text-amber-800 mt-0.5">4</p>
+            <p class="text-[11px] text-amber-700 font-medium mt-1">Pendiente Jurídica / Privacidad</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
+            <span class="material-symbols-outlined">pending_actions</span>
+          </div>
+        </div>
+
+        <div class="bg-brand-surface border border-brand-border rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-textMuted">Checklist Cumplimiento</p>
+            <p class="text-2xl font-serif font-bold text-brand-forest mt-0.5">100%</p>
+            <p class="text-[11px] text-brand-textMuted mt-1">Cero mecánicas de presión</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-brand-forestLight border border-[#C5D6CF] flex items-center justify-center text-brand-forest">
+            <span class="material-symbols-outlined">verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARRA DE HERRAMIENTAS: Buscador + Chips de Filtros de Estado -->
+      <div class="bg-brand-surface border border-brand-border rounded-xl p-4 space-y-3.5 shadow-sm">
+        <div class="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+          <!-- Campo de búsqueda -->
+          <div class="relative flex-1 max-w-lg">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-textMuted text-[19px]">search</span>
+            <input 
+              type="text" 
+              placeholder="Buscar por nombre, slug, marca asociada o código..." 
+              class="w-full pl-10 pr-4 py-2 bg-brand-bg border border-brand-border rounded-lg text-xs text-brand-text placeholder-brand-textMuted focus:outline-none focus:ring-1 focus:ring-brand-primaryGold focus:border-brand-primaryGold transition-all font-medium"
+            >
+          </div>
+
+          <!-- Filtros de canal y marca secundarios -->
+          <div class="flex items-center gap-2 self-end lg:self-auto">
+            <div class="flex items-center gap-1.5 text-xs text-brand-textMuted bg-brand-surfaceAlt border border-brand-border rounded-lg px-2.5 py-1.5 font-medium">
+              <span class="material-symbols-outlined text-[16px]">liquor</span>
+              <span>Marca: Todas</span>
+              <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-xs text-brand-textMuted bg-brand-surfaceAlt border border-brand-border rounded-lg px-2.5 py-1.5 font-medium">
+              <span class="material-symbols-outlined text-[16px]">map</span>
+              <span>Canal: On/Off-Premise</span>
+              <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros de Estado en Chips (Exactos según Guía Técnica §5.3) -->
+        <div class="pt-2 border-t border-brand-border/70 flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-brand-textMuted mr-2 shrink-0">Estado:</span>
+          
+          <!-- Todas (Seleccionado) -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-sidebar text-[#F1ECE0] font-semibold text-xs transition-colors shrink-0 shadow-sm">
+            Todas <span class="ml-1 text-[10px] opacity-80">(14)</span>
+          </button>
+
+          <!-- Borrador -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            Borrador <span class="ml-1 text-[10px] text-brand-textMuted">(2)</span>
+          </button>
+
+          <!-- En revisión -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            En revisión <span class="ml-1 text-[10px] text-brand-textMuted">(4)</span>
+          </button>
+
+          <!-- Aprobada -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            Aprobada <span class="ml-1 text-[10px] text-brand-textMuted">(2)</span>
+          </button>
+
+          <!-- Programada -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            Programada <span class="ml-1 text-[10px] text-brand-textMuted">(1)</span>
+          </button>
+
+          <!-- Activa -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            Activa <span class="ml-1 text-[10px] text-brand-textMuted">(3)</span>
+          </button>
+
+          <!-- Pausada -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            Pausada <span class="ml-1 text-[10px] text-brand-textMuted">(1)</span>
+          </button>
+
+          <!-- Cerrada -->
+          <button class="px-3 py-1.5 rounded-full bg-brand-surfaceAlt border border-brand-border text-brand-text hover:bg-brand-bg font-medium text-xs transition-colors shrink-0">
+            Cerrada <span class="ml-1 text-[10px] text-brand-textMuted">(1)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TABLA DE CAMPAÑAS Y GOBERNANZA TÉCNICA -->
+      <div class="bg-brand-surface border border-brand-border rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <!-- Table Header -->
+            <thead>
+              <tr class="bg-brand-surfaceAlt border-b border-brand-border text-[11px] font-bold text-brand-text uppercase tracking-wider select-none">
+                <th scope="col" class="py-3.5 px-5">Campaña</th>
+                <th scope="col" class="py-3.5 px-4">Ruta</th>
+                <th scope="col" class="py-3.5 px-4">Marca</th>
+                <th scope="col" class="py-3.5 px-4">Ventana</th>
+                <th scope="col" class="py-3.5 px-3 text-center">Versión</th>
+                <th scope="col" class="py-3.5 px-4">Estado</th>
+                <th scope="col" class="py-3.5 px-4" title="Aprobaciones requeridas antes de publicación: Marca, Jurídica, Privacidad (Guía §5.11)">
+                  <div class="flex items-center gap-1">
+                    <span>Aprobaciones</span>
+                    <span class="text-[10px] font-normal text-brand-textMuted">(M · J · P)</span>
+                  </div>
+                </th>
+                <th scope="col" class="py-3.5 px-5 text-right">Acciones</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody class="divide-y divide-brand-border/70 text-xs">
+              
+              <!-- FILA 1: Feria de Manizales 2027 (Ruta A · Activa) -->
+              <tr class="hover:bg-brand-bg/70 transition-colors group">
+                <td class="py-4 px-5">
+                  <div class="flex flex-col">
+                    <a href="#detalle-feria" class="font-serif text-base font-bold text-brand-text group-hover:text-brand-primaryGold transition-colors leading-tight">
+                      Feria de Manizales 2027
+                    </a>
+                    <span class="font-mono text-[11px] text-brand-textMuted mt-0.5">feria-manizales-2027</span>
+                  </div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Ruta A: Comercial Oro (#6E561E con bg dorado suave) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F4E9CD] border border-[#D5BF8A] text-brand-primaryGold font-bold text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-primaryGold"></span>
+                    Ruta A · Comercial
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <div class="font-medium text-brand-text">Ron Viejo de Caldas</div>
+                  <div class="text-[10px] text-brand-textMuted">Gran Reserva &amp; 8 Años</div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <span class="font-medium text-brand-text">2–12 ene. 2027</span>
+                  <span class="block text-[10px] text-emerald-700 font-semibold">10 días restantes</span>
+                </td>
+                <td class="py-4 px-3 text-center whitespace-nowrap">
+                  <span class="inline-block px-2 py-0.5 rounded bg-brand-surfaceAlt font-mono text-[11px] font-bold text-brand-text border border-brand-border">
+                    v3
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Estado: Activa (Verde bosque esmeralda) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100/80 border border-emerald-300 text-emerald-900 font-bold text-[11px]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                    Activa
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Aprobaciones: ✓✓— (Marca: check verde, Jurídica: check verde, Privacidad: guión gris no aplica) -->
+                  <div class="flex items-center gap-2" title="Marca: Aprobado | Jurídica: Aprobado | Privacidad: No aplica">
+                    <!-- Marca -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs" title="Marca: Aprobada">
+                      ✓
+                    </span>
+                    <!-- Jurídica -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs" title="Jurídica: Aprobada">
+                      ✓
+                    </span>
+                    <!-- Privacidad -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-surfaceAlt text-brand-textMuted font-bold text-xs border border-brand-border" title="Privacidad: No aplica">
+                      —
+                    </span>
+                  </div>
+                </td>
+                <td class="py-4 px-5 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end gap-1">
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-forest hover:text-brand-text" title="Ver métricas en vivo">
+                      <span class="material-symbols-outlined text-[18px]">monitoring</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-forest hover:text-brand-text" title="Editar configuración">
+                      <span class="material-symbols-outlined text-[18px]">edit</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-textMuted hover:text-brand-text" title="Más opciones">
+                      <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- FILA 2: Ruta del Origen (Ruta B · En revisión) -->
+              <tr class="hover:bg-brand-bg/70 transition-colors group">
+                <td class="py-4 px-5">
+                  <div class="flex flex-col">
+                    <a href="#detalle-origen" class="font-serif text-base font-bold text-brand-text group-hover:text-brand-primaryGold transition-colors leading-tight">
+                      Ruta del Origen
+                    </a>
+                    <span class="font-mono text-[11px] text-brand-textMuted mt-0.5">ruta-origen</span>
+                  </div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Ruta B: Experiencial Verde Bosque (#2F4941) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-forestLight border border-[#BCD0C7] text-brand-forest font-bold text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-forest"></span>
+                    Ruta B · Experiencial
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <div class="font-medium text-brand-text">ILC (Corporativo)</div>
+                  <div class="text-[10px] text-brand-textMuted">Cultura &amp; Territorio Caldas</div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <span class="font-medium text-brand-text">1 nov.–31 dic. 2026</span>
+                  <span class="block text-[10px] text-brand-textMuted">61 días de ventana</span>
+                </td>
+                <td class="py-4 px-3 text-center whitespace-nowrap">
+                  <span class="inline-block px-2 py-0.5 rounded bg-brand-surfaceAlt font-mono text-[11px] font-bold text-brand-text border border-brand-border">
+                    v1
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Estado: En revisión (Ámbar cálido) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-900 font-bold text-[11px]">
+                    <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                    En revisión
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Aprobaciones: ✓ ⏱ ⏱ (Marca: check verde, Jurídica: reloj ámbar, Privacidad: reloj ámbar) -->
+                  <div class="flex items-center gap-2" title="Marca: Aprobado | Jurídica: Pendiente | Privacidad: Pendiente">
+                    <!-- Marca -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs" title="Marca: Aprobada">
+                      ✓
+                    </span>
+                    <!-- Jurídica (Reloj Ámbar) -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold text-xs" title="Jurídica: Pendiente de revisión">
+                      ⏱
+                    </span>
+                    <!-- Privacidad (Reloj Ámbar) -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold text-xs" title="Privacidad: Pendiente de revisión">
+                      ⏱
+                    </span>
+                  </div>
+                </td>
+                <td class="py-4 px-5 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end gap-1">
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-forest hover:text-brand-text" title="Inspeccionar checklist">
+                      <span class="material-symbols-outlined text-[18px]">rule</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-forest hover:text-brand-text" title="Editar configuración">
+                      <span class="material-symbols-outlined text-[18px]">edit</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-textMuted hover:text-brand-text" title="Más opciones">
+                      <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- FILA 3: Temporada Fin de Año (Mixta · Aprobada) -->
+              <tr class="hover:bg-brand-bg/70 transition-colors group">
+                <td class="py-4 px-5">
+                  <div class="flex flex-col">
+                    <a href="#detalle-findeano" class="font-serif text-base font-bold text-brand-text group-hover:text-brand-primaryGold transition-colors leading-tight">
+                      Temporada Fin de Año
+                    </a>
+                    <span class="font-mono text-[11px] text-brand-textMuted mt-0.5">fin-de-ano-2026</span>
+                  </div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Mixta: Terciario Roble (#9A4F17 con bg roble suave) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-oakLight border border-[#E9CBBB] text-brand-oak font-bold text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-oak"></span>
+                    Mixta (A + B)
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <div class="font-medium text-brand-text">Aguardiente Amarillo</div>
+                  <div class="text-[10px] text-brand-textMuted">De Manzanares 24°</div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <span class="font-medium text-brand-text">15–31 dic. 2026</span>
+                  <span class="block text-[10px] text-brand-forest font-medium">Inicia en 45 días</span>
+                </td>
+                <td class="py-4 px-3 text-center whitespace-nowrap">
+                  <span class="inline-block px-2 py-0.5 rounded bg-brand-surfaceAlt font-mono text-[11px] font-bold text-brand-text border border-brand-border">
+                    v2
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Estado: Aprobada (Azul grisáceo institucional / verde suave) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-100 border border-sky-300 text-sky-900 font-bold text-[11px]">
+                    <span class="w-2 h-2 rounded-full bg-sky-600"></span>
+                    Aprobada
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Aprobaciones: ✓✓✓ (Marca: check verde, Jurídica: check verde, Privacidad: check verde) -->
+                  <div class="flex items-center gap-2" title="Marca: Aprobado | Jurídica: Aprobado | Privacidad: Aprobado">
+                    <!-- Marca -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs" title="Marca: Aprobada">
+                      ✓
+                    </span>
+                    <!-- Jurídica -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs" title="Jurídica: Aprobada">
+                      ✓
+                    </span>
+                    <!-- Privacidad -->
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs" title="Privacidad: Aprobada">
+                      ✓
+                    </span>
+                  </div>
+                </td>
+                <td class="py-4 px-5 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end gap-1">
+                    <button class="p-1.5 rounded bg-brand-primaryGold text-white hover:bg-brand-goldHover font-semibold text-xs px-2.5 py-1" title="Programar publicación automática">
+                      Publicar
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-forest hover:text-brand-text" title="Editar configuración">
+                      <span class="material-symbols-outlined text-[18px]">edit</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-textMuted hover:text-brand-text" title="Más opciones">
+                      <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- FILA 4: Piloto Pereira (Ruta A · Borrador) -->
+              <tr class="hover:bg-brand-bg/70 transition-colors group">
+                <td class="py-4 px-5">
+                  <div class="flex flex-col">
+                    <a href="#detalle-pereira" class="font-serif text-base font-bold text-brand-text group-hover:text-brand-primaryGold transition-colors leading-tight">
+                      Piloto Pereira
+                    </a>
+                    <span class="font-mono text-[11px] text-brand-textMuted mt-0.5">piloto-pereira</span>
+                  </div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Ruta A: Comercial Oro -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F4E9CD] border border-[#D5BF8A] text-brand-primaryGold font-bold text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-primaryGold"></span>
+                    Ruta A · Comercial
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <div class="font-medium text-brand-text">Aguardiente Cristal</div>
+                  <div class="text-[10px] text-brand-textMuted">XS &amp; Tradicional</div>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <span class="text-brand-textMuted italic font-normal">Sin definir</span>
+                  <span class="block text-[10px] text-brand-textMuted">Ventana en borrador</span>
+                </td>
+                <td class="py-4 px-3 text-center whitespace-nowrap">
+                  <span class="inline-block px-2 py-0.5 rounded bg-brand-surfaceAlt font-mono text-[11px] font-bold text-brand-text border border-brand-border">
+                    v1
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Chip Estado: Borrador (Gris neutro) -->
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-200 border border-stone-300 text-stone-800 font-bold text-[11px]">
+                    <span class="w-2 h-2 rounded-full bg-stone-500"></span>
+                    Borrador
+                  </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                  <!-- Aprobaciones: ——— (Tres guiones grises no aplica / no enviado) -->
+                  <div class="flex items-center gap-2" title="Sin revisiones iniciadas">
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-surfaceAlt text-brand-textMuted font-bold text-xs border border-brand-border" title="Marca: No iniciado">
+                      —
+                    </span>
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-surfaceAlt text-brand-textMuted font-bold text-xs border border-brand-border" title="Jurídica: No iniciado">
+                      —
+                    </span>
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-surfaceAlt text-brand-textMuted font-bold text-xs border border-brand-border" title="Privacidad: No iniciado">
+                      —
+                    </span>
+                  </div>
+                </td>
+                <td class="py-4 px-5 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end gap-1">
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-forest hover:text-brand-text" title="Continuar edición">
+                      <span class="material-symbols-outlined text-[18px]">edit</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-error hover:bg-red-50" title="Eliminar borrador">
+                      <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                    <button class="p-1.5 rounded hover:bg-brand-surfaceAlt text-brand-textMuted hover:text-brand-text" title="Más opciones">
+                      <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación y Resumen Inferior -->
+        <div class="px-5 py-3.5 bg-brand-surfaceAlt border-t border-brand-border flex items-center justify-between text-xs text-brand-textMuted">
+          <div>
+            Mostrando <span class="font-bold text-brand-text">4</span> de <span class="font-bold text-brand-text">14</span> campañas configuradas
+          </div>
+          <div class="flex items-center gap-1">
+            <button class="px-2.5 py-1 rounded border border-brand-border bg-brand-surface disabled:opacity-40" disabled>
+              Anterior
+            </button>
+            <button class="px-3 py-1 rounded border border-brand-primaryGold bg-brand-primaryGold text-white font-bold">
+              1
+            </button>
+            <button class="px-3 py-1 rounded border border-brand-border bg-brand-surface hover:bg-brand-surfaceAlt text-brand-text">
+              2
+            </button>
+            <button class="px-3 py-1 rounded border border-brand-border bg-brand-surface hover:bg-brand-surfaceAlt text-brand-text">
+              3
+            </button>
+            <button class="px-2.5 py-1 rounded border border-brand-border bg-brand-surface hover:bg-brand-surfaceAlt text-brand-text">
+              Siguiente
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BANNER DE GOBERNANZA EDITORIAL Y BLOQUEO DE LANZAMIENTO (Guía Técnica §5.11 & §16) -->
+      <div class="bg-brand-surface border-l-4 border-brand-primaryGold border-t border-r border-b border-brand-border rounded-xl p-5 shadow-sm flex flex-col md:flex-row gap-5 items-start justify-between">
+        <div class="flex items-start gap-3.5">
+          <div class="w-9 h-9 rounded-full bg-brand-goldChip border border-brand-goldBorder flex items-center justify-center text-brand-primaryGold shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-[20px]">security</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-serif text-base font-bold text-brand-text">
+              Salvaguarda Técnica de Publicación sin Código
+            </h4>
+            <p class="text-xs text-brand-textMuted leading-relaxed max-w-3xl">
+              El CMS bloquea automáticamente la puesta en producción de cualquier campaña si no cuenta con la tríada completa de revisiones obligatorias: <strong class="text-brand-text">Marca</strong> (claims e identidad), <strong class="text-brand-text">Jurídica</strong> (condiciones legales de Ley 30 de 1986 y prohibición de dinámicas de velocidad/tolerancia) y <strong class="text-brand-text">Privacidad</strong> (Habeas Data Ley 1581 y minimización de datos).
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 self-end md:self-center">
+          <span class="text-xs text-brand-forest font-semibold underline cursor-pointer hover:text-brand-primaryGold">
+            Ver Checklist de Campaña (§16)
+          </span>
+          <span class="material-symbols-outlined text-brand-forest text-[16px]">arrow_forward</span>
+        </div>
+      </div>
+
+      <!-- Pie Reglamentario Institucional ILC -->
+      <footer class="pt-6 border-t border-brand-border text-center space-y-1 pb-4">
+        <p class="text-[11px] font-semibold text-brand-textMuted tracking-wider uppercase">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. LEY 30 DE 1986. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD.
+        </p>
+        <p class="text-[10px] text-brand-textMuted/80">
+          Industria Licorera de Caldas S.A. · Sistema de Gobernanza y Fidelización Phygital · Entorno de Control Administrativo
+        </p>
+      </footer>
+
+    </div>
+  </main>
+
+</body>
+</html>

@@ -249,6 +249,278 @@
           "Identidad"
         ]
       }
+    },
+    "/api/v1/admin/campaigns": {
+      "get": {
+        "operationId": "AdminCampaignsController_list",
+        "parameters": [
+          {
+            "name": "estado",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      },
+      "post": {
+        "operationId": "AdminCampaignsController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}": {
+      "get": {
+        "operationId": "AdminCampaignsController_get",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}/draft": {
+      "put": {
+        "operationId": "AdminCampaignsController_updateDraft",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}/versions": {
+      "post": {
+        "operationId": "AdminCampaignsController_newVersion",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}/submit": {
+      "post": {
+        "operationId": "AdminCampaignsController_submit",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}/approvals": {
+      "post": {
+        "operationId": "AdminCampaignsController_decide",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}/publish": {
+      "post": {
+        "operationId": "AdminCampaignsController_publish",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/admin/campaigns/{slug}/{action}": {
+      "post": {
+        "operationId": "AdminCampaignsController_transition",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Campañas"
+        ]
+      }
+    },
+    "/api/v1/campaigns/{slug}": {
+      "get": {
+        "operationId": "PublicCampaignsController_publicView",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Campañas"
+        ]
+      }
     }
   },
   "info": {
@@ -469,6 +741,12 @@
               ],
               "additionalProperties": false
             }
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
@@ -477,7 +755,8 @@
           "status",
           "ageVerified",
           "credentials",
-          "consents"
+          "consents",
+          "roles"
         ],
         "additionalProperties": false
       },

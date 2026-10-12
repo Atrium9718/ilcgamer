@@ -13,7 +13,8 @@
     "db:migrate": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
     "db:seed": "node --env-file-if-exists=.env dist/seed.js",
-    "openapi:export": "node --env-file-if-exists=.env dist/openapi-export.js"
+    "openapi:export": "node --env-file-if-exists=.env dist/openapi-export.js",
+    "admin:grant": "node --env-file-if-exists=.env dist/admin-grant.js"
   },
   "dependencies": {
     "@fastify/cookie": "11.1.2",

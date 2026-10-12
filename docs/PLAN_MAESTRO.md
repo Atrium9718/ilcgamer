@@ -199,8 +199,15 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [ ] Pendiente de ILC: proveedor de WhatsApp/SMS/correo y credenciales de Google/Apple; texto legal de términos y aviso de privacidad.
 - [ ] Paso 7: fusionar el progreso de una cuenta temporal al iniciar sesión en una cuenta existente (hoy queda registrado en auditoría).
 
-### Paso 5 — Campañas + CMS mínimo con aprobaciones
-- CRUD de campañas versionadas, estados, aprobaciones (marca/jurídica/privacidad), bloqueo de publicación, temas por campaña.
+### Paso 5 — Campañas + CMS mínimo con aprobaciones ✅
+- [x] Campañas con versiones de reglas: estados de versión (borrador → en revisión → aprobada → publicada → reemplazada) y de campaña (borrador → … → activa/pausada → cerrada → archivada). Una sola versión publicada y una sola en curso por campaña (índices únicos en la base de datos).
+- [x] Reglas en esquema **cerrado** y acotado (puntos por SKU, multiplicadores ≤ x3, energía 5–240 min, cierre de sesiones, vigencia de puntos, límites por persona): no existe forma de configurar premios por velocidad, cantidad o presión (§1.2, §9.4).
+- [x] Aprobaciones de Marca, Jurídica y (si hay ubicación o datos extra) Privacidad, ligadas al **hash del contenido**: cualquier cambio invalida las aprobaciones. Separación de funciones: quien crea o envía no aprueba. Un rechazo devuelve la versión a borrador.
+- [x] Publicación bloqueada mientras falte una aprobación o un punto del checklist §16; la API y la consola dicen exactamente qué falta. Programador con candado en Redis activa y cierra campañas por fecha.
+- [x] RBAC (`ADMIN_MARCA`, `EDITOR_CONTENIDO`, revisores, `RESPONSABLE_PRIVACIDAD`, `SUPERADMIN`) y CLI `admin:grant` para asignar roles; todo queda en auditoría.
+- [x] Temas por campaña (solo variables `--color-brand-*`); la PWA consulta `GET /campaigns/:slug` en `/e/:slug`, aplica el tema y envía la campaña al control de edad (edad mínima por campaña).
+- [x] Consola mínima `apps/console` (ingreso por código al correo, lista, editor, detalle con aprobaciones, checklist, publicación y operación). Pantallas 16 y 17 diseñadas en Stitch.
+- [ ] Pendiente para el Paso 6/7: re-verificar la edad cuando una campaña exige más de 18 y la persona ya pasó el control con 18 (hoy el servidor la aplica en el control de edad de entrada).
 
 ### Paso 6 — Smart Tags y claims (Ruta A núcleo)
 - Consulta de código (estados de producto) **separada** de reclamación de campaña; plantilla de URL configurable; rate limiting; import CSV/XLSX con vista previa; `POST /api/v1/smarttags/validate`.

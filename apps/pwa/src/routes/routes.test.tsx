@@ -149,3 +149,21 @@ describe('flujos con datos de demostración', () => {
     expect(await screen.findByText('No encontramos esta página')).toBeInTheDocument();
   });
 });
+
+describe('entrada por QR de evento (/e/:slug)', () => {
+  afterEach(() => {
+    delete document.documentElement.dataset.theme;
+    delete document.documentElement.dataset.brand;
+  });
+
+  it('envía la campaña al control de edad y aplica su tema al entrar', async () => {
+    const api = installFakeApi();
+    const router = renderAt('/e/feria-cristal');
+    await passAgeGate();
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/jugar'));
+    expect(api.lastAgeGate).toMatchObject({ campaignSlug: 'feria-cristal' });
+    expect(router.state.location.search).toBe('?evento=feria-cristal');
+    expect(document.documentElement.dataset.brand).toBe('aguardiente-cristal');
+    expect(document.documentElement.dataset.theme).toBe('light');
+  });
+});

@@ -46,6 +46,8 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 13 · Guarda tu progreso | `1a65677e0fa84920a5abb3b2458d907f` | `SignUpView` |
 | 14 · Verificación por código | `73017fc39ce2415db68c32549d62296b` | `OtpView` (teclado nativo con autocompletado, no teclado en pantalla) |
 | 15 · Tus autorizaciones | `af78a00baae44e2fb0b90da9759d6c84` | `ConsentsView` (cada interruptor se guarda al instante) |
+| 16 · Consola · Campañas | `3834fade7df24187bcc2db1ede709b75` | `ConsoleLayout`, `CampaignListView`, `CampaignEditorView`, `ConsoleLoginView` (tema claro) |
+| 17 · Consola · Detalle de campaña | `c69464065ad54a008c2692ace544d642` | `CampaignDetailView` (sin íconos de copas, equivalencias en pesos ni etiqueta de entorno inventada que traía Stitch) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 
