@@ -55,10 +55,16 @@ export function ExperienceCard({ title, subtitle, imageUrl, progress, tag, ctaLa
       className="w-full flex gap-3 p-3 rounded-2xl bg-surface-container-low border border-secondary/35 text-left hover:border-secondary/70 active:scale-[0.99] transition-all"
     >
       <span className="relative w-24 shrink-0 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant">
-        {imageUrl ? <img src={imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" /> : <Icon name="explore" className="absolute inset-0 m-auto h-fit w-fit text-[32px] text-secondary" />}
+        {imageUrl ? (
+          <img src={imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <Icon name="explore" className="absolute inset-0 m-auto h-fit w-fit text-[32px] text-secondary" />
+        )}
       </span>
       <span className="flex-1 min-w-0 flex flex-col gap-1">
-        {tag && <span className="self-start px-2 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[10px] uppercase">{tag}</span>}
+        {tag && (
+          <span className="self-start px-2 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[10px] uppercase">{tag}</span>
+        )}
         <span className="font-title-md text-[16px] leading-5 text-on-surface">{title}</span>
         <span className="font-body-md text-[13px] text-on-surface-variant">{subtitle}</span>
         {progress && (

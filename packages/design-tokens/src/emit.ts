@@ -111,8 +111,6 @@ export function googleFontsHref(tokens: DesignTokens): string {
     set.add('400');
     weights.set(t.fontFamily, set);
   }
-  const families = [...weights.entries()]
-    .map(([f, w]) => `family=${f.replaceAll(' ', '+')}:wght@${[...w].sort().join(';')}`)
-    .join('&');
+  const families = [...weights.entries()].map(([f, w]) => `family=${f.replaceAll(' ', '+')}:wght@${[...w].sort().join(';')}`).join('&');
   return `https://fonts.googleapis.com/css2?${families}&display=swap`;
 }

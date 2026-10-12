@@ -17,11 +17,21 @@ export function InviteCard({ pin, onShowQr, onShare }: InviteCardProps) {
           <span className="sr-only">{pin.split('').join(' ')}</span>
         </p>
       </div>
-      <button type="button" onClick={onShowQr} aria-label="Mostrar QR del Parche" className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center text-on-surface hover:border-primary">
+      <button
+        type="button"
+        onClick={onShowQr}
+        aria-label="Mostrar QR del Parche"
+        className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center text-on-surface hover:border-primary"
+      >
         <Icon name="qr_code_2" className="text-[24px]" />
       </button>
       {onShare && (
-        <button type="button" onClick={onShare} aria-label="Compartir invitación" className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center text-on-surface hover:border-primary">
+        <button
+          type="button"
+          onClick={onShare}
+          aria-label="Compartir invitación"
+          className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center text-on-surface hover:border-primary"
+        >
           <Icon name="share" className="text-[22px]" />
         </button>
       )}

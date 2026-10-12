@@ -34,7 +34,12 @@ export function Toast({ tone = 'info', message, actionLabel, onAction, onDismiss
         </button>
       )}
       {onDismiss && (
-        <button type="button" aria-label="Cerrar aviso" onClick={onDismiss} className="w-12 h-12 -mr-3 shrink-0 flex items-center justify-center text-on-surface-variant">
+        <button
+          type="button"
+          aria-label="Cerrar aviso"
+          onClick={onDismiss}
+          className="w-12 h-12 -mr-3 shrink-0 flex items-center justify-center text-on-surface-variant"
+        >
           <Icon name="close" className="text-[20px]" />
         </button>
       )}

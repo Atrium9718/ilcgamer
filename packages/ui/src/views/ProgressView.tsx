@@ -38,7 +38,19 @@ export interface ProgressViewProps {
   onNavigate: (tab: NavTab) => void;
 }
 
-export function ProgressView({ level, levelName, xp, nextLevelXp, nextLevelName, chapters, badges, stories, onOpenStory, onBack, onNavigate }: ProgressViewProps) {
+export function ProgressView({
+  level,
+  levelName,
+  xp,
+  nextLevelXp,
+  nextLevelName,
+  chapters,
+  badges,
+  stories,
+  onOpenStory,
+  onBack,
+  onNavigate,
+}: ProgressViewProps) {
   const unlocked = stories.filter((s) => s.unlocked);
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
@@ -46,7 +58,9 @@ export function ProgressView({ level, levelName, xp, nextLevelXp, nextLevelName,
         <TopBar
           onBack={onBack}
           title={<span className="font-headline-md text-headline-md text-primary">Mi progreso</span>}
-          trailing={<span className="px-2.5 py-0.5 rounded-full bg-secondary-container font-label-sm text-[11px] uppercase text-on-secondary-container">Ruta B</span>}
+          trailing={
+            <span className="px-2.5 py-0.5 rounded-full bg-secondary-container font-label-sm text-[11px] uppercase text-on-secondary-container">Ruta B</span>
+          }
         />
         <main className="flex-1 px-4 pt-4 pb-6 space-y-6">
           <section aria-label="Nivel" className="p-4 rounded-2xl border border-secondary/40 bg-surface-container-low space-y-2">
@@ -55,7 +69,13 @@ export function ProgressView({ level, levelName, xp, nextLevelXp, nextLevelName,
             <p className="font-numeric-xl text-[32px] leading-none text-on-surface tabular-nums">
               {formatNumber(xp)} <span className="font-label-lg text-[14px] text-secondary">XP</span>
             </p>
-            <ProgressBar tone="secondary" value={xp} max={nextLevelXp} label="Progreso al siguiente nivel" valueText={`${formatNumber(xp)} de ${formatNumber(nextLevelXp)} XP`} />
+            <ProgressBar
+              tone="secondary"
+              value={xp}
+              max={nextLevelXp}
+              label="Progreso al siguiente nivel"
+              valueText={`${formatNumber(xp)} de ${formatNumber(nextLevelXp)} XP`}
+            />
             <p className="font-body-md text-[13px] text-on-surface-variant tabular-nums">
               Siguiente: {nextLevelName} · {formatNumber(nextLevelXp)} XP
             </p>
@@ -74,7 +94,10 @@ export function ProgressView({ level, levelName, xp, nextLevelXp, nextLevelName,
 
           <section aria-labelledby="insignias" className="space-y-3">
             <h2 id="insignias" className="font-title-md text-title-md text-on-surface">
-              Insignias <span className="text-on-surface-variant tabular-nums">({badges.filter((b) => b.earned).length}/{badges.length})</span>
+              Insignias{' '}
+              <span className="text-on-surface-variant tabular-nums">
+                ({badges.filter((b) => b.earned).length}/{badges.length})
+              </span>
             </h2>
             <div className="grid grid-cols-3 gap-y-5 gap-x-2">
               {badges.map((b) => (
@@ -93,7 +116,11 @@ export function ProgressView({ level, levelName, xp, nextLevelXp, nextLevelName,
             <ul className="space-y-2">
               {unlocked.map((s) => (
                 <li key={s.id}>
-                  <button type="button" onClick={() => onOpenStory(s.id)} className="w-full min-h-14 flex items-center gap-3 px-3.5 rounded-xl border border-tertiary/35 bg-surface-container-low text-left hover:border-tertiary/70">
+                  <button
+                    type="button"
+                    onClick={() => onOpenStory(s.id)}
+                    className="w-full min-h-14 flex items-center gap-3 px-3.5 rounded-xl border border-tertiary/35 bg-surface-container-low text-left hover:border-tertiary/70"
+                  >
                     <Icon name="auto_stories" className="text-[22px] text-tertiary" />
                     <span className="flex-1 font-headline-md italic text-[16px] text-on-surface">{s.title ?? 'Relato pendiente de aprobación de marca'}</span>
                     <Icon name="chevron_right" className="text-[20px] text-on-surface-variant" />

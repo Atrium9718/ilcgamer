@@ -19,7 +19,14 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       description: 'Tema',
-      toolbar: { title: 'Tema', icon: 'mirror', items: [{ value: 'dark', title: 'Oscuro (on-premise)' }, { value: 'light', title: 'Claro' }] },
+      toolbar: {
+        title: 'Tema',
+        icon: 'mirror',
+        items: [
+          { value: 'dark', title: 'Oscuro (on-premise)' },
+          { value: 'light', title: 'Claro' },
+        ],
+      },
     },
     brand: {
       description: 'Submarca',

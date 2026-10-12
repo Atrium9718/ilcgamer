@@ -20,14 +20,16 @@ export interface LegalNoticeProps {
 export function LegalNotice({ links = [], showCompany = false, className }: LegalNoticeProps) {
   return (
     <footer className={cx('w-full px-4 py-6 text-center border-t border-outline-variant', className)}>
-      {showCompany && (
-        <p className="font-label-sm text-label-sm uppercase text-secondary mb-2">Industria Licorera de Caldas</p>
-      )}
+      {showCompany && <p className="font-label-sm text-label-sm uppercase text-secondary mb-2">Industria Licorera de Caldas</p>}
       <p className="font-label-sm text-label-sm uppercase leading-relaxed text-on-surface-variant">{LEGAL_COPY}</p>
       {links.length > 0 && (
         <nav aria-label="Enlaces legales" className="flex justify-center flex-wrap gap-x-4 mt-2">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="inline-flex items-center min-h-12 font-label-lg text-[13px] text-on-surface-variant underline-offset-4 hover:text-primary hover:underline">
+            <a
+              key={l.href}
+              href={l.href}
+              className="inline-flex items-center min-h-12 font-label-lg text-[13px] text-on-surface-variant underline-offset-4 hover:text-primary hover:underline"
+            >
               {l.label}
             </a>
           ))}

@@ -25,22 +25,49 @@ const QUICK = [
   { id: 'verdad-reto', title: 'Verdad o reto cultural', icon: 'forum', minutes: 5, players: '2-8' },
 ];
 const EXPERIENCES = [
-  { id: 'explorador', title: 'El Explorador · Ruta del Origen', subtitle: 'Recorre por capítulos el agua, el paisaje, el roble y la historia de Caldas.', imageUrl: bosqueNiebla, progress: { current: 2, total: 6 }, tag: 'En progreso' },
-  { id: 'mixologia', title: 'Maestros de sabor · Mixología', subtitle: 'Aromas, ingredientes y preparaciones, con alternativas sin alcohol.', imageUrl: botellaBarrica, tag: 'Nuevo' },
+  {
+    id: 'explorador',
+    title: 'El Explorador · Ruta del Origen',
+    subtitle: 'Recorre por capítulos el agua, el paisaje, el roble y la historia de Caldas.',
+    imageUrl: bosqueNiebla,
+    progress: { current: 2, total: 6 },
+    tag: 'En progreso',
+  },
+  {
+    id: 'mixologia',
+    title: 'Maestros de sabor · Mixología',
+    subtitle: 'Aromas, ingredientes y preparaciones, con alternativas sin alcohol.',
+    imageUrl: botellaBarrica,
+    tag: 'Nuevo',
+  },
 ];
 
 export const CatalogoDeJuegos: Story = {
-  render: () => <GamesCatalogView campaignLabel="Feria de Manizales" quickGames={QUICK} experiences={EXPERIENCES} onSelectGame={fn()} onSelectExperience={fn()} onNavigate={fn()} />,
+  render: () => (
+    <GamesCatalogView
+      campaignLabel="Feria de Manizales"
+      quickGames={QUICK}
+      experiences={EXPERIENCES}
+      onSelectGame={fn()}
+      onSelectExperience={fn()}
+      onNavigate={fn()}
+    />
+  ),
 };
 
 function Result({ initial }: { initial: ResultState }) {
-  return (
-    <GameResultView gameTitle="Trivia del origen" state={initial} onClose={fn()} onBackToParche={fn()} onShare={fn()} onPlayAgain={fn()} onRetry={fn()} />
-  );
+  return <GameResultView gameTitle="Trivia del origen" state={initial} onClose={fn()} onBackToParche={fn()} onShare={fn()} onPlayAgain={fn()} onRetry={fn()} />;
 }
 const VERIFIED: ResultState = {
   status: 'verified',
-  result: { headline: '¡El Parche resolvió el origen!', summary: '8 de 10 respuestas correctas', xpEarned: 120, badgeName: 'Guardianes del bosque de niebla', pointsEarned: 0, pointsNote: 'Esta partida no otorga Puntos ILC en esta campaña.' },
+  result: {
+    headline: '¡El Parche resolvió el origen!',
+    summary: '8 de 10 respuestas correctas',
+    xpEarned: 120,
+    badgeName: 'Guardianes del bosque de niebla',
+    pointsEarned: 0,
+    pointsNote: 'Esta partida no otorga Puntos ILC en esta campaña.',
+  },
 };
 export const ResultadoVerificado: Story = { render: () => <Result initial={VERIFIED} /> };
 export const ResultadoVerificando: Story = { render: () => <Result initial={{ status: 'verifying' }} /> };
@@ -138,7 +165,11 @@ export const Perfil: Story = {
     <ProfileView
       alias="Andrés"
       verified
-      referral={{ code: 'ANDR-7K2Q', rewardText: 'Ganas 50 Puntos ILC cuando tu invitado (+18) completa su perfil o se une a su primer Parche. Máximo 5 bonificaciones por semana.', joined: 3 }}
+      referral={{
+        code: 'ANDR-7K2Q',
+        rewardText: 'Ganas 50 Puntos ILC cuando tu invitado (+18) completa su perfil o se une a su primer Parche. Máximo 5 bonificaciones por semana.',
+        joined: 3,
+      }}
       marketingOptIn={false}
       onEdit={fn()}
       onCopyCode={fn()}
@@ -156,7 +187,12 @@ function Share() {
   const [template, setTemplate] = useState<ShareTemplate>('bosque');
   return (
     <ShareCardView
-      content={{ badgeName: 'Guardianes del bosque de niebla', badgeIcon: 'filter_vintage', headline: 'Guardianes del bosque de niebla', message: "El Parche 'Los del bosque de niebla' completó la Ruta del Origen" }}
+      content={{
+        badgeName: 'Guardianes del bosque de niebla',
+        badgeIcon: 'filter_vintage',
+        headline: 'Guardianes del bosque de niebla',
+        message: "El Parche 'Los del bosque de niebla' completó la Ruta del Origen",
+      }}
       template={template}
       onTemplateChange={setTemplate}
       onShare={fn()}

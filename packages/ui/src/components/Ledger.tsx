@@ -33,7 +33,9 @@ export function LedgerRow({ entry, unit }: { entry: LedgerEntryView; unit: strin
           {entry.detail ? `${entry.detail} · ` : ''}
           {entry.dateLabel}
         </p>
-        {k.badge && <span className="inline-block mt-1 px-2 rounded-full border border-warning/40 font-label-sm text-[10px] uppercase text-warning">{k.badge}</span>}
+        {k.badge && (
+          <span className="inline-block mt-1 px-2 rounded-full border border-warning/40 font-label-sm text-[10px] uppercase text-warning">{k.badge}</span>
+        )}
       </div>
       <p className={cx('font-label-lg text-[15px] tabular-nums whitespace-nowrap', entry.amount > 0 ? 'text-secondary' : 'text-on-surface')}>
         {formatSigned(entry.amount)}
@@ -53,7 +55,10 @@ export interface BalanceCardProps {
 
 export function BalanceCard({ balance, unit, expiringNotice, onConditions }: BalanceCardProps) {
   return (
-    <section aria-label="Saldo disponible" className="rounded-2xl border border-primary/45 bg-surface-container p-5 shadow-[0_0_28px_color-mix(in_srgb,var(--color-primary)_14%,transparent)]">
+    <section
+      aria-label="Saldo disponible"
+      className="rounded-2xl border border-primary/45 bg-surface-container p-5 shadow-[0_0_28px_color-mix(in_srgb,var(--color-primary)_14%,transparent)]"
+    >
       <p className="font-label-sm text-label-sm uppercase text-on-surface-variant">Saldo disponible</p>
       <p className="mt-1 flex items-baseline gap-2">
         <span className="font-numeric-xl text-[44px] leading-none text-primary tabular-nums">{formatNumber(balance)}</span>

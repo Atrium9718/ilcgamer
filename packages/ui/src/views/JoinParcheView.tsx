@@ -66,7 +66,8 @@ export function JoinParcheView({
     e.preventDefault();
     if (canSubmit && !submitting) onSubmit();
   };
-  const hint = attemptsLeft !== undefined ? `Te quedan ${attemptsLeft} intentos. El PIN cambia si el Parche se cierra.` : 'El PIN cambia si el Parche se cierra.';
+  const hint =
+    attemptsLeft !== undefined ? `Te quedan ${attemptsLeft} intentos. El PIN cambia si el Parche se cierra.` : 'El PIN cambia si el Parche se cierra.';
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">

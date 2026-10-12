@@ -32,7 +32,11 @@ export function QrScannerFrame({ video, hint = 'Apunta al código QR', onManualE
         <span aria-hidden="true" className={`${corner} bottom-3 right-3 border-b-4 border-r-4 rounded-br-xl`} />
       </div>
       <p className="text-center font-body-md text-body-md text-on-surface-variant">{hint}</p>
-      <button type="button" onClick={onManualEntry} className="mx-auto flex items-center gap-1 min-h-12 px-3 font-label-lg text-label-lg text-primary hover:underline underline-offset-4">
+      <button
+        type="button"
+        onClick={onManualEntry}
+        className="mx-auto flex items-center gap-1 min-h-12 px-3 font-label-lg text-label-lg text-primary hover:underline underline-offset-4"
+      >
         <Icon name="keyboard" className="text-[20px]" />
         Ingresar el código manualmente
       </button>

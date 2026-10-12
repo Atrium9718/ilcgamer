@@ -22,7 +22,10 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
   return (
     <fieldset className="space-y-1.5">
       <legend className={cx('font-label-lg text-label-lg text-on-surface', !showLabel && 'sr-only')}>{label}</legend>
-      <div className="grid gap-1 p-1 rounded-xl bg-surface-container-low border border-outline-variant" style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}>
+      <div
+        className="grid gap-1 p-1 rounded-xl bg-surface-container-low border border-outline-variant"
+        style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}
+      >
         {options.map((o) => {
           const selected = o.value === value;
           return (
@@ -35,7 +38,11 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
               )}
             >
               <input type="radio" name={id} value={o.value} checked={selected} onChange={() => onChange(o.value)} className="sr-only" />
-              {o.icon && <span aria-hidden="true" className="material-symbols-outlined text-[18px]">{o.icon}</span>}
+              {o.icon && (
+                <span aria-hidden="true" className="material-symbols-outlined text-[18px]">
+                  {o.icon}
+                </span>
+              )}
               {o.label}
             </label>
           );

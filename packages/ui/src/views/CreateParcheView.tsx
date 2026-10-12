@@ -62,7 +62,11 @@ export function CreateParcheView({
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
       <form onSubmit={handleSubmit} noValidate className="w-full max-w-md mx-auto flex flex-col min-h-dvh bg-surface-container-lowest">
-        <TopBar title={<span className="font-headline-md text-headline-md text-primary">Tu Parche</span>} onBack={onBack} trailing={brandLabel && <BrandChip label={brandLabel} />} />
+        <TopBar
+          title={<span className="font-headline-md text-headline-md text-primary">Tu Parche</span>}
+          onBack={onBack}
+          trailing={brandLabel && <BrandChip label={brandLabel} />}
+        />
 
         <main className="flex-1 px-4 pt-4 pb-6 space-y-5">
           <div className="flex items-center justify-between">
@@ -94,7 +98,15 @@ export function CreateParcheView({
           />
 
           <div className="space-y-1.5">
-            <TextField label="Tu alias en el Parche" placeholder="Andrés" value={alias} onChange={onAliasChange} maxLength={20} autoComplete="nickname" error={aliasError} />
+            <TextField
+              label="Tu alias en el Parche"
+              placeholder="Andrés"
+              value={alias}
+              onChange={onAliasChange}
+              maxLength={20}
+              autoComplete="nickname"
+              error={aliasError}
+            />
             <p className="flex items-start gap-1.5 font-body-md text-[13px] text-on-surface-variant">
               <Icon name="verified_user" className="text-[18px] text-secondary" />
               Solo verán tu alias. Nunca mostramos tu nombre completo ni tu teléfono.
@@ -125,7 +137,9 @@ export function CreateParcheView({
               <h2 className="font-title-md text-title-md text-on-surface">
                 Energía del Parche: <span className="tabular-nums">{energyMinutes}</span> min
               </h2>
-              <p className="font-body-md text-[13px] text-on-surface-variant">La duración la define la campaña. Al terminar la sesión tu saldo individual se conserva.</p>
+              <p className="font-body-md text-[13px] text-on-surface-variant">
+                La duración la define la campaña. Al terminar la sesión tu saldo individual se conserva.
+              </p>
             </div>
           </section>
         </main>

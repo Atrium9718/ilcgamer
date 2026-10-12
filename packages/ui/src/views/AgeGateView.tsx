@@ -2,7 +2,7 @@ import type { FormEvent } from 'react';
 import bosqueNiebla from '../assets/placeholders/bosque-niebla.jpg';
 import { Button } from '../components/Button.tsx';
 import { Checkbox } from '../components/Checkbox.tsx';
-import { type DateParts, DateOfBirthInput } from '../components/DateOfBirthInput.tsx';
+import { DateOfBirthInput, type DateParts } from '../components/DateOfBirthInput.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { type LegalLink, LegalNotice } from '../components/LegalNotice.tsx';
 import { SealMark } from '../components/SealMark.tsx';
@@ -103,11 +103,19 @@ export function AgeGateView({
             </div>
           </form>
           <div className="mt-4 pt-3 border-t border-outline-variant flex justify-center items-center gap-4">
-            <a href={privacyHref} className="inline-flex items-center min-h-12 font-label-lg text-[13px] text-on-surface-variant hover:text-primary hover:underline underline-offset-4">
+            <a
+              href={privacyHref}
+              className="inline-flex items-center min-h-12 font-label-lg text-[13px] text-on-surface-variant hover:text-primary hover:underline underline-offset-4"
+            >
               Aviso de privacidad
             </a>
-            <span aria-hidden="true" className="text-outline-variant">•</span>
-            <a href={termsHref} className="inline-flex items-center min-h-12 font-label-lg text-[13px] text-on-surface-variant hover:text-primary hover:underline underline-offset-4">
+            <span aria-hidden="true" className="text-outline-variant">
+              •
+            </span>
+            <a
+              href={termsHref}
+              className="inline-flex items-center min-h-12 font-label-lg text-[13px] text-on-surface-variant hover:text-primary hover:underline underline-offset-4"
+            >
               Términos
             </a>
           </div>

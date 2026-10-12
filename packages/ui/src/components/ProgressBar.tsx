@@ -22,7 +22,10 @@ export function ProgressBar({ value, max, label, tone = 'primary', valueText, cl
       aria-valuetext={valueText}
       className={cx('h-2 w-full rounded-full bg-surface-container-highest overflow-hidden', className)}
     >
-      <div className={cx('h-full rounded-full transition-[width] duration-500', tone === 'primary' ? 'bg-primary' : 'bg-secondary')} style={{ width: `${pct}%` }} />
+      <div
+        className={cx('h-full rounded-full transition-[width] duration-500', tone === 'primary' ? 'bg-primary' : 'bg-secondary')}
+        style={{ width: `${pct}%` }}
+      />
     </div>
   );
 }

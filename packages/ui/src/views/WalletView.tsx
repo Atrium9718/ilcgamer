@@ -38,7 +38,18 @@ export interface WalletViewProps {
   onNavigate: (tab: NavTab) => void;
 }
 
-export function WalletView({ balance, currencyName = 'Puntos ILC', expiringNotice, entries, filter, onFilterChange, onConditions, onRewards, onHowToEarn, onNavigate }: WalletViewProps) {
+export function WalletView({
+  balance,
+  currencyName = 'Puntos ILC',
+  expiringNotice,
+  entries,
+  filter,
+  onFilterChange,
+  onConditions,
+  onRewards,
+  onHowToEarn,
+  onNavigate,
+}: WalletViewProps) {
   const shown = entries.filter((e) => MATCH[filter](e.kind));
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
@@ -51,7 +62,12 @@ export function WalletView({ balance, currencyName = 'Puntos ILC', expiringNotic
               { label: 'Canjear recompensas', icon: 'redeem', onClick: onRewards },
               { label: 'Cómo ganar puntos', icon: 'help', onClick: onHowToEarn },
             ].map((a) => (
-              <button key={a.label} type="button" onClick={a.onClick} className="min-h-14 flex items-center gap-2 px-3 rounded-xl border border-outline-variant bg-surface-container text-left font-label-lg text-[14px] text-on-surface hover:border-primary/60">
+              <button
+                key={a.label}
+                type="button"
+                onClick={a.onClick}
+                className="min-h-14 flex items-center gap-2 px-3 rounded-xl border border-outline-variant bg-surface-container text-left font-label-lg text-[14px] text-on-surface hover:border-primary/60"
+              >
                 <Icon name={a.icon} className="text-[22px] text-primary" />
                 {a.label}
               </button>
@@ -61,19 +77,25 @@ export function WalletView({ balance, currencyName = 'Puntos ILC', expiringNotic
             <h2 id="movimientos" className="font-title-md text-title-md text-on-surface">
               Movimientos
             </h2>
-            <div role="group" aria-label="Filtrar movimientos" className="flex gap-2 overflow-x-auto pb-1">
+            <fieldset className="flex gap-2 overflow-x-auto pb-1">
+              <legend className="sr-only">Filtrar movimientos</legend>
               {FILTERS.map((f) => (
                 <button
                   key={f.id}
                   type="button"
                   aria-pressed={filter === f.id}
                   onClick={() => onFilterChange(f.id)}
-                  className={cx('min-h-10 px-3.5 rounded-full border font-label-lg text-[13px] whitespace-nowrap', filter === f.id ? 'bg-secondary-container border-secondary/50 text-on-secondary-container' : 'border-outline-variant text-on-surface-variant')}
+                  className={cx(
+                    'min-h-10 px-3.5 rounded-full border font-label-lg text-[13px] whitespace-nowrap',
+                    filter === f.id
+                      ? 'bg-secondary-container border-secondary/50 text-on-secondary-container'
+                      : 'border-outline-variant text-on-surface-variant',
+                  )}
                 >
                   {f.label}
                 </button>
               ))}
-            </div>
+            </fieldset>
             {shown.length ? (
               <ul className="divide-y divide-outline-variant">
                 {shown.map((e) => (
@@ -83,7 +105,9 @@ export function WalletView({ balance, currencyName = 'Puntos ILC', expiringNotic
             ) : (
               <StatusMessage kind="empty" title="Sin movimientos" body="Cuando actives un código o canjees una recompensa, lo verás aquí." />
             )}
-            <p className="font-body-md text-[12px] text-on-surface-variant">Tu saldo se calcula a partir de movimientos registrados; ningún movimiento se borra.</p>
+            <p className="font-body-md text-[12px] text-on-surface-variant">
+              Tu saldo se calcula a partir de movimientos registrados; ningún movimiento se borra.
+            </p>
           </section>
         </main>
         <BottomNav active="billetera" onNavigate={onNavigate} />

@@ -41,7 +41,18 @@ describe('EnergyMeter', () => {
 describe('JoinParcheView', () => {
   it('bloquea el PIN cuando no quedan intentos', () => {
     render(
-      <JoinParcheView method="pin" onMethodChange={vi.fn()} pin="" onPinChange={vi.fn()} attemptsLeft={0} alias="" onAliasChange={vi.fn()} canSubmit={false} onSubmit={vi.fn()} onBack={vi.fn()} />,
+      <JoinParcheView
+        method="pin"
+        onMethodChange={vi.fn()}
+        pin=""
+        onPinChange={vi.fn()}
+        attemptsLeft={0}
+        alias=""
+        onAliasChange={vi.fn()}
+        canSubmit={false}
+        onSubmit={vi.fn()}
+        onBack={vi.fn()}
+      />,
     );
     expect(screen.getByLabelText('Dígito 1 de 4')).toBeDisabled();
   });

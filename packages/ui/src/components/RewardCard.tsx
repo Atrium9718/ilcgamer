@@ -28,7 +28,10 @@ export function RewardCard({ reward, balance, unit, onSelect }: RewardCardProps)
     <button
       type="button"
       onClick={onSelect}
-      className={cx('flex flex-col rounded-2xl overflow-hidden border text-left active:scale-[0.98] transition-all', locked ? 'border-outline-variant bg-surface-container-low' : 'border-primary/35 bg-surface-container hover:border-primary/70')}
+      className={cx(
+        'flex flex-col rounded-2xl overflow-hidden border text-left active:scale-[0.98] transition-all',
+        locked ? 'border-outline-variant bg-surface-container-low' : 'border-primary/35 bg-surface-container hover:border-primary/70',
+      )}
     >
       <span className="relative aspect-square bg-surface-container-high">
         {reward.imageUrl ? (
@@ -36,7 +39,11 @@ export function RewardCard({ reward, balance, unit, onSelect }: RewardCardProps)
         ) : (
           <Icon name={reward.icon ?? 'redeem'} className="absolute inset-0 m-auto h-fit w-fit text-[40px] text-primary" />
         )}
-        {reward.soldOut && <span className="absolute top-2 left-2 px-2 rounded-full bg-surface-container-highest font-label-sm text-[10px] uppercase text-on-surface">Agotado</span>}
+        {reward.soldOut && (
+          <span className="absolute top-2 left-2 px-2 rounded-full bg-surface-container-highest font-label-sm text-[10px] uppercase text-on-surface">
+            Agotado
+          </span>
+        )}
       </span>
       <span className="p-3 flex flex-col gap-1">
         <span className="font-title-md text-[15px] leading-5 text-on-surface">{reward.name}</span>

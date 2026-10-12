@@ -69,19 +69,25 @@ export function RewardsView({
           }
         />
         <main className="flex-1 px-4 pt-4 pb-6 space-y-4">
-          <div role="group" aria-label="Filtrar recompensas" className="flex gap-2 overflow-x-auto pb-1">
+          <fieldset className="flex gap-2 overflow-x-auto pb-1">
+            <legend className="sr-only">Filtrar recompensas</legend>
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 type="button"
                 aria-pressed={category === c.id}
                 onClick={() => onCategoryChange(c.id)}
-                className={cx('min-h-10 px-3.5 rounded-full border font-label-lg text-[13px] whitespace-nowrap', category === c.id ? 'bg-secondary-container border-secondary/50 text-on-secondary-container' : 'border-outline-variant text-on-surface-variant')}
+                className={cx(
+                  'min-h-10 px-3.5 rounded-full border font-label-lg text-[13px] whitespace-nowrap',
+                  category === c.id
+                    ? 'bg-secondary-container border-secondary/50 text-on-secondary-container'
+                    : 'border-outline-variant text-on-surface-variant',
+                )}
               >
                 {c.label}
               </button>
             ))}
-          </div>
+          </fieldset>
           <div className="grid grid-cols-2 gap-3">
             {rewards.map((r) => (
               <RewardCard key={r.id} reward={r} balance={balance} unit={currencyName} onSelect={() => onSelect(r.id)} />
@@ -91,7 +97,15 @@ export function RewardsView({
         <BottomNav active="billetera" onNavigate={onNavigate} />
       </div>
       {selected && (
-        <RedeemSheet key={selected.id} reward={selected} balance={balance} currencyName={currencyName} redeeming={redeeming} onClose={onCloseDetail} onConfirm={() => onConfirmRedeem(selected.id)} />
+        <RedeemSheet
+          key={selected.id}
+          reward={selected}
+          balance={balance}
+          currencyName={currencyName}
+          redeeming={redeeming}
+          onClose={onCloseDetail}
+          onConfirm={() => onConfirmRedeem(selected.id)}
+        />
       )}
     </div>
   );

@@ -30,7 +30,10 @@ export function SealMark({ size = 'lg', label = 'Industria Licorera de Caldas', 
           lg && 'border border-primary-container/40 bg-gradient-to-b from-surface-container-high to-surface-container-low',
         )}
       >
-        <span aria-hidden="true" className={cx('font-headline text-primary font-bold leading-none', lg ? 'text-2xl tracking-widest' : 'text-[11px] tracking-tighter')}>
+        <span
+          aria-hidden="true"
+          className={cx('font-headline text-primary font-bold leading-none', lg ? 'text-2xl tracking-widest' : 'text-[11px] tracking-tighter')}
+        >
           ILC
         </span>
       </div>

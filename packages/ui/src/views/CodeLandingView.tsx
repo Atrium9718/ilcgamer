@@ -79,7 +79,10 @@ export function CodeLandingView({
         <main className="flex-1 flex flex-col px-4 pt-3 pb-6">
           <section className="relative w-full rounded-2xl overflow-hidden aspect-[4/3] bg-surface-container-high border border-outline-variant shadow-md">
             <img src={heroImageUrl} alt={heroImageAlt} className="w-full h-full object-cover object-center" />
-            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/20 to-transparent" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/20 to-transparent"
+            />
           </section>
 
           <VerificationSeal status={status} productLabel={productLabel} onExplain={onExplainCode} className="mt-4" />

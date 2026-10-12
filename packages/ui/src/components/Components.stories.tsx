@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
 import { BottomNav, type NavTab } from './BottomNav.tsx';
 import { BrandChip } from './BrandChip.tsx';
+import { Button } from './Button.tsx';
+import { LegalNotice } from './LegalNotice.tsx';
 import { PinInput } from './PinInput.tsx';
 import { QrScannerFrame } from './QrScannerFrame.tsx';
+import { RouteCard } from './RouteCard.tsx';
+import { SealMark } from './SealMark.tsx';
 import { Sheet } from './Sheet.tsx';
 import { StatusMessage } from './StatusMessage.tsx';
 import { Toast } from './Toast.tsx';
-import { Button } from './Button.tsx';
-import { LegalNotice } from './LegalNotice.tsx';
-import { RouteCard } from './RouteCard.tsx';
-import { SealMark } from './SealMark.tsx';
 import { VerificationSeal } from './VerificationSeal.tsx';
 
 function Catalogo() {
@@ -42,8 +42,23 @@ function Catalogo() {
       </section>
       <section className="space-y-3">
         <h2 className="font-headline-md text-headline-md text-primary">Rutas</h2>
-        <RouteCard route="A" title="Ruta A · Activa tu código" description="Conoce tu beneficio." badge="+300 Puntos ILC" footerLabel="Ver condiciones" onSelect={fn()} />
-        <RouteCard route="B" title="Ruta B · Explora el origen" description="No requiere compra." badge="Insignias" footerLabel="Relato interactivo" footerIcon="menu_book" onSelect={fn()} />
+        <RouteCard
+          route="A"
+          title="Ruta A · Activa tu código"
+          description="Conoce tu beneficio."
+          badge="+300 Puntos ILC"
+          footerLabel="Ver condiciones"
+          onSelect={fn()}
+        />
+        <RouteCard
+          route="B"
+          title="Ruta B · Explora el origen"
+          description="No requiere compra."
+          badge="Insignias"
+          footerLabel="Relato interactivo"
+          footerIcon="menu_book"
+          onSelect={fn()}
+        />
       </section>
       <section className="space-y-3">
         <h2 className="font-headline-md text-headline-md text-primary">PIN</h2>
@@ -90,12 +105,7 @@ function SheetDemo() {
   return (
     <div className="min-h-dvh bg-surface p-4">
       <Button onClick={() => setOpen(true)}>Abrir hoja</Button>
-      <Sheet
-        open={open}
-        onClose={() => setOpen(false)}
-        title="¿Qué verifica este código?"
-        actions={<Button onClick={() => setOpen(false)}>Entendido</Button>}
-      >
+      <Sheet open={open} onClose={() => setOpen(false)} title="¿Qué verifica este código?" actions={<Button onClick={() => setOpen(false)}>Entendido</Button>}>
         Confirma que el código existe en el sistema de ILC y su estado. Por sí solo no prueba que el envase físico sea auténtico.
       </Sheet>
     </div>

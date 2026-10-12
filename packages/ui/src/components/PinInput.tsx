@@ -65,10 +65,8 @@ export function PinInput({ value, onChange, length = 4, label = 'PIN del Parche'
   const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
 
   return (
-    <div role="group" aria-labelledby={`${id}-label`} className="space-y-2">
-      <p id={`${id}-label`} className="font-label-sm text-label-sm uppercase text-secondary text-center">
-        {label}
-      </p>
+    <fieldset className="space-y-2">
+      <legend className="w-full font-label-sm text-label-sm uppercase text-secondary text-center">{label}</legend>
       <div className="flex justify-center gap-3">
         {digits.map((d, i) => (
           <input
@@ -110,6 +108,6 @@ export function PinInput({ value, onChange, length = 4, label = 'PIN del Parche'
           </p>
         )
       )}
-    </div>
+    </fieldset>
   );
 }

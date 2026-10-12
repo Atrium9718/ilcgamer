@@ -1,8 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV", "VITE_API_URL", "VITE_DEMO_DATA"],
   "tasks": {
-    "build": { "dependsOn": ["^build"], "inputs": ["$TURBO_DEFAULT$", "../../design/**"], "outputs": ["dist/**", "storybook-static/**"] },
-    "test": { "dependsOn": ["^build"] },
+    "build": { "dependsOn": ["^build"], "inputs": ["$TURBO_DEFAULT$", "../../design/**"], "outputs": ["dist/**", "src/generated/**"] },
+    "build:storybook": { "dependsOn": ["^build"], "inputs": ["$TURBO_DEFAULT$", "../../design/**"], "outputs": ["storybook-static/**"] },
+    "test": { "dependsOn": ["^build"], "env": ["TEST_DATABASE_URL", "TEST_REDIS_URL"] },
     "typecheck": { "dependsOn": ["^build"] }
   }
 }

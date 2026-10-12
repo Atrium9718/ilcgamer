@@ -38,10 +38,7 @@ export interface VerificationSealProps {
 export function VerificationSeal({ status, productLabel, onExplain, className }: VerificationSealProps) {
   const s = STYLE[status];
   return (
-    <section
-      aria-live="polite"
-      className={cx('bg-surface-container-low rounded-2xl border p-4 flex items-start gap-3.5', s.text, s.glow, className)}
-    >
+    <section aria-live="polite" className={cx('bg-surface-container-low rounded-2xl border p-4 flex items-start gap-3.5', s.text, s.glow, className)}>
       <div className="shrink-0 mt-0.5 w-11 h-11 rounded-full border border-outline-variant flex items-center justify-center">
         <div className={cx('w-8 h-8 rounded-full border-2 flex items-center justify-center', s.ring)}>
           <Icon name={s.icon} filled className="text-[20px]" />

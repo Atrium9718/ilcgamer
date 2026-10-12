@@ -25,8 +25,5 @@ if (failures.length) {
 
 mkdirSync(distDir, { recursive: true });
 writeFileSync(resolve(distDir, 'theme.css'), emitThemeCss(tokens, themes));
-writeFileSync(
-  resolve(distDir, 'tokens.json'),
-  `${JSON.stringify({ ...tokens, themes, fontsHref: googleFontsHref(tokens) }, null, 2)}\n`,
-);
+writeFileSync(resolve(distDir, 'tokens.json'), `${JSON.stringify({ ...tokens, themes, fontsHref: googleFontsHref(tokens) }, null, 2)}\n`);
 console.log(`✓ ${tokens.name} v${tokens.version} → dist/theme.css, dist/tokens.json`);

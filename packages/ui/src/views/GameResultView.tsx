@@ -42,7 +42,12 @@ export function GameResultView({ gameTitle, state, currencyName = 'Puntos ILC', 
         <TopBar
           title={gameTitle}
           trailing={
-            <button type="button" aria-label="Cerrar" onClick={onClose} className="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container">
+            <button
+              type="button"
+              aria-label="Cerrar"
+              onClick={onClose}
+              className="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container"
+            >
               <Icon name="close" className="text-[22px]" />
             </button>
           }
@@ -73,7 +78,13 @@ export function GameResultView({ gameTitle, state, currencyName = 'Puntos ILC', 
                 <p className="font-body-lg text-body-lg text-on-surface-variant">{state.result.summary}</p>
               </div>
               <div className="flex gap-3">
-                <ScoreCard kind="challenge" title="Marcador del reto" value={state.result.xpEarned} unit="XP" detail={state.result.badgeName ? `Insignia: ${state.result.badgeName}` : undefined} />
+                <ScoreCard
+                  kind="challenge"
+                  title="Marcador del reto"
+                  value={state.result.xpEarned}
+                  unit="XP"
+                  detail={state.result.badgeName ? `Insignia: ${state.result.badgeName}` : undefined}
+                />
                 <ScoreCard kind="commercial" title={currencyName} value={state.result.pointsEarned} unit={currencyName} detail={state.result.pointsNote} />
               </div>
               <section className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant">

@@ -26,6 +26,7 @@ export function Sheet({ open, onClose, title, children, actions }: SheetProps) {
   }, [open]);
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: el clic en el fondo es atajo de puntero; Escape lo gestiona <dialog> (onCancel).
     <dialog
       ref={ref}
       aria-labelledby={titleId}
@@ -45,7 +46,12 @@ export function Sheet({ open, onClose, title, children, actions }: SheetProps) {
           <h2 id={titleId} className="font-headline-md text-headline-md text-on-surface">
             {title}
           </h2>
-          <button type="button" aria-label="Cerrar" onClick={onClose} className="w-12 h-12 -mr-2 -mt-2 shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container">
+          <button
+            type="button"
+            aria-label="Cerrar"
+            onClick={onClose}
+            className="w-12 h-12 -mr-2 -mt-2 shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container"
+          >
             <Icon name="close" className="text-[22px]" />
           </button>
         </div>

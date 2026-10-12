@@ -1,0 +1,796 @@
+// Modelo de datos inicial — Plataforma phygital ILC.
+// Fuente: Guía Técnica §6 (entidades) y §6.1 (reglas de integridad); Instrucciones §3, §4, §6, §8, §10.
+// Los enums deben coincidir con @ilc/contracts (lo verifica test/domain-enums.spec.ts).
+// Reglas que Prisma no expresa (CHECK, índices parciales, inmutabilidad del ledger) están en la
+// migración SQL "integridad" junto a este esquema.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ───────────────────────────── Enums ─────────────────────────────
+
+enum Route {
+  A_COMERCIAL
+  B_EXPERIENCIAL
+  MIXTA
+}
+
+enum CampaignStatus {
+  BORRADOR
+  EN_REVISION
+  APROBADA
+  PROGRAMADA
+  ACTIVA
+  PAUSADA
+  CERRADA
+  ARCHIVADA
+}
+
+enum Channel {
+  ON_PREMISE
+  OFF_PREMISE
+  EVENTO
+  DIGITAL
+}
+
+enum ProductCodeStatus {
+  GENERADO
+  ASIGNADO_A_LOTE
+  DISTRIBUIDO
+  ALERTA_DE_ANOMALIA
+  REVOCADO
+}
+
+enum ProductCodeEventType {
+  CONSULTA
+  DISTRIBUCION
+  ANOMALIA
+  REVOCACION
+}
+
+enum CampaignCodeStatus {
+  CREADO
+  DISPONIBLE
+  RECLAMADO
+  EXPIRADO
+  ANULADO
+}
+
+enum SessionStatus {
+  CREADA
+  ABIERTA
+  EN_CURSO
+  FINALIZADA
+  EXPIRADA
+  CANCELADA
+}
+
+enum SessionMode {
+  MULTI_DISPOSITIVO
+  UN_DISPOSITIVO
+}
+
+enum ParticipantStatus {
+  CONECTADO
+  RECONECTANDO
+  SALIO
+}
+
+enum LedgerEntryType {
+  CREDITO
+  DEBITO
+  REVERSO
+  AJUSTE
+}
+
+enum LedgerOwnerType {
+  USUARIO
+  SESION
+}
+
+enum RewardClaimStatus {
+  RESERVADO
+  RECLAMADO
+  ENTREGADO
+  EXPIRADO
+  ANULADO
+}
+
+enum RewardType {
+  DIGITAL
+  MERCHANDISING
+  EXPERIENCIA
+  CONTENIDO
+}
+
+enum ConsentPurpose {
+  TERMINOS_Y_PRIVACIDAD
+  MARKETING
+  UBICACION
+}
+
+enum AccountStatus {
+  TEMPORAL
+  ACTIVA
+  SUSPENDIDA
+  ELIMINADA
+}
+
+enum Role {
+  JUGADOR
+  STAFF
+  DEALER
+  ADMIN_MARCA
+  REVISOR_MARCA
+  REVISOR_JURIDICO
+  RESPONSABLE_PRIVACIDAD
+  EDITOR_CONTENIDO
+  SUPERADMIN
+}
+
+enum ApprovalKind {
+  MARCA
+  JURIDICA
+  PRIVACIDAD
+  TI
+}
+
+enum ApprovalDecision {
+  APROBADO
+  RECHAZADO
+}
+
+enum ModuleStatus {
+  BORRADOR
+  EN_PRUEBA
+  APROBADO
+  ACTIVO
+  DESACTIVADO
+}
+
+enum MissionStatus {
+  INICIADA
+  COMPLETADA_PENDIENTE
+  VERIFICADA
+  RECHAZADA
+  ABANDONADA
+}
+
+enum Severity {
+  BAJA
+  MEDIA
+  ALTA
+  CRITICA
+}
+
+// ─────────────────────── Identidad y consentimiento ───────────────────────
+
+/// Perfil mínimo. La PII vive en UserPii para separarla de la analítica (§6, §6.1).
+model User {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  alias          String        @db.VarChar(20)
+  status         AccountStatus @default(TEMPORAL)
+  /// Se guarda el resultado del control de edad, no la fecha de nacimiento (§5.2).
+  ageVerifiedAt  DateTime?
+  ageGateMethod  String?       @db.VarChar(40)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+
+  pii            UserPii?
+  credentials    IdentityCredential[]
+  consents       ConsentRecord[]
+  roles          UserRole[]
+  ledgerAccount  LedgerAccount?
+  xpEntries      XpEntry[]
+  badges         BadgeAward[]
+  missions       MissionProgress[]
+  participations SessionParticipant[]
+  hostedSessions Session[]             @relation("SessionHost")
+  rewardClaims   RewardClaim[]
+  claims         Claim[]
+  staffAccount   StaffAccount?
+  referralCode   ReferralCode?
+  referredBy     ReferralAttribution?  @relation("Referred")
+  referrals      ReferralAttribution[] @relation("Referrer")
+
+  @@map("users")
+}
+
+/// Datos personales con acceso restringido. Candidatos a cifrado a nivel de columna.
+model UserPii {
+  userId    String   @id @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName  String?
+  email     String?  @unique
+  phone     String?  @unique
+  city      String?
+  updatedAt DateTime @updatedAt
+
+  @@map("user_pii")
+}
+
+/// Proveedor externo (Google, Apple, OTP). Nunca se guardan contraseñas de terceros.
+model IdentityCredential {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  userId     String   @db.Uuid
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider   String   @db.VarChar(20)
+  subject    String
+  verifiedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@unique([provider, subject])
+  @@index([userId])
+  @@map("identity_credentials")
+}
+
+/// Registro append-only: un cambio de consentimiento crea una fila nueva (§5.2, §9.3).
+model ConsentRecord {
+  id            String         @id @default(uuid(7)) @db.Uuid
+  userId        String         @db.Uuid
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose       ConsentPurpose
+  granted       Boolean
+  noticeVersion String         @db.VarChar(20)
+  source        String         @db.VarChar(40)
+  createdAt     DateTime       @default(now())
+
+  @@index([userId, purpose, createdAt])
+  @@map("consent_records")
+}
+
+model UserRole {
+  userId  String  @db.Uuid
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    Role
+  /// Ámbito opcional (p. ej. venueId para STAFF/DEALER, brandId para ADMIN_MARCA).
+  scopeId String  @default("") @db.VarChar(64)
+
+  @@id([userId, role, scopeId])
+  @@map("user_roles")
+}
+
+// ─────────────────────── Marcas, productos y comercios ───────────────────────
+
+model Brand {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  slug      String    @unique @db.VarChar(60)
+  name      String
+  /// Id de tema en design/themes.yaml (p. ej. "ron-viejo-de-caldas").
+  themeId   String    @db.VarChar(60)
+  products  Product[]
+  createdAt DateTime  @default(now())
+
+  @@map("brands")
+}
+
+model Product {
+  id        String  @id @default(uuid(7)) @db.Uuid
+  sku       String  @unique @db.VarChar(40)
+  name      String
+  brandId   String  @db.Uuid
+  brand     Brand   @relation(fields: [brandId], references: [id])
+  active    Boolean @default(true)
+  batches   Batch[]
+  codes     ProductCode[]
+
+  @@map("products")
+}
+
+/// Lote de producción (Instrucciones §4.2: "Lote #4092"; §10 importación por lotes).
+model Batch {
+  id        String        @id @default(uuid(7)) @db.Uuid
+  productId String        @db.Uuid
+  product   Product       @relation(fields: [productId], references: [id])
+  label     String        @db.VarChar(40)
+  revokedAt DateTime?
+  createdAt DateTime      @default(now())
+  codes     ProductCode[]
+
+  @@unique([productId, label])
+  @@map("batches")
+}
+
+model Venue {
+  id        String         @id @default(uuid(7)) @db.Uuid
+  name      String
+  channel   Channel
+  city      String
+  department String
+  approvedAt DateTime?
+  createdAt DateTime       @default(now())
+  staff     StaffAccount[]
+  campaigns VenueCampaign[]
+  sessions  Session[]
+
+  @@map("venues")
+}
+
+model StaffAccount {
+  userId    String   @id @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  venueId   String   @db.Uuid
+  venue     Venue    @relation(fields: [venueId], references: [id])
+  /// Código/QR individual del staff (Instrucciones §3.3).
+  staffCode String   @unique @db.VarChar(24)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([venueId])
+  @@map("staff_accounts")
+}
+
+model VenueCampaign {
+  venueId    String   @db.Uuid
+  venue      Venue    @relation(fields: [venueId], references: [id])
+  campaignId String   @db.Uuid
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+
+  @@id([venueId, campaignId])
+  @@map("venue_campaigns")
+}
+
+// ─────────────────────── Campañas, CMS y aprobaciones ───────────────────────
+
+model Campaign {
+  id               String            @id @default(uuid(7)) @db.Uuid
+  slug             String            @unique @db.VarChar(80)
+  internalName     String
+  route            Route
+  status           CampaignStatus    @default(BORRADOR)
+  /// Versión publicada vigente; las reclamaciones guardan la versión aplicada.
+  activeVersionId  String?           @unique @db.Uuid
+  activeVersion    CampaignVersion?  @relation("ActiveVersion", fields: [activeVersionId], references: [id])
+  versions         CampaignVersion[] @relation("Versions")
+  venues           VenueCampaign[]
+  codes            CampaignCode[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@map("campaigns")
+}
+
+/// Versión inmutable de reglas de campaña (§5.3, §5.11). `rules` contiene puntos por SKU, multiplicadores,
+/// duración de energía, límites, vigencias, etc. — nunca constantes en código (Guía Técnica §18).
+model CampaignVersion {
+  id          String           @id @default(uuid(7)) @db.Uuid
+  campaignId  String           @db.Uuid
+  campaign    Campaign         @relation("Versions", fields: [campaignId], references: [id])
+  activeFor   Campaign?        @relation("ActiveVersion")
+  version     Int
+  objective   String
+  channels    Channel[]
+  territories String[]
+  minAge      Int              @default(18)
+  startsAt    DateTime
+  endsAt      DateTime
+  rules       Json
+  themeId     String?          @db.VarChar(60)
+  createdById String?          @db.Uuid
+  createdAt   DateTime         @default(now())
+  approvals   ApprovalRecord[]
+  claims      Claim[]
+  missions    MissionProgress[]
+
+  @@unique([campaignId, version])
+  @@map("campaign_versions")
+}
+
+/// Aprobación ligada a la versión exacta revisada (§5.11). Un cambio crea nueva versión y nueva aprobación.
+model ApprovalRecord {
+  id                String           @id @default(uuid(7)) @db.Uuid
+  campaignVersionId String?          @db.Uuid
+  campaignVersion   CampaignVersion? @relation(fields: [campaignVersionId], references: [id])
+  moduleVersionId   String?          @db.Uuid
+  moduleVersion     ModuleVersion?   @relation(fields: [moduleVersionId], references: [id])
+  kind              ApprovalKind
+  decision          ApprovalDecision
+  approverId        String           @db.Uuid
+  note              String?
+  createdAt         DateTime         @default(now())
+
+  @@index([campaignVersionId])
+  @@index([moduleVersionId])
+  @@map("approval_records")
+}
+
+// ─────────────────────── Juegos y misiones ───────────────────────
+
+model Module {
+  id        String          @id @default(uuid(7)) @db.Uuid
+  slug      String          @unique @db.VarChar(60)
+  provider  String          @db.VarChar(60)
+  route     Route
+  versions  ModuleVersion[]
+  createdAt DateTime        @default(now())
+
+  @@map("modules")
+}
+
+/// Manifiesto validado por esquema (Guía Técnica §5.4: contrato mínimo de un juego).
+model ModuleVersion {
+  id        String           @id @default(uuid(7)) @db.Uuid
+  moduleId  String           @db.Uuid
+  module    Module           @relation(fields: [moduleId], references: [id])
+  version   String           @db.VarChar(20)
+  status    ModuleStatus     @default(BORRADOR)
+  manifest  Json
+  packageDigest String?      @db.VarChar(128)
+  createdAt DateTime         @default(now())
+  approvals ApprovalRecord[]
+  missions  MissionProgress[]
+
+  @@unique([moduleId, version])
+  @@map("module_versions")
+}
+
+model MissionProgress {
+  id                String          @id @default(uuid(7)) @db.Uuid
+  userId            String?         @db.Uuid
+  user              User?           @relation(fields: [userId], references: [id])
+  sessionId         String?         @db.Uuid
+  session           Session?        @relation(fields: [sessionId], references: [id])
+  moduleVersionId   String          @db.Uuid
+  moduleVersion     ModuleVersion   @relation(fields: [moduleVersionId], references: [id])
+  campaignVersionId String?         @db.Uuid
+  campaignVersion   CampaignVersion? @relation(fields: [campaignVersionId], references: [id])
+  status            MissionStatus   @default(INICIADA)
+  attempts          Int             @default(1)
+  /// Resultado confirmado por servidor; el cliente nunca se autoasigna recompensa (§5.4).
+  result            Json?
+  verifiedAt        DateTime?
+  idempotencyKey    String          @unique @db.VarChar(80)
+  startedAt         DateTime        @default(now())
+  completedAt       DateTime?
+
+  @@index([userId])
+  @@index([sessionId])
+  @@map("mission_progress")
+}
+
+model Badge {
+  id        String       @id @default(uuid(7)) @db.Uuid
+  slug      String       @unique @db.VarChar(60)
+  name      String
+  icon      String       @db.VarChar(40)
+  awards    BadgeAward[]
+
+  @@map("badges")
+}
+
+model BadgeAward {
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String   @db.Uuid
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+  missionId String?  @db.Uuid
+  awardedAt DateTime @default(now())
+
+  @@id([userId, badgeId])
+  @@map("badge_awards")
+}
+
+/// XP de Ruta B: economía separada de Puntos ILC (§5.7).
+model XpEntry {
+  id             String   @id @default(uuid(7)) @db.Uuid
+  userId         String   @db.Uuid
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount         Int
+  source         String   @db.VarChar(60)
+  missionId      String?  @db.Uuid
+  idempotencyKey String   @unique @db.VarChar(80)
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("xp_entries")
+}
+
+// ─────────────────────── El Parche ───────────────────────
+
+model Session {
+  id           String          @id @default(uuid(7)) @db.Uuid
+  name         String          @db.VarChar(24)
+  route        Route
+  mode         SessionMode     @default(MULTI_DISPOSITIVO)
+  status       SessionStatus   @default(CREADA)
+  hostId       String          @db.Uuid
+  host         User            @relation("SessionHost", fields: [hostId], references: [id])
+  campaignVersionId String?    @db.Uuid
+  venueId      String?         @db.Uuid
+  venue        Venue?          @relation(fields: [venueId], references: [id])
+  /// HMAC del PIN con secreto del servidor: permite buscar sin guardar el PIN en claro.
+  /// Único entre sesiones activas (índice parcial en la migración "integridad").
+  pinLookup    String          @db.VarChar(128)
+  pinFailedAttempts Int        @default(0)
+  capacity     Int             @default(12)
+  energyEndsAt DateTime?
+  expiresAt    DateTime
+  closedAt     DateTime?
+  /// Versión de estado para sincronización en tiempo real (§8).
+  stateVersion Int             @default(0)
+  createdAt    DateTime        @default(now())
+  participants SessionParticipant[]
+  missions     MissionProgress[]
+  ledger       LedgerAccount?
+
+  @@index([status, expiresAt])
+  @@map("sessions")
+}
+
+model SessionParticipant {
+  sessionId String            @db.Uuid
+  session   Session           @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId    String            @db.Uuid
+  user      User              @relation(fields: [userId], references: [id])
+  /// Solo alias en pantallas compartidas (§5.5).
+  alias     String            @db.VarChar(20)
+  status    ParticipantStatus @default(CONECTADO)
+  joinedAt  DateTime          @default(now())
+  leftAt    DateTime?
+
+  @@id([sessionId, userId])
+  @@map("session_participants")
+}
+
+// ─────────────────────── Smart Tags y claims ───────────────────────
+
+/// Código de CONSULTA de producto (§5.6). Consultar no consume ningún derecho promocional.
+model ProductCode {
+  id         String            @id @default(uuid(7)) @db.Uuid
+  /// SHA-256 del token; el token en claro no se guarda (§9.2: logs y exportes redactados).
+  tokenHash  String            @unique @db.VarChar(64)
+  /// Últimos caracteres para soporte/exportes.
+  tokenHint  String            @db.VarChar(8)
+  productId  String            @db.Uuid
+  product    Product           @relation(fields: [productId], references: [id])
+  batchId    String?           @db.Uuid
+  batch      Batch?            @relation(fields: [batchId], references: [id])
+  supplier   String?           @db.VarChar(60)
+  status     ProductCodeStatus @default(GENERADO)
+  importId   String?           @db.Uuid
+  createdAt  DateTime          @default(now())
+  events     ProductCodeEvent[]
+
+  @@index([productId])
+  @@map("product_codes")
+}
+
+/// Eventos acumulativos de consulta/anomalía con metadata mínima.
+model ProductCodeEvent {
+  id            String               @id @default(uuid(7)) @db.Uuid
+  productCodeId String               @db.Uuid
+  productCode   ProductCode          @relation(fields: [productCodeId], references: [id])
+  type          ProductCodeEventType
+  /// Contexto aproximado (canal, ciudad); sin GPS preciso por defecto (§9.3).
+  context       Json?
+  createdAt     DateTime             @default(now())
+
+  @@index([productCodeId, createdAt])
+  @@map("product_code_events")
+}
+
+/// Código de CAMPAÑA / claim (dominio separado de ProductCode — §5.6).
+model CampaignCode {
+  id         String             @id @default(uuid(7)) @db.Uuid
+  codeHash   String             @unique @db.VarChar(64)
+  codeHint   String             @db.VarChar(8)
+  campaignId String             @db.Uuid
+  campaign   Campaign           @relation(fields: [campaignId], references: [id])
+  /// Vínculo opcional con el código de producto de la misma botella.
+  productCodeId String?         @unique @db.Uuid
+  status     CampaignCodeStatus @default(CREADO)
+  singleUse  Boolean            @default(true)
+  expiresAt  DateTime?
+  createdAt  DateTime           @default(now())
+  claims     Claim[]
+
+  @@index([campaignId, status])
+  @@map("campaign_codes")
+}
+
+/// Reclamación atómica e idempotente (§5.6, §6.1). Un código de uso único solo admite un claim
+/// confirmado (índice parcial en la migración "integridad").
+model Claim {
+  id                String          @id @default(uuid(7)) @db.Uuid
+  campaignCodeId    String          @db.Uuid
+  campaignCode      CampaignCode    @relation(fields: [campaignCodeId], references: [id])
+  campaignVersionId String          @db.Uuid
+  campaignVersion   CampaignVersion @relation(fields: [campaignVersionId], references: [id])
+  userId            String          @db.Uuid
+  user              User            @relation(fields: [userId], references: [id])
+  sessionId         String?         @db.Uuid
+  /// Staff que vinculó la activación, si aplica (Instrucciones §3.3).
+  staffUserId       String?         @db.Uuid
+  confirmed         Boolean         @default(true)
+  idempotencyKey    String          @unique @db.VarChar(80)
+  createdAt         DateTime        @default(now())
+
+  @@index([userId])
+  @@map("claims")
+}
+
+// ─────────────────────── Economía (ledger) ───────────────────────
+
+/// Cuenta de Puntos ILC de un usuario o de un Parche (§5.7).
+model LedgerAccount {
+  id        String          @id @default(uuid(7)) @db.Uuid
+  ownerType LedgerOwnerType
+  userId    String?         @unique @db.Uuid
+  user      User?           @relation(fields: [userId], references: [id])
+  sessionId String?         @unique @db.Uuid
+  session   Session?        @relation(fields: [sessionId], references: [id])
+  /// Caché del saldo, actualizado en la MISMA transacción que cada movimiento; CHECK >= 0.
+  /// La fuente de verdad es la suma de ledger_entries (conciliación periódica).
+  balance   Int             @default(0)
+  createdAt DateTime        @default(now())
+  entries   LedgerEntry[]
+
+  @@map("ledger_accounts")
+}
+
+/// Movimiento inmutable: la migración "integridad" bloquea UPDATE y DELETE a nivel de base de datos.
+model LedgerEntry {
+  id              String          @id @default(uuid(7)) @db.Uuid
+  accountId       String          @db.Uuid
+  account         LedgerAccount   @relation(fields: [accountId], references: [id])
+  type            LedgerEntryType
+  /// Con signo: positivo crédito, negativo débito.
+  amount          Int
+  campaignVersionId String?       @db.Uuid
+  ruleId          String?         @db.VarChar(80)
+  sourceType      String          @db.VarChar(40)
+  sourceId        String?         @db.VarChar(80)
+  /// Movimiento original para reversos/ajustes.
+  originalEntryId String?         @db.Uuid
+  originalEntry   LedgerEntry?    @relation("Compensation", fields: [originalEntryId], references: [id])
+  compensations   LedgerEntry[]   @relation("Compensation")
+  reason          String?
+  actorId         String?         @db.Uuid
+  idempotencyKey  String          @db.VarChar(80)
+  expiresAt       DateTime?
+  createdAt       DateTime        @default(now())
+
+  @@unique([accountId, idempotencyKey])
+  @@index([accountId, createdAt])
+  @@map("ledger_entries")
+}
+
+// ─────────────────────── Recompensas ───────────────────────
+
+model Reward {
+  id          String            @id @default(uuid(7)) @db.Uuid
+  slug        String            @unique @db.VarChar(60)
+  name        String
+  type        RewardType
+  cost        Int
+  conditions  String[]
+  maxPerUser  Int               @default(1)
+  startsAt    DateTime
+  endsAt      DateTime
+  active      Boolean           @default(false)
+  inventory   RewardInventory[]
+  claims      RewardClaim[]
+  createdAt   DateTime          @default(now())
+
+  @@map("rewards")
+}
+
+/// Stock por zona; CHECK available >= 0 en la migración "integridad".
+model RewardInventory {
+  rewardId      String @db.Uuid
+  reward        Reward @relation(fields: [rewardId], references: [id])
+  zone          String @db.VarChar(60)
+  available     Int
+  lowStockAlert Int    @default(5)
+
+  @@id([rewardId, zone])
+  @@map("reward_inventory")
+}
+
+model RewardClaim {
+  id             String            @id @default(uuid(7)) @db.Uuid
+  rewardId       String            @db.Uuid
+  reward         Reward            @relation(fields: [rewardId], references: [id])
+  userId         String            @db.Uuid
+  user           User              @relation(fields: [userId], references: [id])
+  zone           String            @db.VarChar(60)
+  status         RewardClaimStatus @default(RESERVADO)
+  ledgerEntryId  String?           @unique @db.Uuid
+  idempotencyKey String            @unique @db.VarChar(80)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([userId])
+  @@map("reward_claims")
+}
+
+// ─────────────────────── Referidos ───────────────────────
+
+model ReferralCode {
+  userId    String   @id @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String   @unique @db.VarChar(12)
+  createdAt DateTime @default(now())
+
+  @@map("referral_codes")
+}
+
+model ReferralAttribution {
+  referredId String    @id @db.Uuid
+  referred   User      @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
+  referrerId String    @db.Uuid
+  referrer   User      @relation("Referrer", fields: [referrerId], references: [id])
+  rewardedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([referrerId, createdAt])
+  @@map("referral_attributions")
+}
+
+// ─────────────────────── Plataforma, auditoría y analítica ───────────────────────
+
+/// Configuración editable por administradores (nombre de la moneda, plantilla de URL del Smart Tag,
+/// geofencing on/off — Instrucciones §4.1, §4.2, §6).
+model PlatformSetting {
+  key         String   @id @db.VarChar(80)
+  value       Json
+  updatedById String?  @db.Uuid
+  updatedAt   DateTime @updatedAt
+
+  @@map("platform_settings")
+}
+
+model AuditEvent {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  actorId    String?  @db.Uuid
+  action     String   @db.VarChar(80)
+  resource   String   @db.VarChar(80)
+  resourceId String?  @db.VarChar(80)
+  outcome    String   @db.VarChar(20)
+  reason     String?
+  requestId  String?  @db.VarChar(64)
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([resource, resourceId])
+  @@index([actorId, createdAt])
+  @@map("audit_events")
+}
+
+model SecurityEvent {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  type       String    @db.VarChar(80)
+  severity   Severity
+  subjectId  String?   @db.VarChar(80)
+  metadata   Json?
+  resolvedAt DateTime?
+  resolution String?
+  createdAt  DateTime  @default(now())
+
+  @@index([type, createdAt])
+  @@map("security_events")
+}
+
+/// Evento analítico versionado con propiedades mínimas (§10.1). Sin PII.
+model AnalyticsEvent {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  name          String   @db.VarChar(60)
+  schemaVersion Int
+  campaignId    String?  @db.Uuid
+  moduleId      String?  @db.Uuid
+  channel       Channel?
+  properties    Json?
+  occurredAt    DateTime
+  receivedAt    DateTime @default(now())
+
+  @@index([name, occurredAt])
+  @@map("analytics_events")
+}

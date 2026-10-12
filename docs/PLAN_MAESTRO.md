@@ -179,8 +179,14 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - Exportar y traducir a `views/` puras con estados en Storybook.
 - **Entregable:** prototipo navegable de la PWA (datos simulados) — equivale a la Fase 1 de la Guía Técnica.
 
-### Paso 3 — Esqueleto técnico
-- Monorepo, CI (lint, typecheck, test, build), docker-compose (Postgres + Redis), NestJS base, Prisma, OpenAPI, entornos dev/staging/prod, gestión de secretos.
+### Paso 3 — Esqueleto técnico ✅
+- [x] `@ilc/contracts`: estados de dominio, códigos de error estables, cabeceras (Idempotency-Key, X-Request-Id), OpenAPI desde zod.
+- [x] `apps/api`: NestJS 12 + Fastify, configuración validada (falla temprano), Helmet/CSP, CORS por lista, rate limit, request-id, logs redactados, errores ApiError, guarda de idempotencia, `/api/v1/health`, OpenAPI + Swagger (no prod).
+- [x] Modelo de datos completo §6 en Prisma 7 + migración de **integridad en BD**: ledger inmutable (triggers), signo por tipo, reversos con referencia y motivo, saldo y stock ≥ 0, claim único por código (concurrencia), PIN único entre sesiones activas, consentimientos append-only, edad mínima ≥ 18.
+- [x] `apps/pwa`: React Router, entradas QR diferenciadas (/v, /c, /p, /e, /r), guarda de edad, 13 contenedores sobre las vistas de Stitch, cliente API con idempotencia/timeout/errores tipados, manifest + service worker (API nunca desde caché), modo demostración visible.
+- [x] Biome, docker-compose, CI en GitHub Actions (lint, build, migraciones, tipos, pruebas con Postgres/Redis, Storybook, axe), `docs/ENTORNOS.md`.
+- [ ] Pendiente de TI: proveedor de nube, dominio oficial, gestor de secretos y pipeline de despliegue (staging/producción).
+- [ ] Mejora: dividir el bundle de la PWA por rutas (148 KB gzip hoy).
 
 ### Paso 4 — Identidad, edad y consentimientos
 - Alias temporal, Google/Apple/OTP (proveedor por definir), age gate configurable por campaña, ConsentRecord, flujos de derechos.

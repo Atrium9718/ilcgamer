@@ -1,6 +1,5 @@
 import bosqueNiebla from '../assets/placeholders/bosque-niebla.jpg';
 import { BadgeSeal } from '../components/BadgeSeal.tsx';
-import { Button } from '../components/Button.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { LEGAL_COPY } from '../components/LegalNotice.tsx';
 import { SealMark } from '../components/SealMark.tsx';
@@ -34,7 +33,7 @@ const TARGETS: ReadonlyArray<{ id: ShareTarget; label: string; icon: string }> =
 
 /** Tarjeta 9:16 (objetivo 1080×1920 al exportar). El servidor genera la imagen final con el mismo contenido. */
 export function ShareCard({ content, template, backgroundUrl = bosqueNiebla }: { content: ShareCardContent; template: ShareTemplate; backgroundUrl?: string }) {
-  const t = TEMPLATES.find((x) => x.id === template) ?? TEMPLATES[0]!;
+  const t = TEMPLATES.find((x) => x.id === template) ?? { overlay: 'from-surface/30 via-surface/70 to-surface' };
   return (
     <div className="relative aspect-[9/16] w-full rounded-2xl overflow-hidden border border-outline-variant shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
       <img src={backgroundUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
@@ -74,7 +73,12 @@ export function ShareCardView({ content, template, onTemplateChange, onShare, on
         <TopBar
           title="Compartir logro"
           trailing={
-            <button type="button" aria-label="Cerrar" onClick={onClose} className="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container">
+            <button
+              type="button"
+              aria-label="Cerrar"
+              onClick={onClose}
+              className="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container"
+            >
               <Icon name="close" className="text-[22px]" />
             </button>
           }
@@ -87,8 +91,23 @@ export function ShareCardView({ content, template, onTemplateChange, onShare, on
             <legend className="font-label-lg text-label-lg text-on-surface mb-2">Diseño de la tarjeta</legend>
             <div className="flex justify-center gap-2">
               {TEMPLATES.map((t) => (
-                <label key={t.id} className={cx('min-h-12 px-4 flex items-center rounded-full border cursor-pointer font-label-lg text-[13px] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary', template === t.id ? 'bg-secondary-container border-secondary/50 text-on-secondary-container' : 'border-outline-variant text-on-surface-variant')}>
-                  <input type="radio" name="share-template" value={t.id} checked={template === t.id} onChange={() => onTemplateChange(t.id)} className="sr-only" />
+                <label
+                  key={t.id}
+                  className={cx(
+                    'min-h-12 px-4 flex items-center rounded-full border cursor-pointer font-label-lg text-[13px] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary',
+                    template === t.id
+                      ? 'bg-secondary-container border-secondary/50 text-on-secondary-container'
+                      : 'border-outline-variant text-on-surface-variant',
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="share-template"
+                    value={t.id}
+                    checked={template === t.id}
+                    onChange={() => onTemplateChange(t.id)}
+                    className="sr-only"
+                  />
                   {t.label}
                 </label>
               ))}
@@ -96,7 +115,12 @@ export function ShareCardView({ content, template, onTemplateChange, onShare, on
           </fieldset>
           <div className="grid grid-cols-4 gap-2">
             {TARGETS.map((t) => (
-              <button key={t.id} type="button" onClick={() => onShare(t.id)} className="min-h-18 flex flex-col items-center justify-center gap-1 rounded-xl border border-outline-variant bg-surface-container font-label-sm text-[11px] text-on-surface hover:border-primary/60">
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => onShare(t.id)}
+                className="min-h-18 flex flex-col items-center justify-center gap-1 rounded-xl border border-outline-variant bg-surface-container font-label-sm text-[11px] text-on-surface hover:border-primary/60"
+              >
                 <Icon name={t.icon} className="text-[24px] text-primary" />
                 {t.label}
               </button>

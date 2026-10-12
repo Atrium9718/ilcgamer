@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { CODE_STATUS_COPY, type CodeStatus } from '../components/VerificationSeal.tsx';
 import { LEGAL_COPY } from '../components/LegalNotice.tsx';
+import { CODE_STATUS_COPY, type CodeStatus } from '../components/VerificationSeal.tsx';
 import { AgeGateView } from './AgeGateView.tsx';
 import { CodeLandingView } from './CodeLandingView.tsx';
 

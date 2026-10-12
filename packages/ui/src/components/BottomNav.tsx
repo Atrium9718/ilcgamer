@@ -18,7 +18,10 @@ export interface BottomNavProps {
 /** Navegación inferior de la PWA (DESIGN.md: Inicio · Jugar · Mi billetera · Perfil). */
 export function BottomNav({ active, onNavigate }: BottomNavProps) {
   return (
-    <nav aria-label="Principal" className="sticky bottom-0 z-40 bg-surface-container-low/95 backdrop-blur-md border-t border-outline-variant pb-[env(safe-area-inset-bottom)]">
+    <nav
+      aria-label="Principal"
+      className="sticky bottom-0 z-40 bg-surface-container-low/95 backdrop-blur-md border-t border-outline-variant pb-[env(safe-area-inset-bottom)]"
+    >
       <ul className="grid grid-cols-4">
         {TABS.map((t) => {
           const selected = t.id === active;
@@ -28,7 +31,10 @@ export function BottomNav({ active, onNavigate }: BottomNavProps) {
                 type="button"
                 aria-current={selected ? 'page' : undefined}
                 onClick={() => onNavigate(t.id)}
-                className={cx('w-full min-h-16 flex flex-col items-center justify-center gap-0.5 font-label-sm text-[11px]', selected ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface')}
+                className={cx(
+                  'w-full min-h-16 flex flex-col items-center justify-center gap-0.5 font-label-sm text-[11px]',
+                  selected ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface',
+                )}
               >
                 <span className={cx('px-4 py-0.5 rounded-full', selected && 'bg-secondary-container')}>
                   <Icon name={t.icon} filled={selected} className="text-[24px]" />

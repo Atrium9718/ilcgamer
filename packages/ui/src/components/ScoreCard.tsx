@@ -22,8 +22,6 @@ const KIND: Record<ScoreKind, { icon: string; card: string; accent: string }> = 
   commercial: { icon: 'toll', card: 'border-primary/40 bg-surface-container', accent: 'text-primary' },
 };
 
-
-
 export function ScoreCard({ kind, value, unit, title, detail }: ScoreCardProps) {
   const k = KIND[kind];
   return (

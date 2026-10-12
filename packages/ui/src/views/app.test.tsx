@@ -14,7 +14,15 @@ const experience = (id: string) => ({ id, title: `Experiencia ${id}`, subtitle: 
 
 describe('GamesCatalogView (Guía Técnica §5.4)', () => {
   it('muestra como máximo 2 experiencias de Ruta B aunque el servidor envíe más', () => {
-    render(<GamesCatalogView quickGames={[]} experiences={['1', '2', '3'].map(experience)} onSelectGame={vi.fn()} onSelectExperience={vi.fn()} onNavigate={vi.fn()} />);
+    render(
+      <GamesCatalogView
+        quickGames={[]}
+        experiences={['1', '2', '3'].map(experience)}
+        onSelectGame={vi.fn()}
+        onSelectExperience={vi.fn()}
+        onNavigate={vi.fn()}
+      />,
+    );
     expect(screen.getByText('Experiencia 1')).toBeInTheDocument();
     expect(screen.getByText('Experiencia 2')).toBeInTheDocument();
     expect(screen.queryByText('Experiencia 3')).not.toBeInTheDocument();
@@ -87,7 +95,13 @@ describe('RewardsView (Guía Técnica §5.8)', () => {
 describe('ShareCardView (Guía Técnica §5.10)', () => {
   it('la tarjeta no incluye cifras de puntos', () => {
     const { container } = render(
-      <ShareCardView content={{ badgeName: 'Guardianes', badgeIcon: 'eco', headline: 'Guardianes', message: "El Parche 'X' completó la ruta" }} template="bosque" onTemplateChange={vi.fn()} onShare={vi.fn()} onClose={vi.fn()} />,
+      <ShareCardView
+        content={{ badgeName: 'Guardianes', badgeIcon: 'eco', headline: 'Guardianes', message: "El Parche 'X' completó la ruta" }}
+        template="bosque"
+        onTemplateChange={vi.fn()}
+        onShare={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
     const card = container.querySelector('.aspect-\\[9\\/16\\]') as HTMLElement;
     expect(within(card).queryByText(/\bpuntos\b|\bxp\b/i)).not.toBeInTheDocument();

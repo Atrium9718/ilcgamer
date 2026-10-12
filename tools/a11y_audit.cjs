@@ -25,14 +25,19 @@ function loadPlaywright() {
 const root = path.resolve(__dirname, '..');
 const base = process.env.STORYBOOK_URL ?? 'http://localhost:6007';
 const index = JSON.parse(fs.readFileSync(path.join(root, 'packages/ui/storybook-static/index.json'), 'utf8'));
-const axePath = execSync(`find ${path.join(root, 'node_modules/.pnpm')} -path '*axe-core/axe.min.js'`).toString().split('\n')[0];
+const axePath = execSync(`find ${path.join(root, 'node_modules/.pnpm')} -path '*axe-core/axe.min.js'`)
+  .toString()
+  .split('\n')[0];
 const axeSource = fs.readFileSync(axePath, 'utf8');
 
 (async () => {
   const { chromium } = loadPlaywright();
-  const browser = await chromium.launch();
+  // En entornos con navegador preinstalado: PLAYWRIGHT_CHROMIUM_EXECUTABLE=/ruta/al/chrome
+  const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined });
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  const ids = Object.values(index.entries).filter((e) => e.type === 'story').map((e) => e.id);
+  const ids = Object.values(index.entries)
+    .filter((e) => e.type === 'story')
+    .map((e) => e.id);
   let failures = 0;
   for (const id of ids) {
     for (const theme of ['dark', 'light']) {

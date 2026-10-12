@@ -90,12 +90,22 @@ export function ParcheRoomView({
         <header className="sticky top-0 z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant">
           {connection === 'offline' && <OfflineBanner />}
           <div className="h-14 px-3 flex items-center gap-2">
-            <span className={cx('inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-outline-variant font-label-sm text-[11px] uppercase', c.text)}>
+            <span
+              className={cx(
+                'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-outline-variant font-label-sm text-[11px] uppercase',
+                c.text,
+              )}
+            >
               <span aria-hidden="true" className={cx('w-2 h-2 rounded-full', c.dot)} />
               {c.label}
             </span>
             <h1 className="flex-1 min-w-0 truncate font-headline-md text-[20px] text-on-surface">{name}</h1>
-            <button type="button" aria-label="Opciones del Parche" onClick={onOpenMenu} className="w-12 h-12 -mr-1 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container">
+            <button
+              type="button"
+              aria-label="Opciones del Parche"
+              onClick={onOpenMenu}
+              className="w-12 h-12 -mr-1 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container"
+            >
               <Icon name="more_vert" className="text-[22px]" />
             </button>
           </div>
@@ -104,7 +114,10 @@ export function ParcheRoomView({
         <main className="flex-1 px-4 pt-3 pb-6 space-y-4">
           {isHost && <InviteCard pin={pin} onShowQr={onShowQr} onShare={onShare} />}
 
-          <section aria-label="Energía del Parche" className="flex flex-col items-center gap-1 py-4 rounded-2xl bg-surface-container-low border border-outline-variant">
+          <section
+            aria-label="Energía del Parche"
+            className="flex flex-col items-center gap-1 py-4 rounded-2xl bg-surface-container-low border border-outline-variant"
+          >
             <EnergyMeter remainingSeconds={energy.remainingSeconds} totalSeconds={energy.totalSeconds} />
             <p className="flex items-center gap-1 font-label-lg text-[14px] text-primary">
               <Icon name="bolt" filled className="text-[18px]" />
@@ -150,13 +163,23 @@ export function ParcheRoomView({
                     onClick={() => onPlayGame(g.id)}
                     className="w-full flex items-center gap-3 p-3 rounded-2xl bg-surface-container border border-outline-variant text-left hover:border-primary/50 active:scale-[0.99] transition-all"
                   >
-                    <span className={cx('w-11 h-11 shrink-0 rounded-xl flex items-center justify-center border', g.route === 'A' ? 'border-primary/40 text-primary' : 'border-secondary/40 text-secondary')}>
+                    <span
+                      className={cx(
+                        'w-11 h-11 shrink-0 rounded-xl flex items-center justify-center border',
+                        g.route === 'A' ? 'border-primary/40 text-primary' : 'border-secondary/40 text-secondary',
+                      )}
+                    >
                       <Icon name={g.icon} className="text-[24px]" />
                     </span>
                     <span className="flex-1 min-w-0">
                       <span className="flex items-center gap-2">
                         <span className="font-title-md text-[16px] text-on-surface truncate">{g.title}</span>
-                        <span className={cx('shrink-0 px-1.5 rounded-md font-label-sm text-[10px] uppercase border', g.route === 'A' ? 'border-primary/40 text-primary' : 'border-secondary/40 text-secondary')}>
+                        <span
+                          className={cx(
+                            'shrink-0 px-1.5 rounded-md font-label-sm text-[10px] uppercase border',
+                            g.route === 'A' ? 'border-primary/40 text-primary' : 'border-secondary/40 text-secondary',
+                          )}
+                        >
                           Ruta {g.route}
                         </span>
                       </span>

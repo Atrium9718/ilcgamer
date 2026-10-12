@@ -10,7 +10,7 @@
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build": "storybook build -o storybook-static --quiet",
+    "build:storybook": "storybook build -o storybook-static --quiet",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json"
   },

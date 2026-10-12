@@ -17,3 +17,6 @@ docs/fuentes/
 # SO / editores
 .DS_Store
 *.log
+
+# Cliente Prisma generado
+apps/api/src/generated/

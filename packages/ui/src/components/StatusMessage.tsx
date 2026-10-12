@@ -6,10 +6,25 @@ export type StatusKind = 'empty' | 'error' | 'offline' | 'pending';
 
 const PRESET: Record<StatusKind, { icon: string; title: string; body: string; iconClass: string }> = {
   empty: { icon: 'explore', title: 'Aún no hay nada por aquí', body: 'Cuando tengas actividad, la verás en este lugar.', iconClass: 'text-tertiary' },
-  error: { icon: 'error', title: 'Algo no salió bien', body: 'No pudimos completar la acción. Puedes intentarlo de nuevo con seguridad.', iconClass: 'text-error' },
-  offline: { icon: 'cloud_off', title: 'Sin conexión', body: 'Revisa tu señal. Guardamos tu avance y reintentaremos al reconectar.', iconClass: 'text-warning' },
+  error: {
+    icon: 'error',
+    title: 'Algo no salió bien',
+    body: 'No pudimos completar la acción. Puedes intentarlo de nuevo con seguridad.',
+    iconClass: 'text-error',
+  },
+  offline: {
+    icon: 'cloud_off',
+    title: 'Sin conexión',
+    body: 'Revisa tu señal. Guardamos tu avance y reintentaremos al reconectar.',
+    iconClass: 'text-warning',
+  },
   // Guía Técnica §12.2: nunca afirmar que algo se completó si el backend no lo confirmó.
-  pending: { icon: 'hourglass_top', title: 'Verificando…', body: 'Estamos confirmando el resultado con el servidor. No repitas la acción.', iconClass: 'text-primary' },
+  pending: {
+    icon: 'hourglass_top',
+    title: 'Verificando…',
+    body: 'Estamos confirmando el resultado con el servidor. No repitas la acción.',
+    iconClass: 'text-primary',
+  },
 };
 
 export interface StatusMessageProps {
@@ -38,7 +53,10 @@ export function StatusMessage({ kind, title, body, action, className }: StatusMe
 /** Banner fijo superior cuando el dispositivo pierde conexión. */
 export function OfflineBanner() {
   return (
-    <div role="status" className="flex items-center justify-center gap-2 px-4 py-2 bg-surface-container-highest border-b border-warning/40 font-label-lg text-[13px] text-warning">
+    <div
+      role="status"
+      className="flex items-center justify-center gap-2 px-4 py-2 bg-surface-container-highest border-b border-warning/40 font-label-lg text-[13px] text-warning"
+    >
       <Icon name="cloud_off" className="text-[18px]" />
       Sin conexión · reintentaremos automáticamente
     </div>

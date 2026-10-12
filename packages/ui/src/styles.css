@@ -17,8 +17,13 @@
     outline-offset: 2px;
   }
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    /* !important es intencional: debe ganar a cualquier animación de componente (WCAG 2.3.3). */
+    *,
+    *::before,
+    *::after {
+      /* biome-ignore lint/complexity/noImportantStyles: preferencia de movimiento reducido del usuario */
       animation-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: preferencia de movimiento reducido del usuario */
       transition-duration: 0.01ms !important;
     }
   }
@@ -30,5 +35,5 @@
 
 /* Material Symbols: misma familia de íconos que usa Stitch. */
 @utility icon-fill {
-  font-variation-settings: 'FILL' 1;
+  font-variation-settings: "FILL" 1;
 }

@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint · tipos · pruebas · accesibilidad
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ilc
+          POSTGRES_PASSWORD: ilc
+          POSTGRES_DB: ilc_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ilc -d ilc_test" --health-interval 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://ilc:ilc@localhost:5432/ilc_test
+      TEST_REDIS_URL: redis://localhost:6379
+      VITE_DEMO_DATA: "false"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint y formato (Biome)
+        run: pnpm lint
+
+      - name: Build (tokens con puerta WCAG AA, contratos, API, PWA)
+        run: pnpm build
+
+      - name: Migraciones sobre base de pruebas
+        run: pnpm --filter @ilc/api exec prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
+
+      - name: Tipos
+        run: pnpm typecheck
+
+      - name: Pruebas (unitarias, integración API + integridad de BD, UI, PWA)
+        run: pnpm test
+
+      - name: Storybook
+        run: pnpm storybook:build
+
+      - name: Auditoría de accesibilidad (axe, WCAG 2.1 AA, temas oscuro y claro)
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          (cd packages/ui/storybook-static && python3 -m http.server 6007 &) 
+          sleep 2
+          pnpm a11y

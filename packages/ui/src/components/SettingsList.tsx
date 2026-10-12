@@ -20,7 +20,9 @@ export function SettingsList({ items, label }: { items: SettingsItem[]; label?: 
             <button type="button" onClick={it.onSelect} className="w-full min-h-14 flex items-center gap-3 px-4 text-left hover:bg-surface-container">
               <Icon name={it.icon} className={cx('text-[22px]', it.tone === 'danger' ? 'text-error' : 'text-on-surface-variant')} />
               <span className={cx('flex-1 font-body-md text-body-md', it.tone === 'danger' ? 'text-error' : 'text-on-surface')}>{it.label}</span>
-              {it.value && <span className="font-label-sm text-[11px] px-2 py-0.5 rounded-full border border-outline-variant text-on-surface-variant">{it.value}</span>}
+              {it.value && (
+                <span className="font-label-sm text-[11px] px-2 py-0.5 rounded-full border border-outline-variant text-on-surface-variant">{it.value}</span>
+              )}
               {it.tone !== 'danger' && <Icon name="chevron_right" className="text-[20px] text-on-surface-variant" />}
             </button>
           </li>

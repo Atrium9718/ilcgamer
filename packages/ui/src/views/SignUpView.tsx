@@ -1,4 +1,4 @@
-import { type AuthProvider, AuthButton } from '../components/AuthButton.tsx';
+import { AuthButton, type AuthProvider } from '../components/AuthButton.tsx';
 import { Button } from '../components/Button.tsx';
 import { Checkbox } from '../components/Checkbox.tsx';
 import { Icon } from '../components/Icon.tsx';
@@ -56,8 +56,8 @@ export function SignUpView({
           <div className="space-y-1.5">
             <h1 className="font-headline-lg text-headline-lg text-on-surface">Guarda tu progreso</h1>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              Hasta ahora juegas como <strong className="text-on-surface">“{tempAlias}”</strong> (alias temporal). Crea tu cuenta para conservar tus {currencyName} e insignias en
-              cualquier dispositivo y poder canjear.
+              Hasta ahora juegas como <strong className="text-on-surface">“{tempAlias}”</strong> (alias temporal). Crea tu cuenta para conservar tus{' '}
+              {currencyName} e insignias en cualquier dispositivo y poder canjear.
             </p>
           </div>
 
@@ -87,7 +87,11 @@ export function SignUpView({
                 Aviso de privacidad
               </a>
             </p>
-            <Checkbox checked={marketingOptIn} onChange={onMarketingOptInChange} label="Quiero recibir novedades y promociones de ILC y sus marcas (opcional)." />
+            <Checkbox
+              checked={marketingOptIn}
+              onChange={onMarketingOptInChange}
+              label="Quiero recibir novedades y promociones de ILC y sus marcas (opcional)."
+            />
             <p className="pl-1 font-body-md text-[12px] text-on-surface-variant">Puedes cambiarlo cuando quieras en tu perfil.</p>
           </fieldset>
 

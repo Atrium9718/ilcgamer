@@ -20,7 +20,12 @@ export function BadgeSeal({ name, icon, earned, size = 'md' }: BadgeSealProps) {
           earned ? 'border-primary/60 shadow-[0_0_20px_color-mix(in_srgb,var(--color-secondary)_20%,transparent)]' : 'border-outline-variant',
         )}
       >
-        <span className={cx('w-full h-full rounded-full border-2 flex items-center justify-center', earned ? 'border-secondary bg-secondary-container text-secondary' : 'border-outline-variant bg-surface-container text-outline')}>
+        <span
+          className={cx(
+            'w-full h-full rounded-full border-2 flex items-center justify-center',
+            earned ? 'border-secondary bg-secondary-container text-secondary' : 'border-outline-variant bg-surface-container text-outline',
+          )}
+        >
           <Icon name={earned ? icon : 'lock'} filled={earned} className={lg ? 'text-[44px]' : 'text-[28px]'} />
         </span>
       </span>

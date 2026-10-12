@@ -40,7 +40,16 @@ export interface GamesCatalogViewProps {
   currencyName?: string;
 }
 
-export function GamesCatalogView({ campaignLabel, quickGames, experiences, onSelectGame, onSelectExperience, activeTab = 'jugar', onNavigate, currencyName = 'Puntos ILC' }: GamesCatalogViewProps) {
+export function GamesCatalogView({
+  campaignLabel,
+  quickGames,
+  experiences,
+  onSelectGame,
+  onSelectExperience,
+  activeTab = 'jugar',
+  onNavigate,
+  currencyName = 'Puntos ILC',
+}: GamesCatalogViewProps) {
   const visible = experiences.slice(0, MAX_ROUTE_B_EXPERIENCES);
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
@@ -49,7 +58,9 @@ export function GamesCatalogView({ campaignLabel, quickGames, experiences, onSel
           title={<span className="font-headline-md text-headline-md text-primary">Jugar</span>}
           trailing={
             campaignLabel && (
-              <span className="px-2.5 py-0.5 rounded-full border border-tertiary/40 font-label-sm text-[11px] text-tertiary whitespace-nowrap">Campaña: {campaignLabel}</span>
+              <span className="px-2.5 py-0.5 rounded-full border border-tertiary/40 font-label-sm text-[11px] text-tertiary whitespace-nowrap">
+                Campaña: {campaignLabel}
+              </span>
             )
           }
         />
@@ -61,7 +72,9 @@ export function GamesCatalogView({ campaignLabel, quickGames, experiences, onSel
                   <span aria-hidden="true" className="w-2 h-2 rounded-full bg-primary" />
                   Ruta A · Juegos rápidos
                 </h2>
-                <span className="px-2 py-0.5 rounded-full border border-primary/40 font-label-sm text-[11px] text-primary whitespace-nowrap">+{currencyName}</span>
+                <span className="px-2 py-0.5 rounded-full border border-primary/40 font-label-sm text-[11px] text-primary whitespace-nowrap">
+                  +{currencyName}
+                </span>
               </div>
               <p className="font-body-md text-[13px] text-on-surface-variant">Partidas cortas para tu Parche</p>
             </div>
@@ -80,7 +93,9 @@ export function GamesCatalogView({ campaignLabel, quickGames, experiences, onSel
                     <span aria-hidden="true" className="w-2 h-2 rounded-full bg-secondary" />
                     Ruta B · Experiencias
                   </h2>
-                  <span className="px-2 py-0.5 rounded-full bg-secondary-container font-label-sm text-[11px] text-on-secondary-container whitespace-nowrap">+XP e insignias</span>
+                  <span className="px-2 py-0.5 rounded-full bg-secondary-container font-label-sm text-[11px] text-on-secondary-container whitespace-nowrap">
+                    +XP e insignias
+                  </span>
                 </div>
                 <p className="font-body-md text-[13px] text-on-surface-variant">
                   Tienes {visible.length} {visible.length === 1 ? 'experiencia disponible' : 'experiencias disponibles'} en esta campaña

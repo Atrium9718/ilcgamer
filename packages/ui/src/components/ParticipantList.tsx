@@ -72,7 +72,12 @@ export function ParticipantList({ participants, selfId }: ParticipantListProps) 
                 {p.alias}
                 {p.id === selfId && <span className="text-on-surface-variant font-body-md"> (tú)</span>}
               </p>
-              <p className={cx('font-label-sm text-[11px] uppercase', p.isHost ? 'text-primary' : p.status === 'reconnecting' ? 'text-warning' : 'text-on-surface-variant')}>
+              <p
+                className={cx(
+                  'font-label-sm text-[11px] uppercase',
+                  p.isHost ? 'text-primary' : p.status === 'reconnecting' ? 'text-warning' : 'text-on-surface-variant',
+                )}
+              >
                 {p.isHost && p.status === 'connected' ? 'Anfitrión' : STATUS_COPY[p.status]}
               </p>
             </div>

@@ -28,7 +28,17 @@ function CreateDemo({ submitting = false }: { submitting?: boolean }) {
   );
 }
 
-function JoinDemo({ initialMethod = 'pin', attemptsLeft = 4, pinError, withPreview = false }: { initialMethod?: JoinMethod; attemptsLeft?: number; pinError?: string; withPreview?: boolean }) {
+function JoinDemo({
+  initialMethod = 'pin',
+  attemptsLeft = 4,
+  pinError,
+  withPreview = false,
+}: {
+  initialMethod?: JoinMethod;
+  attemptsLeft?: number;
+  pinError?: string;
+  withPreview?: boolean;
+}) {
   const [method, setMethod] = useState<JoinMethod>(initialMethod);
   const [pin, setPin] = useState('47');
   const [alias, setAlias] = useState('Valentina');
@@ -97,6 +107,8 @@ const roomArgs = {
 export const SalaAnfitrion: Story = { render: () => <ParcheRoomView {...roomArgs} /> };
 export const SalaInvitado: Story = { render: () => <ParcheRoomView {...roomArgs} isHost={false} selfId="u2" /> };
 /** Parche nacido en Ruta B (sin activación comercial): no hay Puntos ILC ni multiplicador. */
-export const SalaSoloRutaB: Story = { render: () => <ParcheRoomView {...roomArgs} commercial={undefined} canActivateCode={false} games={roomArgs.games.filter((g) => g.route === 'B')} /> };
+export const SalaSoloRutaB: Story = {
+  render: () => <ParcheRoomView {...roomArgs} commercial={undefined} canActivateCode={false} games={roomArgs.games.filter((g) => g.route === 'B')} />,
+};
 export const SalaSinConexion: Story = { render: () => <ParcheRoomView {...roomArgs} connection="offline" /> };
 export const MonedaPersonalizada: Story = { render: () => <ParcheRoomView {...roomArgs} currencyName="Chupitos" /> };
