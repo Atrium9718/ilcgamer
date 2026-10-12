@@ -29,6 +29,8 @@ export const KEYS = {
   claimKey: 'ilc.claimKey',
   /** Pantalla a la que se vuelve después de guardar la cuenta (p. ej. el código que se quería activar). */
   afterSignup: 'ilc.afterSignup',
+  /** Parche activo en esta pestaña: una activación de botella recarga su energía (Instrucciones §5 paso 5). */
+  activeParche: 'ilc.activeParche',
 } as const;
 
 export function removeLocal(key: string, store: 'local' | 'session' = 'local'): void {

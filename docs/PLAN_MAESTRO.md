@@ -230,8 +230,15 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Consola "Economía" (pantalla 19 de Stitch): movimientos, reversos, catálogo de insignias y conciliación. PWA con billetera y progreso reales.
 - [x] Auditoría axe: 118 combinaciones sin violaciones WCAG AA. Verificado de punta a punta en Chromium: activación → billetera con aviso de vencimiento → reverso desde la consola por id de reclamación → el titular ve el reverso sin el motivo interno; conciliación sin diferencias.
 
-### Paso 8 — El Parche en tiempo real
-- Crear/unirse por PIN/QR, energía configurable (45 min por defecto de prueba), expiración (6:00 a. m. configurable), reconexión sin duplicar, marcador experiencial vs comercial.
+### Paso 8 — El Parche en tiempo real ✅
+- [x] `POST /sessions`, `POST /sessions/join` (PIN), `POST /sessions/{id}/join` (QR firmado), `GET /sessions/{id}`, `POST …/leave`, `POST …/close` y canal en vivo `GET …/events`.
+- [x] Nace de una activación propia (Ruta A), del QR de un evento o como Parche libre de Ruta B; modo un solo celular con jugadores locales sin cuenta. Energía y cierre vienen de la campaña (por defecto 45 min y 6:00 a. m. hora de Colombia); expira también por inactividad. Los tres relojes (sesión, puntos, código) siguen separados.
+- [x] PIN de 4 dígitos protegido: HMAC en la base, intentos limitados por persona e IP con bloqueo temporal y evento de seguridad; el QR es una invitación firmada válida solo para esa sesión y mientras viva.
+- [x] Tiempo real con **Server-Sent Events** + Redis pub/sub (decisión: más simple que Socket.IO para un canal servidor→cliente, sin dependencia nueva; el cliente actúa por HTTP). Autorización por sesión, heartbeat, versión creciente, reconexión automática que recupera el estado vigente sin duplicar, presencia conectado/reconectando, cierre del canal al terminar y respaldo por consulta cada 5 s.
+- [x] Una activación de botella dentro del Parche recarga un bloque de energía; los Puntos ILC van a la billetera de quien activa (el Parche no tiene saldo comercial propio). El marcador del reto es aparte.
+- [x] Solo alias en pantallas compartidas; una persona en un solo Parche a la vez; si sale el anfitrión el grupo sigue con otro.
+- [x] Verificado: 229 pruebas, axe 118 combinaciones sin violaciones, y E2E con dos celulares (PIN erróneo, unión, Bea visible para Ana en vivo, QR, reconexión, cierre visto en vivo).
+- [ ] Pendiente: el "marcador del reto" se alimenta con el motor de juegos (Paso 9); la lectura de QR con cámara usa BarcodeDetector (si el navegador no lo ofrece, se usa la cámara nativa o el PIN).
 
 ### Paso 9 — Motor de juegos + juegos iniciales
 - Manifiesto + Game SDK + contenedor iframe sandbox; validación de resultados en servidor.

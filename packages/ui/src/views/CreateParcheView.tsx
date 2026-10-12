@@ -25,6 +25,12 @@ export interface CreateParcheViewProps {
   onModeChange: (mode: ParcheMode) => void;
   /** Duración de energía configurada por la campaña, en minutos. */
   energyMinutes: number;
+  /** Modo un solo celular: alias de quienes juegan por turnos, separados por coma. */
+  localPlayers?: string;
+  onLocalPlayersChange?: (value: string) => void;
+  localPlayersError?: string;
+  /** Error general devuelto por el servidor. */
+  error?: string;
   canSubmit: boolean;
   submitting?: boolean;
   nameError?: string;
@@ -47,6 +53,10 @@ export function CreateParcheView({
   mode,
   onModeChange,
   energyMinutes,
+  localPlayers = '',
+  onLocalPlayersChange,
+  localPlayersError,
+  error,
   canSubmit,
   submitting = false,
   nameError,
@@ -127,7 +137,28 @@ export function CreateParcheView({
               <Icon name="hub" className="text-[18px] text-tertiary" />
               {MODE_HELP[mode]}
             </p>
+            {mode === 'single' && onLocalPlayersChange && (
+              <TextField
+                label="¿Quiénes juegan contigo?"
+                placeholder="Bea, Ciro, Dani"
+                value={localPlayers}
+                onChange={onLocalPlayersChange}
+                maxLength={240}
+                hint="Solo alias, separados por coma (máximo 11)."
+                error={localPlayersError}
+              />
+            )}
           </div>
+
+          {error && (
+            <p
+              role="alert"
+              className="flex items-start gap-2 p-3 rounded-xl border border-error/50 bg-error-container text-on-error-container font-body-md text-[14px]"
+            >
+              <Icon name="error" className="text-[20px]" />
+              {error}
+            </p>
+          )}
 
           <section className="flex items-start gap-3 p-4 rounded-2xl bg-surface-container border border-outline-variant">
             <span className="w-10 h-10 shrink-0 rounded-full border border-primary/40 flex items-center justify-center text-primary">

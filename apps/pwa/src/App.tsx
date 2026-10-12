@@ -30,6 +30,7 @@ export const routes = [
           { path: '/p/:pin', element: <JoinParcheRoute /> },
           { path: '/parche/nuevo', element: <CreateParcheRoute /> },
           { path: '/parche/unirse', element: <JoinParcheRoute /> },
+          { path: '/parche/:id/unirse', element: <JoinParcheRoute /> },
           { path: '/parche/:id', element: <ParcheRoomRoute /> },
           { path: '/jugar', element: <GamesRoute /> },
           { path: '/jugar/:gameId/resultado', element: <GameResultRoute /> },

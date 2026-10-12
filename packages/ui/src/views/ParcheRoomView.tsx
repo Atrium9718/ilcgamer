@@ -36,7 +36,8 @@ export interface ParcheRoomViewProps {
   energy: { remainingSeconds: number; totalSeconds: number };
   challenge: { xp: number; completed: number };
   /** Ausente si la sesión nació en Ruta B sin activación comercial. */
-  commercial?: { points: number; activatedCodes: number };
+  /** Ruta A: activaciones hechas en la mesa. Los Puntos ILC van a la billetera de quien activa (§5.5). */
+  commercial?: { activatedCodes: number };
   /** Nombre de la moneda comercial desde el CMS (Instrucciones §6, por defecto "Puntos ILC"). */
   currencyName?: string;
   /** Multiplicador vigente de la campaña, ej. "x1,5 · Feria de Manizales". */
@@ -131,10 +132,10 @@ export function ParcheRoomView({
             {commercial && (
               <ScoreCard
                 kind="commercial"
-                title={`${currencyName} de la mesa`}
-                value={commercial.points}
-                unit={currencyName}
-                detail={`${commercial.activatedCodes} ${commercial.activatedCodes === 1 ? 'código activado' : 'códigos activados'}`}
+                title="Activaciones de la mesa"
+                value={commercial.activatedCodes}
+                unit={commercial.activatedCodes === 1 ? 'código' : 'códigos'}
+                detail={`Los ${currencyName} van a la billetera de quien activa`}
               />
             )}
           </div>

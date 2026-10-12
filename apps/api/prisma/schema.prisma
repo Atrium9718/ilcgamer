@@ -559,6 +559,16 @@ model Session {
   closedAt          DateTime?
   /// Versión de estado para sincronización en tiempo real (§8).
   stateVersion      Int                  @default(0)
+  /// Duración de cada bloque de energía (de la campaña o de la plataforma).
+  energyMinutes     Int                  @default(45)
+  /// Marcador experiencial del Parche (juegos, retos). No es saldo comercial (§5.5).
+  score             Int                  @default(0)
+  /// Activaciones de botella hechas dentro del Parche; los puntos van a cada persona.
+  activations       Int                  @default(0)
+  /// Modo un dispositivo: alias de quienes juegan por turnos sin cuenta.
+  localPlayers      String[]             @default([])
+  /// Para expirar por inactividad.
+  lastActivityAt    DateTime             @default(now())
   createdAt         DateTime             @default(now())
   participants      SessionParticipant[]
   missions          MissionProgress[]

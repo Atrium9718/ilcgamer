@@ -140,7 +140,7 @@ describe('flujos con datos de demostración', () => {
     expect(await screen.findByLabelText('Dígito 1 de 4')).toHaveValue('1');
     await userEvent.type(screen.getByLabelText('Tu alias'), 'Vale');
     await userEvent.click(screen.getByRole('button', { name: 'Unirme' }));
-    expect(await screen.findByText(/PIN incorrecto. Te quedan 3 intentos/)).toBeInTheDocument();
+    expect(await screen.findByText(/PIN incorrecto o vencido. Te quedan \d intentos/)).toBeInTheDocument();
   });
 
   it('una ruta desconocida muestra página no encontrada', async () => {
@@ -186,5 +186,33 @@ describe('activación de un código (Guía Técnica §5.6, §5.7)', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Activar código' }));
     expect(await screen.findByText(/Sumaste 500 Puntos ILC en «Feria de Manizales»/)).toBeInTheDocument();
     expect(await screen.findByText(/Ya activaste este código/)).toBeInTheDocument();
+  });
+});
+
+describe('El Parche (modo demostración)', () => {
+  it('crear lleva a la sala con el PIN para invitar y el menú permite salir', async () => {
+    installFakeApi({ loggedIn: true });
+    const router = renderAt('/parche/nuevo');
+    await userEvent.type(await screen.findByLabelText('Nombre del Parche'), 'Mesa 4');
+    await userEvent.type(screen.getByLabelText('Tu alias en el Parche'), 'Ana');
+    await userEvent.click(screen.getByRole('button', { name: /crear/i }));
+    await vi.waitFor(() => expect(router.state.location.pathname).toMatch(/^\/parche\/[0-9a-f-]{36}$/));
+    expect(await screen.findByText('Mesa 4')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Invitar al Parche' })).toHaveTextContent('4729');
+    await userEvent.click(screen.getByRole('button', { name: /opciones|menú/i }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Salir del Parche' }));
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/jugar'));
+  });
+
+  it('el modo un solo celular pide los alias de quienes juegan', async () => {
+    installFakeApi({ loggedIn: true });
+    renderAt('/parche/nuevo');
+    await userEvent.type(await screen.findByLabelText('Nombre del Parche'), 'Sala');
+    await userEvent.type(screen.getByLabelText('Tu alias en el Parche'), 'Ana');
+    await userEvent.click(screen.getByRole('radio', { name: /un solo celular/i }));
+    const create = screen.getByRole('button', { name: /crear/i });
+    expect(create).toBeDisabled();
+    await userEvent.type(screen.getByLabelText('¿Quiénes juegan contigo?'), 'Bea, Ciro');
+    expect(create).toBeEnabled();
   });
 });

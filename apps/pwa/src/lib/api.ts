@@ -8,6 +8,8 @@ export class ApiRequestError extends Error {
     readonly retryable: boolean,
     readonly status?: number,
     readonly requestId?: string,
+    /** Errores por campo (solo VALIDATION_FAILED). */
+    readonly fields?: Record<string, string[]>,
   ) {
     super(message);
   }
@@ -63,7 +65,7 @@ export async function apiRequest<T>(path: string, { method = 'GET', body, idempo
   }
   if (parsed) {
     const e = parsed.error;
-    throw new ApiRequestError(e.code, e.message, e.retryable, res.status, e.requestId);
+    throw new ApiRequestError(e.code, e.message, e.retryable, res.status, e.requestId, e.fields);
   }
   throw new ApiRequestError('INTERNAL_ERROR', 'Ocurrió un error inesperado.', res.status >= 500, res.status, res.headers.get(HEADERS.requestId) ?? undefined);
 }

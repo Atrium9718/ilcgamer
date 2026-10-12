@@ -86,7 +86,7 @@ const roomArgs = {
   isHost: true,
   energy: { remainingSeconds: 32 * 60 + 15, totalSeconds: 45 * 60 },
   challenge: { xp: 1250, completed: 3 },
-  commercial: { points: 500, activatedCodes: 1 },
+  commercial: { activatedCodes: 1 },
   multiplierLabel: 'x1,5 · Feria de Manizales',
   participants: PARTICIPANTS,
   selfId: 'u1',

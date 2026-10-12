@@ -93,7 +93,8 @@ export function CodeLandingRoute() {
     setClaiming(true);
     setClaimError(undefined);
     try {
-      const r = await data.claimCode(token, key);
+      const activeParche = readLocal<string | null>(KEYS.activeParche, null, 'session') ?? undefined;
+      const r = await data.claimCode(token, key, activeParche);
       removeLocal(claimKeyFor(token), 'session');
       setConditions(false);
       setResult(r);
@@ -194,9 +195,15 @@ export function CodeLandingRoute() {
         title="¡Código activado!"
         actions={
           <>
-            <Button leadingIcon="groups" onClick={() => navigate('/parche/nuevo', { state: { token } })}>
-              Crear mi Parche y jugar
-            </Button>
+            {readLocal<string | null>(KEYS.activeParche, null, 'session') ? (
+              <Button leadingIcon="groups" onClick={() => navigate(`/parche/${readLocal<string>(KEYS.activeParche, '', 'session')}`)}>
+                Volver a mi Parche
+              </Button>
+            ) : (
+              <Button leadingIcon="groups" onClick={() => navigate('/parche/nuevo', { state: { claimId: result?.claimId, brandLabel: lookup.brandLabel } })}>
+                Crear mi Parche y jugar
+              </Button>
+            )}
             <Button variant="text" onClick={() => navigate('/billetera')}>
               Ver mi billetera
             </Button>
@@ -206,7 +213,7 @@ export function CodeLandingRoute() {
         {result && (
           <p>
             {result.points > 0
-              ? `Sumaste ${fmt(result.points)} ${result.currencyName} en «${result.campaign.title}». Tu saldo es ${fmt(result.balance)} ${result.currencyName}.`
+              ? `Sumaste ${fmt(result.points)} ${result.currencyName} en «${result.campaign.title}». Tu saldo es ${fmt(result.balance)} ${result.currencyName}.${result.parcheRecharged ? ' Además, recargaste la energía de tu Parche.' : ''}`
               : `Activaste tu código en «${result.campaign.title}».`}
           </p>
         )}

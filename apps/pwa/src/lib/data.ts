@@ -45,8 +45,7 @@ export interface DataSource {
   /** Consulta del código de producto (no consume ninguna promoción — Guía Técnica §5.6). */
   lookupCode(token: string): Promise<ProductCodeLookup>;
   /** Reclamación de la promoción de la botella. Reutilice la MISMA clave al reintentar (§5.7 regla 8). */
-  claimCode(token: string, idempotencyKey: string): Promise<ClaimResult>;
-  joinParche(pin: string, alias: string): Promise<{ sessionId: string } | { error: 'invalid'; attemptsLeft: number }>;
+  claimCode(token: string, idempotencyKey: string, sessionId?: string): Promise<ClaimResult>;
   wallet(cursor?: string): Promise<WalletData>;
   /** XP, nivel e insignias (Ruta B). */
   progress(): Promise<Progress>;
@@ -98,11 +97,8 @@ const demoSource: DataSource = {
       balance: DEMO.balance + (c?.points ?? 0),
       campaign: { slug: 'feria', title: DEMO.campaignLabel },
       claimedAt: new Date().toISOString(),
+      parcheRecharged: false,
     };
-  },
-  async joinParche(pin) {
-    await wait(300);
-    return pin === DEMO.parche.pin ? { sessionId: DEMO.parche.id } : { error: 'invalid', attemptsLeft: 3 };
   },
   async wallet() {
     await wait(200);
@@ -123,8 +119,8 @@ const demoSource: DataSource = {
 const apiSource: DataSource = {
   demo: false,
   lookupCode: (token) => apiRequest<ProductCodeLookup>(`/product-codes/${encodeURIComponent(token)}/status`),
-  claimCode: (token, idempotencyKey) => apiRequest<ClaimResult>(`/campaign-codes/${encodeURIComponent(token)}/claim`, { method: 'POST', idempotencyKey }),
-  joinParche: (pin, alias) => apiRequest(`/sessions/join`, { method: 'POST', body: { pin, alias } }), // Paso 8
+  claimCode: (token, idempotencyKey, sessionId) =>
+    apiRequest<ClaimResult>(`/campaign-codes/${encodeURIComponent(token)}/claim`, { method: 'POST', idempotencyKey, body: sessionId ? { sessionId } : {} }),
   wallet: async (cursor) => toWalletData(await apiRequest<Wallet>(`/wallet${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ''}`)),
   progress: () => apiRequest<Progress>('/profile/progress'),
 };

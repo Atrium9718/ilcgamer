@@ -6,6 +6,7 @@ import { DomainError } from '../common/domain-error.ts';
 import type { Claim } from '../generated/prisma/client.ts';
 import { Prisma } from '../generated/prisma/client.ts';
 import type { AuthContext } from '../identity/auth.guard.ts';
+import { ParcheService } from '../parche/parche.service.ts';
 import { SettingsService } from '../platform/settings.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
 import { needsReview } from './product-codes.service.ts';
@@ -25,9 +26,10 @@ export class ClaimsService {
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
+    private readonly parche: ParcheService,
   ) {}
 
-  async claim(token: string, auth: AuthContext, idempotencyKey: string, requestId: string, now = new Date()): Promise<ClaimResult> {
+  async claim(token: string, auth: AuthContext, idempotencyKey: string, requestId: string, sessionId?: string, now = new Date()): Promise<ClaimResult> {
     const previous = await this.prisma.claim.findUnique({ where: { idempotencyKey } });
     if (previous) return this.replay(previous, auth, token);
 
@@ -72,7 +74,7 @@ export class ClaimsService {
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${auth.user.id}, 0))`;
         // Doble toque: la otra solicitud con la misma clave pudo confirmar mientras esperábamos el candado.
         const twin = await tx.claim.findUnique({ where: { idempotencyKey } });
-        if (twin) return { claim: twin, replayed: true };
+        if (twin) return { claim: twin, replayed: true, recharged: false };
         const today = await tx.claim.count({
           where: { userId: auth.user.id, confirmed: true, campaignCode: { campaignId: code.campaignId }, createdAt: { gte: startOfColombiaDay(now) } },
         });
@@ -129,13 +131,16 @@ export class ClaimsService {
           },
           tx,
         );
+        // Activación dentro de un Parche: recarga un bloque de energía (Instrucciones §5 paso 5).
+        const recharged = sessionId ? await this.parche.rechargeFromClaim(tx, sessionId, auth.user.id, now) : false;
         await tx.analyticsEvent.create({
           data: { name: 'campaign_code_claimed', schemaVersion: 1, campaignId: code.campaignId, properties: { points, factor }, occurredAt: now },
         });
-        return { claim: created, replayed: false };
+        return { claim: created, replayed: false, recharged };
       });
       if (outcome.replayed) return this.replay(outcome.claim, auth, token);
-      return this.result(outcome.claim, false);
+      if (outcome.recharged && sessionId) void this.parche.publish(sessionId);
+      return this.result(outcome.claim, false, outcome.recharged);
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
         // Carrera con la misma clave: la otra solicitud ya confirmó; se devuelve su resultado.
@@ -156,7 +161,7 @@ export class ClaimsService {
     return this.result(claim, true);
   }
 
-  private async result(claim: Claim, replayed: boolean): Promise<ClaimResult> {
+  private async result(claim: Claim, replayed: boolean, parcheRecharged = false): Promise<ClaimResult> {
     const [entry, account, version, xp] = await Promise.all([
       this.prisma.ledgerEntry.findFirst({ where: { sourceType: 'claim', sourceId: claim.id } }),
       this.prisma.ledgerAccount.findUnique({ where: { userId: claim.userId } }),
@@ -174,6 +179,7 @@ export class ClaimsService {
       balance: account?.balance ?? 0,
       campaign: { slug: version.campaign.slug, title: draft.publicTitle },
       claimedAt: claim.createdAt.toISOString(),
+      parcheRecharged,
     };
   }
 }

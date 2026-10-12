@@ -17,6 +17,11 @@ const DEFAULTS = {
   'economy.expiringNoticeDays': 30,
   /** Umbrales de XP por nivel (parámetros de prueba hasta aprobación de Marca). */
   'economy.xpLevels': DEFAULT_XP_LEVELS as readonly number[],
+  /** El Parche sin campaña (Ruta B libre): energía, hora de cierre e inactividad (Instrucciones §3.2, §5). */
+  'parche.energyMinutes': 45,
+  'parche.endsAtLocalTime': '06:00',
+  'parche.inactivityMinutes': 120,
+  'parche.capacity': 12,
 } as const;
 
 type Key = keyof typeof DEFAULTS;

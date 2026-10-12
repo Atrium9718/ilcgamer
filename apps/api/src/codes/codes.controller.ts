@@ -1,5 +1,7 @@
 import {
   type BatchView,
+  type ClaimRequest,
+  ClaimRequestSchema,
   type ClaimResult,
   type CreateProduct,
   CreateProductSchema,
@@ -59,8 +61,13 @@ export class CodesController {
   @RequiresIdempotencyKey()
   @UseGuards(AuthGuard)
   @ApiCookieAuth()
-  claim(@Param('token') token: string, @Auth() auth: AuthContext, @Req() req: FastifyRequest): Promise<ClaimResult> {
-    return this.claims.claim(token, auth, idempotencyKeyOf(req), String(req.id));
+  claim(
+    @Param('token') token: string,
+    @Body(new ZodValidationPipe(ClaimRequestSchema)) body: ClaimRequest,
+    @Auth() auth: AuthContext,
+    @Req() req: FastifyRequest,
+  ): Promise<ClaimResult> {
+    return this.claims.claim(token, auth, idempotencyKeyOf(req), String(req.id), body.sessionId);
   }
 
   /** POST /api/v1/smarttags/validate (Instrucciones §10): validación síncrona para el ERP. Nunca reclama. */

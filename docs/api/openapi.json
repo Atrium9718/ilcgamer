@@ -954,6 +954,184 @@
         ]
       }
     },
+    "/api/v1/sessions": {
+      "post": {
+        "operationId": "ParcheController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/join": {
+      "post": {
+        "operationId": "ParcheController_joinByPin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/join": {
+      "post": {
+        "operationId": "ParcheController_joinByInvite",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}": {
+      "get": {
+        "operationId": "ParcheController_state",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/leave": {
+      "post": {
+        "operationId": "ParcheController_leave",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/close": {
+      "post": {
+        "operationId": "ParcheController_close",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/events": {
+      "get": {
+        "operationId": "ParcheController_events",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
     "/api/v1/wallet": {
       "get": {
         "operationId": "EconomyController_wallet",

@@ -85,7 +85,7 @@ const room: ParcheRoomViewProps = {
   isHost: true,
   energy: { remainingSeconds: 1935, totalSeconds: 2700 },
   challenge: { xp: 1250, completed: 3 },
-  commercial: { points: 500, activatedCodes: 1 },
+  commercial: { activatedCodes: 2 },
   participants: [
     { id: 'u1', alias: 'Andrés', isHost: true, status: 'connected' },
     { id: 'u2', alias: 'Caro', status: 'reconnecting' },
@@ -101,16 +101,18 @@ const room: ParcheRoomViewProps = {
 };
 
 describe('ParcheRoomView (Guía Técnica §5.5)', () => {
-  it('muestra XP y Puntos ILC en marcadores separados, sin total combinado', () => {
+  it('separa el marcador del reto de las activaciones; los puntos son de cada persona', () => {
     render(<ParcheRoomView {...room} />);
     expect(screen.getByRole('region', { name: 'Marcador del reto' })).toHaveTextContent('1.250');
-    expect(screen.getByRole('region', { name: 'Puntos ILC de la mesa' })).toHaveTextContent('500');
-    expect(screen.queryByText('1.750')).not.toBeInTheDocument();
+    const activations = screen.getByRole('region', { name: 'Activaciones de la mesa' });
+    expect(activations).toHaveTextContent('2');
+    expect(activations).toHaveTextContent('Los Puntos ILC van a la billetera de quien activa');
+    expect(screen.queryByText('1.252')).not.toBeInTheDocument();
   });
 
   it('usa el nombre de moneda configurado por el CMS', () => {
-    render(<ParcheRoomView {...room} currencyName="Chupitos" />);
-    expect(screen.getByRole('region', { name: 'Chupitos de la mesa' })).toBeInTheDocument();
+    render(<ParcheRoomView {...room} currencyName="Créditos Origen" />);
+    expect(screen.getByText(/Los Créditos Origen van a la billetera/)).toBeInTheDocument();
   });
 
   it('sin activación comercial (Ruta B) no muestra Puntos ILC ni invita a activar códigos', () => {

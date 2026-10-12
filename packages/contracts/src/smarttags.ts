@@ -63,8 +63,14 @@ export const ClaimResultSchema = z.object({
   balance: z.number().int().min(0),
   campaign: z.object({ slug: z.string(), title: z.string() }),
   claimedAt: z.iso.datetime(),
+  /** La activación se hizo dentro de un Parche y recargó su energía. */
+  parcheRecharged: z.boolean(),
 });
 export type ClaimResult = z.infer<typeof ClaimResultSchema>;
+
+/** Cuerpo opcional de la reclamación: si se activa dentro de un Parche, recarga su energía (Instrucciones §5 paso 5). */
+export const ClaimRequestSchema = z.object({ sessionId: z.uuid().optional() }).default({});
+export type ClaimRequest = z.infer<typeof ClaimRequestSchema>;
 
 /** POST /smarttags/validate (integración ERP — Instrucciones §10). Solo estado del producto; nunca reclama. */
 export const IntegrationValidateRequestSchema = z.object({ token: SmartTagTokenSchema });
