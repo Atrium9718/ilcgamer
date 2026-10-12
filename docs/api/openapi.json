@@ -522,6 +522,758 @@
         ]
       }
     },
+    "/api/v1/games": {
+      "get": {
+        "operationId": "GamesController_games",
+        "parameters": [
+          {
+            "name": "campaignSlug",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Juegos"
+        ]
+      }
+    },
+    "/api/v1/games/start": {
+      "post": {
+        "operationId": "GamesController_start",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Juegos"
+        ]
+      }
+    },
+    "/api/v1/missions/{id}/submit": {
+      "post": {
+        "operationId": "GamesController_submit",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Juegos"
+        ]
+      }
+    },
+    "/api/v1/missions/{id}": {
+      "get": {
+        "operationId": "GamesController_mission",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Juegos"
+        ]
+      }
+    },
+    "/api/v1/games/provider-callback": {
+      "post": {
+        "operationId": "GamesController_providerCallback",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules": {
+      "get": {
+        "operationId": "AdminGamesController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      },
+      "post": {
+        "operationId": "AdminGamesController_register",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules/{slug}/versions/{version}/test": {
+      "post": {
+        "operationId": "AdminGamesController_test",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules/{slug}/versions/{version}/approvals": {
+      "post": {
+        "operationId": "AdminGamesController_decide",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules/{slug}/versions/{version}/activate": {
+      "post": {
+        "operationId": "AdminGamesController_activate",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules/{slug}/deactivate": {
+      "post": {
+        "operationId": "AdminGamesController_deactivate",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/defaults": {
+      "get": {
+        "operationId": "AdminGamesController_defaults",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      },
+      "put": {
+        "operationId": "AdminGamesController_setDefaults",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules/{slug}/provider-secret": {
+      "post": {
+        "operationId": "AdminGamesController_secret",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/modules/{slug}/provider-secret/rotate": {
+      "post": {
+        "operationId": "AdminGamesController_rotate",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/admin/games/guide": {
+      "get": {
+        "operationId": "AdminGamesController_guide",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Juegos"
+        ]
+      }
+    },
+    "/api/v1/wallet": {
+      "get": {
+        "operationId": "EconomyController_wallet",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Economía"
+        ]
+      }
+    },
+    "/api/v1/profile/progress": {
+      "get": {
+        "operationId": "EconomyController_progress",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/accounts": {
+      "get": {
+        "operationId": "AdminEconomyController_account",
+        "parameters": [
+          {
+            "name": "claimId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/entries/{id}/reverse": {
+      "post": {
+        "operationId": "AdminEconomyController_reverse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/reconciliation": {
+      "get": {
+        "operationId": "AdminEconomyController_reconcile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/badges": {
+      "get": {
+        "operationId": "AdminEconomyController_badges",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      },
+      "post": {
+        "operationId": "AdminEconomyController_createBadge",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/sessions": {
+      "post": {
+        "operationId": "ParcheController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/join": {
+      "post": {
+        "operationId": "ParcheController_joinByPin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/join": {
+      "post": {
+        "operationId": "ParcheController_joinByInvite",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}": {
+      "get": {
+        "operationId": "ParcheController_state",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/leave": {
+      "post": {
+        "operationId": "ParcheController_leave",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/close": {
+      "post": {
+        "operationId": "ParcheController_close",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
+    "/api/v1/sessions/{id}/events": {
+      "get": {
+        "operationId": "ParcheController_events",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "El Parche"
+        ]
+      }
+    },
     "/api/v1/product-codes/{token}/status": {
       "get": {
         "operationId": "CodesController_status",
@@ -953,350 +1705,6 @@
           "Consola · Smart Tags"
         ]
       }
-    },
-    "/api/v1/sessions": {
-      "post": {
-        "operationId": "ParcheController_create",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/sessions/join": {
-      "post": {
-        "operationId": "ParcheController_joinByPin",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/sessions/{id}/join": {
-      "post": {
-        "operationId": "ParcheController_joinByInvite",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/sessions/{id}": {
-      "get": {
-        "operationId": "ParcheController_state",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/sessions/{id}/leave": {
-      "post": {
-        "operationId": "ParcheController_leave",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/sessions/{id}/close": {
-      "post": {
-        "operationId": "ParcheController_close",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/sessions/{id}/events": {
-      "get": {
-        "operationId": "ParcheController_events",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "El Parche"
-        ]
-      }
-    },
-    "/api/v1/wallet": {
-      "get": {
-        "operationId": "EconomyController_wallet",
-        "parameters": [
-          {
-            "name": "cursor",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Economía"
-        ]
-      }
-    },
-    "/api/v1/profile/progress": {
-      "get": {
-        "operationId": "EconomyController_progress",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Economía"
-        ]
-      }
-    },
-    "/api/v1/admin/economy/accounts": {
-      "get": {
-        "operationId": "AdminEconomyController_account",
-        "parameters": [
-          {
-            "name": "claimId",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "userId",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Consola · Economía"
-        ]
-      }
-    },
-    "/api/v1/admin/economy/entries/{id}/reverse": {
-      "post": {
-        "operationId": "AdminEconomyController_reverse",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Consola · Economía"
-        ]
-      }
-    },
-    "/api/v1/admin/economy/reconciliation": {
-      "get": {
-        "operationId": "AdminEconomyController_reconcile",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Consola · Economía"
-        ]
-      }
-    },
-    "/api/v1/admin/economy/badges": {
-      "get": {
-        "operationId": "AdminEconomyController_badges",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Consola · Economía"
-        ]
-      },
-      "post": {
-        "operationId": "AdminEconomyController_createBadge",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "tags": [
-          "Consola · Economía"
-        ]
-      }
     }
   },
   "info": {
@@ -1340,6 +1748,8 @@
                   "CODE_NOT_AVAILABLE",
                   "CLAIM_LIMIT_REACHED",
                   "ACCOUNT_REQUIRED",
+                  "GAME_NOT_AVAILABLE",
+                  "GAME_LIMIT_REACHED",
                   "SESSION_NOT_FOUND",
                   "SESSION_EXPIRED",
                   "SESSION_PIN_INVALID",

@@ -127,6 +127,14 @@ export const CampaignDraftSchema = z
     rules: CampaignRulesSchema,
     theme: CampaignThemeSchema,
     dataUsage: DataUsageSchema.default({ location: false, extraData: false }),
+    /**
+     * Juegos disponibles en esta campaña (identificadores del catálogo). Como máximo 2 de Ruta B por persona y
+     * campaña (Instrucciones §13.2): la API lo valida al guardar y todos deben estar activos al publicar.
+     */
+    modules: z
+      .array(z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/))
+      .max(10)
+      .default([]),
   })
   .strict()
   .refine((d) => d.endsAt > d.startsAt, { message: 'La campaña debe terminar después de empezar.', path: ['endsAt'] });

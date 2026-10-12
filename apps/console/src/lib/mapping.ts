@@ -192,6 +192,7 @@ export function emptyEditorValue(): CampaignEditorValue {
     pointsExpiryDays: null,
     activationsPerUserPerDay: 3,
     xpPerActivation: null,
+    modules: [],
     themeMode: 'dark',
     themeBrand: 'ilc',
     accent: null,
@@ -225,6 +226,7 @@ export function viewToEditor(c: CampaignView): CampaignEditorValue {
     pointsExpiryDays: d.rules.pointsExpiryDays ?? null,
     activationsPerUserPerDay: d.rules.limits.activationsPerUserPerDay,
     xpPerActivation: d.rules.xpPerActivation ?? null,
+    modules: d.modules,
     themeMode: d.theme.mode,
     themeBrand: d.theme.brand,
     accent: d.theme.brandColors?.['brand-accent'] ?? null,
@@ -270,6 +272,7 @@ export function editorToDraft(v: CampaignEditorValue, base?: CampaignDraft): Cam
     },
     theme: { mode: v.themeMode, brand: v.themeBrand, ...(Object.keys(brandColors).length ? { brandColors } : {}) },
     dataUsage: { location: v.location, extraData: v.extraData },
+    modules: v.modules,
   };
 }
 

@@ -116,6 +116,7 @@ export const EDITOR_DEMO: CampaignEditorValue = {
   pointsExpiryDays: null,
   activationsPerUserPerDay: 3,
   xpPerActivation: 25,
+  modules: [],
   themeMode: 'dark',
   themeBrand: 'aguardiente-amarillo',
   accent: null,
@@ -251,4 +252,71 @@ export const BADGES_DEMO = [
   { slug: 'guardian-del-bosque', name: 'Guardián del bosque', icon: 'filter_vintage', awarded: 124 },
   { slug: 'lector-de-pistas', name: 'Lector de pistas', icon: 'menu_book', awarded: 87 },
   { slug: 'parche-cooperativo', name: 'Parche cooperativo', icon: 'diversity_3', awarded: 40 },
+];
+
+export const MODULES_DEMO: import('./GamesView.tsx').ModuleRow[] = [
+  {
+    moduleId: 'trivia-origen',
+    title: 'Trivia del origen',
+    provider: 'ILC propio',
+    route: 'A',
+    delivery: 'engine',
+    activeVersion: '1.0.0',
+    versions: [
+      {
+        version: '1.0.0',
+        status: 'ACTIVO',
+        approvals: [
+          { kind: 'MARCA', required: true, status: 'approved', note: null },
+          { kind: 'JURIDICA', required: true, status: 'approved', note: null },
+          { kind: 'PRIVACIDAD', required: false, status: 'not_required', note: null },
+        ],
+      },
+    ],
+  },
+  {
+    moduleId: 'explorador',
+    title: 'El Explorador · Ruta del Origen',
+    provider: 'ILC propio',
+    route: 'B',
+    delivery: 'engine',
+    activeVersion: null,
+    versions: [
+      {
+        version: '0.9.0',
+        status: 'EN_PRUEBA',
+        approvals: [
+          { kind: 'MARCA', required: true, status: 'pending', note: null },
+          { kind: 'JURIDICA', required: true, status: 'rejected', note: 'Falta la advertencia legal' },
+        ],
+      },
+    ],
+  },
+  {
+    moduleId: 'maestros-sabor',
+    title: 'Maestros de sabor',
+    provider: 'Branded Mini Games',
+    route: 'B',
+    delivery: 'iframe',
+    activeVersion: '1.1.0',
+    versions: [
+      {
+        version: '1.1.0',
+        status: 'ACTIVO',
+        approvals: [
+          { kind: 'MARCA', required: true, status: 'approved', note: null },
+          { kind: 'JURIDICA', required: true, status: 'approved', note: null },
+          { kind: 'PRIVACIDAD', required: true, status: 'approved', note: null },
+        ],
+      },
+      {
+        version: '1.0.0',
+        status: 'DESACTIVADO',
+        approvals: [
+          { kind: 'MARCA', required: true, status: 'approved', note: null },
+          { kind: 'JURIDICA', required: true, status: 'approved', note: null },
+        ],
+      },
+    ],
+  },
 ];

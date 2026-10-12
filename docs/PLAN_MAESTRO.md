@@ -240,11 +240,16 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Verificado: 229 pruebas, axe 118 combinaciones sin violaciones, y E2E con dos celulares (PIN erróneo, unión, Bea visible para Ana en vivo, QR, reconexión, cierre visto en vivo).
 - [ ] Pendiente: el "marcador del reto" se alimenta con el motor de juegos (Paso 9); la lectura de QR con cámara usa BarcodeDetector (si el navegador no lo ofrece, se usa la cámara nativa o el PIN).
 
-### Paso 9 — Motor de juegos + juegos iniciales
-- Manifiesto + Game SDK + contenedor iframe sandbox; validación de resultados en servidor.
-- Ruta A: **Trivia** y **Ruleta** (luego Charadas, Verdad o reto con contenido revisado).
-- Ruta B: **El Explorador / Ruta del Origen** (capítulos, XP, insignias); regla máx. 2 por usuario/contexto.
-- Documento `docs/INTEGRACION_JUEGOS.md` visible también en la consola (Instrucciones §13.1).
+### Paso 9 — Motor de juegos + juegos iniciales ✅
+- [x] **Manifiesto cerrado** por módulo/versión (`packages/contracts/src/games.ts`): ruta, entrega (`engine` o `iframe`), topes de puntuación, permisos, política de datos, accesibilidad. Reglas imposibles de saltar por esquema: un juego de Ruta A no puede dar XP; ningún juego emite Puntos ILC.
+- [x] **Ciclo de vida con gobierno**: registrar (TI) → probar (Admin de Marca) → aprobar Marca + Jurídica (+ Privacidad si recoge datos, rastrea o pide permisos) ligado al hash exacto del manifiesto y con separación de funciones → activar / desactivar con motivo / volver a una versión anterior. Una sola versión activa por módulo. Todo en auditoría.
+- [x] **Motores propios** (el servidor decide y nunca envía la respuesta correcta): Trivia y Ruleta (Ruta A, suman al marcador del Parche) y El Explorador por capítulos (Ruta B: XP una sola vez por capítulo e insignia al terminar). Tope de **2 experiencias de Ruta B por persona y contexto** (campaña o Parche); sin campaña se usan los juegos por defecto de la plataforma.
+- [x] **Misiones**: inicio idempotente, una abierta por persona y módulo, tope de partidas por día, modo prueba para el equipo editorial que no otorga nada, resultado verificado en servidor.
+- [x] **Game SDK** (`@ilc/game-sdk`, 1.2 KB): protocolo `postMessage` validado por ventana y origen, con límite de ritmo, nunca `"*"`. Contenedor `iframe` con `sandbox="allow-scripts allow-same-origin"`, `allow` solo con permisos aprobados, referrer de solo origen, HTTPS y origen distinto al de la app. El navegador nunca informa puntajes: el servidor del proveedor confirma con **callback firmado** (HMAC-SHA256 del JSON canónico, ventana de ±5 min, un solo uso, topes del manifiesto; secreto derivado por módulo y rotable).
+- [x] **Guía `docs/INTEGRACION_JUEGOS.md`** (agregar, modificar, probar, activar, revertir; requisitos de compatibilidad), visible en la consola en *Juegos → Guía de integración*; ejemplos de manifiestos y un módulo iframe de muestra en `games/ejemplos/`.
+- [x] **UI** (Stitch 20–23): Trivia, Ruleta, Explorador por capítulos, resultado verificado, catálogo real por contexto de campaña/Parche; consola *Juegos* (catálogo, aprobaciones, activar/desactivar/volver, juegos por defecto, secreto del proveedor, registrar con errores por campo) y sección *Juegos* en el editor de campañas (máx. 2 de Ruta B). Una campaña no se publica si algún juego suyo no está activo.
+- [x] Verificado: 281 pruebas (API 142 contra PostgreSQL), axe 142 combinaciones sin violaciones WCAG AA, y E2E en Chromium con la API real: catálogo → Trivia → Ruleta → Explorador (reintento sin penalidad, XP e insignia) → módulo de proveedor en otro origen HTTPS (handshake, "verificando", firma falsa rechazada, callback firmado → "verificado") y consola con la guía y errores de manifiesto.
+- [ ] Pendiente: Charadas y Verdad o reto cultural (requieren contenido revisado por Marca y Jurídica); contenido real de marca para Trivia y Explorador (hoy hay solo contenido de **prueba**); TI debe permitir el origen de cada proveedor en `frame-src` de la CSP al activarlo.
 
 ### Paso 10 — Recompensas e inventario
 - Catálogo, reserva atómica, canje, entrega, alertas de stock bajo.

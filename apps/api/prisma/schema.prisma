@@ -448,12 +448,15 @@ model ApprovalRecord {
 // ─────────────────────── Juegos y misiones ───────────────────────
 
 model Module {
-  id        String          @id @default(uuid(7)) @db.Uuid
-  slug      String          @unique @db.VarChar(60)
-  provider  String          @db.VarChar(60)
-  route     Route
-  versions  ModuleVersion[]
-  createdAt DateTime        @default(now())
+  id          String            @id @default(uuid(7)) @db.Uuid
+  slug        String            @unique @db.VarChar(60)
+  provider    String            @db.VarChar(60)
+  route       Route
+  /// Época del secreto con el que el proveedor firma sus confirmaciones; rotar = incrementarla.
+  secretEpoch Int               @default(1)
+  versions    ModuleVersion[]
+  missions    MissionProgress[]
+  createdAt   DateTime          @default(now())
 
   @@map("modules")
 }
@@ -467,6 +470,11 @@ model ModuleVersion {
   status        ModuleStatus      @default(BORRADOR)
   manifest      Json
   packageDigest String?           @db.VarChar(128)
+  /// SHA-256 del manifiesto canónico: una aprobación solo vale para este contenido exacto (§5.4).
+  manifestHash  String            @default("") @db.VarChar(64)
+  /// Quien registró y quien envió a prueba la versión (separación de funciones al aprobar).
+  createdById   String?           @db.Uuid
+  submittedById String?           @db.Uuid
   createdAt     DateTime          @default(now())
   approvals     ApprovalRecord[]
   missions      MissionProgress[]
@@ -493,9 +501,20 @@ model MissionProgress {
   idempotencyKey    String           @unique @db.VarChar(80)
   startedAt         DateTime         @default(now())
   completedAt       DateTime?
+  /// Módulo al que pertenece (sobrevive a los cambios de versión: el progreso es del módulo).
+  moduleId          String?          @db.Uuid
+  module            Module?          @relation(fields: [moduleId], references: [id])
+  /// Capítulo (motor de capítulos). Un capítulo se completa una sola vez por persona.
+  chapterId         String?          @db.VarChar(30)
+  /// Estado PRIVADO del servidor (claves de respuesta, sorteo). Nunca se envía al cliente.
+  state             Json?
+  /// Pruebas del equipo editorial: no otorgan nada.
+  preview           Boolean          @default(false)
 
   @@index([userId])
   @@index([sessionId])
+  /// Límite de intentos por día (§5.4: reglas de intentos y límites del módulo).
+  @@index([userId, moduleId, startedAt])
   @@map("mission_progress")
 }
 

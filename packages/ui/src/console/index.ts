@@ -23,6 +23,16 @@ export {
   type ReconciliationView,
 } from './EconomyView.tsx';
 export {
+  type ApprovalKindView,
+  type GamesTab,
+  GamesView,
+  type GamesViewProps,
+  MODULE_STATUS_LABEL,
+  type ModuleRow,
+  type ModuleStatusView,
+  type ModuleVersionRow,
+} from './GamesView.tsx';
+export {
   type BatchRow,
   type GenerateValue,
   type ImportPreviewView,

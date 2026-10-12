@@ -29,6 +29,8 @@ export interface CampaignEditorValue {
   activationsPerUserPerDay: number;
   /** XP adicional por activación: solo campañas mixtas (vínculo explícito de economías). */
   xpPerActivation: number | null;
+  /** Juegos de la campaña (identificadores del catálogo). Máximo 2 de Ruta B. */
+  modules: string[];
   themeMode: 'dark' | 'light';
   themeBrand: string;
   accent: string | null;
@@ -41,6 +43,8 @@ export interface CampaignEditorViewProps {
   value: CampaignEditorValue;
   onChange: (value: CampaignEditorValue) => void;
   brandOptions: Array<{ slug: string; label: string }>;
+  /** Juegos activos que se pueden asignar (Instrucciones §13.1). Máximo 2 de Ruta B por campaña. */
+  moduleOptions?: Array<{ id: string; label: string; route: 'A' | 'B' }>;
   /** Errores por campo devueltos por la API ("draft.rules.energyMinutes" → mensajes). */
   fieldErrors?: Record<string, string[]>;
   error?: string;
@@ -48,6 +52,8 @@ export interface CampaignEditorViewProps {
   onSave: () => void;
   onCancel: () => void;
 }
+
+const MAX_ROUTE_B = 2;
 
 const CHANNELS: ReadonlyArray<{ id: CampaignEditorValue['channels'][number]; label: string }> = [
   { id: 'ON_PREMISE', label: 'On-premise (bares, discotecas)' },
@@ -122,7 +128,18 @@ function NumberField({
  * Vista pura: crear/editar el borrador de una campaña. Fuentes: Instrucciones §2, §6, §9, §11; Guía Técnica §5.3, §5.7, §18.
  * Las reglas solo admiten las mecánicas soportadas, con rangos acotados (sin premios por velocidad o cantidad de consumo).
  */
-export function CampaignEditorView({ mode, value: v, onChange, brandOptions, fieldErrors = {}, error, saving, onSave, onCancel }: CampaignEditorViewProps) {
+export function CampaignEditorView({
+  mode,
+  value: v,
+  onChange,
+  brandOptions,
+  moduleOptions = [],
+  fieldErrors = {},
+  error,
+  saving,
+  onSave,
+  onCancel,
+}: CampaignEditorViewProps) {
   const set = <K extends keyof CampaignEditorValue>(key: K, val: CampaignEditorValue[K]) => onChange({ ...v, [key]: val });
   const fe = (path: string) => fieldErrors[path]?.[0] ?? fieldErrors[`draft.${path}`]?.[0];
   const submit = (e: FormEvent) => {
@@ -463,6 +480,37 @@ export function CampaignEditorView({ mode, value: v, onChange, brandOptions, fie
           </div>
         )}
       </Section>
+
+      {moduleOptions.length > 0 && (
+        <Section
+          title="Juegos"
+          icon="sports_esports"
+          note="Si no eliges ninguno, la campaña usa los juegos por defecto de la plataforma. Cada persona tiene como máximo 2 experiencias de Ruta B por campaña."
+        >
+          <fieldset className="space-y-2">
+            <legend className="sr-only">Juegos de la campaña</legend>
+            {moduleOptions.map((m) => {
+              const on = v.modules.includes(m.id);
+              const bSelected = moduleOptions.filter((o) => o.route === 'B' && v.modules.includes(o.id)).length;
+              const blocked = !on && m.route === 'B' && bSelected >= MAX_ROUTE_B;
+              return (
+                <Checkbox
+                  key={m.id}
+                  label={`${m.label} · Ruta ${m.route}${blocked ? ' (límite de 2 de Ruta B)' : ''}`}
+                  checked={on}
+                  disabled={blocked}
+                  onChange={(checked) => set('modules', checked ? [...v.modules, m.id] : v.modules.filter((x) => x !== m.id))}
+                />
+              );
+            })}
+            {fe('modules') && (
+              <p role="alert" className="font-body-md text-[13px] text-error">
+                {fe('modules')}
+              </p>
+            )}
+          </fieldset>
+        </Section>
+      )}
 
       <Section title="Tema de la campaña" icon="palette" note="Solo cambia colores de marca; los colores funcionales y de estado se mantienen (DESIGN.md).">
         <div className="grid grid-cols-3 gap-4 items-end">

@@ -15,6 +15,7 @@ import {
 import { Injectable } from '@nestjs/common';
 import { AuditService } from '../audit/audit.service.ts';
 import { DomainError } from '../common/domain-error.ts';
+import { ModulesService } from '../games/modules.service.ts';
 import type { ApprovalRecord, Campaign, CampaignVersion, Prisma } from '../generated/prisma/client.ts';
 import type { CampaignStatus } from '../generated/prisma/enums.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
@@ -67,7 +68,20 @@ export class CampaignsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly modules: ModulesService,
   ) {}
+
+  /** Juegos de la campaña que todavía no tienen una versión activa: bloquean la publicación (§5.4). */
+  private async inactiveModules(version: { content: unknown }): Promise<string[]> {
+    const slugs = ((version.content as { modules?: string[] }).modules ?? []) as string[];
+    if (slugs.length === 0) return [];
+    const active = await this.prisma.moduleVersion.findMany({
+      where: { status: 'ACTIVO', module: { slug: { in: slugs } } },
+      select: { module: { select: { slug: true } } },
+    });
+    const ok = new Set(active.map((a) => a.module.slug));
+    return slugs.filter((s) => !ok.has(s)).map((s) => `el juego ${s} no está activo`);
+  }
 
   // ───────────── Lectura ─────────────
 
@@ -127,6 +141,7 @@ export class CampaignsService {
     if (await this.prisma.campaign.findUnique({ where: { slug: input.slug } }))
       throw new DomainError('CONFLICT', 'Ya existe una campaña con ese identificador.');
     assertEconomyLink(input.route, input.draft);
+    await this.modules.assertModuleList(input.draft.modules, 'draft.modules');
     const campaign = await this.prisma.$transaction(async (tx) => {
       const c = await tx.campaign.create({ data: { slug: input.slug, internalName: input.draft.internalName, route: input.route, status: 'BORRADOR' } });
       await tx.campaignVersion.create({ data: { campaignId: c.id, version: 1, createdById: actor.userId, ...denormalize(input.draft) } });
@@ -143,6 +158,7 @@ export class CampaignsService {
     const working = this.working(campaign);
     if (working.state !== 'BORRADOR') throw new DomainError('CONFLICT', 'Esta versión ya está en revisión o aprobada. Crea una nueva versión para cambiarla.');
     assertEconomyLink(campaign.route, draft);
+    await this.modules.assertModuleList(draft.modules, 'draft.modules');
     await this.prisma.$transaction(async (tx) => {
       await tx.campaignVersion.update({ where: { id: working.id }, data: denormalize(draft) });
       await tx.campaign.update({ where: { id: campaign.id }, data: { internalName: draft.internalName } });
@@ -277,7 +293,7 @@ export class CampaignsService {
   async publish(actor: Actor, slug: string, checklist: Record<string, true>, now = new Date()): Promise<CampaignView> {
     const campaign = await this.findCampaign(slug);
     const working = this.working(campaign);
-    const missing = this.publishMissing(working, checklist);
+    const missing = [...this.publishMissing(working, checklist), ...(await this.inactiveModules(working))];
     if (missing.length) throw new DomainError('CONFLICT', `No se puede publicar: ${missing.join('; ')}.`);
     if (working.endsAt.getTime() <= now.getTime()) throw new DomainError('CONFLICT', 'La ventana de la campaña ya terminó.');
 
@@ -436,7 +452,7 @@ export class CampaignsService {
     const users = approverIds.length ? await this.prisma.user.findMany({ where: { id: { in: approverIds } }, select: { id: true, alias: true } }) : [];
     const aliases = new Map(users.map((u) => [u.id, u.alias]));
     const active = campaign.versions.find((v) => v.id === campaign.activeVersionId);
-    const missing = this.publishMissing(working, null);
+    const missing = [...this.publishMissing(working, null), ...(await this.inactiveModules(working))];
     return {
       id: campaign.id,
       slug: campaign.slug,

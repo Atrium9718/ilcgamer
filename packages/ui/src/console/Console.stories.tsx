@@ -92,10 +92,25 @@ function Editor() {
   const [value, setValue] = useState<CampaignEditorValue>(EDITOR_DEMO);
   return (
     <Shell crumbs={['Campañas', 'Nueva campaña']}>
-      <CampaignEditorView mode="create" value={value} onChange={setValue} brandOptions={BRAND_OPTIONS} onSave={fn()} onCancel={fn()} />
+      <CampaignEditorView
+        mode="create"
+        value={value}
+        onChange={setValue}
+        brandOptions={BRAND_OPTIONS}
+        moduleOptions={MODULE_OPTIONS_DEMO}
+        onSave={fn()}
+        onCancel={fn()}
+      />
     </Shell>
   );
 }
+const MODULE_OPTIONS_DEMO = [
+  { id: 'trivia-origen', label: 'Trivia del origen', route: 'A' as const },
+  { id: 'explorador', label: 'El Explorador', route: 'B' as const },
+  { id: 'maestros-sabor', label: 'Maestros de sabor', route: 'B' as const },
+  { id: 'tercero', label: 'Tercera experiencia', route: 'B' as const },
+];
+
 export const EditorDeCampana: Story = { render: () => <Editor /> };
 
 function Login() {

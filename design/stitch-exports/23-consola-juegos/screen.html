@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>23 · Consola · Juegos (escritorio) - ILC Origen</title>
+  <!-- Google Fonts: EB Garamond + Plus Jakarta Sans + Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            papel: '#FAF7F0',
+            superficie: '#F1ECE0',
+            'superficie-borde': '#EAE4D6',
+            'superficie-hover': '#E4DEC[...]',
+            texto: '#13201B',
+            'texto-secundario': '#52635B',
+            'texto-atenuado': '#788981',
+            primario: '#6E561E',
+            'primario-hover': '#5B4719',
+            'sidebar-bg': '#13201B',
+            'verde-bosque': '#2F4941',
+            'roble': '#9A4F17',
+            error: '#B3261E',
+            'verde-exito': '#1F7A4D'
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="bg-papel text-texto font-sans min-h-screen antialiased flex flex-col">
+
+  <div class="flex flex-1 min-h-[920px]">
+    <!-- SIDEBAR VERDE BOSQUE #13201B -->
+    <aside class="w-64 bg-sidebar-bg text-gray-200 flex flex-col justify-between shrink-0 border-r border-[#1e2f28]">
+      <div>
+        <!-- Sello ILC Circular Oficial -->
+        <div class="p-6 border-b border-[#1f332a] flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-full border border-[#b89b5b]/70 flex items-center justify-center bg-[#182923] shadow-inner shrink-0">
+            <span class="font-serif text-[#d4b673] tracking-widest font-semibold text-base">ILC</span>
+          </div>
+          <div>
+            <div class="font-serif text-lg tracking-wide text-[#f1ece0] leading-tight font-medium">Consola</div>
+            <div class="text-[11px] font-sans tracking-widest text-[#a69265] uppercase font-semibold">Gobernanza & CMS</div>
+          </div>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="py-5 px-3 space-y-1">
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">campaign</span>
+            <span>Campañas</span>
+          </a>
+
+          <!-- Juegos (Pestaña Activa) -->
+          <a href="#" class="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-semibold text-[#f1ece0] bg-[#23382f] border-l-4 border-[#b89b5b] shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-[#d4b673] fill">sports_esports</span>
+              <span>Juegos</span>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-[#d4b673]"></span>
+          </a>
+
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">card_giftcard</span>
+            <span>Recompensas</span>
+          </a>
+
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">qr_code_2</span>
+            <span>Smart Tags</span>
+          </a>
+
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">storefront</span>
+            <span>Comercios</span>
+          </a>
+
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">account_balance</span>
+            <span>Economía</span>
+          </a>
+
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">monitoring</span>
+            <span>Analítica</span>
+          </a>
+
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-[#1a2d25] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">verified_user</span>
+            <span>Auditoría</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Footer lateral de gobernanza -->
+      <div class="p-4 mx-3 mb-4 rounded-xl bg-[#0c1613] border border-[#1f332a] text-xs">
+        <div class="flex items-center gap-2 text-[#d4b673] font-semibold text-[11px] mb-1">
+          <span class="material-symbols-outlined text-[16px]">gavel</span>
+          <span>Guía Técnica §5.4</span>
+        </div>
+        <p class="text-[11px] text-gray-400 leading-relaxed">
+          Los módulos de terceros o desarrollo interno requieren contrato validado y firma de paquete.
+        </p>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+      <!-- Barra superior / Breadcrumb -->
+      <header class="h-16 px-8 border-b border-superficie-borde flex items-center justify-between bg-papel">
+        <div class="flex items-center gap-2 text-xs text-texto-secundario">
+          <span>ILC Origen</span>
+          <span>/</span>
+          <span>Consola Central</span>
+          <span>/</span>
+          <span class="text-texto font-semibold">Módulos y Catálogo de Juegos</span>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-superficie border border-superficie-borde text-xs text-texto-secundario">
+            <span class="w-2 h-2 rounded-full bg-verde-exito"></span>
+            <span>Contrato Sandbox: <strong class="text-texto">Activo v1.2</strong></span>
+          </div>
+
+          <div class="h-4 w-px bg-superficie-borde"></div>
+
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-verde-bosque text-white font-medium flex items-center justify-center text-xs">
+              AD
+            </div>
+            <div class="text-xs">
+              <div class="font-semibold text-texto leading-none">Administrador</div>
+              <div class="text-[10px] text-texto-secundario">Trade Marketing & TI</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO CENTRAL -->
+      <div class="p-8 max-w-[1360px] w-full mx-auto space-y-7 flex-1">
+        
+        <!-- Header de Sección -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-superficie-borde">
+          <div>
+            <h1 class="font-serif text-3xl md:text-4xl font-normal text-texto tracking-tight leading-tight">Juegos</h1>
+            <p class="text-texto-secundario text-sm mt-1">
+              Catálogo de módulos con aprobación de Marca y Jurídica antes de activarse.
+            </p>
+          </div>
+
+          <!-- Acción registrar / nuevo módulo -->
+          <div class="flex items-center gap-3">
+            <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-superficie border border-superficie-borde text-texto hover:bg-superficie-hover text-sm font-medium transition-colors shadow-sm">
+              <span class="material-symbols-outlined text-[18px]">menu_book</span>
+              <span>Ver contrato OpenAPI</span>
+            </button>
+            <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primario hover:bg-primario-hover text-white text-sm font-semibold transition-colors shadow-sm">
+              <span class="material-symbols-outlined text-[18px]">add_box</span>
+              <span>Registrar nuevo módulo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pestañas de Navegación del Módulo -->
+        <div class="flex items-center gap-1 border-b border-superficie-borde">
+          <button class="px-5 py-3 text-sm font-semibold text-texto border-b-2 border-primario bg-superficie/40 rounded-t-lg transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-primario">grid_view</span>
+            <span>Catálogo</span>
+            <span class="ml-1.5 px-2 py-0.5 rounded-full text-[11px] bg-superficie font-bold text-texto">6</span>
+          </button>
+          <button class="px-5 py-3 text-sm font-medium text-texto-secundario hover:text-texto rounded-t-lg transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">post_add</span>
+            <span>Registrar módulo</span>
+          </button>
+          <button class="px-5 py-3 text-sm font-medium text-texto-secundario hover:text-texto rounded-t-lg transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">code</span>
+            <span>Guía de integración</span>
+          </button>
+        </div>
+
+        <!-- Cuadrícula Principal: Tabla Catálogo + Panel Lateral Regla Ruta B -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- COLUMNA IZQUIERDA: TABLA DEL CATÁLOGO (8 cols) -->
+          <section class="lg:col-span-8 bg-superficie border border-superficie-borde rounded-xl shadow-sm overflow-hidden">
+            <!-- Barra de Filtros y Búsqueda -->
+            <div class="p-4 border-b border-superficie-borde bg-superficie flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2 flex-1 min-w-[240px]">
+                <div class="relative w-full">
+                  <span class="material-symbols-outlined absolute left-3 top-2.5 text-texto-atenuado text-[18px]">search</span>
+                  <input type="text" placeholder="Buscar por nombre, identificador o proveedor..." 
+                         class="w-full pl-9 pr-3 py-1.5 rounded-lg bg-papel border border-superficie-borde text-xs text-texto placeholder:text-texto-atenuado focus:outline-none focus:border-primario focus:ring-1 focus:ring-primario">
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-texto-secundario">Filtrar por ruta:</span>
+                <button class="px-2.5 py-1 rounded-md text-xs font-semibold bg-papel border border-superficie-borde text-texto">Todas</button>
+                <button class="px-2.5 py-1 rounded-md text-xs font-medium text-texto-secundario hover:bg-papel">Ruta A</button>
+                <button class="px-2.5 py-1 rounded-md text-xs font-medium text-texto-secundario hover:bg-papel">Ruta B</button>
+              </div>
+            </div>
+
+            <!-- Tabla de Módulos -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-papel/80 border-b border-superficie-borde text-texto-secundario uppercase text-[10px] tracking-wider font-semibold">
+                    <th class="py-3 px-4">Módulo</th>
+                    <th class="py-3 px-3">Ruta</th>
+                    <th class="py-3 px-3">Proveedor</th>
+                    <th class="py-3 px-2">Versión</th>
+                    <th class="py-3 px-3">Estado</th>
+                    <th class="py-3 px-3">Aprobaciones</th>
+                    <th class="py-3 px-4 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-superficie-borde">
+                  
+                  <!-- FILA 1: Trivia del origen (Activo) -->
+                  <tr class="hover:bg-papel/60 transition-colors">
+                    <td class="py-3.5 px-4">
+                      <div class="font-semibold text-texto text-sm">Trivia del origen</div>
+                      <div class="font-mono text-[11px] text-texto-secundario">trivia-origen</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded font-bold text-[10px] bg-[#6E561E]/15 text-[#5B4719] border border-[#6E561E]/30">
+                        Ruta A
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-texto-secundario font-medium">
+                      ILC propio
+                    </td>
+                    <td class="py-3.5 px-2 font-mono text-texto-secundario">
+                      v1.0.0
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1F7A4D]/15 text-[#1F7A4D] border border-[#1F7A4D]/25">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#1F7A4D]"></span>
+                        Activo
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <!-- Tres puntos: Marca, Jurídica, Privacidad -->
+                      <div class="flex items-center gap-1.5" title="Marca: Aprobado | Jurídica: Aprobado | Privacidad: Aprobado">
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Marca: Aprobada"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Jurídica: Aprobada"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Privacidad: Aprobada"></span>
+                      </div>
+                      <div class="text-[9px] text-texto-atenuado mt-0.5 font-medium">M · J · P</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
+                      <button class="text-texto-secundario hover:text-texto font-medium hover:underline">Probar</button>
+                      <button class="text-error hover:text-red-800 font-semibold hover:underline">Desactivar</button>
+                    </td>
+                  </tr>
+
+                  <!-- FILA 2: La ruleta del Parche (En prueba) -->
+                  <tr class="hover:bg-papel/60 transition-colors bg-superficie/30">
+                    <td class="py-3.5 px-4">
+                      <div class="font-semibold text-texto text-sm">La ruleta del Parche</div>
+                      <div class="font-mono text-[11px] text-texto-secundario">ruleta-parche</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded font-bold text-[10px] bg-[#6E561E]/15 text-[#5B4719] border border-[#6E561E]/30">
+                        Ruta A
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-texto-secundario font-medium">
+                      ILC propio
+                    </td>
+                    <td class="py-3.5 px-2 font-mono text-texto-secundario">
+                      v1.0.0
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#9A4F17]/15 text-[#9A4F17] border border-[#9A4F17]/25">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#9A4F17]"></span>
+                        En prueba
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <div class="flex items-center gap-1.5" title="Marca: Aprobado | Jurídica: Pendiente | Privacidad: Aprobado">
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Marca: Aprobada"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500" title="Jurídica: En revisión"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Privacidad: Aprobada"></span>
+                      </div>
+                      <div class="text-[9px] text-texto-atenuado mt-0.5 font-medium">M · J · P</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
+                      <button class="text-texto-secundario hover:text-texto font-semibold hover:underline">Probar</button>
+                      <button class="text-texto-atenuado cursor-not-allowed" title="Falta visto bueno de Jurídica">Activar</button>
+                    </td>
+                  </tr>
+
+                  <!-- FILA 3: El Explorador (Aprobado) -->
+                  <tr class="hover:bg-papel/60 transition-colors">
+                    <td class="py-3.5 px-4">
+                      <div class="font-semibold text-texto text-sm">El Explorador</div>
+                      <div class="font-mono text-[11px] text-texto-secundario">explorador-origen</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded font-bold text-[10px] bg-[#2F4941]/15 text-[#2F4941] border border-[#2F4941]/30">
+                        Ruta B
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-texto-secundario font-medium">
+                      ILC propio
+                    </td>
+                    <td class="py-3.5 px-2 font-mono text-texto-secundario">
+                      v1.0.0
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-100 text-blue-800 border border-blue-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                        Aprobado
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <div class="flex items-center gap-1.5" title="Marca: Aprobado | Jurídica: Aprobado | Privacidad: Aprobado">
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Marca: Aprobada"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Jurídica: Aprobada"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito" title="Privacidad: Aprobada"></span>
+                      </div>
+                      <div class="text-[9px] text-texto-atenuado mt-0.5 font-medium">M · J · P</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
+                      <button class="text-texto-secundario hover:text-texto font-medium hover:underline">Probar</button>
+                      <button class="text-verde-bosque hover:text-[#1b302a] font-bold hover:underline">Activar</button>
+                    </td>
+                  </tr>
+
+                  <!-- FILA 4: Maestros de Sabor (Ruta B - v1.1.0 Desactivado / reversión disponible) -->
+                  <tr class="hover:bg-papel/60 transition-colors bg-superficie/20">
+                    <td class="py-3.5 px-4">
+                      <div class="font-semibold text-texto text-sm">Maestros de sabor</div>
+                      <div class="font-mono text-[11px] text-texto-secundario">maestros-mixologia</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded font-bold text-[10px] bg-[#2F4941]/15 text-[#2F4941] border border-[#2F4941]/30">
+                        Ruta B
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-texto-secundario font-medium">
+                      Branded MiniGames
+                    </td>
+                    <td class="py-3.5 px-2 font-mono text-texto-secundario">
+                      v1.1.0
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-200 text-gray-700 border border-gray-300">
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+                        Desactivado
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <div class="flex items-center gap-1.5" title="Marca: Aprobado | Jurídica: Aprobado | Privacidad: Aprobado">
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-verde-exito"></span>
+                      </div>
+                      <div class="text-[9px] text-texto-atenuado mt-0.5 font-medium">M · J · P</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
+                      <button class="text-texto-secundario hover:text-texto font-medium hover:underline">Probar</button>
+                      <button class="text-verde-bosque hover:text-[#1b302a] font-medium hover:underline">Activar</button>
+                      <button class="text-roble hover:text-amber-900 font-semibold hover:underline">Volver a esta versión</button>
+                    </td>
+                  </tr>
+
+                  <!-- FILA 5: Charadas de Caldas (Borrador) -->
+                  <tr class="hover:bg-papel/60 transition-colors">
+                    <td class="py-3.5 px-4">
+                      <div class="font-semibold text-texto text-sm">Charadas de Caldas</div>
+                      <div class="font-mono text-[11px] text-texto-secundario">charadas-caldas</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded font-bold text-[10px] bg-[#6E561E]/15 text-[#5B4719] border border-[#6E561E]/30">
+                        Ruta A
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-texto-secundario font-medium">
+                      ILC propio
+                    </td>
+                    <td class="py-3.5 px-2 font-mono text-texto-secundario">
+                      v0.9.0
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        Borrador
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                      <div class="flex items-center gap-1.5" title="Marca: En revisión | Jurídica: No iniciada | Privacidad: No iniciada">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                      </div>
+                      <div class="text-[9px] text-texto-atenuado mt-0.5 font-medium">M · J · P</div>
+                    </td>
+                    <td class="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
+                      <button class="text-texto-secundario hover:text-texto font-medium hover:underline">Probar</button>
+                      <button class="text-texto-atenuado cursor-not-allowed">Activar</button>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Paginador / Estado inferior de tabla -->
+            <div class="p-3.5 border-t border-superficie-borde bg-papel/50 flex items-center justify-between text-xs text-texto-secundario">
+              <div class="flex items-center gap-4">
+                <span>Mostrando <strong>5</strong> módulos configurados</span>
+                <span class="flex items-center gap-1.5 text-[11px] text-texto-atenuado">
+                  <span class="w-2 h-2 rounded-full bg-verde-exito"></span>
+                  <span>Verde: Aprobado</span>
+                  <span class="w-2 h-2 rounded-full bg-amber-500 ml-2"></span>
+                  <span>Ámbar: En revisión</span>
+                  <span class="w-2 h-2 rounded-full bg-gray-300 ml-2"></span>
+                  <span>Gris: No iniciado</span>
+                </span>
+              </div>
+              <div class="flex items-center gap-1">
+                <button class="px-2 py-1 rounded border border-superficie-borde bg-superficie text-texto font-medium">1</button>
+                <button class="px-2 py-1 rounded border border-transparent text-texto-secundario hover:bg-superficie">2</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- COLUMNA DERECHA: REGLA DE RUTA B + SALVAGUARDAS TÉCNICAS (4 cols) -->
+          <aside class="lg:col-span-4 space-y-5">
+            
+            <!-- TARJETA DESTACADA: Regla de Ruta B -->
+            <div class="bg-superficie border-2 border-verde-bosque/30 rounded-xl p-5 shadow-sm relative overflow-hidden">
+              <div class="absolute -right-4 -bottom-4 w-28 h-28 rounded-full bg-verde-bosque/5 pointer-events-none"></div>
+
+              <div class="flex items-center gap-2.5 text-verde-bosque font-semibold text-xs mb-2.5">
+                <span class="material-symbols-outlined text-[20px] text-verde-bosque">shield</span>
+                <span class="uppercase tracking-wider text-[11px]">Gobernanza de Campaña · §13.2</span>
+              </div>
+
+              <h2 class="font-serif text-xl text-texto font-semibold mb-2">Regla de Ruta B</h2>
+
+              <!-- Texto textual solicitado -->
+              <p class="text-sm text-texto leading-relaxed font-normal bg-papel/80 p-3.5 rounded-lg border border-superficie-borde">
+                «Cada persona accede como máximo a 2 experiencias de Ruta B por campaña. Cambiar este límite requiere decisión formal.»
+              </p>
+
+              <!-- Detalles de cumplimiento técnico (§1.2 & §5.4) -->
+              <div class="mt-4 pt-3.5 border-t border-superficie-borde text-xs text-texto-secundario space-y-2">
+                <div class="flex items-start gap-2">
+                  <span class="material-symbols-outlined text-verde-bosque text-[16px] shrink-0 mt-0.5">check_circle</span>
+                  <span>Controlado en servidor: el endpoint de catálogo valida el límite por usuario antes de autorizar el renderizado.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                  <span class="material-symbols-outlined text-roble text-[16px] shrink-0 mt-0.5">lock</span>
+                  <span>Segmentación geográfica y territorial obligatoria para habilitar el acceso al módulo.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TARJETA: Contrato de Integración de Módulos (Guía Técnica §5.4) -->
+            <div class="bg-superficie border border-superficie-borde rounded-xl p-5 shadow-sm">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-serif text-base text-texto font-medium">Contrato del Módulo (§5.4)</h3>
+                <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-papel border border-superficie-borde text-texto-secundario">SDK v1.0</span>
+              </div>
+
+              <ul class="text-xs text-texto-secundario space-y-2.5">
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primario shrink-0 mt-1.5"></span>
+                  <span><strong>Sandbox e iframe aislado:</strong> Integraciones de terceros no acceden a cookies de sesión ni tokens de base de datos.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primario shrink-0 mt-1.5"></span>
+                  <span><strong>Eventos validados por origen:</strong> Inicio, progreso y terminación confirmados vía <code>postMessage</code> estricto.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primario shrink-0 mt-1.5"></span>
+                  <span><strong>Reversión inmediata:</strong> Capacidad de «Volver a esta versión» sin requerir nuevo despliegue en producción.</span>
+                </li>
+              </ul>
+
+              <div class="mt-4 pt-3 border-t border-superficie-borde flex items-center justify-between text-xs">
+                <span class="text-texto-atenuado text-[11px]">Validación OpenAPI 3.1</span>
+                <a href="#" class="text-primario hover:underline font-semibold flex items-center gap-1 text-[11px]">
+                  <span>Ver especificación</span>
+                  <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- TARJETA: Tríada de Aprobaciones Obligatoria -->
+            <div class="bg-papel border border-superficie-borde rounded-xl p-4 text-xs">
+              <div class="font-semibold text-texto mb-1 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-primario">rule</span>
+                <span>Tríada de Aprobación Pre-publicación</span>
+              </div>
+              <p class="text-texto-secundario text-[11px] leading-relaxed">
+                Ningún módulo puede pasar a estado <strong>Activo</strong> sin las 3 firmas digitales registradas en bitácora inmutable:
+                Marca (claims culturales), Jurídica (Ley 30 de 1986 y cero retos de velocidad) y Privacidad (minimización y cookies).
+              </p>
+            </div>
+
+          </aside>
+
+        </div>
+
+      </div>
+
+      <!-- Pie legal corporativo de la consola -->
+      <footer class="h-12 border-t border-superficie-borde px-8 flex items-center justify-between text-[11px] text-texto-secundario bg-papel">
+        <div>
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </div>
+        <div class="flex items-center gap-4 text-texto-atenuado">
+          <span>Industria Licorera de Caldas S.A.</span>
+          <span>·</span>
+          <span>Gobernanza Digital v1.0.4</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ import { IdempotencyKeyGuard } from './common/idempotency.ts';
 import { OriginGuard } from './common/origin.guard.ts';
 import { ConfigModule } from './config/config.module.ts';
 import { EconomyModule } from './economy/economy.module.ts';
+import { GamesModule } from './games/games.module.ts';
 import { HealthModule } from './health/health.module.ts';
 import { IdentityModule } from './identity/identity.module.ts';
 import { ParcheModule } from './parche/parche.module.ts';
@@ -33,6 +34,7 @@ import { RedisModule } from './redis/redis.module.ts';
     CodesModule,
     EconomyModule,
     ParcheModule,
+    GamesModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

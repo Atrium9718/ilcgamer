@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>21 · Juego · Ruleta del Parche | ILC Origen</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary": "#8dd6ad",
+            "background": "#0b1512",
+            "primary-fixed": "#ffdf99",
+            "on-surface": "#dae5e0",
+            "on-error-container": "#ffdad6",
+            "inverse-on-surface": "#28332f",
+            "surface-container-low": "#141e1a",
+            "tertiary": "#ffb77c",
+            "outline-variant": "#4d4639",
+            "on-primary-container": "#453300",
+            "tertiary-fixed-dim": "#ffb77c",
+            "inverse-primary": "#725b22",
+            "secondary-fixed": "#a8f2c8",
+            "on-secondary": "#003823",
+            "on-primary-fixed-variant": "#59440b",
+            "secondary-container": "#005738",
+            "secondary-fixed-dim": "#8dd6ad",
+            "error-container": "#93000a",
+            "tertiary-fixed": "#ffdcc3",
+            "outline": "#999081",
+            "surface-container": "#18221e",
+            "surface-variant": "#2d3733",
+            "surface": "#0b1512",
+            "primary": "#e2c37f",
+            "on-error": "#690005",
+            "tertiary-container": "#d38f55",
+            "on-tertiary-container": "#542b00",
+            "on-secondary-container": "#82cba3",
+            "on-background": "#dae5e0",
+            "primary-container": "#b79b5b",
+            "on-secondary-fixed": "#002112",
+            "surface-container-lowest": "#06100d",
+            "on-secondary-fixed-variant": "#005234",
+            "primary-fixed-dim": "#e2c37f",
+            "surface-container-highest": "#2d3733",
+            "on-primary-fixed": "#251a00",
+            "surface-dim": "#0b1512",
+            "inverse-surface": "#dae5e0",
+            "on-tertiary-fixed": "#2e1500",
+            "on-surface-variant": "#d0c5b5",
+            "surface-tint": "#e2c37f",
+            "on-primary": "#3f2e00",
+            "surface-container-high": "#222c29",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "error": "#ffb4ab",
+            "on-tertiary": "#4d2600",
+            "surface-bright": "#313b38"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "8px",
+            "space-xs": "4px",
+            "space-xl": "32px",
+            "space-md": "16px",
+            "space-lg": "24px",
+            "gutter": "16px",
+            "margin": "16px"
+          },
+          "fontFamily": {
+            "numeric-xl": ["Plus Jakarta Sans"],
+            "headline-md": ["EB Garamond"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "display-lg": ["EB Garamond"]
+          },
+          "fontSize": {
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    
+    /* Ruleta Wheel styling */
+    .wheel-rotate-transition {
+      transition: transform 4.2s cubic-bezier(0.15, 0.9, 0.25, 1);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center items-start selection:bg-primary selection:text-background font-body-md">
+<!-- Canvas Móvil Estricto 390px (PWA Shell con Heritage Nocturno) -->
+<main class="w-full max-w-[390px] min-h-screen bg-surface flex flex-col justify-between relative shadow-2xl overflow-x-hidden border-x border-outline-variant/20 pb-safe">
+<!-- Top Bar (Minimal Task Shell: Suppression of persistent nav tabs as this is a focused game experience) -->
+<header class="w-full px-margin h-14 flex items-center justify-between border-b border-outline-variant/30 bg-surface-container-low shrink-0 z-20">
+<button aria-label="Cerrar y volver a la sala" class="w-10 h-10 -ml-2 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high/40 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="font-headline-md text-headline-md text-primary tracking-wide leading-none">
+          La ruleta del Parche
+        </h1>
+</div>
+<div class="flex items-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container border border-primary/30 text-primary font-label-sm text-[10px] tracking-wider uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+          Ruta A · Minijuego
+        </span>
+</div>
+</header>
+<!-- Área de Juego Desplazable -->
+<div class="flex-1 overflow-y-auto px-margin pt-4 pb-28 flex flex-col items-center">
+<!-- Subtítulo e Indicador de Dinámica Responsable -->
+<div class="text-center mb-3">
+<p class="text-on-surface-variant font-body-md text-sm">
+          Gira por saberes y logros colaborativos.
+        </p>
+<span class="font-label-sm text-[11px] text-secondary tracking-wide uppercase inline-flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+          El Parche juega a su ritmo · Sin retos de consumo
+        </span>
+</div>
+<!-- Ruleta Container Visual Central (300px) -->
+<section class="relative w-[304px] h-[304px] my-2 flex items-center justify-center shrink-0">
+<!-- Puntero Indicador Superior Dorado -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center drop-shadow-[0_4px_10px_rgba(212,182,115,0.45)]">
+<div class="w-7 h-8 bg-gradient-to-b from-primary-fixed to-primary clip-triangle flex items-center justify-center" style="clip-path: polygon(50% 100%, 0% 0%, 100% 0%);">
+</div>
+<div class="w-2.5 h-2.5 rounded-full bg-background border border-primary -mt-6"></div>
+</div>
+<!-- Halo Ambiental Externo (Lacre Dorado / Verde Profundo) -->
+<div class="absolute inset-0 rounded-full border border-primary/35 shadow-[0_0_30px_rgba(226,195,127,0.12)] pointer-events-none"></div>
+<!-- Aro de madera / bronce perimetral con tachuelas de origen -->
+<div class="absolute inset-1 rounded-full border-2 border-outline-variant/60 bg-surface-container-lowest pointer-events-none"></div>
+<!-- SVG Circular Ruleta 8 Segmentos -->
+<div class="w-[288px] h-[288px] rounded-full overflow-hidden shadow-inner wheel-rotate-transition relative transform rotate-0 z-10 border border-primary/20" id="wheelCanvas">
+<svg aria-label="Ruleta de 8 segmentos" class="w-full h-full select-none" viewbox="0 0 400 400">
+<defs>
+<!-- Gradientes de Herencia: Verde Roble & Oro Lacre -->
+<radialgradient cx="50%" cy="50%" id="gradDark" r="50%">
+<stop offset="0%" stop-color="#1D302A"></stop>
+<stop offset="100%" stop-color="#141E1A"></stop>
+</radialgradient>
+<radialgradient cx="50%" cy="50%" id="gradGold" r="50%">
+<stop offset="0%" stop-color="#2E2616"></stop>
+<stop offset="100%" stop-color="#231B0E"></stop>
+</radialgradient>
+<!-- Rutas de texto radial para los 8 sectores (45° cada uno) -->
+<path d="M 200,200 L 200,30" id="path0"></path>
+<path d="M 200,200 L 320,80" id="path1"></path>
+<path d="M 200,200 L 370,200" id="path2"></path>
+<path d="M 200,200 L 320,320" id="path3"></path>
+<path d="M 200,200 L 200,370" id="path4"></path>
+<path d="M 200,200 L 80,320" id="path5"></path>
+<path d="M 200,200 L 30,200" id="path6"></path>
+<path d="M 200,200 L 80,80" id="path7"></path>
+</defs>
+<!-- 8 Segmentos (45 deg cada uno) -->
+<!-- Sec 0: -22.5° a 22.5°: +10 -->
+<path d="M 200 200 L 123.4 14.7 A 200 200 0 0 1 276.6 14.7 Z" fill="#182721" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 1: 22.5° a 67.5°: +20 -->
+<path d="M 200 200 L 276.6 14.7 A 200 200 0 0 1 384.8 123.4 Z" fill="#292113" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 2: 67.5° a 112.5°: Reto cultural -->
+<path d="M 200 200 L 384.8 123.4 A 200 200 0 0 1 385.3 276.6 Z" fill="#182721" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 3: 112.5° a 157.5°: +5 -->
+<path d="M 200 200 L 385.3 276.6 A 200 200 0 0 1 276.6 385.3 Z" fill="#292113" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 4: 157.5° a 202.5°: +15 -->
+<path d="M 200 200 L 276.6 385.3 A 200 200 0 0 1 123.4 385.3 Z" fill="#182721" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 5: 202.5° a 247.5°: Adivina el aroma -->
+<path d="M 200 200 L 123.4 385.3 A 200 200 0 0 1 14.7 276.6 Z" fill="#292113" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 6: 247.5° a 292.5°: +10 -->
+<path d="M 200 200 L 14.7 276.6 A 200 200 0 0 1 15.2 123.4 Z" fill="#182721" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Sec 7: 292.5° a 337.5°: +25 -->
+<path d="M 200 200 L 15.2 123.4 A 200 200 0 0 1 123.4 14.7 Z" fill="#292113" stroke="#4D4639" stroke-width="1.5"></path>
+<!-- Textos Radiales Orientados Hacia Afuera -->
+<!-- 0: +10 -->
+<g transform="rotate(0, 200, 200)">
+<text fill="#E2C37F" font-family="'Plus Jakarta Sans'" font-size="21" font-weight="800" letter-spacing="0.5" text-anchor="middle" x="200" y="70">+10</text>
+</g>
+<!-- 1: +20 -->
+<g transform="rotate(45, 200, 200)">
+<text fill="#8DD6AD" font-family="'Plus Jakarta Sans'" font-size="21" font-weight="800" letter-spacing="0.5" text-anchor="middle" x="200" y="70">+20</text>
+</g>
+<!-- 2: Reto cultural -->
+<g transform="rotate(90, 200, 200)">
+<text fill="#DAE5E0" font-family="'Plus Jakarta Sans'" font-size="13" font-weight="700" letter-spacing="0.2" text-anchor="middle" x="200" y="65">Reto</text>
+<text fill="#E2C37F" font-family="'Plus Jakarta Sans'" font-size="11" font-weight="600" text-anchor="middle" x="200" y="82">cultural</text>
+</g>
+<!-- 3: +5 -->
+<g transform="rotate(135, 200, 200)">
+<text fill="#E2C37F" font-family="'Plus Jakarta Sans'" font-size="21" font-weight="800" letter-spacing="0.5" text-anchor="middle" x="200" y="70">+5</text>
+</g>
+<!-- 4: +15 -->
+<g transform="rotate(180, 200, 200)">
+<text fill="#8DD6AD" font-family="'Plus Jakarta Sans'" font-size="21" font-weight="800" letter-spacing="0.5" text-anchor="middle" x="200" y="70">+15</text>
+</g>
+<!-- 5: Adivina el aroma -->
+<g transform="rotate(225, 200, 200)">
+<text fill="#DAE5E0" font-family="'Plus Jakarta Sans'" font-size="12" font-weight="700" letter-spacing="0.2" text-anchor="middle" x="200" y="65">Adivina</text>
+<text fill="#FFB77C" font-family="'Plus Jakarta Sans'" font-size="10" font-weight="600" text-anchor="middle" x="200" y="82">el aroma</text>
+</g>
+<!-- 6: +10 -->
+<g transform="rotate(270, 200, 200)">
+<text fill="#E2C37F" font-family="'Plus Jakarta Sans'" font-size="21" font-weight="800" letter-spacing="0.5" text-anchor="middle" x="200" y="70">+10</text>
+</g>
+<!-- 7: +25 -->
+<g transform="rotate(315, 200, 200)">
+<text fill="#8DD6AD" font-family="'Plus Jakarta Sans'" font-size="21" font-weight="800" letter-spacing="0.5" text-anchor="middle" x="200" y="70">+25</text>
+</g>
+</svg>
+</div>
+<!-- Botón Central Girar (Sello circular dorado 80px) -->
+<button aria-label="Girar la ruleta" class="absolute z-20 w-20 h-20 rounded-full bg-gradient-to-br from-primary via-primary-container to-[#846b33] p-1 shadow-2xl active:scale-95 transition-transform flex items-center justify-center border-2 border-primary-fixed/80 group" id="btnSpinCenter" type="button">
+<div class="w-full h-full rounded-full bg-surface-container-lowest flex flex-col items-center justify-center text-primary group-hover:text-primary-fixed">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:rotate-180">sync</span>
+<span class="font-label-lg text-[13px] tracking-wider uppercase font-bold text-primary mt-0.5">Girar</span>
+</div>
+</button>
+</section>
+<!-- Tarjeta de Resultado Reciente (Lacre & Profundidad Tonal) -->
+<section class="w-full mt-4 bg-surface-container rounded-2xl border border-outline-variant/30 relative overflow-hidden p-4 shadow-sm">
+<!-- Borde superior luminoso sutil -->
+<div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div class="flex items-start justify-between gap-3 mb-2">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[17px]">emoji_events</span>
+</span>
+<span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Último giro</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/30 border border-secondary/30 text-secondary font-label-sm text-[11px]">
+            Registrado
+          </span>
+</div>
+<!-- Contenedor del valor resultante -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-outline-variant/20 flex items-center justify-between">
+<div>
+<div class="font-label-sm text-xs text-on-surface-variant">Salió en la mesa:</div>
+<div class="font-headline-md text-headline-md text-primary font-bold" id="resultLabel">
+              +20 al marcador del Parche
+            </div>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary font-numeric-xl text-lg font-bold">
+            +20
+          </div>
+</div>
+<!-- Explicación de Dinámica Responsable -->
+<p class="font-body-md text-xs text-on-surface-variant mt-3 leading-relaxed">
+          Los retos son acertijos sobre el origen, botánica de Caldas o adivinanzas olfativas. Cada integrante juega a su propio ritmo sin presiones.
+        </p>
+<!-- Separador sutil -->
+<div class="w-full h-px bg-outline-variant/25 my-3"></div>
+<!-- Nota Técnica y Arquitectura de Seguridad (§2.3 y §5.4) -->
+<div class="flex items-start gap-2 bg-surface-container-lowest/80 p-2.5 rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5">verified_user</span>
+<p class="font-label-sm text-[11px] text-outline font-normal leading-tight">
+<strong class="font-bold text-on-surface-variant">Seguridad de sala:</strong> El resultado lo decide el servidor, no el celular. Validación criptográfica anti-manipulación.
+          </p>
+</div>
+</section>
+<!-- Marcadores Separados de Mesa (Regla de Oro: Marcador de retos vs Puntos mesa) -->
+<section class="w-full grid grid-cols-2 gap-2 mt-3">
+<!-- Marcador Retos (Verde) -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-secondary/20 flex flex-col justify-between">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[15px]">flag</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider">Reto del Parche</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-numeric-xl text-2xl text-secondary font-bold">140</span>
+<span class="font-label-sm text-xs text-outline">XP</span>
+</div>
+</div>
+<!-- Puntos ILC de Mesa (Oro) -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-primary/20 flex flex-col justify-between">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[15px]">stars</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider">Puntos de Mesa</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-numeric-xl text-2xl text-primary font-bold">85</span>
+<span class="font-label-sm text-xs text-outline">pts</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Zona de Pulgar Fija Inferior (Thumb Zone) con Controles y LegalNotice -->
+<footer class="w-full bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 fixed bottom-0 left-1/2 -translate-x-1/2 max-w-[390px] z-30 px-margin pt-3 pb-2 flex flex-col gap-2.5">
+<!-- Fila de Acciones: Volver (Secundario) + Girar Ruleta (Primario 56px) -->
+<div class="flex items-center gap-2.5 w-full">
+<!-- Botón Secundario 52px con objetivo táctil > 48px -->
+<button aria-label="Volver a la sala del Parche" class="h-[52px] px-3.5 rounded-xl border border-primary/50 text-on-surface hover:border-primary active:scale-[0.98] transition-all flex items-center justify-center shrink-0 min-w-[52px]" title="Volver a la sala" type="button">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">arrow_back</span>
+</button>
+<!-- CTA Principal 56px Oro (#D4B673) -->
+<button class="flex-1 h-14 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg tracking-wide shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 font-bold min-h-[48px]" id="btnSpinAction" type="button">
+<span class="material-symbols-outlined text-[22px]">play_arrow</span>
+<span>Girar ruleta</span>
+</button>
+</div>
+<!-- LegalNotice Obligatorio (Ley 30 de 1986) - Exacto, Inmutable y Legible -->
+<div class="w-full text-center py-1">
+<p class="font-label-sm text-[9.5px] leading-3 text-outline tracking-wider uppercase font-semibold select-none">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</div>
+</footer>
+</main>
+<!-- Script interactivo de giro (Simulación de respuesta criptográfica autoritativa) -->
+<script>
+    (function() {
+      const wheel = document.getElementById('wheelCanvas');
+      const btnSpinAction = document.getElementById('btnSpinAction');
+      const btnSpinCenter = document.getElementById('btnSpinCenter');
+      const resultLabel = document.getElementById('resultLabel');
+      
+      let isSpinning = false;
+      let currentRotation = 0;
+
+      // 8 Segmentos canónicos de la ruleta (en sentido horario, cada uno 45 grados)
+      // Segmento 0 está centrado en el puntero a 0°
+      const segments = [
+        { label: "+10 al marcador", pts: "+10" },
+        { label: "+25 al marcador", pts: "+25" },
+        { label: "+10 al marcador", pts: "+10" },
+        { label: "Adivina el aroma (Caldas)", pts: "Aroma" },
+        { label: "+15 al marcador", pts: "+15" },
+        { label: "+5 al marcador", pts: "+5" },
+        { label: "Reto cultural de Niebla", pts: "Reto" },
+        { label: "+20 al marcador del Parche", pts: "+20" }
+      ];
+
+      function spinWheel() {
+        if (isSpinning) return;
+        isSpinning = true;
+        
+        btnSpinAction.disabled = true;
+        btnSpinAction.classList.add('opacity-70', 'cursor-not-allowed');
+
+        // Simular llamada al servidor (§2.3 / §5.4): servidor define índice premiado
+        const targetIndex = Math.floor(Math.random() * segments.length);
+        
+        // Calcular grados de giro (al menos 5 vueltas completas = 1800 deg)
+        // Cada slot mide 45 deg
+        const extraTurns = 5 * 360;
+        const segmentAngle = 45;
+        // Compensación de parada en puntero
+        const stopAngle = (targetIndex * segmentAngle);
+        
+        currentRotation += extraTurns + stopAngle - (currentRotation % 360);
+        wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+        // Al finalizar animación (4.2 segundos)
+        setTimeout(() => {
+          const outcome = segments[targetIndex];
+          resultLabel.textContent = outcome.label;
+          
+          isSpinning = false;
+          btnSpinAction.disabled = false;
+          btnSpinAction.classList.remove('opacity-70', 'cursor-not-allowed');
+        }, 4200);
+      }
+
+      btnSpinAction.addEventListener('click', spinWheel);
+      btnSpinCenter.addEventListener('click', spinWheel);
+    })();
+  </script>
+</body></html>

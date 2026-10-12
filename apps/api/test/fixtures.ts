@@ -24,6 +24,7 @@ export function draft(overrides: Partial<CampaignDraft> = {}): CampaignDraft {
     rules: { pointsBySku: { 'RVC-8': 500 }, multipliers: [], energyMinutes: 45, sessionEndsAtLocalTime: '06:00', limits: { activationsPerUserPerDay: 3 } },
     theme: { mode: 'dark', brand: 'ron-viejo-de-caldas' },
     dataUsage: { location: false, extraData: false },
+    modules: [],
     ...overrides,
   };
 }

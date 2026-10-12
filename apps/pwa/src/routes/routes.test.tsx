@@ -216,3 +216,34 @@ describe('El Parche (modo demostración)', () => {
     expect(create).toBeEnabled();
   });
 });
+
+describe('juegos (modo demostración)', () => {
+  it('el catálogo lleva a la trivia, se responde y termina en un resultado verificado sin Puntos ILC', async () => {
+    installFakeApi({ loggedIn: true });
+    const router = renderAt('/jugar');
+    await userEvent.click(await screen.findByRole('button', { name: /Trivia del origen/ }));
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/jugar/trivia/partida'));
+    await userEvent.click(await screen.findByRole('radio', { name: /La caña de azúcar/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Siguiente' }));
+    await userEvent.click(await screen.findByRole('radio', { name: /En barricas de roble/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Terminar' }));
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/jugar/trivia/resultado'));
+    expect(await screen.findByText('Resultado verificado')).toBeInTheDocument();
+    expect(screen.getByText(/no otorga Puntos ILC/)).toBeInTheDocument();
+  });
+
+  it('la ruleta la decide el servidor y muestra el reto cultural', async () => {
+    installFakeApi({ loggedIn: true });
+    renderAt('/jugar/ruleta/partida');
+    await userEvent.click(await screen.findByRole('button', { name: 'Girar' }));
+    expect(await screen.findByText('Salió: Dato curioso', undefined, { timeout: 4000 })).toBeInTheDocument();
+    expect(screen.getByText(/Cuenta un dato/)).toBeInTheDocument();
+  });
+
+  it('desde el Parche, el catálogo conserva el contexto del Parche', async () => {
+    installFakeApi({ loggedIn: true });
+    const router = renderAt('/jugar?parche=00000000-0000-7000-8000-00000000da5e');
+    await userEvent.click(await screen.findByRole('button', { name: /Trivia del origen/ }));
+    await vi.waitFor(() => expect(router.state.location.search).toBe('?parche=00000000-0000-7000-8000-00000000da5e'));
+  });
+});

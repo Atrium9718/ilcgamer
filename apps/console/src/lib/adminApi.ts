@@ -9,9 +9,11 @@ import type {
   CampaignView,
   CreateCampaign,
   CreateProduct,
+  DefaultModules,
   GenerateCodes,
   ImportPreview,
   Me,
+  ModuleView,
   ProductView,
   Reconciliation,
   UrlTemplate,
@@ -76,4 +78,22 @@ export const economyApi = {
   badges: () => apiRequest<BadgeAdminView[]>(`${eco}/badges`),
   createBadge: (body: BadgeAdmin) => apiRequest<BadgeAdminView>(`${eco}/badges`, { method: 'POST', body }),
   reconcile: () => apiRequest<Reconciliation>(`${eco}/reconciliation`),
+};
+
+const gm = '/admin/games';
+
+/** Juegos (Paso 9): catálogo de módulos y su ciclo de vida. Los permisos los vuelve a validar la API. */
+export const gamesAdminApi = {
+  modules: () => apiRequest<ModuleView[]>(`${gm}/modules`),
+  register: (manifest: unknown) => apiRequest<ModuleView>(`${gm}/modules`, { method: 'POST', body: { manifest } }),
+  test: (slug: string, version: string) => apiRequest<ModuleView>(`${gm}/modules/${enc(slug)}/versions/${enc(version)}/test`, { method: 'POST' }),
+  decide: (slug: string, version: string, body: { kind: string; decision: 'APROBADO' | 'RECHAZADO'; note?: string }) =>
+    apiRequest<ModuleView>(`${gm}/modules/${enc(slug)}/versions/${enc(version)}/approvals`, { method: 'POST', body }),
+  activate: (slug: string, version: string) => apiRequest<ModuleView>(`${gm}/modules/${enc(slug)}/versions/${enc(version)}/activate`, { method: 'POST' }),
+  deactivate: (slug: string, reason: string) => apiRequest<ModuleView>(`${gm}/modules/${enc(slug)}/deactivate`, { method: 'POST', body: { reason } }),
+  defaults: () => apiRequest<DefaultModules>(`${gm}/defaults`),
+  saveDefaults: (modules: string[]) => apiRequest<DefaultModules>(`${gm}/defaults`, { method: 'PUT', body: { modules } }),
+  secret: (slug: string) => apiRequest<{ secret: string; epoch: number }>(`${gm}/modules/${enc(slug)}/provider-secret`, { method: 'POST' }),
+  rotateSecret: (slug: string) => apiRequest<{ secret: string; epoch: number }>(`${gm}/modules/${enc(slug)}/provider-secret/rotate`, { method: 'POST' }),
+  guide: () => apiRequest<{ markdown: string }>(`${gm}/guide`),
 };

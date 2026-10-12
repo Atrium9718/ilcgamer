@@ -1,0 +1,9 @@
+# 22 · Juego · El Explorador, capítulo
+Fuentes: Guía Gamificación (Ruta B: exploración, XP e insignias), Guía Técnica §5.4, §5.7; Instrucciones §13.
+
+Pantalla móvil. Cabecera con botón volver, título "Ruta del Origen" y chip verde "Ruta B · XP". Debajo, una línea de 6 capítulos como puntos conectados (2 completos con check verde, el 3º actual resaltado dorado, 3 bloqueados con candado).
+Tarjeta del capítulo 3: ícono de roble, titular serif "Capítulo 3 · Roble" y un párrafo marcador "Relato pendiente de aprobación de marca". Luego la pista: "Pregunta del capítulo" con 3 opciones tipo botón y una seleccionada.
+Texto: "Cada capítulo da XP una sola vez. XP no se convierte en Puntos ILC." Etiqueta verde "+40 XP al completar".
+CTA dorado fijo abajo "Responder". Pie legal.
+
+REGLAS OBLIGATORIAS (no romper): Español de Colombia. Tema oscuro del design system "ILC Origen": fondo verde-negro #0C1613, superficies #111E1A/#162621/#1D302A, texto crema #F4EFE3, primario oro #D4B673, secundario verde musgo #86CFA7 sobre verde bosque #2F4941, terciario roble #E09A5F; EB Garamond en titulares, Plus Jakarta Sans en el resto; botones 12px de radio, tarjetas 16px. Objetivos táctiles ≥48px; CTA principal dorado de 56px fijo abajo. Solo alias de personas (nunca nombres completos, teléfonos ni correos de terceros). No inventar datos de producto, grados alcohólicos, fechas, cifras ni claims. Sin personas bebiendo, sin copas ni vasos con licor, sin lenguaje VIP/party, sin rankings de personas, sin metas o premios por cantidad o velocidad de consumo, sin invitar a comprar u abrir otra botella. Puntos ILC (Ruta A, comerciales, color oro) y XP/insignias (Ruta B, experiencia, color verde) siempre separados. Pie legal en mayúsculas pequeñas: "EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986)."

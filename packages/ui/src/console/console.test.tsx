@@ -2,8 +2,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { CampaignDetailView, type CampaignDetailViewProps } from './CampaignDetailView.tsx';
+import { type CampaignEditorValue, CampaignEditorView } from './CampaignEditorView.tsx';
 import { CampaignListView } from './CampaignListView.tsx';
-import { CHECKLIST_DEMO, DETAIL_DEMO, ROWS_DEMO } from './fixtures.ts';
+import { CHECKLIST_DEMO, DETAIL_DEMO, EDITOR_DEMO, ROWS_DEMO } from './fixtures.ts';
 
 const base: CampaignDetailViewProps = {
   data: DETAIL_DEMO,
@@ -111,5 +112,39 @@ describe('CampaignListView', () => {
       />,
     );
     expect(screen.queryByRole('button', { name: /nueva campaña/i })).not.toBeInTheDocument();
+  });
+});
+
+describe('CampaignEditorView · Juegos', () => {
+  const OPTIONS = [
+    { id: 'trivia', label: 'Trivia', route: 'A' as const },
+    { id: 'b1', label: 'Experiencia 1', route: 'B' as const },
+    { id: 'b2', label: 'Experiencia 2', route: 'B' as const },
+    { id: 'b3', label: 'Experiencia 3', route: 'B' as const },
+  ];
+  const render1 = (modules: string[], onChange = vi.fn()) =>
+    render(
+      <CampaignEditorView
+        mode="create"
+        value={{ ...EDITOR_DEMO, modules } as CampaignEditorValue}
+        onChange={onChange}
+        brandOptions={[{ slug: 'ilc', label: 'ILC' }]}
+        moduleOptions={OPTIONS}
+        onSave={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    );
+
+  it('no deja elegir una tercera experiencia de Ruta B pero sí otro juego de Ruta A', () => {
+    render1(['b1', 'b2']);
+    expect(screen.getByRole('checkbox', { name: /Experiencia 3/ })).toBeDisabled();
+    expect(screen.getByRole('checkbox', { name: /Trivia/ })).toBeEnabled();
+  });
+
+  it('al marcar un juego lo agrega a la campaña', async () => {
+    const onChange = vi.fn();
+    render1(['b1'], onChange);
+    await userEvent.click(screen.getByRole('checkbox', { name: /Trivia/ }));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ modules: ['b1', 'trivia'] }));
   });
 });

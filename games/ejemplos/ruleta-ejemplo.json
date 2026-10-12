@@ -1,0 +1,29 @@
+{
+  "moduleId": "ruleta-ejemplo",
+  "provider": "ILC propio",
+  "version": "1.0.0",
+  "title": "Ruleta de ejemplo",
+  "description": "Contenido de prueba: los retos deben ser culturales y aprobados por Marca y Jurídica.",
+  "route": "A",
+  "icon": "rotate_right",
+  "minutes": 1,
+  "players": { "min": 1, "max": 8 },
+  "languages": ["es-CO"],
+  "aspect": "portrait",
+  "permissions": [],
+  "dataPolicy": { "collectsPersonalData": false, "trackers": false },
+  "accessibility": { "screenReader": true, "reducedMotion": true },
+  "delivery": {
+    "kind": "engine",
+    "engine": "wheel",
+    "config": {
+      "segments": [
+        { "label": "+10", "score": 10 },
+        { "label": "+20", "score": 20 },
+        { "label": "Reto cultural", "score": 5, "challenge": "Reto de prueba: cuenta un dato curioso de tu ciudad." },
+        { "label": "+5", "score": 5 }
+      ]
+    }
+  },
+  "scoring": { "parcheScoreMax": 20, "xpMax": 0, "attemptsPerDay": 10, "maxSeconds": 120 }
+}

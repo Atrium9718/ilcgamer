@@ -22,6 +22,27 @@ export const DRAFT: CampaignDraft = {
   rules: { pointsBySku: {}, multipliers: [], energyMinutes: 45, sessionEndsAtLocalTime: '06:00', limits: { activationsPerUserPerDay: 3 } },
   theme: { mode: 'dark', brand: 'ilc' },
   dataUsage: { location: false, extraData: false },
+  modules: [],
+};
+
+const MODULE = {
+  moduleId: 'explorador',
+  provider: 'ILC propio',
+  route: 'B',
+  activeVersion: null,
+  versions: [
+    {
+      version: '0.9.0',
+      status: 'EN_PRUEBA',
+      manifest: { title: 'El Explorador', delivery: { kind: 'engine', engine: 'chapters' } },
+      manifestHash: 'h',
+      approvals: [
+        { kind: 'MARCA', required: true, status: 'pending', note: null },
+        { kind: 'JURIDICA', required: true, status: 'pending', note: null },
+      ],
+      createdAt: '2026-10-01T15:00:00.000Z',
+    },
+  ],
 };
 
 const pending = (kind: ApprovalStatus['kind'], required = true): ApprovalStatus => ({
@@ -216,6 +237,10 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
     if (url.startsWith('/admin/economy/accounts?userId=')) return json(200, ACCOUNT);
     if (url.endsWith('/reverse')) return json(200, { ...ACCOUNT, balance: 0, ledgerSum: 0 });
     if (url === '/admin/economy/badges') return json(200, []);
+    if (url === '/admin/games/modules') return json(200, [MODULE]);
+    if (url === '/admin/games/guide') return json(200, { markdown: '# Guía de integración de juegos' });
+    if (url === '/admin/games/defaults') return json(200, { modules: [] });
+    if (url.includes('/approvals')) return json(200, MODULE);
     return fail(404, 'NOT_FOUND', `Sin ruta falsa para ${method} ${url}`);
   });
   vi.stubGlobal('fetch', fetchMock);

@@ -6,6 +6,7 @@ import { CampaignDetail } from './routes/CampaignDetail.tsx';
 import { CampaignEditor } from './routes/CampaignEditor.tsx';
 import { CampaignList } from './routes/CampaignList.tsx';
 import { Economy } from './routes/Economy.tsx';
+import { Games } from './routes/Games.tsx';
 import { Login } from './routes/Login.tsx';
 import { SmartTags } from './routes/SmartTags.tsx';
 
@@ -13,12 +14,13 @@ const CONSOLE_ROLES = ['SUPERADMIN', 'ADMIN_MARCA', 'EDITOR_CONTENIDO', 'REVISOR
 
 /** Smart Tags y Economía: Admin de Marca y SuperAdmin/TI (la API aplica el detalle de cada permiso). */
 const SMARTTAG_ROLES = ['SUPERADMIN', 'ADMIN_MARCA'];
-const SECTION_PATHS: Partial<Record<ConsoleSection, string>> = { campanas: '/campanas', 'smart-tags': '/smart-tags', economia: '/economia' };
+const SECTION_PATHS: Partial<Record<ConsoleSection, string>> = { campanas: '/campanas', juegos: '/juegos', 'smart-tags': '/smart-tags', economia: '/economia' };
 
 function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   const parts = pathname.split('/').filter(Boolean);
   if (parts[0] === 'smart-tags') return [{ label: 'Smart Tags' }];
   if (parts[0] === 'economia') return [{ label: 'Economía' }];
+  if (parts[0] === 'juegos') return [{ label: 'Juegos' }];
   const crumbs: Array<{ label: string; onSelect?: () => void }> = [{ label: 'Campañas', onSelect: parts.length > 1 ? () => go('/campanas') : undefined }];
   if (parts[1] === 'nueva') crumbs.push({ label: 'Nueva campaña' });
   else if (parts[1]) {
@@ -54,7 +56,7 @@ function Shell() {
     );
 
   const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
-  const sections: ConsoleSection[] = smartTags ? ['campanas', 'smart-tags', 'economia'] : ['campanas'];
+  const sections: ConsoleSection[] = smartTags ? ['campanas', 'juegos', 'smart-tags', 'economia'] : ['campanas', 'juegos'];
   const active = (Object.entries(SECTION_PATHS).find(([, path]) => pathname.startsWith(path ?? '-'))?.[0] ?? 'campanas') as ConsoleSection;
   return (
     <ConsoleLayout
@@ -81,6 +83,7 @@ export function AppRoutes() {
         <Route path="campanas/nueva" element={<CampaignEditor />} />
         <Route path="campanas/:slug" element={<CampaignDetail />} />
         <Route path="campanas/:slug/editar" element={<CampaignEditor />} />
+        <Route path="juegos" element={<Games />} />
         <Route path="smart-tags" element={<SmartTags />} />
         <Route path="economia" element={<Economy />} />
         <Route path="*" element={<Navigate to="/campanas" replace />} />

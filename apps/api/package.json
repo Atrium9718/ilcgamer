@@ -5,7 +5,7 @@
   "type": "module",
   "description": "API de la plataforma phygital ILC (NestJS, monolito modular, /api/v1).",
   "scripts": {
-    "build": "prisma generate && tsc -p tsconfig.build.json",
+    "build": "prisma generate && tsc -p tsconfig.build.json && node scripts/copy-guide.mjs",
     "start": "node dist/main.js",
     "dev": "prisma generate && tsc -p tsconfig.build.json --watch --preserveWatchOutput & node --watch --env-file-if-exists=.env dist/main.js",
     "test": "prisma generate && vitest run",

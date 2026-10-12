@@ -46,6 +46,16 @@ export { type Experience, GamesCatalogView, type GamesCatalogViewProps, MAX_ROUT
 export { type JoinMethod, JoinParcheView, type JoinParcheViewProps, type ParchePreview } from './views/JoinParcheView.tsx';
 export { type OtpChannelView, type OtpStep, OtpView, type OtpViewProps } from './views/OtpView.tsx';
 export { type ConnectionState, type GameEntry, ParcheRoomView, type ParcheRoomViewProps } from './views/ParcheRoomView.tsx';
+export {
+  ChapterPlayView,
+  type ChapterPlayViewProps,
+  IframeGameView,
+  type IframeGameViewProps,
+  TriviaPlayView,
+  type TriviaPlayViewProps,
+  WheelPlayView,
+  type WheelPlayViewProps,
+} from './views/PlayViews.tsx';
 export { ProfileView, type ProfileViewProps } from './views/ProfileView.tsx';
 export { type BadgeView, ProgressView, type ProgressViewProps, type StoryView } from './views/ProgressView.tsx';
 export { type RewardCategory, type RewardDetail, RewardsView, type RewardsViewProps } from './views/RewardsView.tsx';

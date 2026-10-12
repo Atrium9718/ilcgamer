@@ -36,8 +36,6 @@ export interface GamesCatalogViewProps {
   onSelectExperience: (id: string) => void;
   activeTab?: NavTab;
   onNavigate: (tab: NavTab) => void;
-  /** Nombre de la moneda comercial (CMS). */
-  currencyName?: string;
 }
 
 export function GamesCatalogView({
@@ -48,7 +46,6 @@ export function GamesCatalogView({
   onSelectExperience,
   activeTab = 'jugar',
   onNavigate,
-  currencyName = 'Puntos ILC',
 }: GamesCatalogViewProps) {
   const visible = experiences.slice(0, MAX_ROUTE_B_EXPERIENCES);
   return (
@@ -73,7 +70,7 @@ export function GamesCatalogView({
                   Ruta A · Juegos rápidos
                 </h2>
                 <span className="px-2 py-0.5 rounded-full border border-primary/40 font-label-sm text-[11px] text-primary whitespace-nowrap">
-                  +{currencyName}
+                  +Marcador del Parche
                 </span>
               </div>
               <p className="font-body-md text-[13px] text-on-surface-variant">Partidas cortas para tu Parche</p>

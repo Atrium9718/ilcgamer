@@ -31,6 +31,7 @@ ni campañas sin aprobación (§4.4).
 | `AUTH_RATE_LIMIT_PER_MINUTE` | no | Límite por IP del control de edad y del acceso por código (por defecto 10). |
 | `SESSION_TTL_DAYS` | no | Duración de la sesión de acceso (por defecto 30 días). |
 | `CODE_RATE_LIMIT_PER_MINUTE` | no | Límite por IP de `GET /product-codes/{token}/status` y de las reclamaciones (por defecto 30). Además, 20 consultas de códigos inexistentes en 10 min desde una IP frenan esa IP y dejan un evento de seguridad. |
+| `GAME_RATE_LIMIT_PER_MINUTE` | no | Límite por cliente de iniciar y enviar partidas (por defecto 60). Los juegos por defecto de la plataforma se configuran en la consola (*Juegos → Juegos por defecto*), no por variable. La guía `docs/INTEGRACION_JUEGOS.md` se copia a `dist/` al compilar la API para mostrarse en la consola. |
 | `SMARTTAGS_INTEGRATION_KEY_HASHES` | no | Integración ERP (`POST /smarttags/validate`). Solo el SHA-256 de cada clave, separado por coma; vacío = apagada. Para emitir una clave: `openssl rand -base64 48 \| tr -d '/+=' \| tee clave.txt \| tr -d '\n' \| sha256sum` → la clave se entrega al ERP por canal seguro y el hash va en esta variable. El ERP la envía como `Authorization: Bearer <clave>`. |
 | `OTP_PROVIDER` | sí | `none` hasta contratar proveedor. `console` (imprime el código en el log) **solo** en desarrollo/pruebas: la API no arranca en staging/producción con ese valor. |
 

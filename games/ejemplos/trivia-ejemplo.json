@@ -1,0 +1,32 @@
+{
+  "moduleId": "trivia-ejemplo",
+  "provider": "ILC propio",
+  "version": "1.0.0",
+  "title": "Trivia de ejemplo",
+  "description": "Contenido de prueba: reemplázalo por preguntas aprobadas por Marca.",
+  "route": "A",
+  "icon": "quiz",
+  "minutes": 3,
+  "players": { "min": 1, "max": 8 },
+  "languages": ["es-CO"],
+  "aspect": "portrait",
+  "permissions": [],
+  "dataPolicy": { "collectsPersonalData": false, "trackers": false },
+  "accessibility": { "screenReader": true, "reducedMotion": true },
+  "delivery": {
+    "kind": "engine",
+    "engine": "trivia",
+    "config": {
+      "perGame": 3,
+      "parchePerCorrect": 10,
+      "secondsPerQuestion": 30,
+      "questions": [
+        { "id": "q1", "prompt": "Pregunta de prueba 1: ¿cuánto es 2 + 2?", "options": ["3", "4", "5"], "correctIndex": 1, "fact": "Dato de prueba." },
+        { "id": "q2", "prompt": "Pregunta de prueba 2: ¿cuánto es 3 + 3?", "options": ["5", "6", "7"], "correctIndex": 1 },
+        { "id": "q3", "prompt": "Pregunta de prueba 3: ¿cuánto es 4 + 4?", "options": ["8", "9", "10"], "correctIndex": 0 },
+        { "id": "q4", "prompt": "Pregunta de prueba 4: ¿cuánto es 5 + 5?", "options": ["9", "10", "11"], "correctIndex": 1 }
+      ]
+    }
+  },
+  "scoring": { "parcheScoreMax": 30, "xpMax": 0, "attemptsPerDay": 5, "maxSeconds": 300 }
+}

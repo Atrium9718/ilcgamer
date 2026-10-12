@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juego externo de ejemplo</title>
+    <style>
+      body { font-family: system-ui, sans-serif; background: #0c1613; color: #f4efe3; margin: 0; padding: 24px; text-align: center; }
+      button { min-height: 56px; padding: 0 24px; border-radius: 12px; border: 0; background: #d4b673; color: #0c1613; font-size: 18px; font-weight: 700; }
+      #msg { min-height: 1.5em; }
+    </style>
+  </head>
+  <body>
+    <h1>Juego externo de ejemplo</h1>
+    <p id="msg">Cargando…</p>
+    <button id="end" type="button" disabled>Terminar partida</button>
+    <script type="module">
+      // Ejemplo mínimo de un módulo de proveedor que usa el Game SDK (dist/ilc-game-sdk.js).
+      import { createGameClient } from './ilc-game-sdk.js';
+
+      const params = new URLSearchParams(location.search);
+      const ilc = createGameClient({ hostOrigin: params.get('host') ?? undefined });
+      const init = await ilc.ready();
+      document.getElementById('msg').textContent = `Partida ${init.missionId.slice(0, 8)} lista`;
+      const end = document.getElementById('end');
+      end.disabled = false;
+      end.addEventListener('click', () => {
+        ilc.progress(100);
+        ilc.finish();
+        document.getElementById('msg').textContent = 'Terminaste. El resultado lo confirma el servidor.';
+        end.disabled = true;
+      });
+    </script>
+  </body>
+</html>

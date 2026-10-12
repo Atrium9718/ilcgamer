@@ -298,8 +298,8 @@ export function ParcheRoomRoute() {
         onShare={
           inviteUrl ? () => navigator.share?.({ title: 'Únete a mi Parche', text: `PIN ${state.pin ?? ''}`, url: inviteUrl }).catch(() => undefined) : undefined
         }
-        onPlayGame={() => navigate('/jugar')}
-        onChooseGame={() => navigate('/jugar')}
+        onPlayGame={() => navigate(`/jugar?parche=${state.id}`)}
+        onChooseGame={() => navigate(`/jugar?parche=${state.id}`)}
         // Activar dentro del Parche: se escanea la botella con la cámara; la activación recarga la energía del grupo.
         onActivateCode={() => setActionError('Escanea el QR de la botella con la cámara de tu celular: la activación recarga la energía del Parche.')}
         onOpenMenu={() => setMenu(true)}

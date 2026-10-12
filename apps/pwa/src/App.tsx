@@ -4,7 +4,7 @@ import { ProfileRoute, ProgressRoute, RewardsRoute, ShareRoute, WalletRoute } fr
 import { AgeGateRoute, UnderageRoute } from './routes/AgeGate.tsx';
 import { CodeLandingRoute } from './routes/CodeLanding.tsx';
 import { EventEntryRoute, ReferralEntryRoute } from './routes/Entry.tsx';
-import { GameResultRoute, GamesRoute } from './routes/Games.tsx';
+import { GamePlayRoute, GameResultRoute, GamesRoute } from './routes/Games.tsx';
 import { ConsentsRoute, OtpRoute, SignUpRoute } from './routes/Identity.tsx';
 import { CreateParcheRoute, JoinParcheRoute, ParcheRoomRoute } from './routes/Parche.tsx';
 import { NotFound, RequireAge, RootLayout } from './routes/shell.tsx';
@@ -33,6 +33,7 @@ export const routes = [
           { path: '/parche/:id/unirse', element: <JoinParcheRoute /> },
           { path: '/parche/:id', element: <ParcheRoomRoute /> },
           { path: '/jugar', element: <GamesRoute /> },
+          { path: '/jugar/:gameId/partida', element: <GamePlayRoute /> },
           { path: '/jugar/:gameId/resultado', element: <GameResultRoute /> },
           { path: '/billetera', element: <WalletRoute /> },
           { path: '/recompensas', element: <RewardsRoute /> },

@@ -2,7 +2,7 @@ import type { CampaignView } from '@ilc/contracts';
 import { type CampaignEditorValue, CampaignEditorView, StatusMessage } from '@ilc/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { adminApi } from '../lib/adminApi.ts';
+import { adminApi, gamesAdminApi } from '../lib/adminApi.ts';
 import { ApiRequestError } from '../lib/api.ts';
 import { BRANDS, editorToCreate, editorToDraft, emptyEditorValue, viewToEditor } from '../lib/mapping.ts';
 import { errorMessage } from '../lib/session.tsx';
@@ -17,6 +17,18 @@ export function CampaignEditor() {
   const [error, setError] = useState<string>();
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [saving, setSaving] = useState(false);
+  const [moduleOptions, setModuleOptions] = useState<Array<{ id: string; label: string; route: 'A' | 'B' }>>([]);
+
+  useEffect(() => {
+    // Solo juegos activos; si esta persona no puede verlos, la sección simplemente no aparece.
+    gamesAdminApi.modules().then(
+      (mods) =>
+        setModuleOptions(
+          mods.filter((m) => m.activeVersion).map((m) => ({ id: m.moduleId, label: m.versions[0]?.manifest.title ?? m.moduleId, route: m.route })),
+        ),
+      () => undefined,
+    );
+  }, []);
 
   useEffect(() => {
     if (!slug) return;
@@ -62,6 +74,7 @@ export function CampaignEditor() {
       value={value}
       onChange={setValue}
       brandOptions={[...BRANDS]}
+      moduleOptions={moduleOptions}
       fieldErrors={fieldErrors}
       error={error}
       saving={saving}

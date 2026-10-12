@@ -1,0 +1,18 @@
+{
+  "moduleId": "proveedor-ejemplo",
+  "provider": "Estudio de ejemplo",
+  "version": "1.0.0",
+  "title": "Juego externo de ejemplo",
+  "description": "Módulo de un proveedor (ejemplo). Cambia la dirección por la de tu juego.",
+  "route": "A",
+  "icon": "sports_esports",
+  "minutes": 3,
+  "players": { "min": 1, "max": 8 },
+  "languages": ["es-CO"],
+  "aspect": "portrait",
+  "permissions": [],
+  "dataPolicy": { "collectsPersonalData": false, "trackers": false },
+  "accessibility": { "screenReader": true, "reducedMotion": true },
+  "delivery": { "kind": "iframe", "entryUrl": "https://juegos.proveedor.example/index.html", "allowedOrigin": "https://juegos.proveedor.example" },
+  "scoring": { "parcheScoreMax": 50, "xpMax": 0, "attemptsPerDay": 5, "maxSeconds": 600 }
+}

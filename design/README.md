@@ -50,6 +50,10 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 17 · Consola · Detalle de campaña | `c69464065ad54a008c2692ace544d642` | `CampaignDetailView` (sin íconos de copas, equivalencias en pesos ni etiqueta de entorno inventada que traía Stitch) |
 | 18 · Consola · Smart Tags | `81e6ec3918784f939afd881ff120f45b` | `SmartTagsView` (sin "servicio de cifrado activo" ni conteos inventados que traía Stitch) |
 | 19 · Consola · Economía | `2a79e02947ec49859dfa60df1a913ba7` | `EconomyView` (sin nombres de personas ni "servicio activo" que traía Stitch) |
+| 20 · Trivia · pregunta | `de14c2df01044e4c8cb5c1d9af6f7a02` | `TriviaPlayView` (sin respuesta correcta en el cliente; el tiempo es un tope, no un premio) |
+| 21 · Ruleta | `b20de139acee42b0ae876dfd16bfa4db` | `WheelPlayView` (el servidor decide el giro; retos solo culturales) |
+| 22 · Explorador · capítulo | `8e69a2589799467d85cf14d4d27eb68f` | `ChapterPlayView` (relato, pregunta, +XP; reintento sin penalidad) |
+| 23 · Consola · Juegos | `86a28bc74d9c4b19887f24a81a284687` | `GamesView` (sin conteos ni paginación inventados que traía Stitch) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 

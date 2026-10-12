@@ -263,7 +263,20 @@ export class ParcheService {
     return true;
   }
 
-  /** Suma al marcador experiencial (lo usa el motor de juegos del Paso 9). */
+  /**
+   * Suma al marcador del Parche dentro de una transacción (la usa el motor de juegos). Solo cuenta si la persona
+   * sigue en el Parche y este sigue vivo. Devuelve los puntos aplicados (0 si no aplica).
+   */
+  async addScoreTx(tx: Tx, sessionId: string, userId: string, points: number, now = new Date()): Promise<number> {
+    if (!Number.isInteger(points) || points <= 0) return 0;
+    const s = await tx.session.findUnique({ where: { id: sessionId }, include: { participants: { where: { userId } } } });
+    if (!s || !(LIVE as readonly string[]).includes(s.status) || s.expiresAt <= now) return 0;
+    if (!s.participants[0] || s.participants[0].status === 'SALIO') return 0;
+    await tx.session.update({ where: { id: sessionId }, data: { score: { increment: points }, stateVersion: { increment: 1 }, lastActivityAt: now } });
+    return points;
+  }
+
+  /** Suma al marcador experiencial. */
   async addScore(sessionId: string, points: number): Promise<void> {
     if (!Number.isInteger(points) || points <= 0) throw new DomainError('VALIDATION_FAILED', 'Puntaje inválido.');
     await this.prisma.session.update({

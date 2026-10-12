@@ -1,0 +1,24 @@
+{
+  "name": "@ilc/game-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Game SDK de ILC Origen: protocolo postMessage validado entre la PWA (anfitrión) y un módulo de juego en iframe aislado.",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && esbuild src/client.ts --bundle --format=esm --minify --target=es2020 --outfile=dist/ilc-game-sdk.js",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "jsdom": "30.1.2",
+    "typescript": "6.0.2",
+    "vitest": "5.0.4"
+  }
+}
