@@ -228,7 +228,7 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Conciliación horaria saldo en caché vs. suma del ledger; diferencia ⇒ evento de seguridad ALTA.
 - [x] XP, niveles (umbrales configurables) e insignias idempotentes; la XP nunca toca los Puntos ILC. Solo una campaña MIXTA puede otorgar XP por activación (regla versionada y aprobada).
 - [x] Consola "Economía" (pantalla 19 de Stitch): movimientos, reversos, catálogo de insignias y conciliación. PWA con billetera y progreso reales.
-- [ ] Pendiente de verificar: auditoría axe de las historias nuevas y prueba de punta a punta en navegador.
+- [x] Auditoría axe: 118 combinaciones sin violaciones WCAG AA. Verificado de punta a punta en Chromium: activación → billetera con aviso de vencimiento → reverso desde la consola por id de reclamación → el titular ve el reverso sin el motivo interno; conciliación sin diferencias.
 
 ### Paso 8 — El Parche en tiempo real
 - Crear/unirse por PIN/QR, energía configurable (45 min por defecto de prueba), expiración (6:00 a. m. configurable), reconexión sin duplicar, marcador experiencial vs comercial.

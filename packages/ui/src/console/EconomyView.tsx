@@ -154,7 +154,7 @@ function MovementsPanel(p: EconomyViewProps) {
   return (
     <div className="space-y-5">
       <form
-        className="flex flex-wrap items-end gap-3"
+        className="flex flex-wrap items-start gap-3"
         onSubmit={(e: FormEvent) => {
           e.preventDefault();
           if (p.query.trim()) p.onSearch();
@@ -167,7 +167,7 @@ function MovementsPanel(p: EconomyViewProps) {
           hint="El id de reclamación aparece en la exportación de auditoría de cada lote."
           className="flex-1 min-w-80"
         />
-        <Button type="submit" fullWidth={false} leadingIcon="search" loading={p.busy === 'search'} disabled={!p.query.trim()} className="px-5 h-11">
+        <Button type="submit" fullWidth={false} leadingIcon="search" loading={p.busy === 'search'} disabled={!p.query.trim()} className="px-5 h-11 mt-7">
           Buscar
         </Button>
       </form>
