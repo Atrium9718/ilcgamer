@@ -4,14 +4,14 @@ import { cx } from '../lib/cx.ts';
 
 export type ConsoleSection = 'campanas' | 'juegos' | 'recompensas' | 'smart-tags' | 'comercios' | 'analitica' | 'auditoria';
 
-const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string; ready: boolean }> = [
-  { id: 'campanas', label: 'Campañas', icon: 'campaign', ready: true },
-  { id: 'juegos', label: 'Juegos', icon: 'sports_esports', ready: false },
-  { id: 'recompensas', label: 'Recompensas', icon: 'redeem', ready: false },
-  { id: 'smart-tags', label: 'Smart Tags', icon: 'qr_code_2', ready: false },
-  { id: 'comercios', label: 'Comercios', icon: 'storefront', ready: false },
-  { id: 'analitica', label: 'Analítica', icon: 'query_stats', ready: false },
-  { id: 'auditoria', label: 'Auditoría', icon: 'shield', ready: false },
+const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = [
+  { id: 'campanas', label: 'Campañas', icon: 'campaign' },
+  { id: 'juegos', label: 'Juegos', icon: 'sports_esports' },
+  { id: 'recompensas', label: 'Recompensas', icon: 'redeem' },
+  { id: 'smart-tags', label: 'Smart Tags', icon: 'qr_code_2' },
+  { id: 'comercios', label: 'Comercios', icon: 'storefront' },
+  { id: 'analitica', label: 'Analítica', icon: 'query_stats' },
+  { id: 'auditoria', label: 'Auditoría', icon: 'shield' },
 ];
 
 export interface ConsoleLayoutProps {
@@ -20,6 +20,10 @@ export interface ConsoleLayoutProps {
   roleLabel: string;
   onNavigate: (section: ConsoleSection) => void;
   onLogout: () => void;
+  /** Secciones disponibles para esta persona (según su rol y lo construido); el resto aparece como "Próximamente". */
+  sections?: ConsoleSection[];
+  /** Secciones que existen pero no corresponden al rol de esta persona: se muestran como "Sin acceso". */
+  restricted?: ConsoleSection[];
   /** Migas de pan: último elemento = página actual. */
   breadcrumbs?: Array<{ label: string; onSelect?: () => void }>;
   children: ReactNode;
@@ -29,7 +33,17 @@ export interface ConsoleLayoutProps {
  * Marco de la consola (escritorio). Diseño: Stitch "16/17 · Consola". Tema claro con barra lateral verde
  * bosque; las secciones de pasos posteriores aparecen deshabilitadas con la etiqueta "Próximamente".
  */
-export function ConsoleLayout({ active, userAlias, roleLabel, onNavigate, onLogout, breadcrumbs = [], children }: ConsoleLayoutProps) {
+export function ConsoleLayout({
+  active,
+  userAlias,
+  roleLabel,
+  onNavigate,
+  onLogout,
+  sections = ['campanas'],
+  restricted = [],
+  breadcrumbs = [],
+  children,
+}: ConsoleLayoutProps) {
   return (
     <div className="min-h-dvh flex bg-surface text-on-surface">
       <aside className="w-64 shrink-0 bg-inverse-surface text-inverse-on-surface flex flex-col">
@@ -51,7 +65,7 @@ export function ConsoleLayout({ active, userAlias, roleLabel, onNavigate, onLogo
               <li key={item.id}>
                 <button
                   type="button"
-                  disabled={!item.ready}
+                  disabled={!sections.includes(item.id)}
                   aria-current={active === item.id ? 'page' : undefined}
                   onClick={() => onNavigate(item.id)}
                   className={cx(
@@ -59,12 +73,14 @@ export function ConsoleLayout({ active, userAlias, roleLabel, onNavigate, onLogo
                     active === item.id
                       ? 'bg-inverse-primary text-inverse-surface'
                       : 'text-inverse-on-surface/85 hover:bg-white/5 disabled:hover:bg-transparent',
-                    !item.ready && 'opacity-60 cursor-not-allowed',
+                    !sections.includes(item.id) && 'opacity-60 cursor-not-allowed',
                   )}
                 >
                   <Icon name={item.icon} className="text-[20px]" />
                   <span className="flex-1">{item.label}</span>
-                  {!item.ready && <span className="font-label-sm text-[9px] uppercase tracking-wide">Próximamente</span>}
+                  {!sections.includes(item.id) && (
+                    <span className="font-label-sm text-[9px] uppercase tracking-wide">{restricted.includes(item.id) ? 'Sin acceso' : 'Próximamente'}</span>
+                  )}
                 </button>
               </li>
             ))}

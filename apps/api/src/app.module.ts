@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AuditModule } from './audit/audit.module.ts';
 import { CampaignsModule } from './campaigns/campaigns.module.ts';
+import { CodesModule } from './codes/codes.module.ts';
 import { AllExceptionsFilter } from './common/exception.filter.ts';
 import { IdempotencyKeyGuard } from './common/idempotency.ts';
 import { OriginGuard } from './common/origin.guard.ts';
@@ -18,7 +19,7 @@ import { RedisModule } from './redis/redis.module.ts';
  * pasos 4-12 del plan, cada uno con sus propios límites.
  */
 @Module({
-  imports: [ConfigModule, PrismaModule, RedisModule, AuditModule, PlatformModule, HealthModule, IdentityModule, CampaignsModule],
+  imports: [ConfigModule, PrismaModule, RedisModule, AuditModule, PlatformModule, HealthModule, IdentityModule, CampaignsModule, CodesModule],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
     { provide: APP_GUARD, useClass: OriginGuard },

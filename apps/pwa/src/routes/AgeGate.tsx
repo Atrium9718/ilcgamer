@@ -6,7 +6,7 @@ import { ApiRequestError } from '../lib/api.ts';
 import { campaignSlugFromPath } from '../lib/campaign.ts';
 import { identityApi } from '../lib/identity.ts';
 import { useSession } from '../lib/session.tsx';
-import { KEYS, readLocal } from '../lib/storage.ts';
+import { KEYS, readLocal, removeLocal } from '../lib/storage.ts';
 
 const LINKS = [
   { label: 'Términos y condiciones', href: '/legal/terminos' },
@@ -44,13 +44,14 @@ export function AgeGateRoute() {
     try {
       const returnTo = readLocal<string>(KEYS.returnTo, '/', 'session');
       // Una campaña puede exigir más de 18 años: el servidor aplica su edad mínima (Guía Técnica §5.1).
-      const campaignSlug = campaignSlugFromPath(returnTo);
+      const campaignSlug = campaignSlugFromPath(returnTo) ?? (readLocal<string | null>(KEYS.pendingCampaign, null, 'session') || undefined);
       const me = await identityApi.ageGate({
         birthDate: `${birthDate.year}-${pad(birthDate.month)}-${pad(birthDate.day)}`,
         declaration: true,
         ...(campaignSlug ? { campaignSlug } : {}),
       });
       setMe(me);
+      removeLocal(KEYS.pendingCampaign, 'session');
       navigate(returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/', { replace: true });
     } catch (err) {
       if (err instanceof ApiRequestError && err.code === 'AGE_REQUIREMENT_NOT_MET') navigate('/menor-de-edad', { replace: true });

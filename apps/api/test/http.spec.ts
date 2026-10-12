@@ -39,6 +39,18 @@ describe('errores y trazabilidad (Guía Técnica §7.1)', () => {
     const bad = await fastify().inject({ method: 'GET', url: '/api/v1/health', headers: { 'x-request-id': '<script>' } });
     expect(bad.headers['x-request-id']).not.toBe('<script>');
   });
+
+  it('acepta JSON vacío en acciones sin datos y rechaza la contaminación de prototipos', async () => {
+    const empty = await fastify().inject({ method: 'POST', url: '/api/v1/auth/logout', headers: { 'content-type': 'application/json' }, payload: '' });
+    expect(empty.statusCode).not.toBe(400);
+    const poisoned = await fastify().inject({
+      method: 'POST',
+      url: '/api/v1/age-gate',
+      headers: { 'content-type': 'application/json' },
+      payload: '{"__proto__":{"admin":true},"birthDate":"1990-01-01","declaration":true}',
+    });
+    expect(ApiErrorSchema.parse(poisoned.json()).error.code).toBe('VALIDATION_FAILED');
+  });
 });
 
 describe('cabeceras de seguridad (Guía Técnica §9.1)', () => {

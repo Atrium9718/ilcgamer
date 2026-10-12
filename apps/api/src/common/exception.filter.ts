@@ -10,6 +10,9 @@ const HTTP_TO_CODE: Record<number, ErrorCode> = {
   403: 'FORBIDDEN',
   404: 'NOT_FOUND',
   409: 'CONFLICT',
+  // Cuerpo demasiado grande o tipo de contenido no admitido: error del cliente, nunca 500.
+  413: 'VALIDATION_FAILED',
+  415: 'VALIDATION_FAILED',
   429: 'RATE_LIMITED',
   503: 'SERVICE_UNAVAILABLE',
 };

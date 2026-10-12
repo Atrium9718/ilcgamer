@@ -1,5 +1,18 @@
-import type { ApprovalDecisionInput, CampaignDraft, CampaignSummary, CampaignView, CreateCampaign, Me } from '@ilc/contracts';
-import { apiRequest } from './api.ts';
+import type {
+  ApprovalDecisionInput,
+  BatchView,
+  CampaignDraft,
+  CampaignSummary,
+  CampaignView,
+  CreateCampaign,
+  CreateProduct,
+  GenerateCodes,
+  ImportPreview,
+  Me,
+  ProductView,
+  UrlTemplate,
+} from '@ilc/contracts';
+import { apiRequest, type DownloadedFile } from './api.ts';
 
 const base = '/admin/campaigns';
 const enc = encodeURIComponent;
@@ -25,4 +38,26 @@ export const adminApi = {
   publish: (slug: string, checklist: Record<string, true>) => apiRequest<CampaignView>(`${base}/${enc(slug)}/publish`, { method: 'POST', body: { checklist } }),
   transition: (slug: string, action: 'pause' | 'resume' | 'close' | 'archive') =>
     apiRequest<CampaignView>(`${base}/${enc(slug)}/${action}`, { method: 'POST' }),
+};
+
+const st = '/admin/smarttags';
+
+/** Smart Tags (Paso 6). Los tokens en claro solo llegan en la descarga de una generación. */
+export const smartTagsApi = {
+  products: () => apiRequest<ProductView[]>(`${st}/products`),
+  createProduct: (body: CreateProduct) => apiRequest<ProductView>(`${st}/products`, { method: 'POST', body }),
+  batches: () => apiRequest<BatchView[]>(`${st}/batches`),
+  link: (id: string, campaignSlug: string) =>
+    apiRequest<{ created: number; skipped: number }>(`${st}/batches/${id}/link`, { method: 'POST', body: { campaignSlug } }),
+  distribute: (id: string) => apiRequest<{ updated: number }>(`${st}/batches/${id}/distribute`, { method: 'POST' }),
+  revoke: (id: string, reason: string) =>
+    apiRequest<{ codes: number; campaignCodes: number }>(`${st}/batches/${id}/revoke`, { method: 'POST', body: { reason } }),
+  exportBatch: (id: string) => apiRequest<DownloadedFile>(`${st}/batches/${id}/export`, { download: true }),
+  generate: (body: GenerateCodes) => apiRequest<DownloadedFile>(`${st}/generate`, { method: 'POST', body, download: true, timeoutMs: 120_000 }),
+  upload: (file: File) => apiRequest<ImportPreview>(`${st}/imports?fileName=${enc(file.name)}`, { method: 'POST', file, timeoutMs: 120_000 }),
+  confirmImport: (id: string) => apiRequest<ImportPreview>(`${st}/imports/${id}/confirm`, { method: 'POST', timeoutMs: 120_000 }),
+  discardImport: (id: string) => apiRequest<ImportPreview>(`${st}/imports/${id}/discard`, { method: 'POST' }),
+  importIssues: (id: string) => apiRequest<DownloadedFile>(`${st}/imports/${id}/issues`, { download: true }),
+  settings: () => apiRequest<UrlTemplate>(`${st}/settings`),
+  saveSettings: (body: UrlTemplate) => apiRequest<UrlTemplate>(`${st}/settings`, { method: 'PUT', body }),
 };

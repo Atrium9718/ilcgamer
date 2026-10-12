@@ -36,6 +36,11 @@ export const SinCampanaActiva: Story = { args: { canActivate: false, routeABadge
 
 export const YaReclamado: Story = { args: { status: 'already_claimed', canActivate: false } };
 
+export const ActivadoPorTi: Story = {
+  name: 'Ya activado por ti',
+  args: { canActivate: false, claimNotice: 'Ya activaste este código: sumaste 500 Puntos ILC en «Feria de Manizales».' },
+};
+
 export const NoReconocido: Story = { args: { status: 'unrecognized', productLabel: undefined, canActivate: false } };
 
 export const RequiereVerificacion: Story = { args: { status: 'needs_review', canActivate: false } };

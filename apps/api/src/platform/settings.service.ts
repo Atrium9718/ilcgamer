@@ -9,6 +9,10 @@ const DEFAULTS = {
   'economy.currencyName': 'Puntos ILC',
   'legal.noticeVersion': '1.0',
   'platform.minAge': 18,
+  /** Plantilla de la URL impresa en el QR (Instrucciones §4.1). */
+  'smarttags.urlTemplate': 'https://ilc.app/v/{token}',
+  /** Consultas por hora de un mismo código que disparan "Requiere verificación adicional" (§5.6, §9.2). */
+  'smarttags.anomalyLookupsPerHour': 50,
 } as const;
 
 type Key = keyof typeof DEFAULTS;
@@ -23,6 +27,10 @@ export class SettingsService {
   async get<K extends Key>(key: K): Promise<(typeof DEFAULTS)[K]> {
     const row = await this.prisma.platformSetting.findUnique({ where: { key } });
     return (row?.value ?? DEFAULTS[key]) as (typeof DEFAULTS)[K];
+  }
+
+  async set<K extends Key>(key: K, value: (typeof DEFAULTS)[K] | string | number, updatedById: string): Promise<void> {
+    await this.prisma.platformSetting.upsert({ where: { key }, update: { value, updatedById }, create: { key, value, updatedById } });
   }
 
   async publicConfig(): Promise<PublicConfig> {

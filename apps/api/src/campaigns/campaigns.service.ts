@@ -308,6 +308,7 @@ export class CampaignsService {
     }
     await this.prisma.$transaction(async (tx) => {
       await tx.campaign.update({ where: { id: campaign.id }, data: { status: rule.to } });
+      if (rule.to === 'CERRADA') await this.expireCodes(campaign.id, tx);
       await this.audit.record(
         {
           actorId: actor.userId,
@@ -342,6 +343,7 @@ export class CampaignsService {
       // Actualización condicional: si dos instancias corren a la vez, solo una aplica el cambio.
       const res = await this.prisma.campaign.updateMany({ where: { id: c.id, status: c.status }, data: { status: to } });
       if (res.count === 0) continue;
+      if (ended) await this.expireCodes(c.id);
       await this.audit.record({
         actorId: null,
         action: `campaign.auto_${ended ? 'closed' : 'activated'}`,
@@ -356,6 +358,11 @@ export class CampaignsService {
   }
 
   // ───────────── Auxiliares ─────────────
+
+  /** Al cerrar una campaña sus códigos sin reclamar pasan a EXPIRADO (§5.6); los reclamados no cambian. */
+  private expireCodes(campaignId: string, tx: Prisma.TransactionClient = this.prisma) {
+    return tx.campaignCode.updateMany({ where: { campaignId, status: { in: ['CREADO', 'DISPONIBLE'] } }, data: { status: 'EXPIRADO' } });
+  }
 
   private async findCampaign(slug: string) {
     const campaign = await this.prisma.campaign.findUnique({

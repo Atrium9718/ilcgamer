@@ -521,6 +521,438 @@
           "Campañas"
         ]
       }
+    },
+    "/api/v1/product-codes/{token}/status": {
+      "get": {
+        "operationId": "CodesController_status",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Códigos"
+        ]
+      }
+    },
+    "/api/v1/campaign-codes/{token}/claim": {
+      "post": {
+        "operationId": "CodesController_claim",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Códigos"
+        ]
+      }
+    },
+    "/api/v1/smarttags/validate": {
+      "post": {
+        "operationId": "CodesController_validate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Códigos"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/products": {
+      "get": {
+        "operationId": "AdminSmartTagsController_products",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      },
+      "post": {
+        "operationId": "AdminSmartTagsController_createProduct",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/batches": {
+      "get": {
+        "operationId": "AdminSmartTagsController_batches",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/batches/{id}/link": {
+      "post": {
+        "operationId": "AdminSmartTagsController_link",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/batches/{id}/distribute": {
+      "post": {
+        "operationId": "AdminSmartTagsController_distribute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/batches/{id}/revoke": {
+      "post": {
+        "operationId": "AdminSmartTagsController_revoke",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/batches/{id}/export": {
+      "get": {
+        "operationId": "AdminSmartTagsController_exportBatch",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/generate": {
+      "post": {
+        "operationId": "AdminSmartTagsController_generate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/imports": {
+      "post": {
+        "operationId": "AdminSmartTagsController_preview",
+        "parameters": [
+          {
+            "name": "fileName",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/imports/{id}": {
+      "get": {
+        "operationId": "AdminSmartTagsController_getImport",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/imports/{id}/confirm": {
+      "post": {
+        "operationId": "AdminSmartTagsController_confirm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/imports/{id}/discard": {
+      "post": {
+        "operationId": "AdminSmartTagsController_discard",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/imports/{id}/issues": {
+      "get": {
+        "operationId": "AdminSmartTagsController_issues",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
+    },
+    "/api/v1/admin/smarttags/settings": {
+      "get": {
+        "operationId": "AdminSmartTagsController_settings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      },
+      "put": {
+        "operationId": "AdminSmartTagsController_setSettings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Smart Tags"
+        ]
+      }
     }
   },
   "info": {
@@ -561,6 +993,9 @@
                   "CAMPAIGN_NOT_ACTIVE",
                   "CODE_NOT_RECOGNIZED",
                   "CODE_ALREADY_CLAIMED",
+                  "CODE_NOT_AVAILABLE",
+                  "CLAIM_LIMIT_REACHED",
+                  "ACCOUNT_REQUIRED",
                   "SESSION_NOT_FOUND",
                   "SESSION_EXPIRED",
                   "SESSION_PIN_INVALID",

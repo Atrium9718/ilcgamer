@@ -89,7 +89,7 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
   const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input).replace(/^.*\/api\/v1/, '');
     const method = init?.method ?? 'GET';
-    const body = init?.body ? JSON.parse(String(init.body)) : undefined;
+    const body = typeof init?.body === 'string' ? JSON.parse(init.body) : init?.body;
     state.requests.push({ method, url, body });
 
     if (url === '/auth/otp/request') return json(200, { maskedDestination: 'a•••@ilc.com.co', expiresInSeconds: 300, resendInSeconds: 30 });
@@ -141,6 +141,51 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
       state.campaign = { ...c, status: 'PROGRAMADA', activeVersion: 1, workingVersion: { ...c.workingVersion, state: 'PUBLICADA' } };
       return json(200, state.campaign);
     }
+    if (url === '/admin/smarttags/batches')
+      return json(200, [
+        {
+          id: '00000000-0000-7000-8000-0000000000b1',
+          sku: 'RVC-8',
+          productName: 'Ron Viejo de Caldas 8 años',
+          label: '4092',
+          supplier: 'Imprenta A',
+          total: 3,
+          byStatus: { ASIGNADO_A_LOTE: 3 },
+          revokedAt: null,
+          campaigns: [],
+          createdAt: '2026-10-01T15:00:00.000Z',
+        },
+      ]);
+    if (url === '/admin/smarttags/products')
+      return json(200, [
+        {
+          id: 'p1',
+          sku: 'RVC-8',
+          name: 'Ron Viejo de Caldas 8 años',
+          brandSlug: 'ron-viejo-de-caldas',
+          brandLabel: 'Ron Viejo de Caldas',
+          active: true,
+          codes: 3,
+        },
+      ]);
+    if (url === '/admin/smarttags/settings') return json(200, { urlTemplate: 'https://ilc.app/v/{token}' });
+    if (url.startsWith('/admin/smarttags/batches/') && url.endsWith('/link')) return json(200, { created: 3, skipped: 0 });
+    const preview = (status: string) => ({
+      id: '00000000-0000-7000-8000-0000000000f1',
+      fileName: 'lote.csv',
+      status,
+      totalRows: 2,
+      validRows: 2,
+      duplicateRows: 0,
+      errorRows: 0,
+      warnings: [],
+      issues: [],
+      groups: [{ sku: 'RVC-8', batch: '4100', rows: 2 }],
+      createdAt: '2026-10-01T15:00:00.000Z',
+      confirmedAt: status === 'CONFIRMADA' ? '2026-10-01T15:01:00.000Z' : null,
+    });
+    if (url.startsWith('/admin/smarttags/imports?fileName=')) return json(201, preview('PREVISTA'));
+    if (url.endsWith('/confirm')) return json(200, preview('CONFIRMADA'));
     return fail(404, 'NOT_FOUND', `Sin ruta falsa para ${method} ${url}`);
   });
   vi.stubGlobal('fetch', fetchMock);

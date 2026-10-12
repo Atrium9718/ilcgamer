@@ -7,3 +7,4 @@ export * from './health.ts';
 export * from './http.ts';
 export * from './identity.ts';
 export { toOpenApiComponents } from './openapi.ts';
+export * from './smarttags.ts';

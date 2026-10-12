@@ -38,11 +38,17 @@ export class IdentityService {
     }
     const now = new Date();
     if (auth) {
-      const user = await this.prisma.user.update({ where: { id: auth.user.id }, data: { ageVerifiedAt: now, ageGateMethod: AGE_GATE_METHOD } });
+      const ageVerifiedMinAge = Math.max(auth.user.ageVerifiedMinAge ?? 18, minAge);
+      const user = await this.prisma.user.update({
+        where: { id: auth.user.id },
+        data: { ageVerifiedAt: now, ageGateMethod: AGE_GATE_METHOD, ageVerifiedMinAge },
+      });
       return this.me(user);
     }
     const user = await this.prisma.$transaction(async (tx) => {
-      const created = await tx.user.create({ data: { alias: DEFAULT_ALIAS, status: 'TEMPORAL', ageVerifiedAt: now, ageGateMethod: AGE_GATE_METHOD } });
+      const created = await tx.user.create({
+        data: { alias: DEFAULT_ALIAS, status: 'TEMPORAL', ageVerifiedAt: now, ageGateMethod: AGE_GATE_METHOD, ageVerifiedMinAge: minAge },
+      });
       await this.sessions.create(created.id, reply, tx);
       await this.audit.record(
         { actorId: created.id, action: 'age_gate.passed', resource: 'user', resourceId: created.id, requestId, metadata: { method: AGE_GATE_METHOD, minAge } },

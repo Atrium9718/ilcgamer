@@ -209,9 +209,17 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Consola mínima `apps/console` (ingreso por código al correo, lista, editor, detalle con aprobaciones, checklist, publicación y operación). Pantallas 16 y 17 diseñadas en Stitch.
 - [ ] Pendiente para el Paso 6/7: re-verificar la edad cuando una campaña exige más de 18 y la persona ya pasó el control con 18 (hoy el servidor la aplica en el control de edad de entrada).
 
-### Paso 6 — Smart Tags y claims (Ruta A núcleo)
-- Consulta de código (estados de producto) **separada** de reclamación de campaña; plantilla de URL configurable; rate limiting; import CSV/XLSX con vista previa; `POST /api/v1/smarttags/validate`.
-- Pruebas de concurrencia: dos claims simultáneos ⇒ una sola emisión.
+### Paso 6 — Smart Tags y claims (Ruta A núcleo) ✅
+- [x] Dos dominios separados (§5.6): `GET /product-codes/{token}/status` (consultar no consume nada; cada consulta es un evento) y `POST /campaign-codes/{token}/claim`. Mensajes precisos ("Código reconocido", "Este código ya registra una reclamación", "Requiere verificación adicional"), nunca "100 % auténtico".
+- [x] Tokens Crockford de 12 caracteres (60 bits); la base guarda SHA-256 y los últimos 4. Logs y exportaciones enmascaran el token (también en la URL registrada).
+- [x] Reclamación atómica e idempotente: actualización condicional + índice único parcial + clave de idempotencia + candado por persona para límites diarios/totales. Probado: 8 solicitudes simultáneas ⇒ 1 claim y 1 movimiento; doble toque con la misma clave ⇒ misma respuesta.
+- [x] Emisión en el ledger en la misma transacción (puntos por SKU × mayor multiplicador vigente, vencimiento según la campaña). Condiciones visibles antes de confirmar; reintento seguro con la misma clave.
+- [x] Elegibilidad en servidor: campaña activa y en ventana, cuenta guardada, código vigente, lote no revocado, edad mínima de la campaña (pide confirmar de nuevo si la campaña es +21 — cierra el pendiente del Paso 5).
+- [x] Antifraude proporcional (§9.2): límite por IP, freno a la enumeración, alerta de anomalía por consultas por hora (sin bloquear personas), revocación de lotes, eventos de seguridad.
+- [x] Consola Smart Tags (pantalla 18 de Stitch): productos, lotes (vincular a promoción, distribuir, revocar, exportar auditoría sin PII ni GPS), generación masiva, importación CSV/XLSX con vista previa, archivo repetido bloqueado y errores descargables, plantilla de URL editable.
+- [x] `POST /smarttags/validate` para el ERP con clave de integración (solo hash en la configuración).
+- [x] PWA: landing de código real, activación con condiciones, regreso al código tras guardar la cuenta. Verificado de punta a punta en Chromium.
+- [ ] Pendiente (TI/Producción): cifrado del archivo de imprenta en tránsito (p. ej. PGP), webhooks de trazabilidad con el ERP, y el mecanismo anti-anaquel definitivo (QR rotativo de establecimiento o vinculación por staff — Pasos 8 y 11). Mientras tanto, la activación depende de la campaña y sus límites.
 
 ### Paso 7 — Ledger y economía dual
 - Puntos ILC (300/500 como **parámetros de prueba**, nombre de moneda configurable) e XP/insignias separados; multiplicadores; idempotencia; reversos auditados.

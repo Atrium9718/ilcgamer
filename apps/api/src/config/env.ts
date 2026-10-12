@@ -39,6 +39,22 @@ export const EnvSchema = z.object({
    * "none" deshabilita el login por código hasta contratar proveedor (Guía Técnica §15).
    */
   OTP_PROVIDER: z.enum(['console', 'none']).default('none'),
+  /** Límite por IP de la consulta pública de códigos (protección contra enumeración — §5.6). */
+  CODE_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(30),
+  /**
+   * Integración ERP (POST /smarttags/validate — Instrucciones §10): SHA-256 (hex) de las claves emitidas por TI,
+   * separadas por coma. Vacío = integración deshabilitada. La clave en claro nunca se configura en la API.
+   */
+  SMARTTAGS_INTEGRATION_KEY_HASHES: z
+    .string()
+    .default('')
+    .transform((v) =>
+      v
+        .split(',')
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean),
+    )
+    .pipe(z.array(z.string().regex(/^[0-9a-f]{64}$/, 'Cada valor debe ser un SHA-256 en hexadecimal'))),
   APP_VERSION: z.string().default(packageVersion()),
 });
 

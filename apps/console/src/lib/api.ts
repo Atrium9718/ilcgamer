@@ -24,6 +24,15 @@ export interface RequestOptions {
   idempotencyKey?: string;
   timeoutMs?: number;
   signal?: AbortSignal;
+  /** Cuerpo binario (archivo) enviado como application/octet-stream. */
+  file?: Blob;
+  /** La respuesta es un archivo para descargar (CSV), no JSON. */
+  download?: boolean;
+}
+
+export interface DownloadedFile {
+  fileName: string;
+  blob: Blob;
 }
 
 const BASE = import.meta.env.VITE_API_URL ?? API_PREFIX;
@@ -33,10 +42,14 @@ export function newIdempotencyKey(): string {
   return crypto.randomUUID().replaceAll('-', '');
 }
 
-export async function apiRequest<T>(path: string, { method = 'GET', body, idempotencyKey, timeoutMs = 15_000, signal }: RequestOptions = {}): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  { method = 'GET', body, idempotencyKey, timeoutMs = 15_000, signal, file, download }: RequestOptions = {},
+): Promise<T> {
   const timeout = AbortSignal.timeout(timeoutMs);
-  const headers: Record<string, string> = { Accept: 'application/json', [HEADERS.requestId]: crypto.randomUUID() };
+  const headers: Record<string, string> = { Accept: download ? 'text/csv, application/json' : 'application/json', [HEADERS.requestId]: crypto.randomUUID() };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
+  if (file) headers['Content-Type'] = 'application/octet-stream';
   if (idempotencyKey) headers[HEADERS.idempotencyKey] = idempotencyKey;
 
   let res: Response;
@@ -44,7 +57,7 @@ export async function apiRequest<T>(path: string, { method = 'GET', body, idempo
     res = await fetch(`${BASE}${path}`, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: file ?? (body === undefined ? undefined : JSON.stringify(body)),
       credentials: 'include',
       signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
     });
@@ -54,6 +67,10 @@ export async function apiRequest<T>(path: string, { method = 'GET', body, idempo
     throw new ApiRequestError('NETWORK_ERROR', 'Sin conexión. Revisa tu señal e intenta de nuevo.', true, undefined, undefined);
   }
 
+  if (res.ok && download) {
+    const fileName = /filename="([^"]+)"/.exec(res.headers.get('Content-Disposition') ?? '')?.[1] ?? 'descarga.csv';
+    return { fileName, blob: await res.blob() } satisfies DownloadedFile as T;
+  }
   if (res.ok) return (res.status === 204 ? undefined : await res.json()) as T;
 
   let parsed: ApiError | undefined;

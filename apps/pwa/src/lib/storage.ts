@@ -23,4 +23,18 @@ export const KEYS = {
   referral: 'ilc.referral',
   returnTo: 'ilc.returnTo',
   campaignTheme: 'ilc.campaignTheme',
+  /** Campaña cuya edad mínima debe aplicar el próximo control de edad (p. ej. +21). */
+  pendingCampaign: 'ilc.pendingCampaign',
+  /** Prefijo de la clave de idempotencia de una reclamación en curso, por código. */
+  claimKey: 'ilc.claimKey',
+  /** Pantalla a la que se vuelve después de guardar la cuenta (p. ej. el código que se quería activar). */
+  afterSignup: 'ilc.afterSignup',
 } as const;
+
+export function removeLocal(key: string, store: 'local' | 'session' = 'local'): void {
+  try {
+    (store === 'local' ? localStorage : sessionStorage).removeItem(key);
+  } catch {
+    /* sin almacenamiento disponible */
+  }
+}

@@ -27,6 +27,8 @@ export interface CodeLandingViewProps {
   routeABadge?: string;
   /** El contenedor lo calcula: código reconocido + campaña activa + contexto elegible. */
   canActivate: boolean;
+  /** Estado de la promoción de esta botella cuando no se puede activar (ya activada por ti, terminó…). */
+  claimNotice?: string;
   /** Relato aprobado por la marca. Si no hay, se muestra el marcador. */
   originStory?: string;
   activating?: boolean;
@@ -47,6 +49,7 @@ export function CodeLandingView({
   heroImageAlt = 'Imagen ilustrativa del producto en el bosque de niebla',
   routeABadge,
   canActivate,
+  claimNotice,
   originStory,
   activating = false,
   onBack,
@@ -86,6 +89,15 @@ export function CodeLandingView({
           </section>
 
           <VerificationSeal status={status} productLabel={productLabel} onExplain={onExplainCode} className="mt-4" />
+          {claimNotice && (
+            <p
+              role="status"
+              className="mt-3 flex items-start gap-2 p-3 rounded-xl border border-outline-variant bg-surface-container font-body-md text-[14px] text-on-surface"
+            >
+              <Icon name="info" className="text-[20px] text-secondary" />
+              {claimNotice}
+            </p>
+          )}
 
           <section className="mt-7" aria-labelledby="que-quieres-hacer">
             <div className="flex items-center justify-between mb-3 px-1">

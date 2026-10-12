@@ -167,3 +167,24 @@ describe('entrada por QR de evento (/e/:slug)', () => {
     expect(document.documentElement.dataset.theme).toBe('light');
   });
 });
+
+describe('activación de un código (Guía Técnica §5.6, §5.7)', () => {
+  it('sin cuenta guardada lleva a guardar el progreso y vuelve al código', async () => {
+    installFakeApi({ loggedIn: true });
+    const router = renderAt('/v/demo-reconocido');
+    await userEvent.click(await screen.findByRole('button', { name: /Activar código y crear mi Parche/ }));
+    expect(router.state.location.pathname).toBe('/registro');
+    expect(JSON.parse(sessionStorage.getItem('ilc.afterSignup') ?? '""')).toBe('/v/demo-reconocido');
+  });
+
+  it('con cuenta muestra las condiciones antes de activar y luego el resultado', async () => {
+    installFakeApi({ loggedIn: true, status: 'ACTIVA' });
+    renderAt('/v/demo-reconocido');
+    await userEvent.click(await screen.findByRole('button', { name: /Activar código y crear mi Parche/ }));
+    expect(await screen.findByText(/Cada código se activa una sola vez/)).toBeInTheDocument();
+    expect(screen.getByText(/vencen 180 días después/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Activar código' }));
+    expect(await screen.findByText(/Sumaste 500 Puntos ILC en «Feria de Manizales»/)).toBeInTheDocument();
+    expect(await screen.findByText(/Ya activaste este código/)).toBeInTheDocument();
+  });
+});

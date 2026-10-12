@@ -13,3 +13,13 @@ export { CampaignListView, type CampaignListViewProps, type CampaignRow } from '
 export { ConsoleLayout, type ConsoleLayoutProps, type ConsoleSection } from './ConsoleLayout.tsx';
 export { ConsoleLoginView, type ConsoleLoginViewProps } from './ConsoleLoginView.tsx';
 export { ApprovalDots, type ApprovalState, type CampaignStatusView, RouteChip, type RouteView, STATUS_LABEL, StatusChip } from './chips.tsx';
+export {
+  type BatchRow,
+  type GenerateValue,
+  type ImportPreviewView,
+  type NewProductValue,
+  type ProductRow,
+  type SmartTagsTab,
+  SmartTagsView,
+  type SmartTagsViewProps,
+} from './SmartTagsView.tsx';

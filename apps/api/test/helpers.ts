@@ -16,6 +16,7 @@ export function useTestEnv(overrides: Record<string, string> = {}): void {
     OTP_PROVIDER: 'console',
     RATE_LIMIT_PER_MINUTE: '1000',
     AUTH_RATE_LIMIT_PER_MINUTE: '1000',
+    CODE_RATE_LIMIT_PER_MINUTE: '1000',
     ...overrides,
   });
 }
@@ -41,7 +42,7 @@ export async function resetDatabase(db: PrismaClient): Promise<void> {
 }
 
 /** Cliente HTTP de prueba con "frasco" de cookies, como un navegador. */
-export function browser(app: NestFastifyApplication, origin = 'http://localhost:5173') {
+export function browser(app: NestFastifyApplication, origin: string | null = 'http://localhost:5173') {
   const jar = new Map<string, string>();
   const fastify = app.getHttpAdapter().getInstance();
   return {
@@ -52,7 +53,7 @@ export function browser(app: NestFastifyApplication, origin = 'http://localhost:
         method,
         url: `/api/v1${url}`,
         payload: body === undefined ? undefined : (body as object),
-        headers: { origin, ...(cookie ? { cookie } : {}), ...extraHeaders },
+        headers: { ...(origin ? { origin } : {}), ...(cookie ? { cookie } : {}), ...extraHeaders },
       });
       const set = res.headers['set-cookie'];
       for (const c of Array.isArray(set) ? set : set ? [set] : []) {

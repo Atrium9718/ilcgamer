@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { ApiRequestError } from '../lib/api.ts';
 import { identityApi } from '../lib/identity.ts';
 import { useSession } from '../lib/session.tsx';
+import { KEYS, readLocal, removeLocal } from '../lib/storage.ts';
 import { useTabNavigate } from './shell.tsx';
 
 const dateLabel = (iso: string | null) =>
@@ -117,7 +118,10 @@ export function OtpRoute() {
     setCodeError(undefined);
     try {
       setMe(await identityApi.verifyOtp(channel, destination, code));
-      navigate('/perfil', { replace: true });
+      // Si venía de activar un código, vuelve allí para terminar la activación.
+      const next = readLocal<string | null>(KEYS.afterSignup, null, 'session');
+      removeLocal(KEYS.afterSignup, 'session');
+      navigate(next?.startsWith('/') && !next.startsWith('//') ? next : '/perfil', { replace: true });
     } catch (err) {
       setCode('');
       setCodeError(err instanceof ApiRequestError ? err.message : 'No pudimos verificar el código.');

@@ -128,3 +128,59 @@ export const BRAND_OPTIONS = [
   { slug: 'aguardiente-amarillo', label: 'Aguardiente Amarillo de Manzanares' },
   { slug: 'aguardiente-cristal', label: 'Aguardiente Cristal' },
 ];
+
+export const BATCHES_DEMO = [
+  {
+    id: 'b1',
+    productName: 'Ron Viejo de Caldas 8 años',
+    sku: 'RVC-8',
+    label: '4092',
+    supplier: 'Imprenta A',
+    total: 12000,
+    counts: { asignados: 0, distribuidos: 11950, alerta: 3, revocados: 0 },
+    revoked: false,
+    campaigns: [{ slug: 'feria-manizales-2027', title: 'Feria de Manizales 2027', codes: 11950, claimed: 2310 }],
+  },
+  {
+    id: 'b2',
+    productName: 'Aguardiente Amarillo de Manzanares',
+    sku: 'AA-750',
+    label: '118',
+    supplier: 'Imprenta A',
+    total: 8000,
+    counts: { asignados: 8000, distribuidos: 0, alerta: 0, revocados: 0 },
+    revoked: false,
+    campaigns: [],
+  },
+  {
+    id: 'b3',
+    productName: 'Aguardiente Cristal',
+    sku: 'AC-750',
+    label: '77',
+    supplier: null,
+    total: 500,
+    counts: { asignados: 0, distribuidos: 0, alerta: 0, revocados: 500 },
+    revoked: true,
+    campaigns: [],
+  },
+];
+
+export const PRODUCTS_DEMO = [
+  { sku: 'RVC-8', name: 'Ron Viejo de Caldas 8 años', brandLabel: 'Ron Viejo de Caldas', codes: 12000 },
+  { sku: 'AA-750', name: 'Aguardiente Amarillo de Manzanares', brandLabel: 'Aguardiente Amarillo de Manzanares', codes: 8000 },
+];
+
+export const PREVIEW_DEMO = {
+  fileName: 'lote-4093.csv',
+  status: 'PREVISTA' as const,
+  totalRows: 10000,
+  validRows: 9980,
+  duplicateRows: 15,
+  errorRows: 5,
+  warnings: ['12 tokens tienen menos de 10 caracteres: son más fáciles de adivinar. Pide a la imprenta tokens más largos.'],
+  issues: [
+    { line: 14, tokenHint: '••••7K2Q', message: 'Token repetido dentro del archivo' },
+    { line: 220, tokenHint: '••••A1B2', message: 'SKU RVC-80 no existe en el catálogo' },
+  ],
+  groups: [{ sku: 'RVC-8', batch: '4093', rows: 9980 }],
+};

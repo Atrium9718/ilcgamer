@@ -16,6 +16,7 @@ export const CampaignStatusSchema = z.enum(CAMPAIGN_STATUSES);
 /** §5.6 Código de producto (consulta). Las consultas son eventos, no estados. */
 export const PRODUCT_CODE_STATUSES = ['GENERADO', 'ASIGNADO_A_LOTE', 'DISTRIBUIDO', 'ALERTA_DE_ANOMALIA', 'REVOCADO'] as const;
 export const ProductCodeStatusSchema = z.enum(PRODUCT_CODE_STATUSES);
+export type ProductCodeStatus = z.infer<typeof ProductCodeStatusSchema>;
 
 /** §5.6 Código de campaña / claim (dominio separado del de producto). */
 export const CAMPAIGN_CODE_STATUSES = ['CREADO', 'DISPONIBLE', 'RECLAMADO', 'EXPIRADO', 'ANULADO'] as const;

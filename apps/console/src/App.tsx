@@ -1,4 +1,4 @@
-import { Button, ConsoleLayout, StatusMessage } from '@ilc/ui';
+import { Button, ConsoleLayout, type ConsoleSection, StatusMessage } from '@ilc/ui';
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { roleLabel } from './lib/mapping.ts';
 import { SessionProvider, useSession } from './lib/session.tsx';
@@ -6,11 +6,16 @@ import { CampaignDetail } from './routes/CampaignDetail.tsx';
 import { CampaignEditor } from './routes/CampaignEditor.tsx';
 import { CampaignList } from './routes/CampaignList.tsx';
 import { Login } from './routes/Login.tsx';
+import { SmartTags } from './routes/SmartTags.tsx';
 
 const CONSOLE_ROLES = ['SUPERADMIN', 'ADMIN_MARCA', 'EDITOR_CONTENIDO', 'REVISOR_MARCA', 'REVISOR_JURIDICO', 'RESPONSABLE_PRIVACIDAD'];
 
+/** Smart Tags: Admin de Marca (catálogo y lotes) y SuperAdmin/TI (generación e importación). */
+const SMARTTAG_ROLES = ['SUPERADMIN', 'ADMIN_MARCA'];
+
 function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   const parts = pathname.split('/').filter(Boolean);
+  if (parts[0] === 'smart-tags') return [{ label: 'Smart Tags' }];
   const crumbs: Array<{ label: string; onSelect?: () => void }> = [{ label: 'Campañas', onSelect: parts.length > 1 ? () => go('/campanas') : undefined }];
   if (parts[1] === 'nueva') crumbs.push({ label: 'Nueva campaña' });
   else if (parts[1]) {
@@ -45,12 +50,16 @@ function Shell() {
       </main>
     );
 
+  const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
+  const sections: ConsoleSection[] = smartTags ? ['campanas', 'smart-tags'] : ['campanas'];
   return (
     <ConsoleLayout
-      active="campanas"
+      active={pathname.startsWith('/smart-tags') ? 'smart-tags' : 'campanas'}
+      sections={sections}
+      restricted={smartTags ? [] : ['smart-tags']}
       userAlias={me.alias}
       roleLabel={roleLabel(me.roles)}
-      onNavigate={(section) => section === 'campanas' && navigate('/campanas')}
+      onNavigate={(section) => navigate(section === 'smart-tags' ? '/smart-tags' : '/campanas')}
       onLogout={() => void logout()}
       breadcrumbs={breadcrumbsFor(pathname, navigate)}
     >
@@ -68,6 +77,7 @@ export function AppRoutes() {
         <Route path="campanas/nueva" element={<CampaignEditor />} />
         <Route path="campanas/:slug" element={<CampaignDetail />} />
         <Route path="campanas/:slug/editar" element={<CampaignEditor />} />
+        <Route path="smart-tags" element={<SmartTags />} />
         <Route path="*" element={<Navigate to="/campanas" replace />} />
       </Route>
     </Routes>

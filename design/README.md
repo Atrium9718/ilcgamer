@@ -48,6 +48,7 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 15 · Tus autorizaciones | `af78a00baae44e2fb0b90da9759d6c84` | `ConsentsView` (cada interruptor se guarda al instante) |
 | 16 · Consola · Campañas | `3834fade7df24187bcc2db1ede709b75` | `ConsoleLayout`, `CampaignListView`, `CampaignEditorView`, `ConsoleLoginView` (tema claro) |
 | 17 · Consola · Detalle de campaña | `c69464065ad54a008c2692ace544d642` | `CampaignDetailView` (sin íconos de copas, equivalencias en pesos ni etiqueta de entorno inventada que traía Stitch) |
+| 18 · Consola · Smart Tags | `81e6ec3918784f939afd881ff120f45b` | `SmartTagsView` (sin "servicio de cifrado activo" ni conteos inventados que traía Stitch) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 

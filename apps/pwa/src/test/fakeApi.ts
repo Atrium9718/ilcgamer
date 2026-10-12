@@ -5,7 +5,7 @@ import { vi } from 'vitest';
  * API falsa en memoria para pruebas de la PWA. Replica los contratos y reglas de identidad de la API real
  * (las reglas reales se prueban en apps/api/test/identity.spec.ts contra PostgreSQL y Redis).
  */
-export function installFakeApi(options: { loggedIn?: boolean } = {}) {
+export function installFakeApi(options: { loggedIn?: boolean; status?: Me['status'] } = {}) {
   const purposes = ['TERMINOS_Y_PRIVACIDAD', 'MARKETING', 'UBICACION'] as const;
   const state = {
     me: null as Me | null,
@@ -28,7 +28,7 @@ export function installFakeApi(options: { loggedIn?: boolean } = {}) {
     consents: consents(),
     roles: [],
   });
-  if (options.loggedIn) state.me = newMe();
+  if (options.loggedIn) state.me = { ...newMe(), ...(options.status ? { status: options.status } : {}) };
 
   const json = (status: number, body?: unknown) =>
     new Response(body === undefined ? null : JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });

@@ -30,6 +30,8 @@ ni campañas sin aprobación (§4.4).
 | `LOG_LEVEL` | no | `info` por defecto. Los logs redactan tokens, PIN, cookies, códigos OTP, destinos, fechas de nacimiento y claves de idempotencia. |
 | `AUTH_RATE_LIMIT_PER_MINUTE` | no | Límite por IP del control de edad y del acceso por código (por defecto 10). |
 | `SESSION_TTL_DAYS` | no | Duración de la sesión de acceso (por defecto 30 días). |
+| `CODE_RATE_LIMIT_PER_MINUTE` | no | Límite por IP de `GET /product-codes/{token}/status` y de las reclamaciones (por defecto 30). Además, 20 consultas de códigos inexistentes en 10 min desde una IP frenan esa IP y dejan un evento de seguridad. |
+| `SMARTTAGS_INTEGRATION_KEY_HASHES` | no | Integración ERP (`POST /smarttags/validate`). Solo el SHA-256 de cada clave, separado por coma; vacío = apagada. Para emitir una clave: `openssl rand -base64 48 \| tr -d '/+=' \| tee clave.txt \| tr -d '\n' \| sha256sum` → la clave se entrega al ERP por canal seguro y el hash va en esta variable. El ERP la envía como `Authorization: Bearer <clave>`. |
 | `OTP_PROVIDER` | sí | `none` hasta contratar proveedor. `console` (imprime el código en el log) **solo** en desarrollo/pruebas: la API no arranca en staging/producción con ese valor. |
 
 ### PWA (`apps/pwa/.env.example`)
@@ -70,6 +72,14 @@ pnpm dev:api                                 # http://localhost:3000/api/v1/heal
 pnpm dev:pwa                                 # http://localhost:5173 (proxy /api → 3000)
 pnpm dev:console                             # http://localhost:5174 consola de administración
 ```
+
+### Smart Tags en local
+
+1. En la consola (`ADMIN_MARCA`): **Smart Tags → Productos** para registrar el SKU vigente.
+2. Con `SUPERADMIN`: **Generar** descarga un CSV con los tokens y su URL (única vez que salen en claro) o **Importar** un CSV/XLSX
+   de la imprenta (`token, sku, lote, proveedor`; acepta `,` o `;`) con vista previa antes de confirmar.
+3. **Lotes → Vincular a promoción** crea la promoción de cada botella (campaña de Ruta A o mixta, misma submarca).
+4. En la PWA: `http://localhost:5173/v/<token>` (con `VITE_DEMO_DATA=false`).
 
 ### Acceso a la consola
 

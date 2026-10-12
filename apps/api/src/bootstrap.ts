@@ -4,7 +4,16 @@ import type { IncomingMessage } from 'node:http';
 import cookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
-import { ApiErrorSchema, ConsentStateSchema, HEADERS, HealthResponseSchema, MeSchema, PublicConfigSchema, toOpenApiComponents } from '@ilc/contracts';
+import {
+  ApiErrorSchema,
+  ConsentStateSchema,
+  HEADERS,
+  HealthResponseSchema,
+  MAX_IMPORT_BYTES,
+  MeSchema,
+  PublicConfigSchema,
+  toOpenApiComponents,
+} from '@ilc/contracts';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
@@ -28,9 +37,25 @@ const REDACT = [
   'req.body.pin',
 ];
 
+/** Tokens de Smart Tag y PIN también viajan en la ruta: se enmascaran en la URL registrada (§9.2). */
+const TOKEN_IN_PATH = /\/(product-codes|campaign-codes|p)\/([^/?#]+)/g;
+export const maskUrl = (url: string): string => url.replace(TOKEN_IN_PATH, (_m, kind: string, token: string) => `/${kind}/••••${token.slice(-4)}`);
+
+/** Solo se aceptan cuerpos binarios en la importación de Smart Tags (archivo CSV/XLSX). */
+const BINARY_ROUTES = /^\/api\/v1\/admin\/smarttags\/imports(\?|$)/;
+
 export async function createApp(options: { logger?: boolean } = {}): Promise<NestFastifyApplication> {
   const adapter = new FastifyAdapter({
-    logger: options.logger === false ? false : { level: process.env.LOG_LEVEL ?? 'info', redact: { paths: REDACT, censor: '[redactado]' } },
+    logger:
+      options.logger === false
+        ? false
+        : {
+            level: process.env.LOG_LEVEL ?? 'info',
+            redact: { paths: REDACT, censor: '[redactado]' },
+            serializers: {
+              req: (req: { method: string; url: string; hostname?: string }) => ({ method: req.method, url: maskUrl(req.url), host: req.hostname }),
+            },
+          },
     // Correlación: respeta un X-Request-Id válido del cliente o genera uno.
     genReqId: (req: IncomingMessage) => {
       const incoming = req.headers[HEADERS.requestId.toLowerCase()];
@@ -40,8 +65,30 @@ export async function createApp(options: { logger?: boolean } = {}): Promise<Nes
     bodyLimit: 256 * 1024,
   });
 
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, { logger: options.logger === false ? false : undefined });
+  // bodyParser: false — el parser JSON se registra abajo (cuerpo vacío permitido); no se aceptan formularios.
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, { logger: options.logger === false ? false : undefined, bodyParser: false });
   const env = app.get<Env>(ENV);
+
+  const fastify = app.getHttpAdapter().getInstance();
+  // Muchos clientes HTTP envían Content-Type JSON con cuerpo vacío en acciones sin datos (enviar, publicar):
+  // se acepta como "sin cuerpo". El resto usa el parser de Fastify (protección contra __proto__ y constructor).
+  const jsonParser = fastify.getDefaultJsonParser('error', 'error');
+  fastify.removeContentTypeParser('application/json');
+  fastify.addContentTypeParser('application/json', { parseAs: 'string' }, (req, body, done) => {
+    if (body === '') {
+      done(null, undefined);
+      return;
+    }
+    jsonParser(req, String(body), done);
+  });
+  fastify
+    .addContentTypeParser('application/octet-stream', { parseAs: 'buffer', bodyLimit: MAX_IMPORT_BYTES }, (req, body, done) => {
+      if (!BINARY_ROUTES.test(req.url)) {
+        done(Object.assign(new Error('Tipo de contenido no admitido en esta ruta.'), { statusCode: 415 }), undefined);
+        return;
+      }
+      done(null, body);
+    });
 
   await app.register(cookie);
   await app.register(helmet, {
