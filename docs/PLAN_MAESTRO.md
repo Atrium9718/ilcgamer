@@ -167,9 +167,12 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Auditoría axe WCAG 2.1 AA de todas las historias en ambos temas (`tools/a11y_audit.cjs`): sin violaciones.
 - **Entregable:** Storybook con el design system aplicado. ✅
 
-### Paso 2 — Diseño de pantallas P0 en Stitch *(en curso)*
-- [x] 01 Control de edad · 02 Landing de código · 03 Crear Parche · 04 Unirse (PIN/QR) · 05 Sala del Parche — diseñadas, revisadas contra las guías, corregidas y traducidas a vistas puras con historias y pruebas.
-- [ ] 06 Catálogo de juegos (Ruta A lista; Ruta B máx. 2) · 07 Contenedor de juego y resultado · 08 Billetera Puntos ILC · 09 Progreso Ruta B · 10 Recompensas y canje · 11 Perfil/referidos · 12 Tarjeta social · 13 Login progresivo/consentimientos.
+### Paso 2 — Diseño de pantallas P0 de la PWA en Stitch ✅
+- [x] 01 Control de edad · 02 Landing de código · 03 Crear Parche · 04 Unirse (PIN/QR) · 05 Sala del Parche.
+- [x] 06 Catálogo de juegos (Ruta B máx. 2) · 07 Resultado verificado · 08 Billetera (ledger) · 09 Progreso Ruta B · 10 Recompensas y canje · 11 Perfil/referidos · 12 Tarjeta social · 13 Login progresivo/consentimientos.
+- [x] Todas revisadas contra las guías, corregidas en Stitch, traducidas a vistas puras con historias, pruebas y auditoría axe (72/72 sin violaciones).
+- [ ] Pendiente para la fase de consolas (Paso 11): pantallas de Staff, Comercio, Admin Marca y SuperAdmin (escritorio/tablet).
+- [ ] Pendiente: contenedor de juego (marco común del iframe), se diseña junto con el Game SDK (Paso 9).
 
 ### Paso 2 (detalle original)
 - Generar en Stitch las pantallas 1–14 con prompts versionados; iterar variantes con el equipo.

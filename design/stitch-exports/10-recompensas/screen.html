@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>10 · Recompensas y Detalle de Canje - ILC Origen</title>
+<!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'ilc-bg': '#0C1613',
+            'ilc-surface-1': '#111E1A',
+            'ilc-surface-2': '#162621',
+            'ilc-surface-3': '#1D302A',
+            'ilc-text': '#F4EFE3',
+            'ilc-text-muted': '#A3B4AC',
+            'ilc-gold': '#D4B673',
+            'ilc-gold-hover': '#C4A45F',
+            'ilc-moss': '#86CFA7',
+            'ilc-forest': '#2F4941',
+            'ilc-oak': '#E09A5F',
+            'ilc-border': '#223830',
+          },
+          fontFamily: {
+            garamond: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          borderRadius: {
+            'card': '16px',
+            'btn': '12px',
+            'sheet': '24px',
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #0C1613;
+      color: #F4EFE3;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-ilc-bg text-ilc-text min-h-screen flex justify-center selection:bg-ilc-gold selection:text-ilc-bg">
+<!-- Mobile Viewport Frame (390px default mobile standard) -->
+<div class="relative w-full max-w-[420px] bg-ilc-bg min-h-screen flex flex-col shadow-2xl overflow-hidden border-x border-ilc-border/40">
+<!-- ========================================== -->
+<!-- BACKGROUND: CATÁLOGO DE RECOMPENSAS        -->
+<!-- (Atenuado visualmente por el modal sheet)   -->
+<!-- ========================================== -->
+<div class="flex-1 flex flex-col pb-20 select-none pointer-events-none opacity-40">
+<!-- Top App Bar -->
+<header class="h-16 px-4 flex items-center justify-between border-b border-ilc-border/60 bg-ilc-surface-1/90 backdrop-blur-md sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<button aria-label="Volver" class="w-10 h-10 rounded-btn bg-ilc-surface-2 border border-ilc-border flex items-center justify-center text-ilc-gold">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<span class="font-garamond text-xl font-semibold tracking-wide text-ilc-gold">ILC Origen</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-ilc-surface-2 border border-ilc-border">
+<span class="text-xs text-ilc-text-muted">Ruta A</span>
+<span class="w-2 h-2 rounded-full bg-ilc-gold"></span>
+</div>
+</header>
+<!-- Saldo Header -->
+<div class="px-5 pt-5 pb-4 bg-gradient-to-b from-ilc-surface-1 to-ilc-bg border-b border-ilc-border/40">
+<div class="flex items-baseline justify-between">
+<div>
+<p class="text-xs uppercase tracking-wider text-ilc-text-muted font-medium">Billetera Comercial</p>
+<h1 class="font-garamond text-3xl font-bold text-ilc-text mt-0.5 flex items-center gap-2">
+<span class="text-ilc-gold">2.300</span> Puntos ILC
+            </h1>
+</div>
+<span class="text-xs px-2.5 py-1 rounded-full bg-ilc-forest/50 text-ilc-moss border border-ilc-moss/30 font-medium">
+            Saldo Activo
+          </span>
+</div>
+<p class="text-xs text-ilc-text-muted mt-1.5">Acumulados en activaciones de códigos según cada campaña.</p>
+<!-- Chips de Filtro -->
+<div class="flex items-center gap-2 mt-4 overflow-x-auto custom-scroll py-1">
+<span class="px-3.5 py-1.5 rounded-full bg-ilc-surface-2 border border-ilc-border text-xs text-ilc-text-muted">Todas</span>
+<span class="px-3.5 py-1.5 rounded-full bg-ilc-surface-2 border border-ilc-border text-xs text-ilc-text-muted">Digitales</span>
+<span class="px-3.5 py-1.5 rounded-full bg-ilc-gold text-ilc-bg font-semibold text-xs border border-ilc-gold">Merchandising</span>
+<span class="px-3.5 py-1.5 rounded-full bg-ilc-surface-2 border border-ilc-border text-xs text-ilc-text-muted">Experiencias</span>
+</div>
+</div>
+<!-- Catálogo de fondo: Grid 2 columnas -->
+<main class="p-4 grid grid-cols-2 gap-3.5">
+<!-- Tarjeta 1: Insignia digital Feria (Ruta B) -->
+<article class="bg-ilc-surface-1 border border-ilc-border rounded-card p-3 flex flex-col justify-between">
+<div>
+<div class="w-full aspect-square rounded-xl bg-ilc-surface-2 border border-ilc-border flex items-center justify-center mb-2.5 overflow-hidden">
+<svg class="w-12 h-12 text-ilc-moss" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+<span class="text-[10px] uppercase font-semibold text-ilc-moss tracking-wider">Digital · Colección</span>
+<h2 class="text-sm font-semibold text-ilc-text mt-0.5 leading-snug">Insignia digital Feria</h2>
+</div>
+<div class="mt-3 pt-2 border-t border-ilc-border/60 flex items-center justify-between">
+<span class="text-xs font-bold text-ilc-gold">200 Pts</span>
+<span class="text-[10px] text-ilc-text-muted">Inmediato</span>
+</div>
+</article>
+<!-- Tarjeta 2: Gorra oficial ILC (Seleccionada) -->
+<article class="bg-ilc-surface-2 border-2 border-ilc-gold rounded-card p-3 flex flex-col justify-between relative shadow-lg shadow-ilc-gold/10">
+<div class="absolute -top-2 right-2 px-2 py-0.5 rounded-full bg-ilc-gold text-ilc-bg text-[10px] font-bold">
+            Seleccionada
+          </div>
+<div>
+<div class="w-full aspect-square rounded-xl bg-ilc-surface-3 border border-ilc-border flex items-center justify-center mb-2.5 overflow-hidden">
+<svg class="w-12 h-12 text-ilc-gold" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+<span class="text-[10px] uppercase font-semibold text-ilc-oak tracking-wider">Merchandising</span>
+<h2 class="text-sm font-semibold text-ilc-text mt-0.5 leading-snug">Gorra oficial ILC</h2>
+<p class="text-[11px] text-ilc-text-muted mt-1">Quedan 14 en Manizales</p>
+</div>
+<div class="mt-3 pt-2 border-t border-ilc-border/60 flex items-center justify-between">
+<span class="text-xs font-bold text-ilc-gold">1.200 Pts</span>
+<span class="text-[10px] text-ilc-moss font-medium">Disponible</span>
+</div>
+</article>
+<!-- Tarjeta 3: Camiseta Ruta del Origen -->
+<article class="bg-ilc-surface-1 border border-ilc-border rounded-card p-3 flex flex-col justify-between">
+<div>
+<div class="w-full aspect-square rounded-xl bg-ilc-surface-2 border border-ilc-border flex items-center justify-center mb-2.5 overflow-hidden">
+<svg class="w-12 h-12 text-ilc-text-muted" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+<span class="text-[10px] uppercase font-semibold text-ilc-oak tracking-wider">Merchandising</span>
+<h2 class="text-sm font-semibold text-ilc-text mt-0.5 leading-snug">Camiseta Ruta del Origen</h2>
+</div>
+<div class="mt-3 pt-2 border-t border-ilc-border/60 flex items-center justify-between">
+<span class="text-xs font-bold text-ilc-gold">1.800 Pts</span>
+<span class="text-[10px] text-ilc-moss font-medium">Disponible</span>
+</div>
+</article>
+<!-- Tarjeta 4: Visita guiada a ILC (Bloqueada) -->
+<article class="bg-ilc-surface-1/60 border border-ilc-border/60 rounded-card p-3 flex flex-col justify-between opacity-75">
+<div>
+<div class="w-full aspect-square rounded-xl bg-ilc-surface-2/60 border border-ilc-border/40 flex items-center justify-center mb-2.5 relative overflow-hidden">
+<svg class="w-12 h-12 text-ilc-text-muted/60" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+<div class="absolute inset-0 bg-ilc-bg/70 flex items-center justify-center">
+<svg class="w-6 h-6 text-ilc-text-muted" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<span class="text-[10px] uppercase font-semibold text-ilc-text-muted tracking-wider">Experiencia</span>
+<h2 class="text-sm font-semibold text-ilc-text mt-0.5 leading-snug">Visita guiada a ILC</h2>
+<p class="text-[11px] text-ilc-oak font-medium mt-1">Te faltan 2.700 Pts</p>
+</div>
+<div class="mt-3 pt-2 border-t border-ilc-border/40">
+<!-- Barra de progreso -->
+<div class="w-full h-1.5 rounded-full bg-ilc-surface-3 overflow-hidden">
+<div class="h-full bg-ilc-gold rounded-full" style="width: 46%;"></div>
+</div>
+<div class="flex items-center justify-between mt-1.5">
+<span class="text-xs font-semibold text-ilc-text-muted">5.000 Pts</span>
+<span class="text-[10px] text-ilc-text-muted">46%</span>
+</div>
+</div>
+</article>
+</main>
+</div>
+<!-- Backdrop oscurecido para la hoja modal -->
+<div class="absolute inset-0 bg-black/60 backdrop-blur-sm z-20 pointer-events-auto"></div>
+<!-- ========================================== -->
+<!-- HOJA INFERIOR ABIERTA (BOTTOM SHEET MODAL) -->
+<!-- Radio superior 24px, diseño ILC Origen    -->
+<!-- ========================================== -->
+<section class="absolute bottom-0 inset-x-0 bg-ilc-surface-1 border-t border-ilc-border/80 rounded-t-sheet shadow-2xl z-30 flex flex-col max-h-[88vh] overflow-hidden animate-in slide-in-from-bottom duration-300">
+<!-- Drag handle superior -->
+<div class="pt-3 pb-2 flex justify-center items-center">
+<span class="w-10 h-1.5 rounded-full bg-ilc-border/80"></span>
+</div>
+<!-- Encabezado de la hoja con botón Cerrar -->
+<div class="px-5 pb-3 flex items-start justify-between border-b border-ilc-border/50">
+<div>
+<span class="text-[11px] font-semibold uppercase tracking-wider text-ilc-oak">Detalle de Canje · Merchandising</span>
+<h2 class="font-garamond text-2xl font-bold text-ilc-text leading-tight mt-0.5">Gorra oficial ILC</h2>
+</div>
+<button aria-label="Cerrar modal" class="w-9 h-9 rounded-full bg-ilc-surface-2 border border-ilc-border flex items-center justify-center text-ilc-text-muted hover:text-ilc-text transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Contenido scrolleable de la hoja -->
+<div class="px-5 py-4 overflow-y-auto custom-scroll flex-1 space-y-4">
+<!-- Fila de Producto: Ilustración SVG y Costo -->
+<div class="flex items-center gap-4 p-3.5 bg-ilc-surface-2 rounded-card border border-ilc-border">
+<!-- Ilustración de la gorra oficial ILC (SVG puro sin fotos de alcohol ni personas) -->
+<div class="w-20 h-20 rounded-xl bg-ilc-surface-3 border border-ilc-border flex-shrink-0 flex items-center justify-center p-2 relative">
+<svg class="w-16 h-16 text-ilc-gold" fill="none" viewbox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<!-- Corona de la gorra -->
+<path d="M12 36C12 23 20 14 36 14C48 14 54 21 56 36H12Z" fill="#1D302A" stroke="#D4B673" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Visera elegante -->
+<path d="M8 36C12 36 20 40 32 40C44 40 56 36 58 36C61 36 62 38 60 41C56 46 44 48 32 48C18 48 8 44 6 40C5 38 6 36 8 36Z" fill="#2F4941" stroke="#D4B673" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Botón superior -->
+<circle cx="36" cy="14" fill="#D4B673" r="2.5"></circle>
+<!-- Emblema ILC en el frontal -->
+<circle cx="35" cy="27" r="6" stroke="#D4B673" stroke-width="1.5"></circle>
+<text fill="#D4B673" font-family="'EB Garamond', serif" font-size="6" font-weight="bold" text-anchor="middle" x="35" y="29.5">ILC</text>
+</svg>
+<span class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-ilc-forest text-ilc-moss text-[9px] font-bold border border-ilc-moss/40">
+              Oficial
+            </span>
+</div>
+<!-- Información de costo y stock -->
+<div class="flex-1">
+<p class="text-xs text-ilc-text-muted">Costo del beneficio</p>
+<p class="text-xl font-bold text-ilc-gold flex items-baseline gap-1">
+              1.200 <span class="text-xs font-medium text-ilc-text-muted">Puntos ILC</span>
+</p>
+<div class="mt-2 flex items-center gap-1.5 text-xs text-ilc-moss font-medium">
+<span class="w-2 h-2 rounded-full bg-ilc-moss animate-pulse"></span>
+              Stock verificado por zona
+            </div>
+</div>
+</div>
+<!-- Condiciones reglamentarias antes de confirmar (Guía Técnica §5.8) -->
+<div class="bg-ilc-surface-2 rounded-card p-4 border border-ilc-border space-y-3">
+<h3 class="text-xs font-bold uppercase tracking-wider text-ilc-text flex items-center gap-2">
+<svg class="w-4 h-4 text-ilc-gold" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+            Condiciones del canje
+          </h3>
+<ul class="space-y-2.5 text-xs text-ilc-text leading-relaxed">
+<li class="flex items-start gap-2.5">
+<svg class="w-4 h-4 text-ilc-moss flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span><strong>Disponible en Manizales y Pereira</strong> (stock físico en puntos aliados).</span>
+</li>
+<li class="flex items-start gap-2.5">
+<svg class="w-4 h-4 text-ilc-moss flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span><strong>Retiro en punto aliado en 15 días</strong> tras confirmación del código único.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<svg class="w-4 h-4 text-ilc-moss flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span><strong>Máximo 1 por persona</strong> (control de equidad por cuenta individual).</span>
+</li>
+<li class="flex items-start gap-2.5">
+<svg class="w-4 h-4 text-ilc-moss flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span><strong>Vigencia del canje: hasta 31 dic. 2026</strong> o hasta agotar existencias asignadas.</span>
+</li>
+</ul>
+<div class="pt-2 border-t border-ilc-border/60">
+<a class="text-xs font-semibold text-ilc-gold underline hover:text-ilc-gold-hover transition-colors inline-flex items-center gap-1" href="#terminos">
+<span>Términos de la recompensa</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</div>
+</div>
+<!-- Casilla de Aceptación Previa (Mínimo 48px para accesibilidad táctil) -->
+<label class="flex items-center gap-3 p-3 rounded-card bg-ilc-surface-2 border border-ilc-border cursor-pointer select-none active:bg-ilc-surface-3 transition-colors min-h-[48px]">
+<input checked="" class="w-5 h-5 rounded text-ilc-gold bg-ilc-surface-1 border-ilc-border focus:ring-ilc-gold focus:ring-offset-ilc-bg accent-[#D4B673] cursor-pointer" type="checkbox"/>
+<span class="text-xs font-medium text-ilc-text">Leí las condiciones</span>
+</label>
+<!-- Balance resultante transparente -->
+<div class="px-3 py-2 rounded-xl bg-ilc-surface-3/60 border border-ilc-border/50 flex items-center justify-between">
+<span class="text-xs text-ilc-text-muted">Balance tras la transacción:</span>
+<span class="text-xs font-bold text-ilc-text">Tu saldo quedará en <strong class="text-ilc-gold font-bold">1.100 Puntos ILC</strong>.</span>
+</div>
+</div>
+<!-- Footer Fijo de Acciones en Bottom Sheet -->
+<div class="p-4 bg-ilc-surface-1 border-t border-ilc-border flex flex-col gap-2.5">
+<!-- Botón Primario Dorado Fijo (56px altura táctil) -->
+<button aria-label="Confirmar canje de recompensa" class="w-full h-14 rounded-btn bg-ilc-gold hover:bg-ilc-gold-hover text-ilc-bg font-bold text-sm tracking-wide shadow-lg shadow-ilc-gold/20 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+<span>Confirmar canje · 1.200 Puntos ILC</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+<!-- Botón Texto Cancelar (≥48px altura táctil) -->
+<button aria-label="Cancelar y volver al catálogo" class="w-full h-12 rounded-btn text-ilc-text-muted hover:text-ilc-text font-semibold text-xs tracking-wide flex items-center justify-center active:bg-ilc-surface-2 transition-colors">
+          Cancelar
+        </button>
+<!-- Pie Legal Obligatorio en Mayúsculas Pequeñas -->
+<p class="text-[9px] text-center text-ilc-text-muted/70 tracking-widest uppercase font-medium pt-1">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</div>
+</section>
+</div>
+</body>
+</html>

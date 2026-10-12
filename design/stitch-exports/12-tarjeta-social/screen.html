@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Compartir Logro · ILC Origen</title>
+<!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-lowest": "#06100d",
+            "tertiary-fixed": "#ffdcc3",
+            "outline-variant": "#4d4639",
+            "on-error-container": "#ffdad6",
+            "on-primary-container": "#453300",
+            "secondary-container": "#005738",
+            "on-tertiary-container": "#542b00",
+            "on-tertiary-fixed": "#2e1500",
+            "primary-container": "#b79b5b",
+            "on-secondary-container": "#82cba3",
+            "inverse-surface": "#dae5e0",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "surface-container-highest": "#2d3733",
+            "surface-tint": "#e2c37f",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#28332f",
+            "surface-container": "#18221e",
+            "secondary-fixed": "#a8f2c8",
+            "on-secondary-fixed-variant": "#005234",
+            "surface-dim": "#0b1512",
+            "on-background": "#dae5e0",
+            "inverse-primary": "#725b22",
+            "surface-container-high": "#222c29",
+            "secondary": "#8dd6ad",
+            "tertiary-fixed-dim": "#ffb77c",
+            "primary-fixed": "#ffdf99",
+            "on-primary-fixed-variant": "#59440b",
+            "surface-bright": "#313b38",
+            "background": "#0b1512",
+            "on-secondary-fixed": "#002112",
+            "tertiary": "#ffb77c",
+            "primary": "#e2c37f",
+            "surface-variant": "#2d3733",
+            "on-error": "#690005",
+            "surface": "#0b1512",
+            "error": "#ffb4ab",
+            "outline": "#999081",
+            "on-surface": "#dae5e0",
+            "primary-fixed-dim": "#e2c37f",
+            "on-primary-fixed": "#251a00",
+            "secondary-fixed-dim": "#8dd6ad",
+            "on-tertiary": "#4d2600",
+            "on-primary": "#3f2e00",
+            "tertiary-container": "#d38f55",
+            "on-secondary": "#003823",
+            "surface-container-low": "#141e1a",
+            "on-surface-variant": "#d0c5b5"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "16px",
+            "gutter": "16px",
+            "space-lg": "24px",
+            "space-sm": "8px",
+            "space-xl": "32px",
+            "margin": "16px",
+            "space-xs": "4px"
+          },
+          "fontFamily": {
+            "headline-lg": ["EB Garamond"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["EB Garamond"],
+            "body-md": ["Plus Jakarta Sans"],
+            "numeric-xl": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["EB Garamond"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll-hidden::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll-hidden {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .lacre-gold-border {
+      border-image: linear-gradient(to bottom, rgba(212, 182, 115, 0.6), rgba(212, 182, 115, 0.1)) 1;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP APP BAR (Modal / Task navigation context: Close icon & Info) -->
+<header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md border-b border-outline-variant/20">
+<div class="flex justify-between items-center w-full px-4 h-16 max-w-lg mx-auto">
+<!-- Close action (Target >= 48px) -->
+<button aria-label="Cerrar modal" class="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<!-- Center Title -->
+<div class="text-center flex flex-col items-center">
+<h1 class="font-title-lg text-title-lg text-primary tracking-tight">Compartir logro</h1>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">FORMATO 9:16 · HISTORIAS</span>
+</div>
+<!-- Info/Help action (Target >= 48px) -->
+<button aria-label="Información sobre privacidad" class="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[24px]">help_outline</span>
+</button>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTAINER -->
+<main class="w-full max-w-lg mx-auto px-4 pt-4 pb-44 flex flex-col items-center space-y-6">
+<!-- SOCIAL CARD PREVIEW CONTAINER (9:16 Aspect Ratio Card Preview) -->
+<section aria-label="Vista previa de tarjeta social" class="w-full flex justify-center py-2">
+<div class="relative w-full max-w-[290px] aspect-[9/16] rounded-[20px] overflow-hidden p-1 shadow-2xl border border-primary/30 bg-gradient-to-b from-primary/30 via-outline-variant/10 to-primary/10">
+<!-- Card Core Canvas with Atmospheric Background and Vignette -->
+<div class="relative w-full h-full rounded-[16px] overflow-hidden flex flex-col justify-between bg-surface-container-lowest text-center">
+<!-- Background Atmospheric Image (Foggy Andean forest of Caldas) -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover object-center filter brightness-[0.75] contrast-[1.1]" data-alt="A cinematic mist-shrouded tropical montane cloud forest in Caldas Colombia, dense emerald-green foliage with misty atmospheric layers and soft golden dawn light breaking through the dramatic overcast skies, heritage archival fine art nature photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHXpbySlJUVTUYYOhTk9PcMmxdnXEh2Bqv2BsHJgTvVA84e3H18entY0e3sdJELyha7dlv-mGnxPU8z6OB7kTSg8WJ_7X8W6cS2qQxrP9Fo9gVgzcTTuAgZIPsQqvyuBfolTXuMbYsemHRlTLjK6I71xW1PTEU3TQHlBHiMUU-x3XI3XRwAUbBpkl2s8dDfLcqI2EXHZhH0Ln7RvwKPaqfphO_aHTxhuASTfpQ2ghSvReuxdhLRRCWcUfNm_9oqCVRsJ_GC_ahmVk"/>
+<!-- Gradient Overlay for Contrast & Heritage Tone -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#06100d] via-[#0b1512]/75 to-[#06100d]/80 mix-blend-multiply"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/80 via-transparent to-surface-container-lowest"></div>
+</div>
+<!-- Card Inner Content Structure -->
+<div class="relative z-10 flex flex-col h-full justify-between p-4 py-5">
+<!-- Header Seal & Authority -->
+<div class="flex flex-col items-center space-y-1.5">
+<!-- Golden Dual-Ring ILC Heritage Seal -->
+<div class="w-12 h-12 rounded-full border-2 border-primary/80 flex items-center justify-center shadow-lg bg-surface-dim/80 backdrop-blur-sm relative">
+<div class="w-10 h-10 rounded-full border border-primary/40 flex items-center justify-center">
+<span class="font-headline-md text-[13px] font-bold text-primary tracking-widest pl-0.5">ILC</span>
+</div>
+</div>
+<span class="font-label-sm text-[9px] uppercase tracking-[0.2em] text-primary/90 font-bold">INDUSTRIA LICORERA DE CALDAS</span>
+</div>
+<!-- Central Achievement Seal & Milestone Story -->
+<div class="flex flex-col items-center my-auto px-2 space-y-3">
+<!-- Badge Emblem: Reto Cooperativo / Bosque de Niebla -->
+<div class="relative flex items-center justify-center">
+<div class="w-20 h-20 rounded-full bg-secondary-container/80 border-2 border-secondary/50 flex items-center justify-center shadow-[0_0_24px_rgba(134,207,167,0.25)] backdrop-blur-sm">
+<span class="material-symbols-outlined text-secondary text-[36px]">filter_vintage</span>
+</div>
+<!-- Small golden compass accent node -->
+<div class="absolute -bottom-1 bg-surface-container-high border border-primary/60 rounded-full px-2 py-0.5">
+<span class="font-label-sm text-[8px] tracking-wider text-primary font-bold uppercase">ORIGEN</span>
+</div>
+</div>
+<!-- Titular & Narrativa -->
+<div class="space-y-1.5 pt-1">
+<p class="font-label-sm text-[9px] tracking-[0.16em] uppercase text-secondary font-bold">RETO COOPERATIVO SUPERADO · RUTA B</p>
+<h2 class="font-headline-md text-[21px] leading-[25px] font-bold text-primary tracking-tight">Guardianes del bosque de niebla</h2>
+<p class="font-body-md text-[11px] leading-[15px] text-on-surface-variant max-w-[210px] mx-auto italic font-serif">
+                  "El Parche 'Los del bosque de niebla' completó la Ruta del Origen."
+                </p>
+</div>
+<!-- Separador con destello dorado -->
+<!-- Puntos y Reconocimiento Separados (Sin combinar) -->
+</div>
+<!-- Bottom Card Footnote & Mandatory Legal Micro-Notice -->
+<div class="space-y-1.5 pt-2 border-t border-outline-variant/20">
+<span class="font-label-sm text-[10px] tracking-widest text-primary font-bold">ilc.app</span>
+<p class="font-label-sm text-[6.5px] leading-[8.5px] text-outline uppercase tracking-tight max-w-[230px] mx-auto opacity-75">
+                EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+              </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- TEMPLATE SELECTOR (3 Miniatures) -->
+<section aria-labelledby="template-selector-heading" class="w-full space-y-2.5">
+<div class="flex justify-between items-center px-1">
+<h3 class="font-label-lg text-label-lg text-on-surface" id="template-selector-heading">Diseño de la tarjeta</h3>
+<span class="font-label-sm text-label-sm text-outline">3 variantes</span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<!-- Thumbnail 1 (Active: Bosque) -->
+<button aria-pressed="true" class="relative group rounded-xl p-2 bg-surface-container-high border-2 border-primary shadow-sm flex flex-col items-center space-y-1.5 transition-all focus:outline-none" type="button">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover brightness-75" data-alt="Misty atmospheric cloud forest trees in green hues with morning fog in Colombia mountains, miniature moody texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_wFED1y2qyQVt92BpkcLYsxX3YczFSUeyzrjxV-qXGAY3m1xDsvXNe0yqCXbwbIp1UNXC3ni6Eq3T_Iclm5_enVWLxDCBocv8Pb8i9-tPRwoj0AyVt4K0zLRPDx1BKdDxksW1b1FhRuqgY21LDd3IBZicD_DaIlH1LftB9sq9ghDX0oxf9Bx7rGEyV_i6LxYFBfALHbh6gNXhbQdybXwy5EggbF0BMwYSrfcFE6jgCpt5TOxIJpNe_rkfG-Ks9Jrd3lWOy-bP-zY"/>
+<div class="absolute inset-0 bg-secondary-container/30"></div>
+<!-- Checkmark Indicator -->
+<div class="absolute top-1 right-1 w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Bosque</span>
+</button>
+<!-- Thumbnail 2 (Inactive: Roble) -->
+<button aria-pressed="false" class="relative group rounded-xl p-2 bg-surface-container border border-outline-variant/30 hover:border-outline-variant/80 flex flex-col items-center space-y-1.5 transition-all focus:outline-none" type="button">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover brightness-60" data-alt="Aged artisanal Colombian oak barrels texture with subtle amber and golden lighting in a silent heritage cellar cellar room." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIezb4JGxSA-AIvmMjcNOpYa6yDNMronY-GO6VSweewAix2zUHN-Ng2vi0jz5Iw70isg6nRCWOuMoNk5lFUCBz-ehZ1krGzyH-myLiR9zr-GITqY_zO2pFactJ1Obi65Q11SPH_v3L2_NVdem5vymVnzdqc0984oUD1z1e0rhMv2IIKH5uxCos_1Z0riwjE8W7hIPyM_pIsFc31NtI-HxbRZ8sym62PvOZfVHCuYRKCjpsswi-8zzypMJ7M0YWzx67rJ3WTu86-Fw"/>
+<div class="absolute inset-0 bg-[#3a200e]/30"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-primary">Roble</span>
+</button>
+<!-- Thumbnail 3 (Inactive: Montaña) -->
+<button aria-pressed="false" class="relative group rounded-xl p-2 bg-surface-container border border-outline-variant/30 hover:border-outline-variant/80 flex flex-col items-center space-y-1.5 transition-all focus:outline-none" type="button">
+<div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover brightness-60" data-alt="High Andean mountain peaks silhouettes rising through dense dark blue and fog layers under twilight sky in Caldas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoH9REii0k8sU9YsmNu16JfBim_SoZYBwg-2nnG5qJbUYSUpwfR_oaLFtquA8nepl8_mzvpqOqUuWFTyAbL2J_QNsJPCbqXrHKlauN8nK0VSNBnQWYtDkGgRy0_gwaZf1QbmMJoE_e3PeSNmuy9QwzKuMlQEXEpeTeqCv_4eUkKkcKjMmqrSLyGfIYfL4d4U-71YNR_CMfzQ3_YWE5FvHAuKEQx1sQyDjUJpm-AhGqu0pK5jVVt-j67nCEXw1NgqZJKkJIPMNqJkA"/>
+<div class="absolute inset-0 bg-[#0f232b]/30"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-primary">Montaña</span>
+</button>
+</div>
+</section>
+<!-- DESTINATION CHANNELS (4 Touch targets >= 48px) -->
+<section aria-labelledby="share-channels-heading" class="w-full space-y-2.5">
+<h3 class="font-label-lg text-label-lg text-on-surface px-1" id="share-channels-heading">Selecciona destino</h3>
+<div class="grid grid-cols-4 gap-2.5">
+<!-- Instagram Stories -->
+<button class="min-h-[72px] flex flex-col items-center justify-center p-2 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high hover:border-primary/50 transition-colors active:scale-95 duration-150" type="button">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary mb-1">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium text-center line-clamp-1">Stories</span>
+</button>
+<!-- WhatsApp Estado -->
+<button class="min-h-[72px] flex flex-col items-center justify-center p-2 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high hover:border-primary/50 transition-colors active:scale-95 duration-150" type="button">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary mb-1">
+<span class="material-symbols-outlined text-[20px]">chat_bubble_outline</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium text-center line-clamp-1">WhatsApp</span>
+</button>
+<!-- TikTok -->
+<button class="min-h-[72px] flex flex-col items-center justify-center p-2 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high hover:border-primary/50 transition-colors active:scale-95 duration-150" type="button">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary mb-1">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium text-center line-clamp-1">TikTok</span>
+</button>
+<!-- Guardar Imagen -->
+<button class="min-h-[72px] flex flex-col items-center justify-center p-2 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high hover:border-primary/50 transition-colors active:scale-95 duration-150" type="button">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface mb-1">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium text-center line-clamp-1">Guardar</span>
+</button>
+</div>
+</section>
+<!-- PRIVACY & CONSENT BADGE (Guía Técnica §5.10 Compliance) -->
+<section class="w-full bg-surface-container-low rounded-xl p-3.5 border border-outline-variant/20 flex items-start space-x-3 text-left">
+<div class="w-8 h-8 rounded-full bg-secondary-container/40 flex-shrink-0 flex items-center justify-center text-secondary mt-0.5">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div class="space-y-1">
+<h4 class="font-title-md text-[13px] text-on-surface font-semibold">Tú decides si compartes.</h4>
+<p class="font-body-md text-[12px] leading-[17px] text-outline">No incluimos tu nombre, tu ubicación ni cifras de puntos.</p>
+</div>
+</section>
+</main>
+<!-- FIXED BOTTOM ACTION BAR & MANDATORY LEGAL DISCLAIMER -->
+<footer class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/20 shadow-[0_-8px_20px_rgba(0,0,0,0.5)]">
+<div class="w-full max-w-lg mx-auto px-4 pt-3 pb-6 flex flex-col space-y-2.5">
+<!-- Primary Gold Share CTA (56px Height, Thumb Zone) -->
+<button class="w-full h-14 bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center justify-center space-x-2 shadow-lg shadow-primary/10 hover:bg-primary-fixed transition-all active:scale-[0.98] duration-150 font-bold focus:ring-2 focus:ring-primary focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span>Compartir en mis historias</span>
+</button>
+<!-- Mandatory Statutory Alcohol Notice (Ley 30 de 1986) -->
+<div class="text-center px-1">
+<p class="font-label-sm text-[10px] leading-[14px] text-outline uppercase tracking-wider font-semibold">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Template variant selector interaction
+      const templateButtons = document.querySelectorAll('section[aria-labelledby="template-selector-heading"] button');
+      templateButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          templateButtons.forEach(btn => {
+            btn.classList.remove('border-primary', 'border-2', 'bg-surface-container-high');
+            btn.classList.add('border-outline-variant/30', 'bg-surface-container');
+            btn.setAttribute('aria-pressed', 'false');
+            const check = btn.querySelector('.bg-primary');
+            if (check) check.remove();
+            const label = btn.querySelector('span:last-child');
+            if (label) {
+              label.classList.remove('text-primary');
+              label.classList.add('text-on-surface-variant');
+            }
+          });
+
+          button.classList.add('border-primary', 'border-2', 'bg-surface-container-high');
+          button.classList.remove('border-outline-variant/30', 'bg-surface-container');
+          button.setAttribute('aria-pressed', 'true');
+          
+          const label = button.querySelector('span:last-child');
+          if (label) {
+            label.classList.add('text-primary');
+            label.classList.remove('text-on-surface-variant');
+          }
+
+          const imgContainer = button.querySelector('.aspect-\\[4\\/5\\]');
+          if (imgContainer && !button.querySelector('.bg-primary')) {
+            const checkDiv = document.createElement('div');
+            checkDiv.className = 'absolute top-1 right-1 w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center shadow';
+            checkDiv.innerHTML = '<span class="material-symbols-outlined text-[14px] font-bold">check</span>';
+            imgContainer.appendChild(checkDiv);
+          }
+        });
+      });
+    });
+  </script>
+</body></html>

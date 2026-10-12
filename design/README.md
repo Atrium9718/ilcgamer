@@ -36,6 +36,16 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 03 · Crear El Parche | `1f01d56e125d4d2199be04d92d6449c7` | `CreateParcheView` |
 | 04 · Unirse a un Parche (PIN/QR) | `31c4c92fd8f5459ea438679f1af5acdf` | `JoinParcheView` |
 | 05 · Sala del Parche | `d56a9f9e1c294295ab6751296f931172` | `ParcheRoomView` |
+| 06 · Catálogo de juegos | `a78d115e4bbf412d8e55b63da0875204` | `GamesCatalogView` |
+| 07 · Resultado de juego | `b5c997722c654fdbadeebf42a3025621` | `GameResultView` |
+| 08 · Mi billetera | `21255c5cbd604c0ab5e83a3c2ce01c46` | `WalletView` |
+| 09 · Mi progreso (Ruta B) | `1552dadea49c421d974f364286717602` | `ProgressView` |
+| 10 · Recompensas y canje | `010e1e4a13a8438187fd5f804b68cc5c` | `RewardsView` |
+| 11 · Perfil y referidos | `31c99aa559004c68ab75a583906ba420` | `ProfileView` |
+| 12 · Compartir logro | `9ea01a45f5f34540a3919c8a633825fb` | `ShareCardView` |
+| 13 · Guarda tu progreso | `1a65677e0fa84920a5abb3b2458d907f` | `SignUpView` |
+
+Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 
 ## Cambiar el diseño
 

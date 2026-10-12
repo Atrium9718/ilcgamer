@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>06 · Catálogo de juegos · ILC Origen</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary-container": "#d38f55",
+            "primary-fixed": "#ffdf99",
+            "on-tertiary": "#4d2600",
+            "secondary-fixed": "#a8f2c8",
+            "on-secondary-container": "#82cba3",
+            "on-secondary": "#003823",
+            "tertiary-fixed": "#ffdcc3",
+            "surface-container-highest": "#2d3733",
+            "on-background": "#dae5e0",
+            "on-secondary-fixed-variant": "#005234",
+            "inverse-surface": "#dae5e0",
+            "on-error": "#690005",
+            "error": "#ffb4ab",
+            "outline": "#999081",
+            "inverse-on-surface": "#28332f",
+            "secondary-fixed-dim": "#8dd6ad",
+            "surface-container-high": "#222c29",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "on-primary-container": "#453300",
+            "tertiary": "#ffb77c",
+            "primary": "#e2c37f",
+            "on-primary-fixed-variant": "#59440b",
+            "error-container": "#93000a",
+            "surface-tint": "#e2c37f",
+            "surface-container": "#18221e",
+            "on-tertiary-container": "#542b00",
+            "secondary-container": "#005738",
+            "surface-dim": "#0b1512",
+            "on-secondary-fixed": "#002112",
+            "surface-container-low": "#141e1a",
+            "surface": "#0b1512",
+            "on-surface": "#dae5e0",
+            "surface-bright": "#313b38",
+            "tertiary-fixed-dim": "#ffb77c",
+            "on-surface-variant": "#d0c5b5",
+            "on-tertiary-fixed": "#2e1500",
+            "background": "#0b1512",
+            "on-primary": "#3f2e00",
+            "on-primary-fixed": "#251a00",
+            "surface-container-lowest": "#06100d",
+            "secondary": "#8dd6ad",
+            "outline-variant": "#4d4639",
+            "inverse-primary": "#725b22",
+            "on-error-container": "#ffdad6",
+            "primary-container": "#b79b5b",
+            "surface-variant": "#2d3733",
+            "primary-fixed-dim": "#e2c37f"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "4px",
+            "space-xl": "32px",
+            "space-lg": "24px",
+            "gutter": "16px",
+            "space-md": "16px",
+            "space-sm": "8px",
+            "margin": "16px"
+          },
+          fontFamily: {
+            "headline-md": ["EB Garamond", "serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "display-lg": ["EB Garamond", "serif"],
+            "title-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "numeric-xl": ["Plus Jakarta Sans", "sans-serif"],
+            "title-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["EB Garamond", "serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          fontSize: {
+            "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "0px", fontWeight: "600" }],
+            "body-md": ["15px", { lineHeight: "22px", letterSpacing: "0px", fontWeight: "400" }],
+            "display-lg": ["44px", { lineHeight: "52px", letterSpacing: "-0.5px", fontWeight: "700" }],
+            "title-lg": ["20px", { lineHeight: "28px", letterSpacing: "0px", fontWeight: "700" }],
+            "numeric-xl": ["40px", { lineHeight: "44px", letterSpacing: "-0.5px", fontWeight: "800" }],
+            "title-md": ["17px", { lineHeight: "24px", letterSpacing: "0px", fontWeight: "600" }],
+            "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.2px", fontWeight: "700" }],
+            "headline-lg": ["30px", { lineHeight: "38px", letterSpacing: "-0.25px", fontWeight: "700" }],
+            "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.8px", fontWeight: "700" }],
+            "body-lg": ["17px", { lineHeight: "26px", letterSpacing: "0px", fontWeight: "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Estructura háptica y sombras de profundidad sutil */
+    .golden-seal-border {
+      border-top: 1px solid rgba(212, 182, 115, 0.4);
+    }
+    .moss-seal-border {
+      border-top: 1px solid rgba(141, 214, 173, 0.45);
+    }
+    /* Safe-area padding para PWA */
+    .pb-safe {
+      padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 16px));
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- Contenedor móvil PWA centrado (max-w-md) -->
+<div class="relative max-w-md mx-auto min-h-screen flex flex-col bg-surface shadow-2xl overflow-x-hidden">
+<!-- TopAppBar Compartido: Estructura fiel al componente con jerarquía refinada -->
+<header class="w-full bg-surface-container-low/95 backdrop-blur-md sticky top-0 z-40">
+<div class="flex justify-between items-center w-full px-4 h-14 max-w-md mx-auto">
+<button aria-label="Volver" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container hover:text-primary text-on-surface-variant transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="font-headline-md text-headline-md text-primary tracking-wide text-center">ILC Origen</span>
+</div>
+<button aria-label="Sello verificado" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container text-primary transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary fill-icon">verified</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-4 pt-3 pb-safe">
+<!-- Encabezado editorial de la pestaña -->
+<section class="mb-6">
+<div class="flex items-center justify-between gap-2 mb-1.5">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Jugar</h1>
+<!-- Chip de Campaña activa -->
+<div class="inline-flex items-center gap-1.5 bg-surface-container-high border border-outline-variant/40 rounded-full px-3 py-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-[11px] text-on-surface-variant tracking-normal font-medium">Campaña: Feria de Manizales</span>
+<span class="material-symbols-outlined text-primary text-[14px]">local_activity</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant/90 leading-relaxed">
+          Descubre los secretos del origen. Retos para compartir en tu mesa o expediciones por la historia viva de Caldas.
+        </p>
+</section>
+<!-- ========================================== -->
+<!-- SECCIÓN: RUTA A · JUEGOS RÁPIDOS           -->
+<!-- ========================================== -->
+<section class="mb-8">
+<!-- Header de sección con chip comercial oro -->
+<div class="flex items-start justify-between mb-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">bolt</span>
+<h2 class="font-title-md text-title-md text-primary font-bold tracking-tight">Ruta A · Juegos rápidos</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px] mt-0.5">Partidas cortas para tu Parche</p>
+</div>
+<!-- Chip Puntos ILC (Comerciales - Oro) -->
+<div class="flex items-center gap-1 bg-surface-container-low border border-primary/40 rounded-full px-2.5 py-1 text-primary shadow-sm" title="Recompensa comercial">
+<span class="material-symbols-outlined text-primary text-[14px] fill-icon">monetization_on</span>
+<span class="font-label-sm text-[11px] font-bold tracking-wider text-primary">+Puntos ILC</span>
+</div>
+</div>
+<!-- Bento Grid 2x2 para juegos en mesa -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Tarjeta 1: Trivia del origen -->
+<article class="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-3.5 flex flex-col justify-between golden-seal-border hover:border-primary/50 transition-all duration-200 group">
+<div>
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-2.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[24px]">psychology</span>
+</div>
+<h3 class="font-title-md text-[15px] font-semibold text-on-surface leading-snug">Trivia del origen</h3>
+<p class="font-label-sm text-[11px] text-outline font-normal mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+                3 min · 1-8 jugadores
+              </p>
+</div>
+<button class="mt-4 w-full h-10 rounded-xl bg-primary text-on-primary font-label-lg text-[13px] flex items-center justify-center gap-1 active:scale-95 transition-transform shadow-sm font-semibold" type="button">
+<span>Iniciar</span>
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</article>
+<!-- Tarjeta 2: La ruleta ILC -->
+<article class="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-3.5 flex flex-col justify-between golden-seal-border hover:border-primary/50 transition-all duration-200 group">
+<div>
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-2.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[24px]">rotate_right</span>
+</div>
+<h3 class="font-title-md text-[15px] font-semibold text-on-surface leading-snug">La ruleta ILC</h3>
+<p class="font-label-sm text-[11px] text-outline font-normal mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+                1 min · 2-8 jugadores
+              </p>
+</div>
+<button class="mt-4 w-full h-10 rounded-xl bg-surface-container hover:bg-surface-container-high border border-primary/30 text-primary font-label-lg text-[13px] flex items-center justify-center gap-1 active:scale-95 transition-transform font-semibold" type="button">
+<span>Girar</span>
+<span class="material-symbols-outlined text-[16px]">casino</span>
+</button>
+</article>
+<!-- Tarjeta 3: Charadas de Caldas -->
+<article class="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-3.5 flex flex-col justify-between golden-seal-border hover:border-primary/50 transition-all duration-200 group">
+<div>
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-2.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[24px]">theater_comedy</span>
+</div>
+<h3 class="font-title-md text-[15px] font-semibold text-on-surface leading-snug">Charadas de Caldas</h3>
+<p class="font-label-sm text-[11px] text-outline font-normal mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+                5 min · 3-10 jugadores
+              </p>
+</div>
+<button class="mt-4 w-full h-10 rounded-xl bg-surface-container hover:bg-surface-container-high border border-primary/30 text-primary font-label-lg text-[13px] flex items-center justify-center gap-1 active:scale-95 transition-transform font-semibold" type="button">
+<span>Jugar</span>
+<span class="material-symbols-outlined text-[16px]">groups</span>
+</button>
+</article>
+<!-- Tarjeta 4: Verdad o reto cultural -->
+<article class="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-3.5 flex flex-col justify-between golden-seal-border hover:border-primary/50 transition-all duration-200 group">
+<div>
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-2.5 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[24px]">forum</span>
+</div>
+<h3 class="font-title-md text-[15px] font-semibold text-on-surface leading-snug">Verdad o reto cultural</h3>
+<p class="font-label-sm text-[11px] text-outline font-normal mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+                5 min · 2-8 jugadores
+              </p>
+</div>
+<button class="mt-4 w-full h-10 rounded-xl bg-surface-container hover:bg-surface-container-high border border-primary/30 text-primary font-label-lg text-[13px] flex items-center justify-center gap-1 active:scale-95 transition-transform font-semibold" type="button">
+<span>Abrir reto</span>
+<span class="material-symbols-outlined text-[16px]">explore</span>
+</button>
+</article>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- SECCIÓN: RUTA B · EXPERIENCIAS             -->
+<!-- ========================================== -->
+<section class="mb-6">
+<!-- Header de sección con chip de mérito verde XP -->
+<div class="flex items-start justify-between mb-1.5">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">forest</span>
+<h2 class="font-title-md text-title-md text-secondary font-bold tracking-tight">Ruta B · Experiencias</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px] mt-0.5">
+              Tienes 2 experiencias disponibles en esta campaña
+            </p>
+</div>
+<!-- Chip XP / Insignias (Cultura/Mérito - Verde Musgo) -->
+<div class="flex items-center gap-1 bg-secondary-container/40 border border-secondary/40 rounded-full px-2.5 py-1 text-secondary shadow-sm" title="Recompensa de cultura y exploración">
+<span class="material-symbols-outlined text-secondary text-[14px]">military_tech</span>
+<span class="font-label-sm text-[11px] font-bold tracking-wider text-secondary">+XP e Insignias</span>
+</div>
+</div>
+<div class="space-y-3.5 mt-3">
+<!-- Experiencia 1: El Explorador · Ruta del Origen (Con imagen de bosque de niebla) -->
+<article class="relative rounded-2xl bg-surface-container-low border border-outline-variant/30 overflow-hidden moss-seal-border shadow-md">
+<!-- Imagen superior del bosque de niebla de Caldas -->
+<div class="relative h-32 w-full overflow-hidden">
+<img alt="Bosque de niebla en las montañas de Caldas Colombia" class="w-full h-full object-cover object-center opacity-85 hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AEtjO1X_hq9tGCYhBUny3lCQMt59XcpTTrzdAwH8bso-2xBWgZHDd9XcVbYuBZdWkZFXNp1Xhyxm46_Bmi4862j1JOwbo5XlCTbcyMLPEfx5dY__mhj8JqSEsHofO23IsF77RSTq8ZEsV9vNTEwWaN2hOFQTuLZJKRtWKX56p0bDk9qSD-vzHbFCPnLdrI02m6mwmrsKo8hD2ay1Hw1MeDEMn28Y2mzZXiEMBGH2CH7f8YFZfyO5dQew9HWcOns"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-surface-container-low/40 to-transparent"></div>
+<!-- Badge de estado en imagen -->
+<div class="absolute top-3 left-3 bg-surface-container-lowest/80 backdrop-blur-md border border-secondary/30 rounded-full px-2.5 py-0.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[11px] text-secondary font-semibold">En progreso</span>
+</div>
+</div>
+<!-- Contenido de tarjeta -->
+<div class="p-4 pt-1">
+<div class="flex justify-between items-baseline mb-1">
+<h3 class="font-headline-md text-headline-md text-on-surface">El Explorador · Ruta del Origen</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px] mb-3">Recorre por capítulos el agua, el paisaje, el roble y la historia de Caldas.</p>
+<!-- Progreso: Capítulo 2 de 6 -->
+<div class="mb-4 bg-surface-container rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex justify-between items-center text-xs mb-1.5">
+<span class="font-label-sm text-[11px] text-secondary font-semibold">Capítulo 2 de 6</span>
+<span class="font-label-sm text-[11px] text-outline font-medium">33% completado</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 33.33%;"></div>
+</div>
+</div>
+<!-- CTA Continuar (52px altura táctil) -->
+<button class="w-full h-[52px] rounded-xl bg-secondary-container hover:bg-secondary-container/90 border border-secondary/40 text-on-secondary-container font-label-lg text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all font-semibold" type="button">
+<span>Continuar</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Experiencia 2: Maestros de sabor · Mixología -->
+<article class="rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 moss-seal-border hover:border-secondary/40 transition-colors">
+<div class="flex items-start justify-between gap-3">
+<div>
+<div class="inline-flex items-center gap-1 bg-primary/10 border border-primary/30 rounded-md px-2 py-0.5 text-primary font-label-sm text-[10px] uppercase font-bold tracking-widest mb-1.5">
+                  Nuevo
+                </div>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Maestros de sabor · Mixología</h3>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-[26px]">eco</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px] mt-2 mb-2">Explora aromas, ingredientes y preparaciones, con alternativas sin alcohol en igual jerarquía.</p>
+<!-- Consumo responsable explícito -->
+<div class="flex items-center gap-2 py-2 px-3 rounded-lg bg-surface-container/70 border border-outline-variant/20 mb-3.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">spa</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium">Incluye alternativas sin alcohol</span>
+</div>
+<button class="w-full h-[52px] rounded-xl bg-surface-container hover:bg-surface-container-high border border-secondary/50 text-secondary font-label-lg text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all font-semibold" type="button">
+<span>Empezar</span>
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+</button>
+</article>
+</div>
+</section>
+<!-- 4. NOTA EXPLICATIVA CON CANDADO / GEOFENCE -->
+<section class="mb-6">
+<div class="flex items-center gap-3 p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-outline">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex-shrink-0 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<p class="font-label-sm text-[12px] text-on-surface-variant leading-snug font-normal">
+            Otras experiencias se habilitan según tu campaña y ubicación.
+          </p>
+</div>
+</section>
+<!-- 6. PIE LEGAL OBLIGATORIO (Consumo Responsable) -->
+<footer class="mt-4 mb-2 text-center px-2">
+<p class="font-label-sm text-[10px] text-outline/80 leading-relaxed tracking-wider font-semibold">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</footer>
+</main>
+<!-- ========================================== -->
+<!-- BARRA DE NAVEGACIÓN INFERIOR (4 PESTAÑAS)  -->
+<!-- Pestaña Jugar ACTIVA (#D4B673 con pill)    -->
+<!-- ========================================== -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/95 backdrop-blur-lg border-t border-outline-variant/20">
+<div class="max-w-md mx-auto px-3 py-2 flex items-center justify-around h-16">
+<!-- 1. Inicio -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors px-2 py-1 flex-1 active:scale-95" href="#inicio">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="font-label-sm text-[11px] font-medium mt-0.5">Inicio</span>
+</a>
+<!-- 2. Jugar (ACTIVA con acento dorado #D4B673 y pill de selección) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container/40 border border-primary/30 text-primary rounded-xl px-3 py-1 flex-1 shadow-sm active:scale-95 transition-all" href="#jugar">
+<span class="material-symbols-outlined text-[22px] fill-icon text-primary">sports_esports</span>
+<span class="font-label-sm text-[11px] font-bold text-primary mt-0.5">Jugar</span>
+</a>
+<!-- 3. Mi billetera -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors px-2 py-1 flex-1 active:scale-95" href="#billetera">
+<span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+<span class="font-label-sm text-[11px] font-medium mt-0.5">Mi billetera</span>
+</a>
+<!-- 4. Perfil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors px-2 py-1 flex-1 active:scale-95" href="#perfil">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="font-label-sm text-[11px] font-medium mt-0.5">Perfil</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

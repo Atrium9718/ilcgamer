@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Mi progreso · Industria Licorera de Caldas</title>
+<!-- Google Fonts: EB Garamond (Serif de herencia) & Plus Jakarta Sans (Lectura humanista) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary": "#4d2600",
+            "on-error-container": "#ffdad6",
+            "on-primary-fixed": "#251a00",
+            "on-surface-variant": "#d0c5b5",
+            "outline-variant": "#4d4639",
+            "outline": "#999081",
+            "on-primary-fixed-variant": "#59440b",
+            "on-background": "#dae5e0",
+            "on-surface": "#dae5e0",
+            "error-container": "#93000a",
+            "surface-dim": "#0b1512",
+            "secondary-fixed": "#a8f2c8",
+            "primary": "#e2c37f",
+            "surface-container-highest": "#2d3733",
+            "on-tertiary-fixed": "#2e1500",
+            "surface-container": "#18221e",
+            "surface-bright": "#313b38",
+            "primary-fixed-dim": "#e2c37f",
+            "inverse-on-surface": "#28332f",
+            "background": "#0b1512",
+            "secondary-container": "#005738",
+            "on-secondary": "#003823",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "surface-tint": "#e2c37f",
+            "tertiary-fixed-dim": "#ffb77c",
+            "on-tertiary-container": "#542b00",
+            "surface-container-lowest": "#06100d",
+            "primary-container": "#b79b5b",
+            "on-secondary-container": "#82cba3",
+            "primary-fixed": "#ffdf99",
+            "on-secondary-fixed": "#002112",
+            "inverse-surface": "#dae5e0",
+            "secondary-fixed-dim": "#8dd6ad",
+            "error": "#ffb4ab",
+            "tertiary-fixed": "#ffdcc3",
+            "surface": "#0b1512",
+            "tertiary": "#ffb77c",
+            "surface-container-low": "#141e1a",
+            "surface-container-high": "#222c29",
+            "on-secondary-fixed-variant": "#005234",
+            "on-primary": "#3f2e00",
+            "surface-variant": "#2d3733",
+            "on-primary-container": "#453300",
+            "secondary": "#8dd6ad",
+            "on-error": "#690005",
+            "tertiary-container": "#d38f55",
+            "inverse-primary": "#725b22"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-sm": "8px",
+            "gutter": "16px",
+            "margin": "16px",
+            "space-md": "16px",
+            "space-lg": "24px",
+            "space-xs": "4px",
+            "space-xl": "32px"
+          },
+          fontFamily: {
+            "numeric-xl": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["EB Garamond", "serif"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond", "serif"],
+            "display-lg": ["EB Garamond", "serif"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "numeric-xl": ["40px", { lineHeight: "44px", letterSpacing: "-0.5px", fontWeight: "800" }],
+            "title-lg": ["20px", { lineHeight: "28px", letterSpacing: "0px", fontWeight: "700" }],
+            "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "0px", fontWeight: "600" }],
+            "body-lg": ["17px", { lineHeight: "26px", letterSpacing: "0px", fontWeight: "400" }],
+            "headline-lg": ["30px", { lineHeight: "38px", letterSpacing: "-0.25px", fontWeight: "700" }],
+            "display-lg": ["44px", { lineHeight: "52px", letterSpacing: "-0.5px", fontWeight: "700" }],
+            "title-md": ["17px", { lineHeight: "24px", letterSpacing: "0px", fontWeight: "600" }],
+            "body-md": ["15px", { lineHeight: "22px", letterSpacing: "0px", fontWeight: "400" }],
+            "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.8px", fontWeight: "700" }],
+            "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.2px", fontWeight: "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Suavizado general y control de scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .gold-glow {
+      box-shadow: 0 0 20px -2px rgba(226, 195, 127, 0.28);
+    }
+    .moss-glow {
+      box-shadow: 0 0 16px -2px rgba(141, 214, 173, 0.25);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary selection:text-on-primary min-h-screen flex flex-col justify-between">
+<!-- ========================================================================= -->
+<!-- 1. TOP APP BAR (Shared Components JSON Anchor) -->
+<!-- ========================================================================= -->
+<header class="sticky top-0 z-40 bg-surface-container-low border-b border-outline-variant/30 backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-margin h-14 max-w-md mx-auto">
+<!-- Leading: Back action -->
+<button aria-label="Volver" class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-high/40 active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<!-- Headline: Serif tradicional ILC -->
+<h1 class="font-headline-md text-headline-md text-primary tracking-wide text-center">
+        Mi progreso
+      </h1>
+<!-- Trailing: Badge Ruta B -->
+<div class="flex items-center">
+<span class="px-2.5 py-1 rounded-full bg-secondary-container/90 text-on-secondary-container font-label-sm text-label-sm border border-secondary/30 tracking-wider">
+          Ruta B
+        </span>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- CONTENIDO PRINCIPAL (Canvas con ambientación Bosque de Niebla y Herencia) -->
+<!-- ========================================================================= -->
+<main class="w-full max-w-md mx-auto px-margin pt-4 pb-36 space-y-6 flex-grow">
+<!-- Hero Card: Atmósfera de Origen y Vista Caldas -->
+<div class="relative rounded-2xl overflow-hidden border border-outline-variant/40 bg-surface-container-low shadow-lg">
+<div class="relative h-28 w-full overflow-hidden">
+<img class="w-full h-full object-cover opacity-35 filter brightness-90 contrast-125" data-alt="Mystical and atmospheric high mountain cloud forest in Caldas Colombia during early dawn with lush native vegetation, dense mist rolling over forested peaks, deep jungle greens and subtle warm sunrise amber glow filtering through oak tree canopy, creating an authentic heritage exploration mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoPHXr-NzE23ezCa3qSYxWU1mRFhJq0Jv12ouYUw1vUoiJHrhHAwLAiz0fcmSuMXwFEhm3qTn21-1iXndswYmX8kbBfVatRXthSLqFefzYuufGet3jwZxjZJL6uJ9De227NgArW7Bw3B7mfwYNoHWTUUzIcOo8LR1QRy3Ea02g3s70xiQJ-pIKnetzF8PFattEKc2edz2wGYR8RtWZjKJ_CPSBY10W9qQ97m0Y0eK-ILX4RnB9IyEvdakm4LjcQTYQnQ35dRpTw_8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-surface-container-low/70 to-transparent"></div>
+</div>
+<!-- 2. TARJETA DE NIVEL Y XP (Ruta B) -->
+<div class="p-4 -mt-10 relative z-10 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">
+              Ruta del Origen
+            </span>
+<h2 class="font-headline-md text-headline-md text-on-surface">
+              Nivel 3 · Explorador del origen
+            </h2>
+</div>
+<!-- Icono de brújula de herencia -->
+<div class="w-11 h-11 rounded-full bg-surface-container-high border border-primary/30 flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-[24px]">explore</span>
+</div>
+</div>
+<!-- Marcador principal XP -->
+<div class="flex items-baseline gap-2 pt-1">
+<div class="font-numeric-xl text-numeric-xl text-secondary tracking-tight flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[32px] text-secondary" style="font-variation-settings: 'FILL' 1;">eco</span>
+            1.840
+          </div>
+<span class="font-title-md text-title-md text-secondary/80 font-bold">XP</span>
+<span class="ml-auto text-on-surface-variant font-body-md text-body-md">
+            Meta: <span class="text-primary font-semibold">2.500 XP</span>
+</span>
+</div>
+<!-- Barra de Progreso horizontal -->
+<div class="space-y-1.5">
+<div class="w-full bg-surface-container-highest rounded-full h-2.5 overflow-hidden p-0.5 border border-outline-variant/30">
+<!-- 1840 / 2500 = 73.6% -->
+<div class="bg-gradient-to-r from-secondary-container via-secondary to-primary h-full rounded-full w-[73.6%] transition-all duration-700 ease-out"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant pt-0.5">
+<span class="text-secondary font-medium">Nivel 3 actual</span>
+<span class="text-primary font-medium">Faltan 660 XP para Nivel 4</span>
+</div>
+</div>
+<!-- Nota Aclaratoria Obligatoria de Separación de Economías -->
+<div class="flex items-start gap-2.5 p-3 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/25 text-left">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed text-xs">
+            La <strong class="text-secondary font-semibold">XP</strong> reconoce lo que descubres; no se convierte en Puntos ILC. Cada avance revela secretos del territorio de Caldas.
+          </p>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 3. SECCIÓN «RUTA DEL ORIGEN» (Línea de tiempo horizontal / Stepper) -->
+<!-- ========================================================================= -->
+<section class="space-y-3">
+<div class="flex items-end justify-between px-1">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+            Ruta del Origen
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            6 capítulos de historia y territorio
+          </p>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-high text-primary border border-primary/20">
+          En curso: Cap. 3
+        </span>
+</div>
+<!-- Stepper horizontal scrolleable -->
+<div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/30 relative">
+<div class="flex items-center justify-between overflow-x-auto no-scrollbar gap-2 py-2 px-1">
+<!-- Cap 1: Agua (Completado) -->
+<div class="flex flex-col items-center min-w-[70px] text-center group cursor-pointer">
+<div class="relative w-12 h-12 rounded-full bg-secondary-container border-2 border-secondary flex items-center justify-center text-secondary moss-glow">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-secondary rounded-full flex items-center justify-center text-on-secondary text-[11px] font-bold">
+                ✓
+              </span>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-on-surface font-semibold">Cap. 1</span>
+<span class="text-xs text-secondary/90 font-medium">Agua</span>
+</div>
+<!-- Conector 1-2 -->
+<div class="h-0.5 w-6 bg-secondary shrink-0"></div>
+<!-- Cap 2: Paisaje (Completado) -->
+<div class="flex flex-col items-center min-w-[70px] text-center group cursor-pointer">
+<div class="relative w-12 h-12 rounded-full bg-secondary-container border-2 border-secondary flex items-center justify-center text-secondary moss-glow">
+<span class="material-symbols-outlined text-[20px]">landscape</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-secondary rounded-full flex items-center justify-center text-on-secondary text-[11px] font-bold">
+                ✓
+              </span>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-on-surface font-semibold">Cap. 2</span>
+<span class="text-xs text-secondary/90 font-medium">Paisaje</span>
+</div>
+<!-- Conector 2-3 (Gradiente de completado a en curso) -->
+<div class="h-0.5 w-6 bg-gradient-to-r from-secondary to-primary shrink-0"></div>
+<!-- Cap 3: Roble (En curso) -->
+<div class="flex flex-col items-center min-w-[76px] text-center group relative cursor-pointer">
+<div class="relative w-12 h-12 rounded-full bg-surface-container-high border-2 border-primary flex items-center justify-center text-primary gold-glow animate-pulse">
+<span class="material-symbols-outlined text-[22px]">park</span>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center text-on-primary text-[10px] font-bold">
+                •
+              </span>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-primary font-bold">Cap. 3</span>
+<span class="text-xs text-primary font-semibold">Roble</span>
+</div>
+<!-- Conector 3-4 (Hacia bloqueado) -->
+<div class="h-0.5 w-6 bg-outline-variant/50 shrink-0"></div>
+<!-- Cap 4: Tiempo (Bloqueado) -->
+<div class="flex flex-col items-center min-w-[70px] text-center opacity-60">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-outline">Cap. 4</span>
+<span class="text-xs text-outline">Tiempo</span>
+</div>
+<!-- Conector 4-5 -->
+<div class="h-0.5 w-6 bg-outline-variant/50 shrink-0"></div>
+<!-- Cap 5: Maestría (Bloqueado) -->
+<div class="flex flex-col items-center min-w-[70px] text-center opacity-60">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-outline">Cap. 5</span>
+<span class="text-xs text-outline">Maestría</span>
+</div>
+<!-- Conector 5-6 -->
+<div class="h-0.5 w-6 bg-outline-variant/50 shrink-0"></div>
+<!-- Cap 6: Caldas (Bloqueado) -->
+<div class="flex flex-col items-center min-w-[70px] text-center opacity-60">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-outline">Cap. 6</span>
+<span class="text-xs text-outline">Caldas</span>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+            Capítulo 3: 4 retos pendientes
+          </span>
+<span class="text-primary hover:underline cursor-pointer font-medium">Ver mapa completo</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 4. SECCIÓN «INSIGNIAS» (Sellos de cera / Lacres emblemáticos) -->
+<!-- ========================================================================= -->
+<section class="space-y-3">
+<div class="flex items-baseline justify-between px-1">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+          Insignias
+        </h2>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">
+          3 de 6 desbloqueadas
+        </span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<!-- Insignia 1: Desbloqueada -->
+<div class="p-3 rounded-2xl bg-surface-container-low border border-primary/30 flex flex-col items-center text-center group hover:bg-surface-container transition-colors">
+<div class="w-14 h-14 rounded-full p-1 bg-surface-container-high border-2 border-primary flex items-center justify-center relative shadow-md">
+<div class="w-full h-full rounded-full border border-secondary/60 flex items-center justify-center bg-secondary-container/40 text-secondary">
+<span class="material-symbols-outlined text-[26px]">filter_vintage</span>
+</div>
+</div>
+<h3 class="mt-2.5 font-label-sm text-label-sm text-on-surface leading-tight font-bold">
+            Guardianes del bosque
+          </h3>
+<span class="mt-1 text-[11px] text-secondary font-medium">Completada</span>
+</div>
+<!-- Insignia 2: Desbloqueada -->
+<div class="p-3 rounded-2xl bg-surface-container-low border border-primary/30 flex flex-col items-center text-center group hover:bg-surface-container transition-colors">
+<div class="w-14 h-14 rounded-full p-1 bg-surface-container-high border-2 border-primary flex items-center justify-center relative shadow-md">
+<div class="w-full h-full rounded-full border border-secondary/60 flex items-center justify-center bg-secondary-container/40 text-secondary">
+<span class="material-symbols-outlined text-[26px]">menu_book</span>
+</div>
+</div>
+<h3 class="mt-2.5 font-label-sm text-label-sm text-on-surface leading-tight font-bold">
+            Lector de pistas
+          </h3>
+<span class="mt-1 text-secondary text-[11px] font-medium">Completada</span>
+</div>
+<!-- Insignia 3: Desbloqueada -->
+<div class="p-3 rounded-2xl bg-surface-container-low border border-primary/30 flex flex-col items-center text-center group hover:bg-surface-container transition-colors">
+<div class="w-14 h-14 rounded-full p-1 bg-surface-container-high border-2 border-primary flex items-center justify-center relative shadow-md">
+<div class="w-full h-full rounded-full border border-secondary/60 flex items-center justify-center bg-secondary-container/40 text-secondary">
+<span class="material-symbols-outlined text-[26px]">diversity_3</span>
+</div>
+</div>
+<h3 class="mt-2.5 font-label-sm text-label-sm text-on-surface leading-tight font-bold">
+            Parche cooperativo
+          </h3>
+<span class="mt-1 text-secondary text-[11px] font-medium">Completada</span>
+</div>
+<!-- Insignia 4: Bloqueada -->
+<div class="p-3 rounded-2xl bg-surface-container-low/70 border border-outline-variant/20 flex flex-col items-center text-center opacity-65">
+<div class="w-14 h-14 rounded-full p-1 bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center">
+<div class="w-full h-full rounded-full border border-outline-variant/30 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[22px]">lock</span>
+</div>
+</div>
+<h3 class="mt-2.5 font-label-sm text-label-sm text-outline leading-tight font-medium">
+            Alquimia del Roble
+          </h3>
+<span class="mt-1 text-[11px] text-outline-variant">Cap. 3</span>
+</div>
+<!-- Insignia 5: Bloqueada -->
+<div class="p-3 rounded-2xl bg-surface-container-low/70 border border-outline-variant/20 flex flex-col items-center text-center opacity-65">
+<div class="w-14 h-14 rounded-full p-1 bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center">
+<div class="w-full h-full rounded-full border border-outline-variant/30 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[22px]">lock</span>
+</div>
+</div>
+<h3 class="mt-2.5 font-label-sm text-label-sm text-outline leading-tight font-medium">
+            Custodio del Tiempo
+          </h3>
+<span class="mt-1 text-[11px] text-outline-variant">Cap. 4</span>
+</div>
+<!-- Insignia 6: Bloqueada -->
+<div class="p-3 rounded-2xl bg-surface-container-low/70 border border-outline-variant/20 flex flex-col items-center text-center opacity-65">
+<div class="w-14 h-14 rounded-full p-1 bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center">
+<div class="w-full h-full rounded-full border border-outline-variant/30 flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[22px]">lock</span>
+</div>
+</div>
+<h3 class="mt-2.5 font-label-sm text-label-sm text-outline leading-tight font-medium">
+            Gran Maestro ILC
+          </h3>
+<span class="mt-1 text-[11px] text-outline-variant">Cap. 6</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 5. SECCIÓN «ARCHIVO DE LOS SECRETOS» -->
+<!-- ========================================================================= -->
+<section class="space-y-3">
+<div class="flex items-baseline justify-between px-1">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+          Archivo de los secretos
+        </h2>
+<span class="font-label-sm text-label-sm text-primary font-semibold">
+          2 de 12 relatos
+        </span>
+</div>
+<!-- Lista de relatos desbloqueados y misterios pendientes -->
+<div class="space-y-3">
+<!-- Relato 1 -->
+<div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 relative overflow-hidden group hover:border-primary/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high border border-primary/40 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">history_edu</span>
+</div>
+<div class="space-y-1.5 flex-grow">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-secondary uppercase tracking-wider">
+                  Capítulo 1
+                </span>
+<span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">verified</span>
+                  Desbloqueado
+                </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface italic">«Relato 1»</h3>
+<!-- Texto marcador obligatorio -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container-lowest border border-outline-variant/30 text-[11px] text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-outline">description</span>
+<span>Relato pendiente de aprobación de marca</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Relato 2 -->
+<div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 relative overflow-hidden group hover:border-primary/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high border border-primary/40 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">history_edu</span>
+</div>
+<div class="space-y-1.5 flex-grow">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-secondary uppercase tracking-wider">
+                  Capítulo 2
+                </span>
+<span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">verified</span>
+                  Desbloqueado
+                </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface italic">«Relato 2»</h3>
+<!-- Texto marcador obligatorio -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container-lowest border border-outline-variant/30 text-[11px] text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-outline">description</span>
+<span>Relato pendiente de aprobación de marca</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Banner de siguientes 10 relatos -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest/60 border border-outline-variant/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-outline">lock_clock</span>
+<p class="font-body-md text-body-md text-outline text-xs leading-normal">
+            Los próximos 10 secretos se revelan a medida que completes los retos de los capítulos siguientes en El Parche.
+          </p>
+</div>
+</div>
+</section>
+</main>
+<!-- ========================================================================= -->
+<!-- 6. ZONA FIJA DEL PULGAR: BOTÓN CTA PRINCIPAL DESTACADO -->
+<!-- ========================================================================= -->
+<aside aria-label="Acción principal" class="fixed bottom-[74px] left-0 right-0 z-40 max-w-md mx-auto px-margin pointer-events-none">
+<button class="pointer-events-auto w-full h-14 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-2xl active:scale-[0.98] transition-transform duration-150 border border-primary-fixed hover:bg-primary-fixed focus:ring-2 focus:ring-primary focus:outline-none" type="button">
+<span>Continuar capítulo en curso</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</aside>
+<!-- ========================================================================= -->
+<!-- 7. BARRA DE NAVEGACIÓN INFERIOR (BottomNavBar - Shared Components Anchor) -->
+<!-- ========================================================================= -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant/30 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+<div class="flex justify-around items-center px-gutter pt-space-xs pb-space-sm max-w-md mx-auto">
+<!-- Destino 1: Inicio -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3 active:scale-[0.96]" href="#inicio">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="font-label-sm text-label-sm mt-0.5">Inicio</span>
+</a>
+<!-- Destino 2: Jugar -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3 active:scale-[0.96]" href="#jugar">
+<span class="material-symbols-outlined text-[24px]">sports_esports</span>
+<span class="font-label-sm text-label-sm mt-0.5">Jugar</span>
+</a>
+<!-- Destino 3: Mi billetera -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors py-1 px-3 active:scale-[0.96]" href="#billetera">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+<span class="font-label-sm text-label-sm mt-0.5">Mi billetera</span>
+</a>
+<!-- Destino 4: Perfil (ACTIVA POR CONTEXTO: "Mi progreso" vive bajo Perfil/Progreso) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold py-1 px-3 active:scale-[0.96]" href="#perfil">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Perfil</span>
+</a>
+</div>
+<!-- 8. PIE LEGAL OBLIGATORIO (Footer Ley 30 de 1986) -->
+<div class="w-full px-gutter py-1 bg-surface-container-lowest text-center max-w-md mx-auto border-t border-outline-variant/10">
+<p class="font-label-sm text-[9px] leading-[13px] tracking-wider uppercase text-outline/80">
+        EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+      </p>
+</div>
+</nav>
+</body></html>

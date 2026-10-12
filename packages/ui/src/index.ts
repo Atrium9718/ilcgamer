@@ -21,6 +21,15 @@ export { OfflineBanner, StatusMessage, type StatusKind, type StatusMessageProps 
 export { TextField, type TextFieldProps } from './components/TextField.tsx';
 export { Toast, type ToastProps, type ToastTone } from './components/Toast.tsx';
 export { TopBar, type TopBarProps } from './components/TopBar.tsx';
+export { type AuthProvider, AuthButton } from './components/AuthButton.tsx';
+export { BadgeSeal, type BadgeSealProps } from './components/BadgeSeal.tsx';
+export { type Chapter, type ChapterState, ChapterTimeline } from './components/ChapterTimeline.tsx';
+export { ExperienceCard, type ExperienceCardProps, GameTile, type GameTileProps } from './components/GameTile.tsx';
+export { BalanceCard, type BalanceCardProps, type LedgerEntryView, type LedgerKind, LedgerRow } from './components/Ledger.tsx';
+export { ProgressBar, type ProgressBarProps } from './components/ProgressBar.tsx';
+export { RewardCard, type RewardCardProps, type RewardView } from './components/RewardCard.tsx';
+export { type SettingsItem, SettingsList } from './components/SettingsList.tsx';
+export { formatNumber, formatSigned } from './lib/format.ts';
 // Tema en tiempo de ejecución
 export { applyCampaignTheme, type CampaignTheme } from './lib/theme.ts';
 // Vistas puras (traducidas desde Google Stitch)
@@ -29,3 +38,11 @@ export { CodeLandingView, type CodeLandingViewProps } from './views/CodeLandingV
 export { CreateParcheView, type CreateParcheViewProps, type ParcheMode } from './views/CreateParcheView.tsx';
 export { type JoinMethod, JoinParcheView, type JoinParcheViewProps, type ParchePreview } from './views/JoinParcheView.tsx';
 export { type ConnectionState, type GameEntry, ParcheRoomView, type ParcheRoomViewProps } from './views/ParcheRoomView.tsx';
+export { type Experience, GamesCatalogView, type GamesCatalogViewProps, MAX_ROUTE_B_EXPERIENCES, type QuickGame } from './views/GamesCatalogView.tsx';
+export { GameResultView, type GameResultViewProps, type ResultState, type VerifiedResult } from './views/GameResultView.tsx';
+export { type WalletFilter, WalletView, type WalletViewProps } from './views/WalletView.tsx';
+export { type BadgeView, ProgressView, type ProgressViewProps, type StoryView } from './views/ProgressView.tsx';
+export { type RewardCategory, type RewardDetail, RewardsView, type RewardsViewProps } from './views/RewardsView.tsx';
+export { ProfileView, type ProfileViewProps } from './views/ProfileView.tsx';
+export { ShareCard, type ShareCardContent, ShareCardView, type ShareCardViewProps, type ShareTarget, type ShareTemplate } from './views/ShareCardView.tsx';
+export { SignUpView, type SignUpViewProps } from './views/SignUpView.tsx';

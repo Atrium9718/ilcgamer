@@ -1,4 +1,5 @@
 import { cx } from '../lib/cx.ts';
+import { formatNumber } from '../lib/format.ts';
 import { Icon } from './Icon.tsx';
 
 /**
@@ -21,7 +22,7 @@ const KIND: Record<ScoreKind, { icon: string; card: string; accent: string }> = 
   commercial: { icon: 'toll', card: 'border-primary/40 bg-surface-container', accent: 'text-primary' },
 };
 
-const nf = new Intl.NumberFormat('es-CO');
+
 
 export function ScoreCard({ kind, value, unit, title, detail }: ScoreCardProps) {
   const k = KIND[kind];
@@ -32,7 +33,7 @@ export function ScoreCard({ kind, value, unit, title, detail }: ScoreCardProps) 
         <h3 className="font-label-sm text-label-sm uppercase">{title}</h3>
       </div>
       <p className="mt-2 flex items-baseline gap-1.5">
-        <span className="font-numeric-xl text-[30px] leading-none text-on-surface tabular-nums">{nf.format(value)}</span>
+        <span className="font-numeric-xl text-[30px] leading-none text-on-surface tabular-nums">{formatNumber(value)}</span>
         <span className={cx('font-label-lg text-[13px]', k.accent)}>{unit}</span>
       </p>
       {detail && <p className="mt-1 font-body-md text-[13px] text-on-surface-variant">{detail}</p>}

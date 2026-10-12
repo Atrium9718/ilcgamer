@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>07 · Resultado de juego | ILC Origen</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#e2c37f",
+            "on-surface": "#dae5e0",
+            "surface-tint": "#e2c37f",
+            "on-secondary": "#003823",
+            "primary-container": "#b79b5b",
+            "surface-container-lowest": "#06100d",
+            "secondary-container": "#005738",
+            "on-error": "#690005",
+            "inverse-surface": "#dae5e0",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "on-secondary-fixed": "#002112",
+            "tertiary": "#ffb77c",
+            "on-surface-variant": "#d0c5b5",
+            "on-secondary-container": "#82cba3",
+            "secondary-fixed-dim": "#8dd6ad",
+            "tertiary-fixed-dim": "#ffb77c",
+            "primary": "#e2c37f",
+            "outline-variant": "#4d4639",
+            "error": "#ffb4ab",
+            "on-error-container": "#ffdad6",
+            "inverse-on-surface": "#28332f",
+            "surface": "#0b1512",
+            "surface-variant": "#2d3733",
+            "surface-container-highest": "#2d3733",
+            "surface-bright": "#313b38",
+            "tertiary-fixed": "#ffdcc3",
+            "surface-container-low": "#141e1a",
+            "surface-container": "#18221e",
+            "on-primary-fixed-variant": "#59440b",
+            "error-container": "#93000a",
+            "on-tertiary": "#4d2600",
+            "on-background": "#dae5e0",
+            "secondary-fixed": "#a8f2c8",
+            "background": "#0b1512",
+            "surface-dim": "#0b1512",
+            "on-tertiary-container": "#542b00",
+            "inverse-primary": "#725b22",
+            "on-primary": "#3f2e00",
+            "surface-container-high": "#222c29",
+            "secondary": "#8dd6ad",
+            "on-tertiary-fixed": "#2e1500",
+            "tertiary-container": "#d38f55",
+            "on-primary-container": "#453300",
+            "primary-fixed": "#ffdf99",
+            "on-primary-fixed": "#251a00",
+            "on-secondary-fixed-variant": "#005234",
+            "outline": "#999081"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "32px",
+            "space-md": "16px",
+            "space-xs": "4px",
+            "gutter": "16px",
+            "space-sm": "8px",
+            "space-lg": "24px",
+            "margin": "16px"
+          },
+          "fontFamily": {
+            "headline-lg": ["EB Garamond", "serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "title-md": ["Plus Jakarta Sans", "sans-serif"],
+            "display-lg": ["EB Garamond", "serif"],
+            "headline-md": ["EB Garamond", "serif"],
+            "numeric-xl": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "title-lg": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Estructura de fondo con gradientes de atmósfera nocturna de bosque de niebla */
+    .fog-atmosphere {
+      background: radial-gradient(circle at 50% 12%, rgba(22, 38, 33, 0.95) 0%, rgba(11, 21, 18, 1) 68%);
+    }
+    /* Sello con brillo sutil sin animación distrayente */
+    .seal-halo {
+      box-shadow: 0 0 32px rgba(226, 195, 127, 0.14);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary selection:text-on-primary min-h-screen flex flex-col justify-between fog-atmosphere">
+<!-- Contenedor Principal Móvil (Max-w-md conforme a layout del proyecto) -->
+<div class="w-full max-w-md mx-auto flex flex-col min-h-screen relative pb-32">
+<!-- 1. Cabecera superior mínima con botón de cerrar (touch target >= 48px) -->
+<header class="flex justify-between items-center w-full px-4 h-14 bg-surface-container-low border-b border-outline-variant/20 z-20">
+<div class="w-12 h-12 flex items-center justify-start">
+<button aria-label="Cerrar resultados y volver" class="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary tracking-wide text-center truncate">
+        Trivia del origen
+      </h1>
+<div class="w-12 h-12 flex items-center justify-end">
+<span class="material-symbols-outlined text-primary text-[22px]" data-weight="fill">verified</span>
+</div>
+</header>
+<!-- Contenido Scrollable -->
+<main class="flex-1 px-4 pt-6 pb-4 flex flex-col gap-6">
+<!-- 2. Identificador de éxito / Verificación con Sello concéntrico -->
+<section class="flex flex-col items-center text-center">
+<!-- Sello con doble anillo concéntrico dorado -->
+<div class="relative w-28 h-28 rounded-full flex items-center justify-center p-1.5 border border-primary/40 bg-surface-container-lowest seal-halo mb-3">
+<!-- Anillo interior con borde dorado fino -->
+<div class="w-full h-full rounded-full border border-dashed border-primary/60 flex items-center justify-center bg-surface-container-low">
+<span class="material-symbols-outlined text-primary text-[46px]" data-weight="fill">explore</span>
+</div>
+<!-- Pequeños acentos cardinales del sello de cera/origen -->
+<div class="absolute top-1 w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="absolute left-1 w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="absolute right-1 w-1.5 h-1.5 rounded-full bg-primary"></div>
+</div>
+<!-- Badge pill verde bosque: Resultado verificado (§5.4 y §12.2) -->
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container border border-secondary/30 mb-3">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-secondary-container tracking-wider">Resultado verificado</span>
+</div>
+<!-- 3. Titular editorial y métrica -->
+<h2 class="font-headline-lg text-headline-lg text-on-surface px-2">
+          ¡El Parche resolvió el origen!
+        </h2>
+<p class="font-title-md text-title-md text-secondary mt-1">
+          8 de 10 respuestas correctas
+        </p>
+</section>
+<!-- 4. Dos bloques de recompensas claramente separados (Economía Dual §5.7) -->
+<section aria-label="Recompensas obtenidas" class="flex flex-col gap-3.5">
+<!-- Bloque 1: Ruta B - Experiencial / Verde (Marcador del reto) -->
+<div class="bg-surface-container-low border border-secondary/30 rounded-xl p-4 relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]" data-weight="fill">military_tech</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-secondary-container">Marcador del reto</span>
+<p class="font-numeric-xl text-headline-md text-secondary leading-none mt-0.5">+120 XP</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/60 px-2.5 py-0.5 rounded-full border border-secondary/20">
+              Ruta B
+            </span>
+</div>
+<div class="mt-3.5 pt-3 border-t border-secondary/15 flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-weight="fill">shield</span>
+<p class="font-body-md text-body-md text-on-surface">
+<span class="font-label-lg text-label-lg text-secondary">Insignia:</span> Guardianes del bosque de niebla
+            </p>
+</div>
+</div>
+<!-- Bloque 2: Ruta A - Comercial / Oro (Puntos ILC) -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-4 relative">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">token</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Puntos ILC de la mesa</span>
+<p class="font-numeric-xl text-headline-md text-primary leading-none mt-0.5">+0</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-primary bg-surface-container-high px-2.5 py-0.5 rounded-full border border-outline-variant/30">
+              Ruta A
+            </span>
+</div>
+<div class="mt-3.5 pt-3 border-t border-outline-variant/20 flex items-start gap-2">
+<span class="material-symbols-outlined text-outline text-[18px] mt-0.5">info</span>
+<p class="font-body-md text-body-md text-outline">
+              Esta partida no otorga Puntos ILC en esta campaña.
+            </p>
+</div>
+</div>
+</section>
+<!-- 5. Tarjeta "Dato que descubriste" (Ruta B editorial) -->
+<section class="bg-surface-container border border-outline-variant/20 rounded-xl p-4 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<h3 class="font-label-lg text-label-lg tracking-wide text-primary">
+            Dato que descubriste
+          </h3>
+</div>
+<blockquote class="font-body-lg text-body-lg text-on-surface-variant italic pl-2 border-l-2 border-primary/50">
+          «Contenido editorial pendiente de aprobación de marca»
+        </blockquote>
+</section>
+<!-- Acciones intermedias -->
+<div class="flex flex-col gap-3 mt-1">
+<!-- Botón secundario con borde: Compartir logro -->
+<button class="w-full h-12 min-h-[48px] rounded-xl border border-primary/60 bg-transparent text-primary hover:bg-surface-container transition-colors duration-150 flex items-center justify-center gap-2 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span class="font-label-lg text-label-lg">Compartir logro</span>
+</button>
+<!-- Enlace interactivo centrado: Jugar otra partida -->
+<div class="text-center py-1">
+<button class="font-label-lg text-label-lg text-primary underline underline-offset-4 hover:text-primary-fixed transition-colors active:opacity-80 py-2" type="button">
+            Jugar otra partida
+          </button>
+</div>
+</div>
+</main>
+<!-- 6. Barra fija inferior con CTA Principal dorado (Altura 56px exacta) -->
+<div class="fixed bottom-0 left-0 w-full z-40 bg-surface-container-lowest border-t border-outline-variant/30 px-4 pt-3 pb-4">
+<div class="w-full max-w-md mx-auto flex flex-col gap-2">
+<!-- Botón primario: 56px, fondo oro #D4B673, texto oscuro de alto contraste #0C1613 -->
+<button class="w-full h-14 min-h-[56px] rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center tracking-wide shadow-lg hover:bg-primary-fixed transition-all duration-150 active:scale-[0.98]" type="button">
+          Volver al Parche
+        </button>
+<!-- 7. Pie legal reglamentario colombiano (Ley 30 de 1986) -->
+<p class="font-label-sm text-label-sm text-outline text-center uppercase tracking-wider leading-tight pt-1">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</div>
+</div>
+</div>
+</body></html>

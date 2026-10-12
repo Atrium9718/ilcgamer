@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>ILC Origen · Guarda tu progreso</title>
+<!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#18221e",
+            "surface-variant": "#2d3733",
+            "on-secondary-fixed": "#002112",
+            "on-error": "#690005",
+            "surface-container-lowest": "#06100d",
+            "surface-container-low": "#141e1a",
+            "surface-container-highest": "#2d3733",
+            "tertiary-container": "#d38f55",
+            "secondary": "#8dd6ad",
+            "on-primary": "#3f2e00",
+            "surface-container-high": "#222c29",
+            "on-primary-fixed-variant": "#59440b",
+            "surface-bright": "#313b38",
+            "on-tertiary": "#4d2600",
+            "on-surface": "#dae5e0",
+            "secondary-container": "#005738",
+            "on-surface-variant": "#d0c5b5",
+            "on-tertiary-container": "#542b00",
+            "primary-fixed": "#ffdf99",
+            "on-primary-container": "#453300",
+            "tertiary-fixed-dim": "#ffb77c",
+            "secondary-fixed": "#a8f2c8",
+            "outline-variant": "#4d4639",
+            "error": "#ffb4ab",
+            "on-primary-fixed": "#251a00",
+            "on-background": "#dae5e0",
+            "primary-fixed-dim": "#e2c37f",
+            "tertiary-fixed": "#ffdcc3",
+            "on-secondary": "#003823",
+            "background": "#0b1512",
+            "surface-dim": "#0b1512",
+            "on-tertiary-fixed": "#2e1500",
+            "secondary-fixed-dim": "#8dd6ad",
+            "on-error-container": "#ffdad6",
+            "error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "on-secondary-container": "#82cba3",
+            "surface": "#0b1512",
+            "on-secondary-fixed-variant": "#005234",
+            "primary": "#e2c37f",
+            "inverse-surface": "#dae5e0",
+            "primary-container": "#b79b5b",
+            "inverse-primary": "#725b22",
+            "outline": "#999081",
+            "tertiary": "#ffb77c",
+            "surface-tint": "#e2c37f",
+            "inverse-on-surface": "#28332f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "8px",
+            "space-md": "16px",
+            "gutter": "16px",
+            "space-xs": "4px",
+            "space-lg": "24px",
+            "margin": "16px",
+            "space-xl": "32px"
+          },
+          "fontFamily": {
+            "display-lg": ["EB Garamond", "serif"],
+            "headline-lg": ["EB Garamond", "serif"],
+            "headline-md": ["EB Garamond", "serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "title-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "numeric-xl": ["Plus Jakarta Sans", "sans-serif"],
+            "title-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          "fontSize": {
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom subtle noise and misty ambient effects */
+    .bg-cloud-forest {
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(226, 195, 127, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 80% 30%, rgba(141, 214, 173, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #0b1512 0%, #06100d 100%);
+    }
+    .gold-wax-border {
+      border-top: 1px solid rgba(226, 195, 127, 0.45);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary/20 selection:text-primary">
+<!-- Mobile Canvas Frame (max-w-md / 390-420px responsive container) -->
+<div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-cloud-forest relative pb-44 shadow-2xl overflow-x-hidden">
+<!-- Ambient Atmospheric Forest Blur Silhouette in the Background -->
+<div class="absolute top-0 left-0 right-0 h-64 overflow-hidden pointer-events-none opacity-20">
+<img class="w-full h-full object-cover mix-blend-luminosity filter blur-sm" data-alt="A dramatic misty cloud forest in the mountains of Caldas Colombia bathed in deep emerald greens moody dusk fog and soft golden twilight lighting on ancient native oak trees in an evocative heritage style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlzMcTSXImuPsJID46hJoLINaXY3iiuVOvx6pfpkWyMSGfB8rDdw3slei9c7_J3Au9MBpMLcqieKMUs6z7t4a3Y_7QmZlxwQvB3FfiL9taAlRCyWP2ijdKwe7n2fFR1szyhmJvz-nb60yACvNl7RWxbfPF6yjNk6AxFKS6kWv-JMkDVFU7uf-Ad0k0FH7HVqKw19PBj4XkhKi7LVvWgrW_PPul1bxXOe5ZlSP1Ws5rXYSCOrUBH9oKluWezCPRD5m3YUwbFG3hXOQ"/>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background"></div>
+</div>
+<!-- 1. Top App Bar (Shared Component Contract: ILC Origen) -->
+<header class="sticky top-0 z-40 bg-surface/90 backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-4 h-16 max-w-lg mx-auto">
+<!-- Back Navigation Button -->
+<button aria-label="Volver" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<!-- Brand Headline Centered -->
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="shield">shield</span>
+<span class="font-headline-md text-headline-md tracking-wide text-primary uppercase">ILC Origen</span>
+</div>
+<!-- Privacy Shield / Info Icon -->
+<button aria-label="Información de Privacidad" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Main Content Stream -->
+<main class="flex-1 px-4 pt-3 space-y-6 relative z-10">
+<!-- 2. Header & Progress Summary (Dual Track: Ruta A & Ruta B) -->
+<section class="space-y-3">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container/40 border border-secondary/30 text-secondary font-label-sm text-label-sm">
+            Paso 3 de 3 · Perfilado
+          </span>
+<span class="text-outline text-[12px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Datos protegidos
+          </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface leading-tight">
+          Guarda tu progreso
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Hasta ahora juegas como <strong class="text-primary font-semibold">“Andrés”</strong> (alias temporal). Crea tu cuenta para conservar tus Puntos ILC e insignias en cualquier dispositivo y poder canjear.
+        </p>
+</section>
+<!-- Progress Inventory Card (Heritage Bento Layout) -->
+<section class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/30 gold-wax-border relative overflow-hidden shadow-lg">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20 mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">inventory_2</span>
+<span class="font-label-lg text-label-lg text-on-surface">Resumen de tu expedición</span>
+</div>
+<span class="text-primary font-label-sm text-label-sm uppercase tracking-wider bg-surface-container px-2 py-0.5 rounded">
+            Sesión activa
+          </span>
+</div>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Ruta A: Puntos ILC Comerciales (Oro Noble) -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container border border-primary/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[22px]">award_star</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-primary uppercase tracking-wide">Ruta A · Beneficios ILC</span>
+<span class="font-title-md text-title-md text-on-surface">500 Puntos ILC listos para canjear</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary/70 text-[20px]">check_circle</span>
+</div>
+<!-- Ruta B: Experiencial / Aventura (Verde Musgo) -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container border border-secondary/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container/40 border border-secondary/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[22px]">nature</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-secondary uppercase tracking-wide">Ruta B · El Secreto del Roble</span>
+<span class="font-title-md text-title-md text-on-surface">2 insignias de niebla · 1.250 XP</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary/70 text-[20px]">check_circle</span>
+</div>
+</div>
+<p class="mt-2.5 text-center font-label-sm text-label-sm text-outline">
+          Los puntos acumulados se transferirán inmediatamente a tu billetera personal.
+        </p>
+</section>
+<!-- 3. Metodos de Acceso Rapido (Touch Targets >= 48px) -->
+<section class="space-y-3">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider block px-1">
+          Elige cómo autenticarte
+        </span>
+<!-- Google Access Button -->
+<button class="w-full h-13 min-h-[52px] px-4 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 flex items-center justify-between text-on-surface font-title-md text-title-md transition-all active:scale-[0.98]" type="button">
+<div class="flex items-center gap-3.5">
+<svg class="w-5 h-5 shrink-0" viewbox="0 0 24 24">
+<path d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z" fill="#EA4335"></path>
+<path d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z" fill="#4285F4"></path>
+<path d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z" fill="#FBBC05"></path>
+<path d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.3 7.5 23.5 12 23.5z" fill="#34A853"></path>
+</svg>
+<span>Continuar con Google</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">chevron_right</span>
+</button>
+<!-- Apple Access Button -->
+<button class="w-full h-13 min-h-[52px] px-4 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 flex items-center justify-between text-on-surface font-title-md text-title-md transition-all active:scale-[0.98]" type="button">
+<div class="flex items-center gap-3.5">
+<svg class="w-5 h-5 fill-current text-on-surface shrink-0" viewbox="0 0 24 24">
+<path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.05-.03.07-.42 1.44-1.38 2.82M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.67-1.09 1.74-.95 2.77 1.01.08 2.06-.52 2.68-1.27z"></path>
+</svg>
+<span>Continuar con Apple</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">chevron_right</span>
+</button>
+<!-- WhatsApp OTP Button -->
+<button class="w-full h-13 min-h-[52px] px-4 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 flex items-center justify-between text-on-surface font-title-md text-title-md transition-all active:scale-[0.98]" type="button">
+<div class="flex items-center gap-3.5">
+<svg class="w-5 h-5 fill-[#25D366] shrink-0" viewbox="0 0 24 24">
+<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+</svg>
+<span>Recibir código por WhatsApp</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">chevron_right</span>
+</button>
+<!-- Secondary Email Alternative -->
+<div class="pt-1 text-center">
+<button class="inline-flex items-center gap-1.5 font-label-lg text-label-lg text-primary hover:underline py-2 px-3 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span>Prefiero usar mi correo</span>
+</button>
+</div>
+</section>
+<!-- 4. Consentimientos & Gobernanza de Datos (Instrucciones §3.1 & Guía Técnica §5.2) -->
+<section class="bg-surface-container rounded-2xl p-4 border border-outline-variant/30 space-y-4">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[22px] mt-0.5">verified_user</span>
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Tus autorizaciones</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px] leading-relaxed">
+              Tratamos tu información con total soberanía y respeto. Puedes revocar consentimientos en cualquier momento.
+            </p>
+</div>
+</div>
+<div class="space-y-3 pt-1">
+<!-- Checkbox 1: Obligatoria (Términos & Privacidad) -->
+<label class="flex items-start gap-3 cursor-pointer select-none group">
+<div class="relative flex items-center justify-center mt-0.5">
+<input checked="" class="sr-only peer" id="terms-consent" required="" type="checkbox"/>
+<div class="w-6 h-6 rounded-md border-2 border-primary bg-primary/20 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-all">
+<span class="material-symbols-outlined text-on-primary text-[18px] font-bold" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="font-body-md text-body-md text-on-surface text-[14px] leading-snug">
+<span>Acepto los </span>
+<a class="text-primary underline hover:text-primary-fixed" href="#">Términos y Condiciones</a>
+<span> y el </span>
+<a class="text-primary underline hover:text-primary-fixed" href="#">Aviso de Privacidad</a>
+<span> para usar la plataforma. </span>
+<span class="text-error font-semibold">*</span>
+</div>
+</label>
+<!-- Checkbox 2: Opcional (Comunicaciones Comerciales) -->
+<label class="flex items-start gap-3 cursor-pointer select-none group">
+<div class="relative flex items-center justify-center mt-0.5">
+<input class="sr-only peer" id="marketing-consent" type="checkbox"/>
+<div class="w-6 h-6 rounded-md border-2 border-outline bg-surface-container-high flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-all">
+<span class="material-symbols-outlined text-on-primary text-[18px] font-bold hidden peer-checked:block" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="space-y-0.5">
+<span class="font-body-md text-body-md text-on-surface text-[14px] leading-snug block">
+                Quiero recibir novedades y promociones de ILC y sus marcas (opcional).
+              </span>
+<span class="font-label-sm text-label-sm text-outline block text-[11px]">Puedes cambiarlo cuando quieras en tu perfil.</span>
+</div>
+</label>
+</div>
+</section>
+<!-- 5. Enlace secundario de escape (No perder el momento de juego) -->
+<div class="text-center pt-2 pb-4">
+<a class="inline-flex items-center gap-1.5 font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface py-2 px-4 rounded-full bg-surface-container-low/60 border border-outline-variant/20 hover:border-outline-variant/40 transition-colors" href="#continuar-parche">
+<span class="material-symbols-outlined text-[18px]">sports_esports</span>
+<span>Seguir jugando sin registrarme</span>
+</a>
+<p class="font-label-sm text-label-sm text-outline mt-1.5 text-[11px]">
+          Tu progreso se mantendrá mientras no cierres esta pestaña del navegador.
+        </p>
+</div>
+</main>
+<!-- 6. Fixed Bottom Action Shell (Docked Thumb-zone + Legal Warning) -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant/20">
+<div class="w-full max-w-md mx-auto px-4 pt-3 pb-3 space-y-2">
+<!-- Primary Gold CTA Button (56px) -->
+<button class="w-full h-14 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-primary/20 transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+<span class="tracking-wide">Guardar cuenta y continuar</span>
+</button>
+<!-- Privacy Transparency Reassurance Note -->
+<p class="text-center font-label-sm text-label-sm text-outline text-[11px] flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">verified</span>
+<span>Solo pedimos los datos necesarios. Nunca accedemos a tus contactos.</span>
+</p>
+<!-- 7. Mandatory Legal Notice (Ley 30 de 1986) -->
+</div>
+</div>
+<!-- Supplementary Footer (Shared Component Template Inclusion) -->
+<footer class="w-full max-w-lg mx-auto px-4 py-6 text-center space-y-3 mt-4 border-t border-outline-variant/10">
+<div class="flex flex-wrap justify-center gap-4 text-outline text-label-sm font-label-sm">
+<a class="hover:text-primary transition-colors" href="#">Términos y Condiciones</a>
+<span class="text-outline/40">·</span>
+<a class="hover:text-primary transition-colors" href="#">Política de Privacidad</a>
+<span class="text-outline/40">·</span>
+<a class="hover:text-primary transition-colors" href="#">Consumo Responsable</a>
+</div>
+<p class="text-outline text-label-sm font-label-sm uppercase tracking-wider text-[10px]">
+        El exceso de alcohol es perjudicial para la salud. Ley 30 de 1986. Prohíbase el expendio de bebidas embriagantes a menores de edad.
+      </p>
+</footer>
+</div>
+<!-- Micro-interactions JavaScript for toggle state and feedback -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle interaction for custom check visual
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const checkIcon = e.target.parentElement.querySelector('span');
+          if (e.target.checked) {
+            checkIcon.classList.remove('hidden');
+            e.target.nextElementSibling.classList.add('bg-primary', 'border-primary');
+          } else {
+            if (!e.target.required) {
+              checkIcon.classList.add('hidden');
+              e.target.nextElementSibling.classList.remove('bg-primary', 'border-primary');
+            } else {
+              // Enforce required checkbox feedback
+              e.target.checked = true;
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body></html>
