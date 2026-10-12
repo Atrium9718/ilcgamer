@@ -1,0 +1,19 @@
+# Dependencias y builds
+node_modules/
+dist/
+build/
+.turbo/
+coverage/
+storybook-static/
+
+# Entorno y secretos (nunca versionar API keys)
+.env
+.env.*
+!.env.example
+
+# Documentos fuente del cliente (repo público)
+docs/fuentes/
+
+# SO / editores
+.DS_Store
+*.log
