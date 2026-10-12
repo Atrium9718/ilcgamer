@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>ILC Origen · Crear El Parche</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: EB Garamond (Editorial Serif) & Plus Jakarta Sans (Dynamic Sans) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-container": "#d38f55",
+            "secondary": "#8dd6ad",
+            "surface-variant": "#2d3733",
+            "on-primary-fixed-variant": "#59440b",
+            "tertiary-fixed": "#ffdcc3",
+            "primary-container": "#b79b5b",
+            "on-secondary-fixed-variant": "#005234",
+            "on-tertiary-container": "#542b00",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "on-primary-fixed": "#251a00",
+            "on-background": "#dae5e0",
+            "on-tertiary-fixed": "#2e1500",
+            "surface-container-lowest": "#06100d",
+            "error": "#ffb4ab",
+            "on-secondary-fixed": "#002112",
+            "surface-container-low": "#141e1a",
+            "inverse-surface": "#dae5e0",
+            "inverse-primary": "#725b22",
+            "on-secondary-container": "#82cba3",
+            "on-error-container": "#ffdad6",
+            "primary-fixed-dim": "#e2c37f",
+            "tertiary": "#ffb77c",
+            "secondary-fixed": "#a8f2c8",
+            "tertiary-fixed-dim": "#ffb77c",
+            "on-surface-variant": "#d0c5b5",
+            "outline": "#999081",
+            "inverse-on-surface": "#28332f",
+            "secondary-container": "#005738",
+            "surface-container-highest": "#2d3733",
+            "secondary-fixed-dim": "#8dd6ad",
+            "surface-container-high": "#222c29",
+            "surface": "#0b1512",
+            "background": "#0b1512",
+            "on-tertiary": "#4d2600",
+            "on-secondary": "#003823",
+            "outline-variant": "#4d4639",
+            "error-container": "#93000a",
+            "surface-tint": "#e2c37f",
+            "on-primary": "#3f2e00",
+            "surface-bright": "#313b38",
+            "primary": "#e2c37f",
+            "on-error": "#690005",
+            "primary-fixed": "#ffdf99",
+            "surface-container": "#18221e",
+            "on-primary-container": "#453300",
+            "on-surface": "#dae5e0",
+            "surface-dim": "#0b1512"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "4px",
+            "space-xl": "32px",
+            "gutter": "16px",
+            "space-md": "16px",
+            "margin": "16px",
+            "space-lg": "24px",
+            "space-sm": "8px"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["EB Garamond"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond"],
+            "title-md": ["Plus Jakarta Sans"],
+            "numeric-xl": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-lg": ["EB Garamond"],
+            "title-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Heritage Atmospheric Gradients */
+    .bg-heritage-nebula {
+      background: radial-gradient(110% 80% at 50% 0%, rgba(47, 73, 65, 0.35) 0%, rgba(12, 22, 19, 0.95) 70%, #0C1613 100%);
+    }
+    .gold-accent-border {
+      border-top: 1px solid rgba(212, 182, 115, 0.45);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#0C1613] text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md select-none selection:bg-primary selection:text-on-primary">
+<!-- Main Canvas Wrapper (Mobile Centered Single-Column Max 448px) -->
+<div class="relative w-full max-w-md mx-auto min-h-screen flex flex-col bg-[#0C1613] bg-heritage-nebula pb-36 shadow-2xl">
+<!-- 1. CABECERA (TOP APP BAR CONFORME A BRAND ANCHORS) -->
+<header class="sticky top-0 z-40 bg-surface-container-low/95 backdrop-blur-md px-4 h-16 flex items-center justify-between">
+<button aria-label="Volver atrás" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container hover:text-primary active:scale-95 transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="font-headline-md text-headline-md text-primary tracking-wide">Tu Parche</span>
+</div>
+<!-- Chip de submarca con acento noble de lacre/esmeralda -->
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-primary/30">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[11px] font-bold text-primary tracking-tight">Ron Viejo de Caldas</span>
+</div>
+</header>
+<!-- CONTENT WRAPPER -->
+<main class="flex-1 px-4 pt-4 flex flex-col gap-6">
+<!-- 2. INDICADOR DE PASO DISCRETO -->
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary tracking-wider uppercase font-semibold">Paso 1 de 2</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-body-md text-xs text-on-surface-variant">Configuración inicial</span>
+</div>
+<!-- Progress Bar Indicator -->
+<div aria-hidden="true" class="flex items-center gap-1.5">
+<div class="w-8 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(212,182,115,0.4)]"></div>
+<div class="w-4 h-1.5 rounded-full bg-surface-container-highest"></div>
+</div>
+</div>
+<!-- 3. BLOQUE EDITORIAL / HERO TEXTUAL -->
+<section class="space-y-2">
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-headline-lg tracking-tight">
+          Arma tu Parche
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Ponle nombre a la mesa y comparte el código para que tu grupo se una. Cada quien juega a su ritmo.
+        </p>
+</section>
+<!-- 4. FORMULARIO DE CREACIÓN -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Campo: Nombre del Parche -->
+<div class="space-y-2">
+<div class="flex justify-between items-baseline px-0.5">
+<label class="font-label-lg text-label-lg text-on-surface font-semibold" for="parche-name">
+              Nombre del Parche
+            </label>
+<span class="font-label-sm text-label-sm text-outline font-medium tabular-nums" id="char-counter">0/24</span>
+</div>
+<div class="relative group">
+<input class="w-full h-14 bg-surface-container px-4 rounded-xl text-on-surface font-body-lg text-body-lg placeholder:text-outline border border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-150" id="parche-name" maxlength="24" oninput="document.getElementById('char-counter').innerText = this.value.length + '/24'" placeholder="Los del bosque de niebla" type="text"/>
+<div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+</div>
+</div>
+</div>
+<!-- Campo: Tu alias en el Parche -->
+<div class="space-y-2">
+<div class="flex justify-between items-baseline px-0.5">
+<label class="font-label-lg text-label-lg text-on-surface font-semibold" for="user-alias">
+              Tu alias en el Parche
+            </label>
+</div>
+<div class="relative group">
+<input class="w-full h-14 bg-surface-container px-4 rounded-xl text-on-surface font-body-lg text-body-lg placeholder:text-outline border border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-150" id="user-alias" maxlength="16" placeholder="Andrés" type="text"/>
+<div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</div>
+</div>
+<!-- Texto de ayuda y privacidad (Sin PII) -->
+<div class="flex items-start gap-2 pt-1 px-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified_user</span>
+<p class="font-body-md text-xs leading-normal">
+              Solo verán tu alias. Nunca mostramos tu nombre completo ni tu teléfono.
+            </p>
+</div>
+</div>
+<!-- 5. SELECTOR SEGMENTADO DE DINÁMICA -->
+<div class="space-y-3 pt-1">
+<label class="block font-label-lg text-label-lg text-on-surface font-semibold px-0.5">
+            Modo de juego
+          </label>
+<!-- Segmented Toggle Pill Container -->
+<div aria-label="Modo de juego" class="grid grid-cols-2 p-1 bg-surface-container-low rounded-xl border border-outline-variant/30 gap-1" role="radiogroup">
+<!-- Opción 1: Varios celulares -->
+<button aria-checked="true" class="flex items-center justify-center gap-2 py-3 px-3 rounded-lg text-label-lg font-label-lg transition-all duration-150 bg-secondary-container text-on-secondary-container shadow-sm border border-secondary/30" id="mode-multi" onclick="selectMode('multi')" role="radio" type="button">
+<span class="material-symbols-outlined text-[18px]">devices</span>
+<span>Varios celulares</span>
+</button>
+<!-- Opción 2: Un solo celular -->
+<button aria-checked="false" class="flex items-center justify-center gap-2 py-3 px-3 rounded-lg text-label-lg font-label-lg transition-all duration-150 text-on-surface-variant hover:text-on-surface" id="mode-single" onclick="selectMode('single')" role="radio" type="button">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+<span>Un solo celular</span>
+</button>
+</div>
+<!-- Aclaración contextual dinámica -->
+<div class="bg-surface-container/60 border border-outline-variant/20 rounded-xl p-3 flex items-start gap-3" id="mode-hint">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">hub</span>
+<p class="font-body-md text-xs text-on-surface-variant leading-relaxed" id="mode-hint-text">
+              Cada integrante ingresa con el código PIN desde su propio navegador y responde retos simultáneamente.
+            </p>
+</div>
+</div>
+<!-- 6. TARJETA INFORMATIVA DE SESIÓN (RESPONSABLE) -->
+<div class="bg-surface-container rounded-xl p-4 border border-outline-variant/25 gold-accent-border relative overflow-hidden">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0 border border-primary/20">
+<span class="material-symbols-outlined text-[22px]">schedule</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-title-md text-title-md text-on-surface font-semibold flex items-center gap-1.5">
+                Energía del Parche: 45 min
+              </h2>
+<p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                La duración la define la campaña. Al terminar la sesión tu saldo individual se conserva.
+              </p>
+</div>
+</div>
+</div>
+</form>
+</main>
+<!-- 7. BOTÓN PRIMARIO DE ACCIÓN FIJA EN EL 40% INFERIOR (THUMB-ZONE DOCKED) -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-[#0C1613] via-[#0C1613]/95 to-transparent pt-6 pb-4 px-4 max-w-md mx-auto">
+<div class="space-y-3">
+<!-- CTA Botón Primario: 56px de altura, oro #D4B673, texto oscuro de alto contraste #1E1606 -->
+<button class="w-full h-14 bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/10 active:scale-[0.98] transition-transform duration-150 border border-primary-fixed/40" type="button">
+<span>Crear Parche</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- 8. PIE LEGAL OBLIGATORIO SEGÚN LEY 30 DE 1986 -->
+<p class="text-[10px] leading-tight text-outline text-center uppercase tracking-wider font-label-sm font-normal px-2">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</div>
+</div>
+</div>
+<!-- SCRIPT PARA INTERACTIVIDAD DE MODO DE JUEGO -->
+<script>
+    function selectMode(mode) {
+      const btnMulti = document.getElementById('mode-multi');
+      const btnSingle = document.getElementById('mode-single');
+      const hintText = document.getElementById('mode-hint-text');
+
+      if (mode === 'multi') {
+        btnMulti.className = "flex items-center justify-center gap-2 py-3 px-3 rounded-lg text-label-lg font-label-lg transition-all duration-150 bg-secondary-container text-on-secondary-container shadow-sm border border-secondary/30";
+        btnMulti.setAttribute('aria-checked', 'true');
+
+        btnSingle.className = "flex items-center justify-center gap-2 py-3 px-3 rounded-lg text-label-lg font-label-lg transition-all duration-150 text-on-surface-variant hover:text-on-surface";
+        btnSingle.setAttribute('aria-checked', 'false');
+
+        hintText.innerText = "Cada integrante ingresa con el código PIN desde su propio navegador y responde retos simultáneamente.";
+      } else {
+        btnSingle.className = "flex items-center justify-center gap-2 py-3 px-3 rounded-lg text-label-lg font-label-lg transition-all duration-150 bg-secondary-container text-on-secondary-container shadow-sm border border-secondary/30";
+        btnSingle.setAttribute('aria-checked', 'true');
+
+        btnMulti.className = "flex items-center justify-center gap-2 py-3 px-3 rounded-lg text-label-lg font-label-lg transition-all duration-150 text-on-surface-variant hover:text-on-surface";
+        btnMulti.setAttribute('aria-checked', 'false');
+
+        hintText.innerText = "Un solo celular: se pasan el teléfono por turnos para jugar juntos sin necesidad de múltiples pantallas.";
+      }
+    }
+  </script>
+</body></html>

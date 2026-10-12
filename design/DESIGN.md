@@ -23,7 +23,7 @@ colors:
   on-primary: '#1E1606'
   primary-container: '#B89B5B'
   on-primary-container: '#1E1606'
-  inverse-primary: '#7A5F22'
+  inverse-primary: '#6E561E'
   secondary: '#86CFA7'
   on-secondary: '#06281A'
   secondary-container: '#2F4941'
@@ -104,8 +104,10 @@ rounded:
   sm: 0.5rem
   DEFAULT: 0.75rem
   md: 0.75rem
-  lg: 1rem
-  xl: 1.5rem
+  lg: 0.75rem
+  xl: 0.75rem
+  2xl: 1rem
+  3xl: 1.5rem
   full: 9999px
 spacing:
   base-unit: 4px
@@ -165,7 +167,7 @@ sobreescribibles desde el CMS para cada submarca o temporada, sin desplegar).
 
 ### Tema claro (Ruta B diurna, off-premise, consolas)
 Fondo papel `#FAF7F0`, superficie `#F1ECE0`, texto `#13201B`, secundario `#43524B`, primary oro
-oscuro `#7A5F22` (texto blanco encima), secondary `#2F4941`, tertiary `#9A4F17`, error `#B3261E`,
+oscuro `#6E561E` (texto blanco encima), secondary `#2F4941`, tertiary `#9A4F17`, error `#B3261E`,
 warning `#7A5400`, outline `#6B7A73`.
 
 ### Capa de submarcas (marcadores provisionales — validar con ILC)
@@ -207,7 +209,7 @@ Respetar `prefers-reduced-motion`.
 
 ## Shapes
 
-- Tarjetas 16px; inputs y botones 12px; chips y badges en píldora.
+- Tarjetas 16px (`rounded-2xl`); inputs y botones 12px (`rounded-xl`); hojas/modales 24px (`rounded-3xl`); chips y badges en píldora.
 - **Motivo sello:** elementos circulares con doble anillo dorado (insignias, avatar del Parche, sello de
   verificación) inspirados en el sello ILC. Es recurso gráfico, no reproducción del logo.
 - Texturas opcionales: grano de papel al 3–5% y vetas de roble muy sutiles en cabeceras.

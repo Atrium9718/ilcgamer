@@ -162,10 +162,16 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] `packages/design-tokens`: DESIGN.md + themes.yaml → `theme.css` Tailwind v4; tema oscuro/claro; 4 submarcas; puerta WCAG AA en build.
 - [x] `packages/ui`: Button, SealMark, BrandChip, VerificationSeal (4 estados), RouteCard, LegalNotice, Checkbox, DateOfBirthInput, `applyCampaignTheme` + Storybook con selector de tema/submarca.
 - [x] Pantallas 01 (edad) y 02 (landing de código) diseñadas en Stitch, corregidas y traducidas a vistas puras con pruebas.
-- [ ] Pendientes del sistema: PinInput, visor QR, Sheet/modal, Toast, estados vacío/error/sin conexión, barra de navegación inferior.
-- **Entregable:** Storybook con el design system aplicado.
+- [x] PinInput, TextField, SegmentedControl, TopBar, Sheet (dialog nativo), Toast, StatusMessage (vacío/error/sin conexión/verificando), OfflineBanner, BottomNav, QrScannerFrame.
+- [x] Componentes del Parche: EnergyMeter, ScoreCard (XP y Puntos ILC separados), ParticipantList (solo alias), InviteCard.
+- [x] Auditoría axe WCAG 2.1 AA de todas las historias en ambos temas (`tools/a11y_audit.cjs`): sin violaciones.
+- **Entregable:** Storybook con el design system aplicado. ✅
 
-### Paso 2 — Diseño de pantallas P0 en Stitch
+### Paso 2 — Diseño de pantallas P0 en Stitch *(en curso)*
+- [x] 01 Control de edad · 02 Landing de código · 03 Crear Parche · 04 Unirse (PIN/QR) · 05 Sala del Parche — diseñadas, revisadas contra las guías, corregidas y traducidas a vistas puras con historias y pruebas.
+- [ ] 06 Catálogo de juegos (Ruta A lista; Ruta B máx. 2) · 07 Contenedor de juego y resultado · 08 Billetera Puntos ILC · 09 Progreso Ruta B · 10 Recompensas y canje · 11 Perfil/referidos · 12 Tarjeta social · 13 Login progresivo/consentimientos.
+
+### Paso 2 (detalle original)
 - Generar en Stitch las pantallas 1–14 con prompts versionados; iterar variantes con el equipo.
 - Exportar y traducir a `views/` puras con estados en Storybook.
 - **Entregable:** prototipo navegable de la PWA (datos simulados) — equivale a la Fase 1 de la Guía Técnica.

@@ -10,7 +10,7 @@ export function BrandChip({ label, className }: BrandChipProps) {
   return (
     <span
       className={cx(
-        'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm normal-case tracking-wide',
+        'inline-flex items-center gap-1.5 whitespace-nowrap px-2.5 py-0.5 rounded-full font-label-sm text-label-sm normal-case tracking-wide',
         'bg-surface-container-high border border-outline-variant text-on-surface',
         className,
       )}

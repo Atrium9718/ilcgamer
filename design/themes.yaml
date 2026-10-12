@@ -21,7 +21,7 @@ light:
   inverse-on-surface: '#F4EFE3'
   outline: '#6B7A73'
   outline-variant: '#C9C4B6'
-  primary: '#7A5F22'
+  primary: '#6E561E'
   on-primary: '#FFFFFF'
   primary-container: '#E9D6A6'
   on-primary-container: '#2A1F05'
