@@ -1705,6 +1705,275 @@
           "Consola · Smart Tags"
         ]
       }
+    },
+    "/api/v1/rewards": {
+      "get": {
+        "operationId": "RewardsController_catalog",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Recompensas"
+        ]
+      }
+    },
+    "/api/v1/rewards/claims": {
+      "get": {
+        "operationId": "RewardsController_mine",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Recompensas"
+        ]
+      }
+    },
+    "/api/v1/rewards/{id}/claim": {
+      "post": {
+        "operationId": "RewardsController_claim",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards": {
+      "get": {
+        "operationId": "AdminRewardsController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      },
+      "post": {
+        "operationId": "AdminRewardsController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards/{id}/activate": {
+      "post": {
+        "operationId": "AdminRewardsController_activate",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards/{id}/deactivate": {
+      "post": {
+        "operationId": "AdminRewardsController_deactivate",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards/{id}/stock": {
+      "post": {
+        "operationId": "AdminRewardsController_stock",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards/claims": {
+      "get": {
+        "operationId": "AdminRewardsController_claims",
+        "parameters": [
+          {
+            "name": "status",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards/claims/deliver": {
+      "post": {
+        "operationId": "AdminRewardsController_deliver",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
+    },
+    "/api/v1/admin/rewards/claims/{id}/cancel": {
+      "post": {
+        "operationId": "AdminRewardsController_cancel",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Recompensas"
+        ]
+      }
     }
   },
   "info": {
@@ -1756,6 +2025,8 @@
                   "SESSION_PIN_LOCKED",
                   "INSUFFICIENT_BALANCE",
                   "REWARD_OUT_OF_STOCK",
+                  "REWARD_NOT_AVAILABLE",
+                  "REWARD_LIMIT_REACHED",
                   "SERVICE_UNAVAILABLE",
                   "INTERNAL_ERROR"
                 ]

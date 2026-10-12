@@ -82,7 +82,24 @@ describe('RewardsView (Guía Técnica §5.8)', () => {
     await userEvent.click(screen.getByLabelText('Leí las condiciones'));
     expect(confirm).toBeEnabled();
     await userEvent.click(confirm);
-    expect(onConfirmRedeem).toHaveBeenCalledWith('gorra');
+    expect(onConfirmRedeem).toHaveBeenCalledWith('gorra', undefined);
+  });
+
+  it('con varias zonas deja elegir dónde retirar, no ofrece las agotadas y muestra el error del servidor', async () => {
+    const onConfirmRedeem = vi.fn();
+    const withZones: RewardDetail = {
+      ...reward,
+      zones: [
+        { zone: 'Manizales', available: 0 },
+        { zone: 'Pereira', available: 4 },
+      ],
+    };
+    render(<RewardsView {...props} balance={2300} selected={withZones} error="Esta recompensa se agotó en esa zona." onConfirmRedeem={onConfirmRedeem} />);
+    expect(screen.getByRole('option', { name: /Manizales/ })).toBeDisabled();
+    expect(screen.getByRole('alert')).toHaveTextContent('se agotó');
+    await userEvent.click(screen.getByLabelText('Leí las condiciones'));
+    await userEvent.click(screen.getByRole('button', { name: /confirmar canje/i }));
+    expect(onConfirmRedeem).toHaveBeenCalledWith('gorra', 'Pereira');
   });
 
   it('sin saldo suficiente no permite canjear e informa cuánto falta', () => {

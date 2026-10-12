@@ -1,5 +1,7 @@
 import type {
+  AdjustStock,
   AdminAccount,
+  AdminRewardClaim,
   ApprovalDecisionInput,
   BadgeAdmin,
   BadgeAdminView,
@@ -9,6 +11,7 @@ import type {
   CampaignView,
   CreateCampaign,
   CreateProduct,
+  CreateReward,
   DefaultModules,
   GenerateCodes,
   ImportPreview,
@@ -16,6 +19,7 @@ import type {
   ModuleView,
   ProductView,
   Reconciliation,
+  RewardAdminView,
   UrlTemplate,
 } from '@ilc/contracts';
 import { apiRequest, type DownloadedFile } from './api.ts';
@@ -96,4 +100,18 @@ export const gamesAdminApi = {
   secret: (slug: string) => apiRequest<{ secret: string; epoch: number }>(`${gm}/modules/${enc(slug)}/provider-secret`, { method: 'POST' }),
   rotateSecret: (slug: string) => apiRequest<{ secret: string; epoch: number }>(`${gm}/modules/${enc(slug)}/provider-secret/rotate`, { method: 'POST' }),
   guide: () => apiRequest<{ markdown: string }>(`${gm}/guide`),
+};
+
+const rw = '/admin/rewards';
+
+/** Recompensas (Paso 10): catálogo, inventario por zona y canjes. La API valida roles y separación de funciones. */
+export const rewardsAdminApi = {
+  list: () => apiRequest<RewardAdminView[]>(rw),
+  create: (body: CreateReward) => apiRequest<RewardAdminView>(rw, { method: 'POST', body }),
+  activate: (id: string) => apiRequest<RewardAdminView>(`${rw}/${enc(id)}/activate`, { method: 'POST' }),
+  deactivate: (id: string, reason: string) => apiRequest<RewardAdminView>(`${rw}/${enc(id)}/deactivate`, { method: 'POST', body: { reason } }),
+  stock: (id: string, body: AdjustStock) => apiRequest<RewardAdminView>(`${rw}/${enc(id)}/stock`, { method: 'POST', body }),
+  claims: (status?: string) => apiRequest<AdminRewardClaim[]>(`${rw}/claims${status ? `?status=${enc(status)}` : ''}`),
+  deliver: (code: string) => apiRequest<AdminRewardClaim>(`${rw}/claims/deliver`, { method: 'POST', body: { code } }),
+  cancel: (id: string, reason: string) => apiRequest<AdminRewardClaim>(`${rw}/claims/${enc(id)}/cancel`, { method: 'POST', body: { reason } }),
 };

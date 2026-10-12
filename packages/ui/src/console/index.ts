@@ -33,6 +33,17 @@ export {
   type ModuleVersionRow,
 } from './GamesView.tsx';
 export {
+  type ClaimAdminRow,
+  type ClaimStatusView,
+  type NewRewardValue,
+  REWARD_TYPE_LABEL,
+  type RewardAdminRow,
+  type RewardsAdminTab,
+  RewardsAdminView,
+  type RewardsAdminViewProps,
+  type RewardTypeView,
+} from './RewardsAdminView.tsx';
+export {
   type BatchRow,
   type GenerateValue,
   type ImportPreviewView,

@@ -90,13 +90,15 @@ export class LedgerService {
       const from = original ? `${base(original).description}${title(original.campaignVersionId) ? ` · ${title(original.campaignVersionId)}` : ''}` : undefined;
       const expiry = e.idempotencyKey.startsWith(EXPIRY_PREFIX);
       const view =
-        e.type === 'REVERSO'
-          ? { kind: 'reversal' as const, description: 'Reverso auditado', detail: from }
-          : expiry
-            ? { kind: 'expiry' as const, description: 'Vencimiento de puntos', detail: from }
-            : e.type === 'AJUSTE'
-              ? { kind: 'adjustment' as const, description: 'Ajuste auditado', detail: from }
-              : { kind: e.type === 'DEBITO' ? ('debit' as const) : ('credit' as const), ...base(e) };
+        e.type === 'REVERSO' && e.sourceType === 'reward_refund'
+          ? { kind: 'reversal' as const, description: 'Devolución de canje', detail: e.reason ?? undefined }
+          : e.type === 'REVERSO'
+            ? { kind: 'reversal' as const, description: 'Reverso auditado', detail: from }
+            : expiry
+              ? { kind: 'expiry' as const, description: 'Vencimiento de puntos', detail: from }
+              : e.type === 'AJUSTE'
+                ? { kind: 'adjustment' as const, description: 'Ajuste auditado', detail: from }
+                : { kind: e.type === 'DEBITO' ? ('debit' as const) : ('credit' as const), ...base(e) };
       return { id: e.id, amount: e.amount, at: e.createdAt.toISOString(), expiresAt: e.expiresAt?.toISOString() ?? null, ...view };
     };
   }

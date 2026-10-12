@@ -15,6 +15,7 @@ import { ParcheModule } from './parche/parche.module.ts';
 import { PlatformModule } from './platform/platform.module.ts';
 import { PrismaModule } from './prisma/prisma.module.ts';
 import { RedisModule } from './redis/redis.module.ts';
+import { RewardsModule } from './rewards/rewards.module.ts';
 
 /**
  * Monolito modular (ADR-03). Paso 4: identity, platform y audit. Paso 5: campaigns. Los siguientes módulos de dominio ( product-codes, claims,
@@ -35,6 +36,7 @@ import { RedisModule } from './redis/redis.module.ts';
     EconomyModule,
     ParcheModule,
     GamesModule,
+    RewardsModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

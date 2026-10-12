@@ -1,12 +1,13 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { SessionProvider } from './lib/session.tsx';
-import { ProfileRoute, ProgressRoute, RewardsRoute, ShareRoute, WalletRoute } from './routes/Account.tsx';
+import { ProfileRoute, ProgressRoute, ShareRoute, WalletRoute } from './routes/Account.tsx';
 import { AgeGateRoute, UnderageRoute } from './routes/AgeGate.tsx';
 import { CodeLandingRoute } from './routes/CodeLanding.tsx';
 import { EventEntryRoute, ReferralEntryRoute } from './routes/Entry.tsx';
 import { GamePlayRoute, GameResultRoute, GamesRoute } from './routes/Games.tsx';
 import { ConsentsRoute, OtpRoute, SignUpRoute } from './routes/Identity.tsx';
 import { CreateParcheRoute, JoinParcheRoute, ParcheRoomRoute } from './routes/Parche.tsx';
+import { MyClaimsRoute, RewardsRoute } from './routes/Rewards.tsx';
 import { NotFound, RequireAge, RootLayout } from './routes/shell.tsx';
 
 /**
@@ -37,6 +38,7 @@ export const routes = [
           { path: '/jugar/:gameId/resultado', element: <GameResultRoute /> },
           { path: '/billetera', element: <WalletRoute /> },
           { path: '/recompensas', element: <RewardsRoute /> },
+          { path: '/recompensas/mis-canjes', element: <MyClaimsRoute /> },
           { path: '/progreso', element: <ProgressRoute /> },
           { path: '/perfil', element: <ProfileRoute /> },
           { path: '/compartir', element: <ShareRoute /> },

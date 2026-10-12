@@ -7,6 +7,7 @@ import type { LedgerEntryView } from '../components/Ledger.tsx';
 import type { RewardView } from '../components/RewardCard.tsx';
 import { GameResultView, type ResultState } from './GameResultView.tsx';
 import { GamesCatalogView } from './GamesCatalogView.tsx';
+import { type ClaimRow, MyClaimsView } from './MyClaimsView.tsx';
 import { ProfileView } from './ProfileView.tsx';
 import { ProgressView } from './ProgressView.tsx';
 import { type RewardCategory, type RewardDetail, RewardsView } from './RewardsView.tsx';
@@ -222,3 +223,24 @@ function SignUp() {
   );
 }
 export const GuardaTuProgreso: Story = { render: () => <SignUp /> };
+
+const CLAIMS: ClaimRow[] = [
+  {
+    id: '1',
+    rewardName: 'Gorra de prueba',
+    icon: 'styler',
+    status: 'RESERVADO',
+    code: 'K7M2Q9XD',
+    cost: 300,
+    zone: 'Manizales',
+    deadline: 'Retíralo antes del 30 nov.',
+  },
+  { id: '2', rewardName: 'Insignia digital de prueba', icon: 'military_tech', status: 'ENTREGADO', code: 'A1B2C3D4', cost: 100, zone: 'Manizales' },
+  { id: '3', rewardName: 'Tour cultural de prueba', icon: 'tour', status: 'EXPIRADO', code: null, cost: 800, zone: 'Pereira' },
+];
+export const MisCanjes: Story = {
+  render: () => <MyClaimsView claims={CLAIMS} onCopy={fn()} onRetry={fn()} onSeeRewards={fn()} onBack={fn()} onNavigate={fn()} />,
+};
+export const MisCanjesVacio: Story = {
+  render: () => <MyClaimsView claims={[]} onCopy={fn()} onRetry={fn()} onSeeRewards={fn()} onBack={fn()} onNavigate={fn()} />,
+};

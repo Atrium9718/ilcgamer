@@ -247,3 +247,30 @@ describe('juegos (modo demostración)', () => {
     await vi.waitFor(() => expect(router.state.location.search).toBe('?parche=00000000-0000-7000-8000-00000000da5e'));
   });
 });
+
+describe('recompensas (modo demostración)', () => {
+  it('canjea con la zona elegida, muestra el código de entrega y queda en "Mis canjes"', async () => {
+    installFakeApi({ loggedIn: true });
+    const router = renderAt('/recompensas');
+    await userEvent.click(await screen.findByRole('button', { name: /Gorra oficial ILC/ }));
+    await userEvent.selectOptions(await screen.findByLabelText('¿Dónde la retiras?'), 'Pereira');
+    await userEvent.click(screen.getByLabelText('Leí las condiciones'));
+    await userEvent.click(screen.getByRole('button', { name: /Confirmar canje/ }));
+    expect(await screen.findByText('¡Canje listo!')).toBeInTheDocument();
+    expect(screen.getByText('DEMO0K7M')).toBeInTheDocument();
+    expect(screen.getByText(/Retírala antes del/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Ver mis canjes' }));
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/recompensas/mis-canjes'));
+    expect(await screen.findByText('Por retirar')).toBeInTheDocument();
+    expect(screen.getByText(/Gorra oficial ILC/)).toBeInTheDocument();
+  });
+
+  it('el filtro por categoría muestra solo lo que corresponde', async () => {
+    installFakeApi({ loggedIn: true });
+    renderAt('/recompensas');
+    await screen.findByRole('button', { name: /Gorra oficial ILC/ });
+    await userEvent.click(screen.getByRole('button', { name: 'Experiencias' }));
+    expect(screen.queryByRole('button', { name: /Gorra oficial ILC/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Visita guiada/ })).toBeInTheDocument();
+  });
+});

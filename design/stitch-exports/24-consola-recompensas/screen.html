@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>24 · Consola · Recompensas (escritorio) - ILC Origen</title>
+  <!-- Google Fonts: EB Garamond (titulares serif) & Plus Jakarta Sans (resto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Material Symbols Outlined -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // Paleta clara especificada para "ILC Origen"
+            paper: '#FAF7F0',
+            surface: {
+              DEFAULT: '#F1ECE0',
+              alt: '#EAE4D6',
+              border: '#DDD5C4',
+              highlight: '#FFFFFF'
+            },
+            textMain: '#13201B',
+            textMuted: '#586761',
+            goldDark: '#6E561E',       // Primario oro oscuro con texto blanco
+            forestGreen: '#2F4941',    // Secundario verde bosque
+            oakBrown: '#9A4F17',       // Terciario roble (alerta de stock bajo)
+            oakLight: '#FDF1E8',
+            oakBorder: '#E6C7AD',
+            dangerRed: '#B3261E',      // Error
+            sidebarBg: '#13201B',      // Barra lateral verde bosque oscura
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #FAF7F0;
+      color: #13201B;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif-title {
+      font-family: 'EB Garamond', serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #DDD5C4;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-paper text-textMain flex flex-col">
+
+  <!-- Layout Wrapper: 1440px target desktop screen -->
+  <div class="flex-1 flex w-full min-h-screen">
+
+    <!-- BARRA LATERAL (SIDEBAR): Verde Bosque #13201B con sello "ILC" -->
+    <aside class="w-64 bg-sidebarBg text-white flex flex-col shrink-0 select-none border-r border-[#1D2E28]">
+      <!-- Header con sello ILC -->
+      <div class="p-6 border-b border-[#223630] flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full border border-[#D4B673]/40 flex items-center justify-center bg-[#182822] text-[#D4B673] font-serif-title font-bold text-lg tracking-wider shadow-inner">
+          ILC
+        </div>
+        <div>
+          <span class="block text-xs uppercase tracking-widest text-[#D4B673] font-semibold">Consola Central</span>
+          <span class="block text-sm font-medium text-white/90">Gobernanza & CMS</span>
+        </div>
+      </div>
+
+      <!-- Menú de Navegación de la Consola -->
+      <nav class="flex-1 py-4 px-3 space-y-1">
+        <a href="#campanas" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">campaign</span>
+          <span>Campañas</span>
+        </a>
+        <a href="#juegos" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">sports_esports</span>
+          <span>Juegos</span>
+        </a>
+        <!-- Recompensas (ACTIVA) -->
+        <a href="#recompensas" class="flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-[#243730] text-[#E5CE94] border-l-4 border-[#D4B673] font-semibold text-sm shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px] text-[#D4B673]">featured_seasonal_and_gifts</span>
+            <span>Recompensas</span>
+          </div>
+          <span class="w-2 h-2 rounded-full bg-[#D4B673]"></span>
+        </a>
+        <a href="#smart-tags" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+          <span>Smart Tags</span>
+        </a>
+        <a href="#comercios" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">storefront</span>
+          <span>Comercios</span>
+        </a>
+        <a href="#economia" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">account_balance</span>
+          <span>Economía</span>
+        </a>
+        <a href="#analitica" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">monitoring</span>
+          <span>Analítica</span>
+        </a>
+        <a href="#auditoria" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition text-sm font-medium">
+          <span class="material-symbols-outlined text-[20px]">verified_user</span>
+          <span>Auditoría</span>
+        </a>
+      </nav>
+
+      <!-- Badge de salvaguarda de gobernanza en sidebar -->
+      <div class="p-4 mx-3 mb-4 rounded-lg bg-[#182622] border border-[#2A3E37] text-xs text-white/75 space-y-1.5">
+        <div class="flex items-center gap-1.5 text-[#D4B673] font-medium">
+          <span class="material-symbols-outlined text-[16px]">gavel</span>
+          <span>Guía Técnica §5.8 & §9</span>
+        </div>
+        <p class="leading-relaxed text-[11px] text-white/60">
+          Transacciones atómicas: débito de puntos e inventario por zona en backend.
+        </p>
+      </div>
+
+      <!-- Footer de usuario de consola (sin nombres personales) -->
+      <div class="p-4 border-t border-[#223630] flex items-center justify-between text-xs text-white/60">
+        <div class="flex items-center gap-2">
+          <span class="w-7 h-7 rounded-full bg-[#2F4941] text-[#E5CE94] flex items-center justify-center font-bold text-xs border border-white/10">TM</span>
+          <div>
+            <span class="block text-white/90 font-medium">Trade Marketing</span>
+            <span class="block text-[10px] text-white/50">Rol de Catálogo</span>
+          </div>
+        </div>
+        <span class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-white/75">v1.0 §5.8</span>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DE CONTENIDO (1440px layout) -->
+    <main class="flex-1 flex flex-col bg-paper min-w-0">
+
+      <!-- Barra superior / Breadcrumb & Status -->
+      <header class="h-16 border-b border-surface-border px-8 flex items-center justify-between bg-paper shrink-0">
+        <div class="flex items-center gap-2 text-xs text-textMuted">
+          <span class="hover:text-textMain cursor-pointer">ILC Origen</span>
+          <span>/</span>
+          <span class="hover:text-textMain cursor-pointer">Consola Central</span>
+          <span>/</span>
+          <span class="text-textMain font-semibold">Módulo de Recompensas</span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <!-- Indicador de consistencia transaccional -->
+          <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-alt border border-surface-border text-xs text-textMuted">
+            <span class="w-2 h-2 rounded-full bg-forestGreen animate-pulse"></span>
+            <span>Motor de Inventario: <strong>Consistente §5.8</strong></span>
+          </div>
+
+          <!-- Botón de acción secundaria global -->
+          <button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-surface-border bg-surface hover:bg-surface-alt text-xs font-semibold text-textMain transition shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">sync_alt</span>
+            <span>Conciliación de stock</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Contenedor central con scroll -->
+      <div class="flex-1 p-8 overflow-y-auto custom-scrollbar space-y-6">
+
+        <!-- Encabezado de página -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-surface-border">
+          <div>
+            <h1 class="text-4xl font-serif-title font-bold text-textMain tracking-tight">Recompensas</h1>
+            <p class="text-sm text-textMuted mt-1">
+              Catálogo con stock por zona. Un canje descuenta puntos y stock a la vez.
+            </p>
+          </div>
+
+          <!-- Pestañas de navegación de recompensas -->
+          <div class="flex items-center gap-1 p-1 bg-surface-alt rounded-xl border border-surface-border shrink-0">
+            <button class="px-4 py-2 rounded-lg bg-goldDark text-white font-semibold text-xs shadow-sm transition flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px]">inventory_2</span>
+              <span>Catálogo</span>
+              <span class="bg-white/20 text-white text-[10px] px-1.5 py-0.2 rounded-full">2</span>
+            </button>
+            <button class="px-4 py-2 rounded-lg text-textMuted hover:text-textMain hover:bg-surface font-medium text-xs transition flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px]">add_circle</span>
+              <span>Nueva recompensa</span>
+            </button>
+            <button class="px-4 py-2 rounded-lg text-textMuted hover:text-textMain hover:bg-surface font-medium text-xs transition flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px]">receipt_long</span>
+              <span>Canjes</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Layout Grid: Lista de Recompensas (2/3) + Avisos y Gobernanza (1/3) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+          <!-- COLUMNA PRINCIPAL: Lista de tarjetas de recompensas (8 cols) -->
+          <div class="lg:col-span-8 space-y-5">
+
+            <!-- BARRA DE FILTROS Y ESTADÍSTICAS RÁPIDAS -->
+            <div class="flex items-center justify-between bg-surface p-3.5 rounded-xl border border-surface-border text-xs">
+              <div class="flex items-center gap-3">
+                <span class="text-textMuted font-medium">Filtrar por tipo:</span>
+                <div class="flex items-center gap-1">
+                  <span class="px-2.5 py-1 rounded-md bg-forestGreen text-white font-medium">Todos</span>
+                  <span class="px-2.5 py-1 rounded-md text-textMuted hover:bg-surface-alt cursor-pointer">Merchandising</span>
+                  <span class="px-2.5 py-1 rounded-md text-textMuted hover:bg-surface-alt cursor-pointer">Experiencia</span>
+                  <span class="px-2.5 py-1 rounded-md text-textMuted hover:bg-surface-alt cursor-pointer">Digital</span>
+                  <span class="px-2.5 py-1 rounded-md text-textMuted hover:bg-surface-alt cursor-pointer">Contenido</span>
+                </div>
+              </div>
+              <div class="text-textMuted">
+                <span>Total registradas: <strong class="text-textMain">2 elementos</strong></span>
+              </div>
+            </div>
+
+            <!-- TARJETA 1: Gorra de prueba (Merchandising · 300 puntos · Activa) -->
+            <div class="bg-surface rounded-2xl border border-surface-border p-6 shadow-sm hover:shadow transition space-y-5">
+              
+              <!-- Cabecera de la tarjeta: Nombre, Chips y Costo -->
+              <div class="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-surface-border">
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2.5 flex-wrap">
+                    <h2 class="text-2xl font-serif-title font-bold text-textMain tracking-normal">
+                      Gorra de prueba
+                    </h2>
+                    <!-- Chip Tipo: Merchandising -->
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-forestGreen/10 border border-forestGreen/30 text-forestGreen text-xs font-semibold">
+                      <span class="material-symbols-outlined text-[13px]">apparel</span>
+                      Merchandising
+                    </span>
+                    <!-- Chip Estado: Activa -->
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-semibold">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                      Activa
+                    </span>
+                  </div>
+                  <p class="text-xs text-textMuted">
+                    ID Ref: <span class="font-mono text-textMain font-medium">REW-MRCH-401</span> · Categoría: Textil oficial ILC Origen
+                  </p>
+                </div>
+
+                <!-- Costo en Puntos ILC (Sin cifras en pesos) -->
+                <div class="text-right bg-surface-alt px-4 py-2 rounded-xl border border-surface-border">
+                  <span class="block text-[11px] uppercase tracking-wider text-textMuted font-semibold">Costo de Canje</span>
+                  <span class="text-xl font-serif-title font-bold text-goldDark">300 Puntos ILC</span>
+                </div>
+              </div>
+
+              <!-- Mini Tabla de Zonas con Stock Disponible y Umbral de Alerta -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-textMain uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-forestGreen">location_on</span>
+                    Disponibilidad por Zona Territorial
+                  </span>
+                  <span class="text-[11px] text-textMuted">Stock total asignado: <strong>42 unidades</strong></span>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-surface-border bg-paper">
+                  <table class="w-full text-left text-xs">
+                    <thead>
+                      <tr class="bg-surface-alt text-textMuted border-b border-surface-border">
+                        <th class="py-2.5 px-4 font-semibold">Zona / Ciudad</th>
+                        <th class="py-2.5 px-4 font-semibold text-center">Stock Disponible</th>
+                        <th class="py-2.5 px-4 font-semibold text-center">Umbral de Alerta</th>
+                        <th class="py-2.5 px-4 font-semibold">Estado de Inventario</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-border">
+                      <!-- Fila Manizales: Stock 2, Umbral 3 -> ALERTA STOCK BAJO EN TONO ROBLE -->
+                      <tr class="hover:bg-surface/50 transition">
+                        <td class="py-2.5 px-4 font-semibold text-textMain flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full bg-oakBrown"></span>
+                          Manizales
+                        </td>
+                        <td class="py-2.5 px-4 text-center font-bold text-oakBrown">
+                          2 unidades
+                        </td>
+                        <td class="py-2.5 px-4 text-center text-textMuted">
+                          3 unidades
+                        </td>
+                        <td class="py-2.5 px-4">
+                          <!-- Chip de aviso "Stock bajo" en tono roble -->
+                          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-oakLight border border-oakBorder text-oakBrown font-bold text-[11px]">
+                            <span class="material-symbols-outlined text-[13px]">warning</span>
+                            Stock bajo
+                          </span>
+                        </td>
+                      </tr>
+                      <!-- Fila Pereira: Stock 40 -->
+                      <tr class="hover:bg-surface/50 transition">
+                        <td class="py-2.5 px-4 font-semibold text-textMain flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full bg-forestGreen"></span>
+                          Pereira
+                        </td>
+                        <td class="py-2.5 px-4 text-center font-bold text-textMain">
+                          40 unidades
+                        </td>
+                        <td class="py-2.5 px-4 text-center text-textMuted">
+                          5 unidades
+                        </td>
+                        <td class="py-2.5 px-4">
+                          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-forestGreen/10 border border-forestGreen/20 text-forestGreen font-medium text-[11px]">
+                            <span class="material-symbols-outlined text-[13px]">check_circle</span>
+                            Abastecido
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Barra Inferior: Contadores de Estados de Canje & Acciones de Texto -->
+              <div class="pt-3 border-t border-surface-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <!-- Contadores "Reservados · Entregados · Anulados" (Guía Técnica §5.8) -->
+                <div class="flex items-center gap-4 text-xs bg-surface-alt px-3.5 py-2 rounded-xl border border-surface-border">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-textMuted">Reservados:</span>
+                    <strong class="text-textMain font-semibold">12</strong>
+                  </div>
+                  <span class="text-surface-border">|</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-textMuted">Entregados:</span>
+                    <strong class="text-forestGreen font-semibold">184</strong>
+                  </div>
+                  <span class="text-surface-border">|</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-textMuted">Anulados:</span>
+                    <strong class="text-dangerRed font-semibold">3</strong>
+                  </div>
+                </div>
+
+                <!-- Acciones de Texto Requeridas: Activar / Desactivar / Ajustar stock -->
+                <div class="flex items-center gap-4 text-xs font-semibold">
+                  <!-- Desactivar (ya está activa) -->
+                  <button class="text-dangerRed hover:underline flex items-center gap-1 transition">
+                    <span class="material-symbols-outlined text-[15px]">block</span>
+                    Desactivar
+                  </button>
+                  <span class="text-surface-border">|</span>
+                  <button class="text-goldDark hover:underline flex items-center gap-1 transition">
+                    <span class="material-symbols-outlined text-[15px]">tune</span>
+                    Ajustar stock
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TARJETA 2: Tour cultural de prueba (Experiencia · 800 puntos · Inactiva) -->
+            <div class="bg-surface rounded-2xl border border-surface-border p-6 shadow-sm hover:shadow transition space-y-5 opacity-95">
+              
+              <!-- Cabecera de la tarjeta: Nombre, Chips y Costo -->
+              <div class="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-surface-border">
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2.5 flex-wrap">
+                    <h2 class="text-2xl font-serif-title font-bold text-textMain tracking-normal">
+                      Tour cultural de prueba
+                    </h2>
+                    <!-- Chip Tipo: Experiencia -->
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EAE4D6] border border-surface-border text-textMain text-xs font-semibold">
+                      <span class="material-symbols-outlined text-[13px]">explore</span>
+                      Experiencia
+                    </span>
+                    <!-- Chip Estado: Inactiva -->
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-200 border border-stone-300 text-stone-700 text-xs font-semibold">
+                      <span class="w-1.5 h-1.5 rounded-full bg-stone-500"></span>
+                      Inactiva
+                    </span>
+                  </div>
+                  <p class="text-xs text-textMuted">
+                    ID Ref: <span class="font-mono text-textMain font-medium">REW-EXP-802</span> · Categoría: Visita guiada patrimonio de montaña
+                  </p>
+                </div>
+
+                <!-- Costo en Puntos ILC (Sin cifras en pesos) -->
+                <div class="text-right bg-surface-alt px-4 py-2 rounded-xl border border-surface-border">
+                  <span class="block text-[11px] uppercase tracking-wider text-textMuted font-semibold">Costo de Canje</span>
+                  <span class="text-xl font-serif-title font-bold text-goldDark">800 Puntos ILC</span>
+                </div>
+              </div>
+
+              <!-- Mini Tabla de Zonas con Stock Disponible y Umbral de Alerta -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-textMain uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-forestGreen">location_on</span>
+                    Disponibilidad por Zona Territorial
+                  </span>
+                  <span class="text-[11px] text-textMuted">Cupos asignados: <strong>10 cupos</strong></span>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-surface-border bg-paper">
+                  <table class="w-full text-left text-xs">
+                    <thead>
+                      <tr class="bg-surface-alt text-textMuted border-b border-surface-border">
+                        <th class="py-2.5 px-4 font-semibold">Zona / Ciudad</th>
+                        <th class="py-2.5 px-4 font-semibold text-center">Stock Disponible</th>
+                        <th class="py-2.5 px-4 font-semibold text-center">Umbral de Alerta</th>
+                        <th class="py-2.5 px-4 font-semibold">Estado de Inventario</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-border">
+                      <!-- Fila Manizales: Stock 10 -->
+                      <tr class="hover:bg-surface/50 transition">
+                        <td class="py-2.5 px-4 font-semibold text-textMain flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full bg-forestGreen"></span>
+                          Manizales
+                        </td>
+                        <td class="py-2.5 px-4 text-center font-bold text-textMain">
+                          10 cupos
+                        </td>
+                        <td class="py-2.5 px-4 text-center text-textMuted">
+                          2 cupos
+                        </td>
+                        <td class="py-2.5 px-4">
+                          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-100 border border-stone-200 text-stone-600 font-medium text-[11px]">
+                            <span class="material-symbols-outlined text-[13px]">pause_circle</span>
+                            Módulo en pausa
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Barra Inferior: Contadores de Estados de Canje & Acciones de Texto -->
+              <div class="pt-3 border-t border-surface-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <!-- Contadores "Reservados · Entregados · Anulados" -->
+                <div class="flex items-center gap-4 text-xs bg-surface-alt px-3.5 py-2 rounded-xl border border-surface-border">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-textMuted">Reservados:</span>
+                    <strong class="text-textMain font-semibold">0</strong>
+                  </div>
+                  <span class="text-surface-border">|</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-textMuted">Entregados:</span>
+                    <strong class="text-forestGreen font-semibold">24</strong>
+                  </div>
+                  <span class="text-surface-border">|</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-textMuted">Anulados:</span>
+                    <strong class="text-dangerRed font-semibold">1</strong>
+                  </div>
+                </div>
+
+                <!-- Acciones de Texto Requeridas: Activar / Desactivar / Ajustar stock -->
+                <div class="flex items-center gap-4 text-xs font-semibold">
+                  <!-- Activar (actualmente Inactiva) -->
+                  <button class="text-forestGreen hover:underline flex items-center gap-1 transition">
+                    <span class="material-symbols-outlined text-[15px]">check_circle</span>
+                    Activar
+                  </button>
+                  <span class="text-surface-border">|</span>
+                  <button class="text-goldDark hover:underline flex items-center gap-1 transition">
+                    <span class="material-symbols-outlined text-[15px]">tune</span>
+                    Ajustar stock
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resumen de Ciclo de Vida de Canjes según Guía Técnica §5.8 -->
+            <div class="p-4 rounded-xl bg-surface-alt border border-surface-border text-xs text-textMuted flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-forestGreen">alt_route</span>
+                <span><strong>Flujo normativo de Canje:</strong> DISPONIBLE &rarr; RESERVADO &rarr; RECLAMADO &rarr; ENTREGADO (Alternos: EXPIRADO y ANULADO).</span>
+              </div>
+              <span class="text-[11px] font-mono text-textMuted">§5.8 Guía Técnica</span>
+            </div>
+
+          </div>
+
+          <!-- COLUMNA LATERAL: Avisos de Gobernanza y Separación de Funciones (4 cols) -->
+          <div class="lg:col-span-4 space-y-5">
+
+            <!-- AVISO LATERAL CLAVE (Texto exacto requerido por el usuario):
+                 "Quien crea una recompensa no puede activarla: la activa otra persona de Marca." -->
+            <div class="bg-surface rounded-2xl border-2 border-forestGreen/40 p-5 shadow-sm space-y-4">
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 rounded-xl bg-forestGreen text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <span class="material-symbols-outlined text-[20px]">shield_person</span>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-textMain uppercase tracking-wider">
+                    Gobernanza §9 · Separación de Funciones
+                  </h3>
+                  <span class="text-[11px] text-textMuted">Principio de control de 4 ojos (SoD)</span>
+                </div>
+              </div>
+
+              <!-- Bloque con el texto mandatorio -->
+              <div class="p-3.5 rounded-xl bg-paper border border-surface-border text-xs text-textMain font-medium leading-relaxed">
+                &laquo;Quien crea una recompensa no puede activarla: la activa otra persona de Marca.&raquo;
+              </div>
+
+              <div class="space-y-2 text-xs text-textMuted leading-relaxed">
+                <p>
+                  Para evitar fraudes en el canje, alteraciones unilaterales de equivalencia o emisiones de stock ficticio:
+                </p>
+                <ul class="space-y-1.5 list-disc list-inside text-[11px]">
+                  <li>El perfil de creación registra la ficha en estado <code>BORRADOR</code>.</li>
+                  <li>La activación en producción requiere la firma digital de un segundo revisor de Marca registrado.</li>
+                  <li>Cualquier ajuste de stock o coste en puntos genera un movimiento compensatorio auditado en bitácora inmutable.</li>
+                </ul>
+              </div>
+
+              <div class="pt-2 border-t border-surface-border flex items-center justify-between text-[11px] text-textMuted">
+                <span>Estado de auditoría interna:</span>
+                <span class="font-bold text-forestGreen flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-forestGreen"></span>
+                  Supervisión Activa
+                </span>
+              </div>
+            </div>
+
+            <!-- TARJETA: Consistencia Atómica de Canje (§5.8) -->
+            <div class="bg-surface rounded-2xl border border-surface-border p-5 shadow-sm space-y-3">
+              <div class="flex items-center gap-2 text-textMain font-semibold text-xs">
+                <span class="material-symbols-outlined text-[18px] text-goldDark">lock_reset</span>
+                <span>Transacción Atómica de Canje</span>
+              </div>
+              <p class="text-xs text-textMuted leading-relaxed">
+                Al confirmar un canje desde la PWA del usuario, el sistema efectúa una única transacción SQL atómica:
+              </p>
+              <div class="p-3 rounded-lg bg-paper border border-surface-border space-y-1.5 font-mono text-[11px]">
+                <div class="text-forestGreen font-semibold flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">check</span>
+                  1. Débito en Ledger inmutable (Puntos ILC)
+                </div>
+                <div class="text-forestGreen font-semibold flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">check</span>
+                  2. Reserva y descuento de stock en zona
+                </div>
+                <div class="text-dangerRed flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">cancel</span>
+                  Si falta stock: Rollback total inmediato
+                </div>
+              </div>
+              <span class="block text-[11px] text-textMuted">
+                Garantiza que ningún usuario pierda puntos sin reserva confirmada de producto o cupo.
+              </span>
+            </div>
+
+            <!-- TARJETA: Guía de Estados de Inventario -->
+            <div class="bg-surface rounded-2xl border border-surface-border p-5 shadow-sm space-y-3">
+              <span class="text-xs font-bold text-textMain uppercase tracking-wider block">
+                Convenciones de Inventario
+              </span>
+              <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-paper border border-surface-border">
+                  <span class="flex items-center gap-1.5 text-oakBrown font-medium">
+                    <span class="w-2 h-2 rounded-full bg-oakBrown"></span>
+                    Stock bajo
+                  </span>
+                  <span class="text-textMuted text-[11px]">Stock &le; Umbral de alerta</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-paper border border-surface-border">
+                  <span class="flex items-center gap-1.5 text-forestGreen font-medium">
+                    <span class="w-2 h-2 rounded-full bg-forestGreen"></span>
+                    Abastecido
+                  </span>
+                  <span class="text-textMuted text-[11px]">Stock &gt; Umbral de alerta</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-paper border border-surface-border">
+                  <span class="flex items-center gap-1.5 text-dangerRed font-medium">
+                    <span class="w-2 h-2 rounded-full bg-dangerRed"></span>
+                    Agotado
+                  </span>
+                  <span class="text-textMuted text-[11px]">Stock = 0 unidades</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER LEGAL INSTITUCIONAL (Ley 30 de 1986) -->
+      <footer class="h-12 border-t border-surface-border px-8 bg-surface-alt flex items-center justify-between text-[11px] text-textMuted shrink-0">
+        <div class="flex items-center gap-4">
+          <span class="font-medium text-textMain">EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span>Industria Licorera de Caldas S.A.</span>
+          <span>·</span>
+          <span>Consola de Recompensas v1.0.4</span>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

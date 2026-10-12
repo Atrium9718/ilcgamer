@@ -44,6 +44,7 @@ export { CreateParcheView, type CreateParcheViewProps, type ParcheMode } from '.
 export { GameResultView, type GameResultViewProps, type ResultState, type VerifiedResult } from './views/GameResultView.tsx';
 export { type Experience, GamesCatalogView, type GamesCatalogViewProps, MAX_ROUTE_B_EXPERIENCES, type QuickGame } from './views/GamesCatalogView.tsx';
 export { type JoinMethod, JoinParcheView, type JoinParcheViewProps, type ParchePreview } from './views/JoinParcheView.tsx';
+export { type ClaimRow, type ClaimState, MyClaimsView, type MyClaimsViewProps } from './views/MyClaimsView.tsx';
 export { type OtpChannelView, type OtpStep, OtpView, type OtpViewProps } from './views/OtpView.tsx';
 export { type ConnectionState, type GameEntry, ParcheRoomView, type ParcheRoomViewProps } from './views/ParcheRoomView.tsx';
 export {

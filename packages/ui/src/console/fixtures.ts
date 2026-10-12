@@ -320,3 +320,60 @@ export const MODULES_DEMO: import('./GamesView.tsx').ModuleRow[] = [
     ],
   },
 ];
+
+export const REWARDS_ADMIN_DEMO: import('./RewardsAdminView.tsx').RewardAdminRow[] = [
+  {
+    id: 'r1',
+    name: 'Gorra de prueba',
+    slug: 'gorra-prueba',
+    type: 'MERCHANDISING',
+    cost: 300,
+    active: true,
+    fulfillment: 'Trade Marketing',
+    campaignSlug: null,
+    zones: [
+      { zone: 'Manizales', available: 2, lowStockAlert: 3, low: true },
+      { zone: 'Pereira', available: 40, lowStockAlert: 5, low: false },
+      { zone: 'Armenia', available: 0, lowStockAlert: 5, low: true },
+    ],
+    counts: { reserved: 3, delivered: 12, cancelled: 1 },
+  },
+  {
+    id: 'r2',
+    name: 'Tour cultural de prueba',
+    slug: 'tour-prueba',
+    type: 'EXPERIENCIA',
+    cost: 800,
+    active: false,
+    fulfillment: 'Equipo de visitas',
+    campaignSlug: 'feria-manizales-2027',
+    zones: [{ zone: 'Manizales', available: 10, lowStockAlert: 2, low: false }],
+    counts: { reserved: 0, delivered: 0, cancelled: 0 },
+  },
+];
+
+export const CLAIMS_ADMIN_DEMO: import('./RewardsAdminView.tsx').ClaimAdminRow[] = [
+  {
+    id: 'c1',
+    code: 'K7M2Q9XD',
+    rewardName: 'Gorra de prueba',
+    zone: 'Manizales',
+    status: 'RESERVADO',
+    cost: 300,
+    userAlias: 'Jugador 41',
+    createdLabel: '12 oct.',
+    expiresLabel: 'Vence el 26 oct.',
+    cancelReason: null,
+  },
+  {
+    id: 'c2',
+    code: 'A1B2C3D4',
+    rewardName: 'Gorra de prueba',
+    zone: 'Pereira',
+    status: 'ANULADO',
+    cost: 300,
+    userAlias: 'Jugador 12',
+    createdLabel: '10 oct.',
+    cancelReason: 'Producto dañado',
+  },
+];

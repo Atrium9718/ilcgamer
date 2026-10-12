@@ -6,10 +6,11 @@ import {
   type CampaignView,
   CHECKLIST_KEYS,
   type CreateCampaign,
+  type CreateReward,
   PUBLISH_CHECKLIST,
   type Role,
 } from '@ilc/contracts';
-import type { ApprovalRow, CampaignDetailData, CampaignEditorValue, CampaignPermissions, CampaignRow, LifecycleAction } from '@ilc/ui';
+import type { ApprovalRow, CampaignDetailData, CampaignEditorValue, CampaignPermissions, CampaignRow, LifecycleAction, NewRewardValue } from '@ilc/ui';
 
 /**
  * Traducción entre los contratos de la API y los modelos de las vistas puras de la consola.
@@ -281,4 +282,62 @@ export const editorToCreate = (v: CampaignEditorValue): CreateCampaign => ({ slu
 export function roleLabel(roles: readonly string[]): string {
   const labels = roles.map((r) => ROLE_LABEL[r]).filter(Boolean);
   return labels.length ? labels.join(' · ') : 'Sin rol de consola';
+}
+
+// ───────────── Recompensas ─────────────
+
+export const emptyRewardForm = (): NewRewardValue => ({
+  slug: '',
+  name: '',
+  description: '',
+  type: 'MERCHANDISING',
+  cost: 0,
+  conditionsText: '',
+  maxPerUser: 1,
+  startsAt: '',
+  endsAt: '',
+  fulfillment: '',
+  campaignSlug: '',
+  zonesText: '',
+});
+
+/** Medianoche de Colombia (UTC-5) del día indicado, en ISO. */
+const bogotaMidnight = (date: string, addDays = 0): string => {
+  const d = new Date(`${date}T05:00:00.000Z`);
+  d.setUTCDate(d.getUTCDate() + addDays);
+  return Number.isNaN(d.getTime()) ? '' : d.toISOString();
+};
+
+/** "Manizales: 10" o "Manizales: 10: 3" (cantidad y umbral de alerta) → zonas del contrato. */
+export function parseZones(text: string): CreateReward['zones'] {
+  return text
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [zone = '', qty = '', alert] = line.split(':').map((x) => x.trim());
+      return { zone, available: Number(qty), lowStockAlert: alert === undefined || alert === '' ? 5 : Number(alert) };
+    });
+}
+
+/** Formulario → contrato. Las fechas son días completos de Colombia: el último día incluye hasta la medianoche siguiente. */
+export function rewardFormToInput(v: NewRewardValue): CreateReward {
+  return {
+    slug: v.slug.trim(),
+    name: v.name.trim(),
+    description: v.description.trim(),
+    type: v.type,
+    icon: 'redeem',
+    cost: v.cost,
+    conditions: v.conditionsText
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean),
+    maxPerUser: v.maxPerUser,
+    startsAt: bogotaMidnight(v.startsAt),
+    endsAt: bogotaMidnight(v.endsAt, 1),
+    fulfillment: v.fulfillment.trim(),
+    ...(v.campaignSlug ? { campaignSlug: v.campaignSlug } : {}),
+    zones: parseZones(v.zonesText),
+  };
 }

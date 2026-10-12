@@ -4,9 +4,6 @@ import {
   type Chapter,
   ProfileView,
   ProgressView,
-  type RewardCategory,
-  type RewardDetail,
-  RewardsView,
   ShareCardView,
   type ShareTemplate,
   Sheet,
@@ -16,7 +13,7 @@ import {
 } from '@ilc/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { DEMO, demoRewardDetail } from '../demo/fixtures.ts';
+import { DEMO } from '../demo/fixtures.ts';
 import { ApiRequestError } from '../lib/api.ts';
 import { data, type WalletData } from '../lib/data.ts';
 import { identityApi } from '../lib/identity.ts';
@@ -62,26 +59,6 @@ export function WalletRoute() {
       hasMore={wallet.nextCursor !== null}
       loadingMore={loadingMore}
       onLoadMore={() => void loadMore()}
-    />
-  );
-}
-
-export function RewardsRoute() {
-  const onNavigate = useTabNavigate();
-  const [category, setCategory] = useState<RewardCategory>('all');
-  const [selected, setSelected] = useState<RewardDetail>();
-  return (
-    <RewardsView
-      balance={DEMO.balance}
-      currencyName={DEMO.currencyName}
-      category={category}
-      onCategoryChange={setCategory}
-      rewards={[...DEMO.rewards]}
-      selected={selected}
-      onSelect={(id) => setSelected(demoRewardDetail(id))}
-      onCloseDetail={() => setSelected(undefined)}
-      onConfirmRedeem={() => setSelected(undefined)}
-      onNavigate={onNavigate}
     />
   );
 }

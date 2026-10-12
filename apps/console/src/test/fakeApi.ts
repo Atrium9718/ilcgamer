@@ -25,6 +25,25 @@ export const DRAFT: CampaignDraft = {
   modules: [],
 };
 
+const REWARD = {
+  id: '00000000-0000-7000-8000-0000000000b1',
+  slug: 'gorra-prueba',
+  name: 'Gorra de prueba',
+  description: '',
+  type: 'MERCHANDISING',
+  icon: 'redeem',
+  cost: 300,
+  conditions: ['Se retira en el punto de entrega'],
+  maxPerUser: 1,
+  startsAt: '2026-10-01T05:00:00.000Z',
+  endsAt: '2027-01-01T05:00:00.000Z',
+  active: false,
+  fulfillment: 'Trade Marketing',
+  campaignSlug: null,
+  zones: [{ zone: 'Manizales', available: 2, lowStockAlert: 3, low: true }],
+  counts: { reserved: 0, delivered: 0, cancelled: 0 },
+};
+
 const MODULE = {
   moduleId: 'explorador',
   provider: 'ILC propio',
@@ -237,6 +256,9 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
     if (url.startsWith('/admin/economy/accounts?userId=')) return json(200, ACCOUNT);
     if (url.endsWith('/reverse')) return json(200, { ...ACCOUNT, balance: 0, ledgerSum: 0 });
     if (url === '/admin/economy/badges') return json(200, []);
+    if (url === '/admin/rewards') return json(200, [REWARD]);
+    if (url.startsWith('/admin/rewards/claims')) return json(200, []);
+    if (url.endsWith('/activate') && url.startsWith('/admin/rewards')) return json(200, { ...REWARD, active: true });
     if (url === '/admin/games/modules') return json(200, [MODULE]);
     if (url === '/admin/games/guide') return json(200, { markdown: '# Guía de integración de juegos' });
     if (url === '/admin/games/defaults') return json(200, { modules: [] });

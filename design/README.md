@@ -54,6 +54,8 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 21 · Ruleta | `b20de139acee42b0ae876dfd16bfa4db` | `WheelPlayView` (el servidor decide el giro; retos solo culturales) |
 | 22 · Explorador · capítulo | `8e69a2589799467d85cf14d4d27eb68f` | `ChapterPlayView` (relato, pregunta, +XP; reintento sin penalidad) |
 | 23 · Consola · Juegos | `86a28bc74d9c4b19887f24a81a284687` | `GamesView` (sin conteos ni paginación inventados que traía Stitch) |
+| 24 · Consola · Recompensas | `ac9a0a2eb3ed4941bce7ea3969e2ff6a` | `RewardsAdminView` (sin "ID de referencia" ni flujo SQL que traía Stitch; sin conteos inventados) |
+| 25 · Mis canjes | `c53399f45a3042dd95da3fda909c5d2e` | `MyClaimsView` (código de entrega destacado y fecha límite; sin textos legales inventados) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 

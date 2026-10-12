@@ -251,8 +251,16 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Verificado: 281 pruebas (API 142 contra PostgreSQL), axe 142 combinaciones sin violaciones WCAG AA, y E2E en Chromium con la API real: catálogo → Trivia → Ruleta → Explorador (reintento sin penalidad, XP e insignia) → módulo de proveedor en otro origen HTTPS (handshake, "verificando", firma falsa rechazada, callback firmado → "verificado") y consola con la guía y errores de manifiesto.
 - [ ] Pendiente: Charadas y Verdad o reto cultural (requieren contenido revisado por Marca y Jurídica); contenido real de marca para Trivia y Explorador (hoy hay solo contenido de **prueba**); TI debe permitir el origen de cada proveedor en `frame-src` de la CSP al activarlo.
 
-### Paso 10 — Recompensas e inventario
-- Catálogo, reserva atómica, canje, entrega, alertas de stock bajo.
+### Paso 10 — Recompensas e inventario ✅
+- [x] `GET /rewards` (catálogo vigente con stock por zona y saldo), `POST /rewards/{id}/claim` (con `Idempotency-Key`) y `GET /rewards/claims` (mis canjes con código de entrega).
+- [x] **Canje atómico**: stock, saldo, débito en el ledger y canje se confirman en UNA transacción bajo el candado por persona; sin stock o sin saldo no queda nada a medias. Mismo `Idempotency-Key` ⇒ mismo canje (también con doble toque en paralelo). Probado con 8 personas por 3 unidades: salen exactamente 3.
+- [x] Reglas: recompensa activa y dentro de fechas, campaña activa si está ligada a una, límite por persona (las anuladas y vencidas no cuentan), cuenta con progreso guardado, zona con existencias.
+- [x] Estados `RESERVADO → ENTREGADO` (lo digital y los contenidos se entregan al canjear; lo material y las experiencias se retiran con un **código de entrega**); alternos `EXPIRADO` y `ANULADO`.
+- [x] **Vencimiento de reservas** (14 días configurables, programador cada 10 min con candado en Redis): devuelve stock y puntos con un movimiento compensatorio (reverso ligado al débito original). Anular desde la consola hace lo mismo, con motivo obligatorio y sin poder anular el propio canje.
+- [x] Consola **Recompensas** (Stitch 24): catálogo con stock por zona y estado (con stock / bajo / agotada), crear (nace inactiva; **quien la crea no puede activarla**), activar y desactivar con motivo, ajuste de stock con motivo (nunca negativo), canjes con filtro, **entrega por código** (una sola vez, antes de vencer, no a uno mismo) y anulación. Alerta `reward.low_stock` en auditoría al cruzar el umbral, una vez por cruce. Solo Admin de Marca y TI.
+- [x] PWA: recompensas reales con elección de zona, hoja de confirmación con condiciones, código de entrega al instante y **Mis canjes** (Stitch 25) con fecha límite, copiar código y aviso de devolución de puntos.
+- [x] Verificado: 296 pruebas (API 157 contra PostgreSQL), axe 152 combinaciones sin violaciones, y E2E en Chromium con la API real: canje (1.000 → 700 puntos) → código → Mis canjes → segundo canje rechazado por límite → la consola entrega por código → doble entrega rechazada → la persona ve «Entregado».
+- [ ] Pendiente: el rol de Staff/Comercio para entregar desde el punto de venta llega en el Paso 11 (hoy entrega Admin de Marca/TI); contenido y precios reales de recompensas y su operación logística (stock físico, responsables, términos) los define ILC antes de activar el catálogo; los puntos devueltos por un canje vencido o anulado no vuelven a vencer (decisión simple a confirmar con Marca).
 
 ### Paso 11 — Consolas Staff, Comercio y Admin
 - Staff: vincular botella a mesa, metas; Comercio: perfil, beneficios locales, dashboard agregado; Admin: reglas de puntos, recompensas, juegos, segmentación, lotes.

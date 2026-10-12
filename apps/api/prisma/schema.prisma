@@ -380,6 +380,7 @@ model Campaign {
   versions        CampaignVersion[] @relation("Versions")
   venues          VenueCampaign[]
   codes           CampaignCode[]
+  rewards         Reward[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
@@ -784,19 +785,28 @@ model LedgerEntry {
 // ─────────────────────── Recompensas ───────────────────────
 
 model Reward {
-  id         String            @id @default(uuid(7)) @db.Uuid
-  slug       String            @unique @db.VarChar(60)
-  name       String
-  type       RewardType
-  cost       Int
-  conditions String[]
-  maxPerUser Int               @default(1)
-  startsAt   DateTime
-  endsAt     DateTime
-  active     Boolean           @default(false)
-  inventory  RewardInventory[]
-  claims     RewardClaim[]
-  createdAt  DateTime          @default(now())
+  id            String            @id @default(uuid(7)) @db.Uuid
+  slug          String            @unique @db.VarChar(60)
+  name          String
+  type          RewardType
+  cost          Int
+  conditions    String[]
+  maxPerUser    Int               @default(1)
+  startsAt      DateTime
+  endsAt        DateTime
+  active        Boolean           @default(false)
+  description   String            @default("")
+  icon          String            @default("redeem")
+  /// Responsable de la entrega (Guía Técnica §5.8).
+  fulfillment   String            @default("")
+  /// Campaña a la que pertenece; si no está activa, el canje no se confirma.
+  campaignId    String?           @db.Uuid
+  campaign      Campaign?         @relation(fields: [campaignId], references: [id])
+  createdById   String?           @db.Uuid
+  activatedById String?           @db.Uuid
+  inventory     RewardInventory[]
+  claims        RewardClaim[]
+  createdAt     DateTime          @default(now())
 
   @@map("rewards")
 }
@@ -823,10 +833,23 @@ model RewardClaim {
   status         RewardClaimStatus @default(RESERVADO)
   ledgerEntryId  String?           @unique @db.Uuid
   idempotencyKey String            @unique @db.VarChar(80)
+  /// Puntos debitados (precio vigente al canjear).
+  cost           Int               @default(0)
+  /// Código de entrega que la persona presenta para recibir la recompensa.
+  code           String?           @unique @db.VarChar(12)
+  /// Una reserva sin retirar vence y devuelve stock y puntos.
+  expiresAt      DateTime?
+  deliveredAt    DateTime?
+  deliveredById  String?           @db.Uuid
+  cancelledAt    DateTime?
+  cancelReason   String?
+  refundEntryId  String?           @unique @db.Uuid
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
   @@index([userId])
+  @@index([rewardId, status])
+  @@index([status, expiresAt])
   @@map("reward_claims")
 }
 
