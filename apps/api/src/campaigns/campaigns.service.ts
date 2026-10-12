@@ -53,6 +53,15 @@ function denormalize(draft: CampaignDraft) {
  * borrador → revisión (marca, jurídica, privacidad si aplica) → aprobada → publicada (con checklist §16)
  * → programada/activa → pausada/cerrada → archivada. Una aprobación vale solo para el hash exacto revisado.
  */
+/** Solo una campaña MIXTA puede vincular Puntos ILC con XP (Guía Técnica §5.7). */
+function assertEconomyLink(route: string, draft: CampaignDraft): void {
+  if (draft.rules.xpPerActivation && route !== 'MIXTA') {
+    throw new DomainError('VALIDATION_FAILED', 'Solo las campañas mixtas pueden otorgar XP por activación.', {
+      fields: { 'draft.rules.xpPerActivation': ['Solo en campañas mixtas'] },
+    });
+  }
+}
+
 @Injectable()
 export class CampaignsService {
   constructor(
@@ -117,6 +126,7 @@ export class CampaignsService {
   async create(actor: Actor, input: CreateCampaign): Promise<CampaignView> {
     if (await this.prisma.campaign.findUnique({ where: { slug: input.slug } }))
       throw new DomainError('CONFLICT', 'Ya existe una campaña con ese identificador.');
+    assertEconomyLink(input.route, input.draft);
     const campaign = await this.prisma.$transaction(async (tx) => {
       const c = await tx.campaign.create({ data: { slug: input.slug, internalName: input.draft.internalName, route: input.route, status: 'BORRADOR' } });
       await tx.campaignVersion.create({ data: { campaignId: c.id, version: 1, createdById: actor.userId, ...denormalize(input.draft) } });
@@ -132,6 +142,7 @@ export class CampaignsService {
     const campaign = await this.findCampaign(slug);
     const working = this.working(campaign);
     if (working.state !== 'BORRADOR') throw new DomainError('CONFLICT', 'Esta versión ya está en revisión o aprobada. Crea una nueva versión para cambiarla.');
+    assertEconomyLink(campaign.route, draft);
     await this.prisma.$transaction(async (tx) => {
       await tx.campaignVersion.update({ where: { id: working.id }, data: denormalize(draft) });
       await tx.campaign.update({ where: { id: campaign.id }, data: { internalName: draft.internalName } });

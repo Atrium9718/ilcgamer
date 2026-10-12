@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Icon } from '../components/Icon.tsx';
 import { cx } from '../lib/cx.ts';
 
-export type ConsoleSection = 'campanas' | 'juegos' | 'recompensas' | 'smart-tags' | 'comercios' | 'analitica' | 'auditoria';
+export type ConsoleSection = 'campanas' | 'juegos' | 'recompensas' | 'smart-tags' | 'comercios' | 'economia' | 'analitica' | 'auditoria';
 
 const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = [
   { id: 'campanas', label: 'Campañas', icon: 'campaign' },
@@ -10,6 +10,7 @@ const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = 
   { id: 'recompensas', label: 'Recompensas', icon: 'redeem' },
   { id: 'smart-tags', label: 'Smart Tags', icon: 'qr_code_2' },
   { id: 'comercios', label: 'Comercios', icon: 'storefront' },
+  { id: 'economia', label: 'Economía', icon: 'account_balance_wallet' },
   { id: 'analitica', label: 'Analítica', icon: 'query_stats' },
   { id: 'auditoria', label: 'Auditoría', icon: 'shield' },
 ];

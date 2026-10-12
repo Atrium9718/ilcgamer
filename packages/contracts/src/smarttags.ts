@@ -56,6 +56,8 @@ export const ClaimResultSchema = z.object({
   /** true si la respuesta repite una reclamación ya confirmada con la misma Idempotency-Key. */
   replayed: z.boolean(),
   points: z.number().int().min(0),
+  /** XP adicional solo en campañas mixtas con regla aprobada (economía de Ruta B, separada de los puntos). */
+  xp: z.number().int().min(0),
   currencyName: z.string(),
   pointsExpireAt: z.iso.datetime().nullable(),
   balance: z.number().int().min(0),

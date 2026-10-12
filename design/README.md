@@ -49,6 +49,7 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 16 · Consola · Campañas | `3834fade7df24187bcc2db1ede709b75` | `ConsoleLayout`, `CampaignListView`, `CampaignEditorView`, `ConsoleLoginView` (tema claro) |
 | 17 · Consola · Detalle de campaña | `c69464065ad54a008c2692ace544d642` | `CampaignDetailView` (sin íconos de copas, equivalencias en pesos ni etiqueta de entorno inventada que traía Stitch) |
 | 18 · Consola · Smart Tags | `81e6ec3918784f939afd881ff120f45b` | `SmartTagsView` (sin "servicio de cifrado activo" ni conteos inventados que traía Stitch) |
+| 19 · Consola · Economía | `2a79e02947ec49859dfa60df1a913ba7` | `EconomyView` (sin nombres de personas ni "servicio activo" que traía Stitch) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 

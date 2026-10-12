@@ -5,17 +5,20 @@ import { SessionProvider, useSession } from './lib/session.tsx';
 import { CampaignDetail } from './routes/CampaignDetail.tsx';
 import { CampaignEditor } from './routes/CampaignEditor.tsx';
 import { CampaignList } from './routes/CampaignList.tsx';
+import { Economy } from './routes/Economy.tsx';
 import { Login } from './routes/Login.tsx';
 import { SmartTags } from './routes/SmartTags.tsx';
 
 const CONSOLE_ROLES = ['SUPERADMIN', 'ADMIN_MARCA', 'EDITOR_CONTENIDO', 'REVISOR_MARCA', 'REVISOR_JURIDICO', 'RESPONSABLE_PRIVACIDAD'];
 
-/** Smart Tags: Admin de Marca (catálogo y lotes) y SuperAdmin/TI (generación e importación). */
+/** Smart Tags y Economía: Admin de Marca y SuperAdmin/TI (la API aplica el detalle de cada permiso). */
 const SMARTTAG_ROLES = ['SUPERADMIN', 'ADMIN_MARCA'];
+const SECTION_PATHS: Partial<Record<ConsoleSection, string>> = { campanas: '/campanas', 'smart-tags': '/smart-tags', economia: '/economia' };
 
 function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   const parts = pathname.split('/').filter(Boolean);
   if (parts[0] === 'smart-tags') return [{ label: 'Smart Tags' }];
+  if (parts[0] === 'economia') return [{ label: 'Economía' }];
   const crumbs: Array<{ label: string; onSelect?: () => void }> = [{ label: 'Campañas', onSelect: parts.length > 1 ? () => go('/campanas') : undefined }];
   if (parts[1] === 'nueva') crumbs.push({ label: 'Nueva campaña' });
   else if (parts[1]) {
@@ -51,15 +54,16 @@ function Shell() {
     );
 
   const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
-  const sections: ConsoleSection[] = smartTags ? ['campanas', 'smart-tags'] : ['campanas'];
+  const sections: ConsoleSection[] = smartTags ? ['campanas', 'smart-tags', 'economia'] : ['campanas'];
+  const active = (Object.entries(SECTION_PATHS).find(([, path]) => pathname.startsWith(path ?? '-'))?.[0] ?? 'campanas') as ConsoleSection;
   return (
     <ConsoleLayout
-      active={pathname.startsWith('/smart-tags') ? 'smart-tags' : 'campanas'}
+      active={active}
       sections={sections}
-      restricted={smartTags ? [] : ['smart-tags']}
+      restricted={smartTags ? [] : ['smart-tags', 'economia']}
       userAlias={me.alias}
       roleLabel={roleLabel(me.roles)}
-      onNavigate={(section) => navigate(section === 'smart-tags' ? '/smart-tags' : '/campanas')}
+      onNavigate={(section) => navigate(SECTION_PATHS[section] ?? '/campanas')}
       onLogout={() => void logout()}
       breadcrumbs={breadcrumbsFor(pathname, navigate)}
     >
@@ -78,6 +82,7 @@ export function AppRoutes() {
         <Route path="campanas/:slug" element={<CampaignDetail />} />
         <Route path="campanas/:slug/editar" element={<CampaignEditor />} />
         <Route path="smart-tags" element={<SmartTags />} />
+        <Route path="economia" element={<Economy />} />
         <Route path="*" element={<Navigate to="/campanas" replace />} />
       </Route>
     </Routes>

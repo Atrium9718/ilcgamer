@@ -28,7 +28,8 @@ export interface ProgressViewProps {
   level: number;
   levelName: string;
   xp: number;
-  nextLevelXp: number;
+  /** XP del siguiente nivel; null en el nivel máximo. */
+  nextLevelXp: number | null;
   nextLevelName: string;
   chapters: Chapter[];
   badges: BadgeView[];
@@ -69,16 +70,22 @@ export function ProgressView({
             <p className="font-numeric-xl text-[32px] leading-none text-on-surface tabular-nums">
               {formatNumber(xp)} <span className="font-label-lg text-[14px] text-secondary">XP</span>
             </p>
-            <ProgressBar
-              tone="secondary"
-              value={xp}
-              max={nextLevelXp}
-              label="Progreso al siguiente nivel"
-              valueText={`${formatNumber(xp)} de ${formatNumber(nextLevelXp)} XP`}
-            />
-            <p className="font-body-md text-[13px] text-on-surface-variant tabular-nums">
-              Siguiente: {nextLevelName} · {formatNumber(nextLevelXp)} XP
-            </p>
+            {nextLevelXp !== null ? (
+              <>
+                <ProgressBar
+                  tone="secondary"
+                  value={xp}
+                  max={nextLevelXp}
+                  label="Progreso al siguiente nivel"
+                  valueText={`${formatNumber(xp)} de ${formatNumber(nextLevelXp)} XP`}
+                />
+                <p className="font-body-md text-[13px] text-on-surface-variant tabular-nums">
+                  Siguiente: {nextLevelName} · {formatNumber(nextLevelXp)} XP
+                </p>
+              </>
+            ) : (
+              <p className="font-body-md text-[13px] text-on-surface-variant">Alcanzaste el nivel más alto.</p>
+            )}
             <p className="flex items-start gap-1.5 font-body-md text-[12px] text-on-surface-variant">
               <Icon name="info" className="text-[16px]" />
               La XP reconoce lo que descubres; no se convierte en Puntos ILC.
@@ -89,7 +96,13 @@ export function ProgressView({
             <h2 id="ruta-origen" className="font-title-md text-title-md text-on-surface">
               Ruta del Origen
             </h2>
-            <ChapterTimeline chapters={chapters} />
+            {chapters.length ? (
+              <ChapterTimeline chapters={chapters} />
+            ) : (
+              <p className="font-body-md text-[14px] text-on-surface-variant">
+                Los capítulos de la Ruta del Origen llegan pronto. Tu XP y tus insignias ya quedan guardados.
+              </p>
+            )}
           </section>
 
           <section aria-labelledby="insignias" className="space-y-3">
@@ -99,36 +112,42 @@ export function ProgressView({
                 ({badges.filter((b) => b.earned).length}/{badges.length})
               </span>
             </h2>
-            <div className="grid grid-cols-3 gap-y-5 gap-x-2">
-              {badges.map((b) => (
-                <BadgeSeal key={b.id} name={b.name} icon={b.icon} earned={b.earned} />
-              ))}
-            </div>
+            {badges.length ? (
+              <div className="grid grid-cols-3 gap-y-5 gap-x-2">
+                {badges.map((b) => (
+                  <BadgeSeal key={b.id} name={b.name} icon={b.icon} earned={b.earned} />
+                ))}
+              </div>
+            ) : (
+              <p className="font-body-md text-[14px] text-on-surface-variant">Aún no hay insignias publicadas.</p>
+            )}
           </section>
 
-          <section aria-labelledby="archivo" className="space-y-3">
-            <h2 id="archivo" className="font-title-md text-title-md text-on-surface">
-              Archivo de los secretos{' '}
-              <span className="text-on-surface-variant tabular-nums">
-                ({unlocked.length}/{stories.length})
-              </span>
-            </h2>
-            <ul className="space-y-2">
-              {unlocked.map((s) => (
-                <li key={s.id}>
-                  <button
-                    type="button"
-                    onClick={() => onOpenStory(s.id)}
-                    className="w-full min-h-14 flex items-center gap-3 px-3.5 rounded-xl border border-tertiary/35 bg-surface-container-low text-left hover:border-tertiary/70"
-                  >
-                    <Icon name="auto_stories" className="text-[22px] text-tertiary" />
-                    <span className="flex-1 font-headline-md italic text-[16px] text-on-surface">{s.title ?? 'Relato pendiente de aprobación de marca'}</span>
-                    <Icon name="chevron_right" className="text-[20px] text-on-surface-variant" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
+          {stories.length > 0 && (
+            <section aria-labelledby="archivo" className="space-y-3">
+              <h2 id="archivo" className="font-title-md text-title-md text-on-surface">
+                Archivo de los secretos{' '}
+                <span className="text-on-surface-variant tabular-nums">
+                  ({unlocked.length}/{stories.length})
+                </span>
+              </h2>
+              <ul className="space-y-2">
+                {unlocked.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      onClick={() => onOpenStory(s.id)}
+                      className="w-full min-h-14 flex items-center gap-3 px-3.5 rounded-xl border border-tertiary/35 bg-surface-container-low text-left hover:border-tertiary/70"
+                    >
+                      <Icon name="auto_stories" className="text-[22px] text-tertiary" />
+                      <span className="flex-1 font-headline-md italic text-[16px] text-on-surface">{s.title ?? 'Relato pendiente de aprobación de marca'}</span>
+                      <Icon name="chevron_right" className="text-[20px] text-on-surface-variant" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </main>
         <BottomNav active="perfil" onNavigate={onNavigate} />
       </div>

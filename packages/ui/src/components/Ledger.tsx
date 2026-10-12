@@ -3,7 +3,7 @@ import { formatNumber, formatSigned } from '../lib/format.ts';
 import { Icon } from './Icon.tsx';
 
 /** Tipos de movimiento del ledger inmutable (Guía Técnica §5.7). */
-export type LedgerKind = 'credit' | 'debit' | 'reversal' | 'adjustment';
+export type LedgerKind = 'credit' | 'debit' | 'reversal' | 'adjustment' | 'expiry';
 
 export interface LedgerEntryView {
   id: string;
@@ -20,6 +20,7 @@ const KIND: Record<LedgerKind, { icon: string; iconClass: string; badge?: string
   debit: { icon: 'redeem', iconClass: 'text-on-surface-variant' },
   reversal: { icon: 'undo', iconClass: 'text-warning', badge: 'Reverso' },
   adjustment: { icon: 'tune', iconClass: 'text-warning', badge: 'Ajuste auditado' },
+  expiry: { icon: 'event_busy', iconClass: 'text-on-surface-variant', badge: 'Vencimiento' },
 };
 
 export function LedgerRow({ entry, unit }: { entry: LedgerEntryView; unit: string }) {

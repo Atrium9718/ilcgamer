@@ -1,4 +1,4 @@
-import type { PublicConfig } from '@ilc/contracts';
+import { DEFAULT_XP_LEVELS, type PublicConfig } from '@ilc/contracts';
 import { Inject, Injectable } from '@nestjs/common';
 import { ENV } from '../config/config.module.ts';
 import type { Env } from '../config/env.ts';
@@ -13,6 +13,10 @@ const DEFAULTS = {
   'smarttags.urlTemplate': 'https://ilc.app/v/{token}',
   /** Consultas por hora de un mismo código que disparan "Requiere verificación adicional" (§5.6, §9.2). */
   'smarttags.anomalyLookupsPerHour': 50,
+  /** Días de anticipación para avisar en la billetera qué puntos vencen (transparencia — §5.7). */
+  'economy.expiringNoticeDays': 30,
+  /** Umbrales de XP por nivel (parámetros de prueba hasta aprobación de Marca). */
+  'economy.xpLevels': DEFAULT_XP_LEVELS as readonly number[],
 } as const;
 
 type Key = keyof typeof DEFAULTS;

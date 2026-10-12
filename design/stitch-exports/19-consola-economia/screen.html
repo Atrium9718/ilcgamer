@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>19 · Consola · Economía (escritorio) - ILC Origen</title>
+<!-- Google Fonts: EB Garamond (Serif editorial) & Plus Jakarta Sans (UI humanista) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "ilc-canvas": "#FAF7F0",
+            "ilc-surface": "#F1ECE0",
+            "ilc-surface-low": "#EAE4D6",
+            "ilc-border": "#DFD7C7",
+            "ilc-border-strong": "#C5BBA7",
+            "ilc-ink": "#13201B",
+            "ilc-ink-muted": "#55645E",
+            "ilc-gold": "#6E561E",
+            "ilc-gold-hover": "#59440B",
+            "ilc-gold-subtle": "rgba(110, 86, 30, 0.08)",
+            "ilc-forest": "#2F4941",
+            "ilc-forest-deep": "#13201B",
+            "ilc-oak": "#9A4F17",
+            "ilc-alert": "#B3261E",
+            "ilc-alert-subtle": "rgba(179, 38, 30, 0.08)",
+            "primary": "#6E561E",
+            "surface": "#FAF7F0",
+            "outline": "#DFD7C7"
+          },
+          fontFamily: {
+            "display-lg": ["EB Garamond", "serif"],
+            "headline-lg": ["EB Garamond", "serif"],
+            "headline-md": ["EB Garamond", "serif"],
+            "title-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "title-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "numeric-xl": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      vertical-align: middle;
+      font-size: 20px;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    /* Estilo del scroll sutil */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF7F0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #DFD7C7;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #C5BBA7;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF7F0] text-[#13201B] font-['Plus Jakarta Sans'] h-full antialiased overflow-hidden flex flex-row">
+<!-- ========================================================================= -->
+<!-- 1. BARRA LATERAL IZQUIERDA FIJA (260px) - VERDE BOSQUE MUY PROFUNDO #13201B -->
+<!-- ========================================================================= -->
+<aside class="w-[260px] flex-shrink-0 bg-[#13201B] text-[#DAE5E0] flex flex-col justify-between border-r border-[#1D302A] select-none h-full z-20">
+<div class="flex flex-col">
+<!-- Marca y Sello Circular ILC -->
+<div class="px-5 pt-6 pb-5 border-b border-[#22352F]/70 flex items-center gap-3">
+<!-- Sello circular ILC: anillo fino con solo ILC centradas en serif -->
+<div class="w-10 h-10 rounded-full border border-[#D4B673]/60 flex items-center justify-center bg-[#192A24] flex-shrink-0 shadow-sm">
+<span class="font-['EB_Garamond'] text-[#E2C37F] font-bold text-base tracking-wider leading-none">ILC</span>
+</div>
+<div class="flex flex-col leading-tight">
+<span class="font-['EB_Garamond'] text-[#FAF7F0] text-lg font-semibold tracking-wide">ILC Origen</span>
+<span class="text-[10px] tracking-widest uppercase font-bold text-[#8DD6AD]/80">GOBERNANZA &amp; CMS</span>
+</div>
+</div>
+<!-- Navegación Primaria -->
+<nav class="px-3 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#campanas">
+<span class="material-symbols-outlined text-[19px]">campaign</span>
+<span>Campañas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#juegos">
+<span class="material-symbols-outlined text-[19px]">sports_esports</span>
+<span>Juegos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#recompensas">
+<span class="material-symbols-outlined text-[19px]">featured_seasonal_and_gifts</span>
+<span>Recompensas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#smart-tags">
+<span class="material-symbols-outlined text-[19px]">nfc</span>
+<span>Smart Tags</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#comercios">
+<span class="material-symbols-outlined text-[19px]">storefront</span>
+<span>Comercios</span>
+</a>
+<!-- ITEM ACTIVO: ECONOMÍA -->
+<a aria-current="page" class="flex items-center justify-between px-3 py-2.5 rounded-md text-[13px] font-semibold text-[#FAF7F0] bg-[#223830] border-l-2 border-[#E2C37F] shadow-inner transition-colors" href="#economia">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined fill-icon text-[19px] text-[#E2C37F]">account_balance</span>
+<span class="tracking-wide">Economía</span>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-[#E2C37F]"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#analitica">
+<span class="material-symbols-outlined text-[19px]">insights</span>
+<span>Analítica</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium text-[#A6B6AF] hover:text-[#FAF7F0] hover:bg-[#1D302A]/80 transition-colors" href="#auditoria">
+<span class="material-symbols-outlined text-[19px]">verified_user</span>
+<span>Auditoría</span>
+</a>
+</nav>
+</div>
+<!-- Pie de Barra Lateral: Nota técnica de auditoría y ledger inmutable -->
+<div class="p-4 mx-3 mb-4 rounded bg-[#0D1613] border border-[#23352F] text-[11px] text-[#7E9189] space-y-2">
+<div class="flex items-center gap-1.5 text-[#A8F2C8] font-semibold">
+<span class="material-symbols-outlined text-[15px]">lock</span>
+<span>Ledger Inmutable</span>
+</div>
+<p class="leading-relaxed">
+        Registro criptográfico de doble entrada según §5.7 y §9.1 de la Guía Técnica. Sin sobrescrituras directas.
+      </p>
+<div class="pt-1.5 border-t border-[#1C2C26] flex justify-between items-center text-[10px] text-[#556960]">
+<span>Nodo SHA-256</span>
+<span class="font-mono text-[#8DD6AD]">v1.0-ok</span>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- 2. CONTENEDOR CENTRAL DERECHO (Header + Main Content) -->
+<!-- ========================================================================= -->
+<div class="flex-1 flex flex-col h-full overflow-hidden bg-[#FAF7F0]">
+<!-- ======================================================================= -->
+<!-- 2.1 BARRA SUPERIOR HORIZONTAL (HEADER) -->
+<!-- ======================================================================= -->
+<header class="h-16 px-8 bg-[#F1ECE0] border-b border-[#DFD7C7] flex items-center justify-between flex-shrink-0 z-10 shadow-sm">
+<!-- Miga de Pan -->
+<nav aria-label="Miga de pan" class="flex items-center gap-2 text-xs text-[#55645E]">
+<span class="hover:text-[#13201B] cursor-pointer">ILC Origen</span>
+<span class="text-[#A49989]">/</span>
+<span class="hover:text-[#13201B] cursor-pointer">Consola Central</span>
+<span class="text-[#A49989]">/</span>
+<span class="font-semibold text-[#13201B]">Economía y Ledger</span>
+</nav>
+<!-- Indicadores y Perfil de Operador -->
+<div class="flex items-center gap-6">
+<!-- Indicador de servicio ledger -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#E4ECE6] border border-[#BDD3C7] text-[#2F4941] text-xs">
+<span class="w-2 h-2 rounded-full bg-[#2F4941] animate-pulse"></span>
+<span class="font-medium">Servicio de Ledger: <span class="font-semibold">Activo</span></span>
+<span class="text-[10px] text-[#55645E] pl-1 font-mono">(v1.0 §5.7)</span>
+</div>
+<div class="h-4 w-px bg-[#DFD7C7]"></div>
+<!-- Perfil de Operador -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#2F4941] text-[#FAF7F0] font-semibold text-xs flex items-center justify-center tracking-tight shadow-sm">
+            LM
+          </div>
+<div class="flex flex-col text-left leading-tight">
+<span class="text-xs font-bold text-[#13201B]">Laura M.</span>
+<span class="text-[11px] text-[#55645E]">Finanzas &amp; Auditoría</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ======================================================================= -->
+<!-- 2.2 ÁREA PRINCIPAL CON SCROLL (Main Canvas) -->
+<!-- ======================================================================= -->
+<main class="flex-1 overflow-y-auto px-8 py-6 space-y-6">
+<!-- ===================================================================== -->
+<!-- 3. ENCABEZADO Y PESTAÑAS -->
+<!-- ===================================================================== -->
+<div class="space-y-4">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-[#DFD7C7] pb-4">
+<div>
+<h1 class="font-['EB_Garamond'] text-3xl font-bold tracking-tight text-[#13201B]">
+              Economía
+            </h1>
+<p class="text-xs text-[#55645E] mt-1 max-w-2xl">
+              Puntos ILC (Ruta A) y XP (Ruta B) son economías separadas. Los movimientos nunca se editan: se compensan mediante transacciones registradas.
+            </p>
+</div>
+<!-- Badges de normatividad -->
+<div class="flex items-center gap-2 text-[11px] text-[#6E561E] bg-[#EAE4D6] px-3 py-1.5 rounded border border-[#DFD7C7]">
+<span class="material-symbols-outlined text-[16px] text-[#6E561E]">gavel</span>
+<span class="font-medium">Principio de No Destrucción Contable</span>
+</div>
+</div>
+<!-- Pestañas horizontales -->
+<div class="flex gap-8 border-b border-[#DFD7C7] text-sm font-medium">
+<button class="pb-3 border-b-2 border-[#6E561E] text-[#6E561E] font-bold flex items-center gap-2">
+<span>Movimientos</span>
+<span class="bg-[#EAE4D6] text-[#6E561E] text-xs font-semibold px-2 py-0.5 rounded-full">28</span>
+</button>
+<button class="pb-3 border-b-2 border-transparent text-[#55645E] hover:text-[#13201B] flex items-center gap-2 transition-colors">
+<span>Insignias</span>
+<span class="text-[11px] text-[#999081]">Ruta B</span>
+</button>
+<button class="pb-3 border-b-2 border-transparent text-[#55645E] hover:text-[#13201B] flex items-center gap-2 transition-colors">
+<span>Conciliación</span>
+</button>
+</div>
+</div>
+<!-- ===================================================================== -->
+<!-- 4. CONSULTA Y TARJETA DE CUENTA (DUAL ECONOMY) -->
+<!-- ===================================================================== -->
+<div class="space-y-4">
+<!-- Buscador -->
+<div class="flex items-center gap-3 max-w-2xl">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7E9189]">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 text-xs bg-[#F1ECE0] border border-[#DFD7C7] rounded text-[#13201B] placeholder-[#999081] focus:outline-none focus:ring-1 focus:ring-[#6E561E] focus:border-[#6E561E] shadow-sm font-mono" placeholder="Buscar por id de reclamación o de persona" type="text" value="usr_c1a1"/>
+</div>
+<button class="px-5 py-2.5 bg-[#6E561E] hover:bg-[#59440B] text-[#FAF7F0] text-xs font-bold rounded transition-colors shadow-sm flex items-center gap-2 tracking-wide">
+<span>Buscar</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Tarjeta de Cuenta / Jugador Consultado -->
+<div class="bg-[#F1ECE0] border border-[#DFD7C7] rounded-lg p-5 shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+<!-- Identificador de cuenta / alias anónimo -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-[#EAE4D6] border border-[#DFD7C7] flex items-center justify-center text-[#2F4941] flex-shrink-0">
+<span class="material-symbols-outlined text-2xl">person_outline</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs uppercase tracking-wider font-bold text-[#55645E]">Cuenta Activa</span>
+<span class="px-2 py-0.5 rounded text-[11px] bg-[#E4ECE6] text-[#2F4941] font-semibold border border-[#BDD3C7]">Verificada</span>
+</div>
+<div class="flex items-baseline gap-2 mt-0.5">
+<h2 class="font-['EB_Garamond'] text-2xl font-bold text-[#13201B]">Jugador</h2>
+<span class="font-mono text-xs text-[#55645E] bg-[#EAE4D6] px-1.5 py-0.5 rounded border border-[#DFD7C7]">…c1a1</span>
+</div>
+<p class="text-[11px] text-[#55645E] mt-1">
+                  Identificador hash truncado (§5.6) · Privacidad preservada sin datos personales.
+                </p>
+</div>
+</div>
+<!-- Separador vertical sutil -->
+<div class="hidden lg:block h-16 w-px bg-[#DFD7C7]"></div>
+<!-- Métricas de Economía Dual -->
+<div class="flex flex-wrap items-center gap-8">
+<!-- Ruta A: Puntos ILC (Comercial) -->
+<div class="space-y-1">
+<div class="flex items-center gap-1.5">
+<span class="text-[11px] font-bold text-[#6E561E] uppercase tracking-wider">Ruta A · Saldo Comercial</span>
+<span class="material-symbols-outlined text-[14px] text-[#6E561E]" title="Puntos acumulados por activación de códigos">verified</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-['EB_Garamond'] text-3xl font-bold text-[#13201B] leading-none">1.300</span>
+<span class="text-xs font-semibold text-[#6E561E]">Puntos ILC</span>
+</div>
+<p class="text-[11px] text-[#55645E]">
+<span class="font-medium text-[#13201B]">300</span> vencen el 30 abr. 2027
+                </p>
+</div>
+<!-- Ruta B: XP (Experiencia de Marca y Retos) -->
+<div class="space-y-1">
+<div class="flex items-center gap-1.5">
+<span class="text-[11px] font-bold text-[#2F4941] uppercase tracking-wider">Ruta B · Experiencia de Marca</span>
+<span class="material-symbols-outlined text-[14px] text-[#2F4941]" title="Progresión en trivias y senderos culturales">explore</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-3.5 py-1.5 rounded-md bg-[#2F4941] text-[#FAF7F0] font-semibold text-sm flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-[#8DD6AD]">military_tech</span>
+<span>420 XP</span>
+<span class="text-[#8DD6AD] text-xs font-normal">· Nivel 3</span>
+</div>
+</div>
+<p class="text-[11px] text-[#55645E] italic">
+                  Economía reputacional independiente (no canjeable a puntos)
+                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ===================================================================== -->
+<!-- 5. ESTRUCTURA DIVIDIDA: TABLA + PANEL LATERAL (REVERSO) -->
+<!-- ===================================================================== -->
+<div class="grid grid-cols-12 gap-6 items-start pb-8">
+<!-- =================================================================== -->
+<!-- 5.1 TABLA DE MOVIMIENTOS DEL LEDGER (8 de 12 col) -->
+<!-- =================================================================== -->
+<div class="col-span-12 lg:col-span-7 xl:col-span-8 bg-[#F1ECE0] border border-[#DFD7C7] rounded-lg shadow-sm flex flex-col overflow-hidden">
+<!-- Encabezado de la caja de tabla -->
+<div class="px-5 py-4 border-b border-[#DFD7C7] flex items-center justify-between bg-[#EAE4D6]/50">
+<div>
+<h3 class="font-['EB_Garamond'] text-lg font-bold text-[#13201B]">Registro de Ledger Inmutable</h3>
+<p class="text-[11px] text-[#55645E]">Movimientos de débito, crédito y compensación para la cuenta …c1a1</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 text-[11px] font-semibold text-[#13201B] bg-[#F1ECE0] border border-[#DFD7C7] rounded hover:bg-[#EAE4D6] transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">filter_list</span>
+<span>Filtrar</span>
+</button>
+<button class="px-2.5 py-1 text-[11px] font-semibold text-[#13201B] bg-[#F1ECE0] border border-[#DFD7C7] rounded hover:bg-[#EAE4D6] transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">download</span>
+<span>Auditoría</span>
+</button>
+</div>
+</div>
+<!-- Tabla HTML Nativa -->
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs text-[#13201B] border-collapse">
+<thead>
+<tr class="bg-[#EAE4D6] text-[#55645E] text-[11px] font-bold border-b border-[#DFD7C7] uppercase tracking-wider">
+<th class="py-3 px-4">Fecha</th>
+<th class="py-3 px-3">ID</th>
+<th class="py-3 px-3">Tipo</th>
+<th class="py-3 px-4">Concepto</th>
+<th class="py-3 px-3 text-right">Cantidad</th>
+<th class="py-3 px-3 text-right">Disponible</th>
+<th class="py-3 px-3">Vence</th>
+<th class="py-3 px-3 text-center">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#DFD7C7] font-['Plus_Jakarta_Sans']">
+<!-- FILA 1: SELECCIONADA PARA REVERSO (Destacada) -->
+<tr class="bg-[#FAF7F0] hover:bg-[#F9F5EB] border-l-4 border-l-[#B3261E] transition-colors">
+<td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap text-[#13201B]">
+                    12 oct. 2026 <span class="text-[#55645E] text-[10px]">21:14</span>
+</td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E]">…7f3a</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#E4ECE6] text-[#2F4941] border border-[#BDD3C7]">
+                      Crédito
+                    </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-[#13201B]">Código activado</div>
+<div class="text-[10px] text-[#55645E]">Feria de Manizales</div>
+</td>
+<td class="py-3.5 px-3 text-right font-bold text-[#2F4941] whitespace-nowrap">
+                    +500
+                  </td>
+<td class="py-3.5 px-3 text-right font-medium text-[#13201B] whitespace-nowrap">
+                    500 pts
+                  </td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E] whitespace-nowrap">
+                    12 oct. 2027
+                  </td>
+<td class="py-3.5 px-3 text-center">
+<button class="inline-flex items-center px-2.5 py-1 text-[11px] font-bold text-[#B3261E] bg-[#B3261E]/10 rounded border border-[#B3261E]/30 hover:bg-[#B3261E] hover:text-white transition-colors">
+                      Reversar
+                    </button>
+</td>
+</tr>
+<!-- FILA 2: REVERSO (Compensación) -->
+<tr class="bg-[#F1ECE0] hover:bg-[#FAF7F0] transition-colors">
+<td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap text-[#13201B]">
+                    08 oct. 2026 <span class="text-[#55645E] text-[10px]">19:40</span>
+</td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E]">…9c12</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#F4E8DF] text-[#9A4F17] border border-[#E1C5AF]">
+                      Reverso
+                    </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-[#13201B]">Compensación reverso</div>
+<div class="text-[10px] text-[#55645E]">Claim …2d11</div>
+</td>
+<td class="py-3.5 px-3 text-right font-bold text-[#9A4F17] whitespace-nowrap">
+                    −300
+                  </td>
+<td class="py-3.5 px-3 text-right text-[#999081]">—</td>
+<td class="py-3.5 px-3 text-[#999081]">—</td>
+<td class="py-3.5 px-3 text-center text-[#999081]">—</td>
+</tr>
+<!-- FILA 3: DÉBITO -->
+<tr class="bg-[#F1ECE0] hover:bg-[#FAF7F0] transition-colors">
+<td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap text-[#13201B]">
+                    02 oct. 2026 <span class="text-[#55645E] text-[10px]">23:05</span>
+</td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E]">…4a55</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#EAE4D6] text-[#55645E] border border-[#DFD7C7]">
+                      Débito
+                    </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-[#13201B]">Canje recompensa digital</div>
+<div class="text-[10px] text-[#55645E]">Catálogo Origen</div>
+</td>
+<td class="py-3.5 px-3 text-right font-bold text-[#13201B] whitespace-nowrap">
+                    −200
+                  </td>
+<td class="py-3.5 px-3 text-right text-[#999081]">—</td>
+<td class="py-3.5 px-3 text-[#999081]">—</td>
+<td class="py-3.5 px-3 text-center text-[#999081]">—</td>
+</tr>
+<!-- FILA 4: VENCIMIENTO -->
+<tr class="bg-[#F1ECE0] hover:bg-[#FAF7F0] transition-colors">
+<td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap text-[#13201B]">
+                    30 sep. 2026 <span class="text-[#55645E] text-[10px]">00:00</span>
+</td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E]">…1e88</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#EAE4D6] text-[#999081] border border-[#DFD7C7]">
+                      Vencimiento
+                    </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-[#13201B]">Expiración por vigencia anual</div>
+<div class="text-[10px] text-[#55645E]">Lote reglamentario 2025</div>
+</td>
+<td class="py-3.5 px-3 text-right font-medium text-[#55645E] whitespace-nowrap">
+                    −100
+                  </td>
+<td class="py-3.5 px-3 text-right text-[#999081]">—</td>
+<td class="py-3.5 px-3 text-[#999081]">—</td>
+<td class="py-3.5 px-3 text-center text-[#999081]">—</td>
+</tr>
+<!-- FILA 5: CRÉDITO AGOTADO -->
+<tr class="bg-[#F1ECE0] hover:bg-[#FAF7F0] transition-colors">
+<td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap text-[#13201B]">
+                    25 sep. 2026 <span class="text-[#55645E] text-[10px]">20:10</span>
+</td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E]">…6d94</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#E4ECE6] text-[#2F4941] border border-[#BDD3C7]">
+                      Crédito
+                    </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-[#13201B]">Código activado</div>
+<div class="text-[10px] text-[#55645E]">Ruta del Roble</div>
+</td>
+<td class="py-3.5 px-3 text-right font-bold text-[#2F4941] whitespace-nowrap">
+                    +300
+                  </td>
+<td class="py-3.5 px-3 text-right font-mono text-[11px] text-[#55645E] whitespace-nowrap">
+                    0 pts <span class="text-[10px] text-[#999081]">(agotado)</span>
+</td>
+<td class="py-3.5 px-3 font-mono text-[11px] text-[#55645E] whitespace-nowrap">
+                    25 sep. 2027
+                  </td>
+<td class="py-3.5 px-3 text-center text-[#999081]">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pie de Tabla: Paginación -->
+<div class="px-5 py-3.5 bg-[#EAE4D6]/60 border-t border-[#DFD7C7] flex items-center justify-between text-xs text-[#55645E]">
+<div>
+              Mostrando <span class="font-bold text-[#13201B]">5</span> de <span class="font-bold text-[#13201B]">28</span> movimientos
+            </div>
+<div class="flex items-center gap-1.5">
+<button class="px-2 py-1 rounded border border-[#DFD7C7] bg-[#F1ECE0] text-[#55645E] hover:bg-[#FAF7F0] disabled:opacity-50" disabled="">
+                Anterior
+              </button>
+<button class="px-2.5 py-1 rounded bg-[#6E561E] text-white font-bold">1</button>
+<button class="px-2.5 py-1 rounded border border-[#DFD7C7] bg-[#F1ECE0] text-[#13201B] hover:bg-[#FAF7F0]">2</button>
+<button class="px-2.5 py-1 rounded border border-[#DFD7C7] bg-[#F1ECE0] text-[#13201B] hover:bg-[#FAF7F0]">3</button>
+<button class="px-2 py-1 rounded border border-[#DFD7C7] bg-[#F1ECE0] text-[#13201B] hover:bg-[#FAF7F0]">
+                Siguiente
+              </button>
+</div>
+</div>
+</div>
+<!-- =================================================================== -->
+<!-- 5.2 PANEL LATERAL ABIERTO: REVERSAR MOVIMIENTO (~380px) -->
+<!-- =================================================================== -->
+<div class="col-span-12 lg:col-span-5 xl:col-span-4 bg-[#F1ECE0] border border-[#DFD7C7] rounded-lg shadow-md p-5 flex flex-col justify-between space-y-5">
+<div class="space-y-4">
+<!-- Encabezado del Panel Lateral -->
+<div class="flex items-center justify-between border-b border-[#DFD7C7] pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#B3261E] text-[20px]">assignment_return</span>
+<h3 class="font-['EB_Garamond'] text-xl font-bold text-[#13201B]">
+                  Reversar movimiento
+                </h3>
+</div>
+<button class="w-7 h-7 rounded flex items-center justify-center text-[#55645E] hover:text-[#13201B] hover:bg-[#EAE4D6] transition-colors" title="Cerrar panel">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Resumen del crédito a compensar -->
+<div class="p-3.5 rounded bg-[#FAF7F0] border border-[#DFD7C7] space-y-2 text-xs">
+<div class="text-[10px] font-bold text-[#55645E] uppercase tracking-wider">
+                Transacción origen a compensar
+              </div>
+<div class="flex justify-between py-1 border-b border-[#DFD7C7]/60">
+<span class="text-[#55645E]">Id movimiento:</span>
+<span class="font-mono font-bold text-[#13201B]">…7f3a</span>
+</div>
+<div class="flex justify-between py-1 border-b border-[#DFD7C7]/60">
+<span class="text-[#55645E]">Concepto original:</span>
+<span class="font-medium text-[#13201B] text-right">Código activado · Feria de Manizales</span>
+</div>
+<div class="flex justify-between py-1 border-b border-[#DFD7C7]/60">
+<span class="text-[#55645E]">Monto disponible:</span>
+<span class="font-bold text-[#2F4941]">+500 Puntos ILC</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-[#55645E]">Fecha emisión:</span>
+<span class="font-mono text-[#13201B]">12 oct. 2026 21:14</span>
+</div>
+</div>
+<!-- Formulario de Acción -->
+<div class="space-y-3.5 pt-1">
+<div>
+<label class="block text-xs font-bold text-[#13201B] mb-1">
+                  Monto a reversar
+                </label>
+<div class="flex items-center gap-2">
+<input class="w-full px-3 py-2 text-xs font-semibold bg-[#EAE4D6] border border-[#DFD7C7] rounded text-[#13201B] focus:outline-none cursor-not-allowed" readonly="" type="text" value="500 pts (Total disponible)"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-[#13201B] mb-1">
+                  Motivo (queda en auditoría) <span class="text-[#B3261E]">*</span>
+</label>
+<textarea class="w-full p-2.5 text-xs bg-[#FAF7F0] border border-[#DFD7C7] rounded text-[#13201B] focus:ring-1 focus:ring-[#6E561E] focus:border-[#6E561E] focus:outline-none resize-none leading-relaxed" rows="3">Anulación por comprobante duplicado en auditoría de lote #4092</textarea>
+<span class="text-[10px] text-[#55645E] mt-1 block">
+                  El motivo se firmará junto a la firma del operador LM.
+                </span>
+</div>
+</div>
+<!-- Nota de Gobernanza y Ledger Inmutable (§5.7 / §9.1) -->
+<div class="p-3 bg-[#EAE4D6] border border-[#DFD7C7] rounded text-[11px] text-[#13201B] flex items-start gap-2.5 leading-relaxed">
+<span class="material-symbols-outlined text-[#6E561E] text-[18px] flex-shrink-0 mt-0.5">info</span>
+<div>
+<span class="font-bold text-[#6E561E]">Gobernanza inmutable:</span> El movimiento original no se borra ni se modifica; se genera una nueva transacción compensatoria con balance negativo.
+              </div>
+</div>
+</div>
+<!-- Acciones del Panel -->
+<div class="pt-4 border-t border-[#DFD7C7] flex flex-col gap-2">
+<button class="w-full py-2.5 px-4 bg-[#B3261E] hover:bg-[#8F1D17] text-white text-xs font-bold rounded flex items-center justify-center gap-2 shadow-sm transition-colors tracking-wide">
+<span class="material-symbols-outlined text-[17px]">restart_alt</span>
+<span>Registrar reverso</span>
+</button>
+<button class="w-full py-2 px-4 bg-transparent hover:bg-[#EAE4D6] text-[#55645E] hover:text-[#13201B] text-xs font-semibold rounded border border-[#DFD7C7] transition-colors">
+              Cancelar
+            </button>
+</div>
+</div>
+</div>
+</main>
+<!-- ======================================================================= -->
+<!-- PIE DE CONSOLA / AUDITORÍA TÉCNICA -->
+<!-- ======================================================================= -->
+<footer class="h-10 px-8 bg-[#F1ECE0] border-t border-[#DFD7C7] flex items-center justify-between text-[11px] text-[#55645E] flex-shrink-0">
+<div class="flex items-center gap-4">
+<span>Consola Administrativa ILC Origen</span>
+<span class="text-[#A49989]">·</span>
+<span class="font-mono text-[10px]">Hash Bloque: 9d7a…f210</span>
+<span class="text-[#A49989]">·</span>
+<span class="text-[#2F4941] font-semibold">Ledger en Consenso</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-[#6E561E]">verified</span>
+<span>Auditoría Interna Activa (§9.1 Guía Técnica)</span>
+</div>
+</footer>
+</div>
+</body></html>

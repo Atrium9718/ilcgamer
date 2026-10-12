@@ -1,4 +1,5 @@
 import { BottomNav, type NavTab } from '../components/BottomNav.tsx';
+import { Button } from '../components/Button.tsx';
 import { Icon } from '../components/Icon.tsx';
 import { BalanceCard, type LedgerEntryView, type LedgerKind, LedgerRow } from '../components/Ledger.tsx';
 import { StatusMessage } from '../components/StatusMessage.tsx';
@@ -18,7 +19,7 @@ const MATCH: Record<WalletFilter, (k: LedgerKind) => boolean> = {
   all: () => true,
   earned: (k) => k === 'credit',
   redeemed: (k) => k === 'debit',
-  adjustments: (k) => k === 'reversal' || k === 'adjustment',
+  adjustments: (k) => k === 'reversal' || k === 'adjustment' || k === 'expiry',
 };
 
 /**
@@ -36,6 +37,10 @@ export interface WalletViewProps {
   onRewards: () => void;
   onHowToEarn: () => void;
   onNavigate: (tab: NavTab) => void;
+  /** Hay movimientos más antiguos por cargar. */
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function WalletView({
@@ -49,6 +54,9 @@ export function WalletView({
   onRewards,
   onHowToEarn,
   onNavigate,
+  hasMore = false,
+  loadingMore = false,
+  onLoadMore,
 }: WalletViewProps) {
   const shown = entries.filter((e) => MATCH[filter](e.kind));
   return (
@@ -104,6 +112,11 @@ export function WalletView({
               </ul>
             ) : (
               <StatusMessage kind="empty" title="Sin movimientos" body="Cuando actives un código o canjees una recompensa, lo verás aquí." />
+            )}
+            {hasMore && onLoadMore && (
+              <Button variant="text" loading={loadingMore} onClick={onLoadMore}>
+                Ver movimientos anteriores
+              </Button>
             )}
             <p className="font-body-md text-[12px] text-on-surface-variant">
               Tu saldo se calcula a partir de movimientos registrados; ningún movimiento se borra.

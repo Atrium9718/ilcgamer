@@ -1,5 +1,7 @@
+import type { Progress } from '@ilc/contracts';
 import {
   Button,
+  type Chapter,
   ProfileView,
   ProgressView,
   type RewardCategory,
@@ -12,7 +14,7 @@ import {
   type WalletFilter,
   WalletView,
 } from '@ilc/ui';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { DEMO, demoRewardDetail } from '../demo/fixtures.ts';
 import { ApiRequestError } from '../lib/api.ts';
@@ -26,12 +28,25 @@ export function WalletRoute() {
   const onNavigate = useTabNavigate();
   const [filter, setFilter] = useState<WalletFilter>('all');
   const [wallet, setWallet] = useState<WalletData | 'loading' | 'error'>('loading');
-  useEffect(() => {
+  const [loadingMore, setLoadingMore] = useState(false);
+  const load = useCallback(() => {
+    setWallet('loading');
     data.wallet().then(setWallet, () => setWallet('error'));
   }, []);
+  useEffect(load, [load]);
   if (wallet === 'loading') return <StatusMessage kind="pending" title="Cargando tu billetera…" className="min-h-dvh justify-center bg-surface" />;
   if (wallet === 'error')
-    return <StatusMessage kind="error" className="min-h-dvh justify-center bg-surface" action={<Button onClick={() => navigate(0)}>Reintentar</Button>} />;
+    return <StatusMessage kind="error" className="min-h-dvh justify-center bg-surface" action={<Button onClick={load}>Reintentar</Button>} />;
+  const loadMore = async () => {
+    if (!wallet.nextCursor) return;
+    setLoadingMore(true);
+    try {
+      const next = await data.wallet(wallet.nextCursor);
+      setWallet({ ...wallet, entries: [...wallet.entries, ...next.entries], nextCursor: next.nextCursor });
+    } finally {
+      setLoadingMore(false);
+    }
+  };
   return (
     <WalletView
       balance={wallet.balance}
@@ -44,6 +59,9 @@ export function WalletRoute() {
       onRewards={() => navigate('/recompensas')}
       onHowToEarn={() => navigate('/jugar')}
       onNavigate={onNavigate}
+      hasMore={wallet.nextCursor !== null}
+      loadingMore={loadingMore}
+      onLoadMore={() => void loadMore()}
     />
   );
 }
@@ -68,33 +86,40 @@ export function RewardsRoute() {
   );
 }
 
+/** Capítulos y relatos de la Ruta del Origen llegan con el motor de juegos (Paso 9); en demostración se ilustran. */
+const DEMO_CHAPTERS: Chapter[] = [
+  { id: 'agua', title: 'Agua', icon: 'water_drop', state: 'done' },
+  { id: 'paisaje', title: 'Paisaje', icon: 'landscape', state: 'done' },
+  { id: 'roble', title: 'Roble', icon: 'park', state: 'current' },
+  { id: 'tiempo', title: 'Tiempo', icon: 'hourglass_empty', state: 'locked' },
+  { id: 'maestria', title: 'Maestría', icon: 'workspace_premium', state: 'locked' },
+  { id: 'caldas', title: 'Caldas', icon: 'location_city', state: 'locked' },
+];
+
 export function ProgressRoute() {
   const navigate = useNavigate();
   const onNavigate = useTabNavigate();
+  const [progress, setProgress] = useState<Progress | 'loading' | 'error'>('loading');
+  const load = useCallback(() => {
+    setProgress('loading');
+    data.progress().then(setProgress, () => setProgress('error'));
+  }, []);
+  useEffect(load, [load]);
+  if (progress === 'loading') return <StatusMessage kind="pending" title="Cargando tu progreso…" className="min-h-dvh justify-center bg-surface" />;
+  if (progress === 'error')
+    return <StatusMessage kind="error" className="min-h-dvh justify-center bg-surface" action={<Button onClick={load}>Reintentar</Button>} />;
+  const { level } = progress;
   return (
     <ProgressView
-      level={3}
-      levelName="Explorador del origen"
-      xp={1840}
-      nextLevelXp={2500}
-      nextLevelName="Nivel 4"
-      chapters={[
-        { id: 'agua', title: 'Agua', icon: 'water_drop', state: 'done' },
-        { id: 'paisaje', title: 'Paisaje', icon: 'landscape', state: 'done' },
-        { id: 'roble', title: 'Roble', icon: 'park', state: 'current' },
-        { id: 'tiempo', title: 'Tiempo', icon: 'hourglass_empty', state: 'locked' },
-        { id: 'maestria', title: 'Maestría', icon: 'workspace_premium', state: 'locked' },
-        { id: 'caldas', title: 'Caldas', icon: 'location_city', state: 'locked' },
-      ]}
-      badges={[
-        { id: 'b1', name: 'Guardianes del bosque', icon: 'filter_vintage', earned: true },
-        { id: 'b2', name: 'Lector de pistas', icon: 'menu_book', earned: true },
-        { id: 'b3', name: 'Parche cooperativo', icon: 'diversity_3', earned: true },
-        { id: 'b4', name: 'Alquimia del roble', icon: 'park', earned: false },
-        { id: 'b5', name: 'Custodio del tiempo', icon: 'hourglass_empty', earned: false },
-        { id: 'b6', name: 'Gran maestro', icon: 'workspace_premium', earned: false },
-      ]}
-      stories={Array.from({ length: 12 }, (_, i) => ({ id: `r${i + 1}`, unlocked: i < 2 }))}
+      level={level.number}
+      // Los nombres de nivel son contenido de marca pendiente de aprobación: se muestra el número.
+      levelName={`Nivel ${level.number}`}
+      xp={progress.xp}
+      nextLevelXp={level.nextAt}
+      nextLevelName={`Nivel ${level.number + 1}`}
+      chapters={data.demo ? DEMO_CHAPTERS : []}
+      badges={progress.badges.map((b) => ({ id: b.slug, name: b.name, icon: b.icon, earned: b.earned }))}
+      stories={data.demo ? Array.from({ length: 12 }, (_, i) => ({ id: `r${i + 1}`, unlocked: i < 2 })) : []}
       onOpenStory={() => undefined}
       onBack={() => navigate(-1)}
       onNavigate={onNavigate}

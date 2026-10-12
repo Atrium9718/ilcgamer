@@ -73,6 +73,11 @@ export const CampaignRulesSchema = z
       .string()
       .regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Hora HH:MM')
       .default('06:00'),
+    /**
+     * XP adicional por activación válida. Solo en campañas MIXTAS: es el vínculo explícito, aprobado y versionado
+     * entre las dos economías (Guía Técnica §5.7, §12.2). Los XP nunca se convierten en Puntos ILC.
+     */
+    xpPerActivation: z.number().int().min(1).max(500).optional(),
     /** Vigencia de los Puntos ILC emitidos, en días (regla separada y transparente — §1.2). */
     pointsExpiryDays: z.number().int().min(1).max(730).optional(),
     limits: z

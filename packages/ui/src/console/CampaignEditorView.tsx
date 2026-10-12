@@ -27,6 +27,8 @@ export interface CampaignEditorValue {
   sessionEndsAtLocalTime: string;
   pointsExpiryDays: number | null;
   activationsPerUserPerDay: number;
+  /** XP adicional por activación: solo campañas mixtas (vínculo explícito de economías). */
+  xpPerActivation: number | null;
   themeMode: 'dark' | 'light';
   themeBrand: string;
   accent: string | null;
@@ -437,6 +439,29 @@ export function CampaignEditorView({ mode, value: v, onChange, brandOptions, fie
             />
           )}
         </div>
+        {v.route === 'MIXTA' && (
+          <div className="grid grid-cols-3 gap-4 items-start">
+            <Checkbox
+              label="Otorgar XP por activación (Ruta B)"
+              checked={v.xpPerActivation !== null}
+              onChange={(on) => set('xpPerActivation', on ? 25 : null)}
+            />
+            {v.xpPerActivation !== null && (
+              <NumberField
+                label="XP por activación"
+                value={v.xpPerActivation}
+                onChange={(x) => set('xpPerActivation', x)}
+                min={1}
+                max={500}
+                suffix="XP"
+                error={fe('rules.xpPerActivation')}
+              />
+            )}
+            <p className="font-body-md text-[12px] text-on-surface-variant">
+              Solo las campañas mixtas vinculan las dos economías. La XP nunca se convierte en Puntos ILC.
+            </p>
+          </div>
+        )}
       </Section>
 
       <Section title="Tema de la campaña" icon="palette" note="Solo cambia colores de marca; los colores funcionales y de estado se mantienen (DESIGN.md).">

@@ -1,5 +1,8 @@
 import type {
+  AdminAccount,
   ApprovalDecisionInput,
+  BadgeAdmin,
+  BadgeAdminView,
   BatchView,
   CampaignDraft,
   CampaignSummary,
@@ -10,6 +13,7 @@ import type {
   ImportPreview,
   Me,
   ProductView,
+  Reconciliation,
   UrlTemplate,
 } from '@ilc/contracts';
 import { apiRequest, type DownloadedFile } from './api.ts';
@@ -60,4 +64,16 @@ export const smartTagsApi = {
   importIssues: (id: string) => apiRequest<DownloadedFile>(`${st}/imports/${id}/issues`, { download: true }),
   settings: () => apiRequest<UrlTemplate>(`${st}/settings`),
   saveSettings: (body: UrlTemplate) => apiRequest<UrlTemplate>(`${st}/settings`, { method: 'PUT', body }),
+};
+
+const eco = '/admin/economy';
+
+/** Economía (Paso 7): cuentas, reversos auditados, insignias y conciliación. */
+export const economyApi = {
+  account: (q: { claimId: string } | { userId: string }) =>
+    apiRequest<AdminAccount>(`${eco}/accounts?${'claimId' in q ? `claimId=${enc(q.claimId)}` : `userId=${enc(q.userId)}`}`),
+  reverse: (entryId: string, reason: string) => apiRequest<AdminAccount>(`${eco}/entries/${enc(entryId)}/reverse`, { method: 'POST', body: { reason } }),
+  badges: () => apiRequest<BadgeAdminView[]>(`${eco}/badges`),
+  createBadge: (body: BadgeAdmin) => apiRequest<BadgeAdminView>(`${eco}/badges`, { method: 'POST', body }),
+  reconcile: () => apiRequest<Reconciliation>(`${eco}/reconciliation`),
 };

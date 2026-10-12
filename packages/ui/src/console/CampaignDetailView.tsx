@@ -25,6 +25,7 @@ export interface RulesView {
   sessionEndsAtLocalTime: string;
   pointsExpiryDays?: number;
   activationsPerUserPerDay: number;
+  xpPerActivation?: number;
   activationsPerUserTotal?: number;
 }
 
@@ -434,6 +435,7 @@ function Rules({ rules }: { rules: RulesView }) {
         <Field label="Cierre de sesiones">{rules.sessionEndsAtLocalTime}</Field>
         <Field label="Vigencia de puntos">{rules.pointsExpiryDays ? `${rules.pointsExpiryDays} días` : 'Sin vencimiento definido'}</Field>
         <Field label="Activaciones por persona al día">{rules.activationsPerUserPerDay}</Field>
+        {rules.xpPerActivation !== undefined && <Field label="XP por activación (campaña mixta)">{rules.xpPerActivation} XP</Field>}
         <Field label="Activaciones por persona en total">{rules.activationsPerUserTotal ?? 'Sin tope total'}</Field>
       </dl>
     </div>

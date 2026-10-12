@@ -186,6 +186,36 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
     });
     if (url.startsWith('/admin/smarttags/imports?fileName=')) return json(201, preview('PREVISTA'));
     if (url.endsWith('/confirm')) return json(200, preview('CONFIRMADA'));
+    const ACCOUNT = {
+      userId: '00000000-0000-7000-8000-0000000000aa',
+      alias: 'Jugador',
+      status: 'ACTIVA',
+      balance: 500,
+      ledgerSum: 500,
+      xp: 120,
+      level: 2,
+      entries: [
+        {
+          id: '00000000-0000-7000-8000-0000000000e1',
+          kind: 'credit',
+          type: 'CREDITO',
+          amount: 500,
+          description: 'Código activado',
+          detail: 'Ruta del Origen',
+          at: '2026-10-01T15:00:00.000Z',
+          expiresAt: null,
+          remaining: 500,
+          compensated: false,
+          reason: null,
+          sourceType: 'claim',
+          sourceId: 'c1',
+        },
+      ],
+    };
+    if (url.startsWith('/admin/economy/accounts?claimId=')) return fail(404, 'NOT_FOUND', 'No encontramos esa cuenta.');
+    if (url.startsWith('/admin/economy/accounts?userId=')) return json(200, ACCOUNT);
+    if (url.endsWith('/reverse')) return json(200, { ...ACCOUNT, balance: 0, ledgerSum: 0 });
+    if (url === '/admin/economy/badges') return json(200, []);
     return fail(404, 'NOT_FOUND', `Sin ruta falsa para ${method} ${url}`);
   });
   vi.stubGlobal('fetch', fetchMock);

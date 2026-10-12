@@ -61,6 +61,18 @@ export const DEMO = {
     },
     { id: 'mixologia', title: 'Maestros de sabor · Mixología', subtitle: 'Aromas, ingredientes y preparaciones, con alternativas sin alcohol.', tag: 'Nuevo' },
   ] satisfies Experience[],
+  progress: {
+    xp: 1840,
+    level: { number: 5, fromXp: 1500, nextAt: 3000 },
+    badges: [
+      { slug: 'guardianes-del-bosque', name: 'Guardianes del bosque', icon: 'filter_vintage', earned: true, awardedAt: '2026-10-01T15:00:00.000Z' },
+      { slug: 'lector-de-pistas', name: 'Lector de pistas', icon: 'menu_book', earned: true, awardedAt: '2026-10-03T15:00:00.000Z' },
+      { slug: 'parche-cooperativo', name: 'Parche cooperativo', icon: 'diversity_3', earned: true, awardedAt: '2026-10-05T15:00:00.000Z' },
+      { slug: 'alquimia-del-roble', name: 'Alquimia del roble', icon: 'park', earned: false, awardedAt: null },
+      { slug: 'custodio-del-tiempo', name: 'Custodio del tiempo', icon: 'hourglass_empty', earned: false, awardedAt: null },
+      { slug: 'gran-maestro', name: 'Gran maestro', icon: 'workspace_premium', earned: false, awardedAt: null },
+    ],
+  },
   balance: 2300,
   ledger: [
     { id: '1', kind: 'credit', amount: 500, description: 'Código activado', detail: 'Ron Viejo de Caldas · Feria de Manizales', dateLabel: '11 oct.' },

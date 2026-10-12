@@ -953,6 +953,172 @@
           "Consola · Smart Tags"
         ]
       }
+    },
+    "/api/v1/wallet": {
+      "get": {
+        "operationId": "EconomyController_wallet",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Economía"
+        ]
+      }
+    },
+    "/api/v1/profile/progress": {
+      "get": {
+        "operationId": "EconomyController_progress",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/accounts": {
+      "get": {
+        "operationId": "AdminEconomyController_account",
+        "parameters": [
+          {
+            "name": "claimId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/entries/{id}/reverse": {
+      "post": {
+        "operationId": "AdminEconomyController_reverse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/reconciliation": {
+      "get": {
+        "operationId": "AdminEconomyController_reconcile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
+    },
+    "/api/v1/admin/economy/badges": {
+      "get": {
+        "operationId": "AdminEconomyController_badges",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      },
+      "post": {
+        "operationId": "AdminEconomyController_createBadge",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Economía"
+        ]
+      }
     }
   },
   "info": {

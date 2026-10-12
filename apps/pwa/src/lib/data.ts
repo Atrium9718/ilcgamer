@@ -1,4 +1,4 @@
-import type { ClaimResult, ProductCodeLookup } from '@ilc/contracts';
+import type { ClaimResult, ProductCodeLookup, Progress, Wallet } from '@ilc/contracts';
 import type { LedgerEntryView } from '@ilc/ui';
 import { DEMO } from '../demo/fixtures.ts';
 import { apiRequest } from './api.ts';
@@ -13,6 +13,31 @@ export interface WalletData {
   currencyName: string;
   expiringNotice?: string;
   entries: LedgerEntryView[];
+  /** Cursor de la siguiente página de movimientos (más antiguos). */
+  nextCursor: string | null;
+}
+
+const shortDate = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', timeZone: 'America/Bogota' });
+const longDate = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'America/Bogota' });
+
+/** Contrato de la API → modelo de la vista (fechas en hora de Colombia). */
+export function toWalletData(w: Wallet): WalletData {
+  return {
+    balance: w.balance,
+    currencyName: w.currencyName,
+    expiringNotice: w.expiring
+      ? `${w.expiring.amount.toLocaleString('es-CO')} ${w.currencyName} vencen el ${longDate.format(new Date(w.expiring.at))}`
+      : undefined,
+    entries: w.entries.map((e) => ({
+      id: e.id,
+      kind: e.kind,
+      amount: e.amount,
+      description: e.description,
+      detail: e.detail,
+      dateLabel: shortDate.format(new Date(e.at)),
+    })),
+    nextCursor: w.nextCursor,
+  };
 }
 
 export interface DataSource {
@@ -22,7 +47,9 @@ export interface DataSource {
   /** Reclamación de la promoción de la botella. Reutilice la MISMA clave al reintentar (§5.7 regla 8). */
   claimCode(token: string, idempotencyKey: string): Promise<ClaimResult>;
   joinParche(pin: string, alias: string): Promise<{ sessionId: string } | { error: 'invalid'; attemptsLeft: number }>;
-  wallet(): Promise<WalletData>;
+  wallet(cursor?: string): Promise<WalletData>;
+  /** XP, nivel e insignias (Ruta B). */
+  progress(): Promise<Progress>;
 }
 
 /** Reclamaciones de la demostración (solo en memoria de la pestaña). */
@@ -66,6 +93,7 @@ const demoSource: DataSource = {
       replayed: false,
       points: c?.points ?? 0,
       currencyName: DEMO.currencyName,
+      xp: 0,
       pointsExpireAt: null,
       balance: DEMO.balance + (c?.points ?? 0),
       campaign: { slug: 'feria', title: DEMO.campaignLabel },
@@ -83,7 +111,12 @@ const demoSource: DataSource = {
       currencyName: DEMO.currencyName,
       expiringNotice: `300 ${DEMO.currencyName} vencen el 30 nov. 2026`,
       entries: [...DEMO.ledger],
+      nextCursor: null,
     };
+  },
+  async progress() {
+    await wait(150);
+    return { ...DEMO.progress, level: { ...DEMO.progress.level }, badges: DEMO.progress.badges.map((b) => ({ ...b })) };
   },
 };
 
@@ -92,7 +125,8 @@ const apiSource: DataSource = {
   lookupCode: (token) => apiRequest<ProductCodeLookup>(`/product-codes/${encodeURIComponent(token)}/status`),
   claimCode: (token, idempotencyKey) => apiRequest<ClaimResult>(`/campaign-codes/${encodeURIComponent(token)}/claim`, { method: 'POST', idempotencyKey }),
   joinParche: (pin, alias) => apiRequest(`/sessions/join`, { method: 'POST', body: { pin, alias } }), // Paso 8
-  wallet: () => apiRequest<WalletData>('/wallet'), // Paso 7
+  wallet: async (cursor) => toWalletData(await apiRequest<Wallet>(`/wallet${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ''}`)),
+  progress: () => apiRequest<Progress>('/profile/progress'),
 };
 
 export const data: DataSource = import.meta.env.VITE_DEMO_DATA === 'true' ? demoSource : apiSource;

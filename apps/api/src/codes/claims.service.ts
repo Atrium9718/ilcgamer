@@ -112,6 +112,12 @@ export class ClaimsService {
           });
           await tx.ledgerAccount.update({ where: { id: account.id }, data: { balance: { increment: points } } });
         }
+        // Vínculo de economías solo por regla explícita de una campaña MIXTA aprobada (§5.7).
+        if (code.campaign.route === 'MIXTA' && draft.rules.xpPerActivation) {
+          await tx.xpEntry.create({
+            data: { userId: auth.user.id, amount: draft.rules.xpPerActivation, source: 'campaign_mixed', idempotencyKey: `claim-xp:${created.id}` },
+          });
+        }
         await this.audit.record(
           {
             actorId: auth.user.id,
@@ -151,16 +157,18 @@ export class ClaimsService {
   }
 
   private async result(claim: Claim, replayed: boolean): Promise<ClaimResult> {
-    const [entry, account, version] = await Promise.all([
+    const [entry, account, version, xp] = await Promise.all([
       this.prisma.ledgerEntry.findFirst({ where: { sourceType: 'claim', sourceId: claim.id } }),
       this.prisma.ledgerAccount.findUnique({ where: { userId: claim.userId } }),
       this.prisma.campaignVersion.findUniqueOrThrow({ where: { id: claim.campaignVersionId }, include: { campaign: true } }),
+      this.prisma.xpEntry.findUnique({ where: { idempotencyKey: `claim-xp:${claim.id}` } }),
     ]);
     const draft = CampaignDraftSchema.parse(version.content);
     return {
       claimId: claim.id,
       replayed,
       points: entry?.amount ?? 0,
+      xp: xp?.amount ?? 0,
       currencyName: String(await this.settings.get('economy.currencyName')),
       pointsExpireAt: entry?.expiresAt?.toISOString() ?? null,
       balance: account?.balance ?? 0,

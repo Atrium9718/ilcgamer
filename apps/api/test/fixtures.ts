@@ -64,3 +64,27 @@ export async function seedBrands(db: PrismaClient) {
     await db.brand.create({ data: { slug, name, themeId: slug } });
   }
 }
+
+/** Catálogo + lote generado por TI y vinculado a una campaña publicada. Devuelve los tokens en claro. */
+export async function claimableCodes(app: NestFastifyApplication, db: PrismaClient, count = 1, d = draft(), route = 'A_COMERCIAL', slug = 'feria') {
+  const brandAdmin = await person(app, db, ['ADMIN_MARCA'], 'Marca');
+  const ti = await person(app, db, ['SUPERADMIN'], 'TI');
+  if (!(await db.product.findUnique({ where: { sku: 'RVC-8' } }))) {
+    await brandAdmin.request('POST', '/admin/smarttags/products', { sku: 'RVC-8', name: 'Ron Viejo de Caldas 8 años', brandSlug: 'ron-viejo-de-caldas' });
+  }
+  const label = `L${Date.now().toString(36)}${Math.floor(Math.random() * 1000)}`;
+  const res = await ti.request('POST', '/admin/smarttags/generate', { sku: 'RVC-8', batchLabel: label, count });
+  const tokens = res.body
+    .trim()
+    .split('\r\n')
+    .slice(1)
+    .map((l) => l.split(',')[0] as string);
+  const batch = await db.batch.findFirstOrThrow({ where: { label } });
+  await publishedCampaign(app, db, slug, d, route);
+  const linked = await brandAdmin.request('POST', `/admin/smarttags/batches/${batch.id}/link`, { campaignSlug: slug });
+  if (linked.statusCode !== 200) throw new Error(`No se pudo vincular: ${linked.body}`);
+  return { tokens, batch, brandAdmin, ti };
+}
+
+export const claimCode = (who: { request: ReturnType<typeof browser>['request'] }, token: string, key = crypto.randomUUID().replaceAll('-', '')) =>
+  who.request('POST', `/campaign-codes/${token}/claim`, undefined, { 'idempotency-key': key });

@@ -221,8 +221,14 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] PWA: landing de código real, activación con condiciones, regreso al código tras guardar la cuenta. Verificado de punta a punta en Chromium.
 - [ ] Pendiente (TI/Producción): cifrado del archivo de imprenta en tránsito (p. ej. PGP), webhooks de trazabilidad con el ERP, y el mecanismo anti-anaquel definitivo (QR rotativo de establecimiento o vinculación por staff — Pasos 8 y 11). Mientras tanto, la activación depende de la campaña y sus límites.
 
-### Paso 7 — Ledger y economía dual
-- Puntos ILC (300/500 como **parámetros de prueba**, nombre de moneda configurable) e XP/insignias separados; multiplicadores; idempotencia; reversos auditados.
+### Paso 7 — Ledger y economía dual ✅
+- [x] `GET /wallet` (saldo, movimientos paginados, aviso de próximo vencimiento) y `GET /profile/progress` (XP, nivel, insignias).
+- [x] Vencimientos: se vence solo lo que queda sin usar de cada crédito (asignación FIFO por vencimiento), una sola vez, con movimiento compensatorio. Programador cada 10 min con candado en Redis.
+- [x] Reversos auditados desde la consola: motivo obligatorio, ligado al original, uno por crédito, nadie reversa su propia cuenta; el titular ve el reverso pero no el motivo interno.
+- [x] Conciliación horaria saldo en caché vs. suma del ledger; diferencia ⇒ evento de seguridad ALTA.
+- [x] XP, niveles (umbrales configurables) e insignias idempotentes; la XP nunca toca los Puntos ILC. Solo una campaña MIXTA puede otorgar XP por activación (regla versionada y aprobada).
+- [x] Consola "Economía" (pantalla 19 de Stitch): movimientos, reversos, catálogo de insignias y conciliación. PWA con billetera y progreso reales.
+- [ ] Pendiente de verificar: auditoría axe de las historias nuevas y prueba de punta a punta en navegador.
 
 ### Paso 8 — El Parche en tiempo real
 - Crear/unirse por PIN/QR, energía configurable (45 min por defecto de prueba), expiración (6:00 a. m. configurable), reconexión sin duplicar, marcador experiencial vs comercial.
