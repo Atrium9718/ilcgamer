@@ -188,8 +188,16 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [ ] Pendiente de TI: proveedor de nube, dominio oficial, gestor de secretos y pipeline de despliegue (staging/producción).
 - [ ] Mejora: dividir el bundle de la PWA por rutas (148 KB gzip hoy).
 
-### Paso 4 — Identidad, edad y consentimientos
-- Alias temporal, Google/Apple/OTP (proveedor por definir), age gate configurable por campaña, ConsentRecord, flujos de derechos.
+### Paso 4 — Identidad, edad y consentimientos ✅
+- [x] Control de edad en servidor: calcula la edad en hora de Colombia y **descarta la fecha** (solo guarda resultado y método); edad mínima configurable por plataforma y por campaña (≥ 18); un menor no genera cuenta ni registro.
+- [x] Cuenta TEMPORAL con alias y sesión por cookie opaca (HttpOnly, SameSite=Lax, Secure/`__Host-` fuera de desarrollo), revocable; protección CSRF por origen.
+- [x] Consentimientos por finalidad (términos, marketing, ubicación), append-only, con versión del aviso y origen; marketing siempre desmarcado por defecto; aceptar términos exige la versión vigente.
+- [x] Acceso por código (WhatsApp/SMS/correo) con proveedor intercambiable: códigos y destinos como HMAC en Redis, vencimiento 5 min, reenvío 60 s, 5 envíos/h, 5 intentos; número enmascarado; mismo número en otro dispositivo = misma cuenta.
+- [x] Google/Apple preparados y marcados "Próximamente" hasta tener credenciales de ILC.
+- [x] Eliminar cuenta: borra PII y credenciales, revoca todas las sesiones, anonimiza y conserva solo evidencia legal (consentimientos, auditoría).
+- [x] Pantallas 14 (código) y 15 (autorizaciones) diseñadas en Stitch y conectadas; PWA conectada a la API real (verificado en Chromium de punta a punta).
+- [ ] Pendiente de ILC: proveedor de WhatsApp/SMS/correo y credenciales de Google/Apple; texto legal de términos y aviso de privacidad.
+- [ ] Paso 7: fusionar el progreso de una cuenta temporal al iniciar sesión en una cuenta existente (hoy queda registrado en auditoría).
 
 ### Paso 5 — Campañas + CMS mínimo con aprobaciones
 - CRUD de campañas versionadas, estados, aprobaciones (marca/jurídica/privacidad), bloqueo de publicación, temas por campaña.

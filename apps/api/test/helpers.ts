@@ -13,6 +13,9 @@ export function useTestEnv(overrides: Record<string, string> = {}): void {
     APP_SECRET: 'prueba-secreto-de-al-menos-32-caracteres-xx',
     CORS_ORIGINS: 'http://localhost:5173',
     OPENAPI_UI: 'false',
+    OTP_PROVIDER: 'console',
+    RATE_LIMIT_PER_MINUTE: '1000',
+    AUTH_RATE_LIMIT_PER_MINUTE: '1000',
     ...overrides,
   });
 }
@@ -35,4 +38,30 @@ export async function resetDatabase(db: PrismaClient): Promise<void> {
   const rows = await db.$queryRaw<Array<{ tablename: string }>>`
     SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename <> '_prisma_migrations'`;
   if (rows.length) await db.$executeRawUnsafe(`TRUNCATE ${rows.map((r) => `"${r.tablename}"`).join(', ')} RESTART IDENTITY CASCADE`);
+}
+
+/** Cliente HTTP de prueba con "frasco" de cookies, como un navegador. */
+export function browser(app: NestFastifyApplication, origin = 'http://localhost:5173') {
+  const jar = new Map<string, string>();
+  const fastify = app.getHttpAdapter().getInstance();
+  return {
+    jar,
+    async request(method: 'GET' | 'POST' | 'PATCH' | 'DELETE', url: string, body?: unknown, extraHeaders: Record<string, string> = {}) {
+      const cookie = [...jar].map(([k, v]) => `${k}=${v}`).join('; ');
+      const res = await fastify.inject({
+        method,
+        url: `/api/v1${url}`,
+        payload: body === undefined ? undefined : (body as object),
+        headers: { origin, ...(cookie ? { cookie } : {}), ...extraHeaders },
+      });
+      const set = res.headers['set-cookie'];
+      for (const c of Array.isArray(set) ? set : set ? [set] : []) {
+        const [pair = ''] = c.split(';');
+        const [name = '', value = ''] = pair.split('=');
+        if (/Expires=Thu, 01 Jan 1970/i.test(c) || value === '') jar.delete(name);
+        else jar.set(name, value);
+      }
+      return res;
+    },
+  };
 }

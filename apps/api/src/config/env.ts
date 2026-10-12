@@ -30,6 +30,15 @@ export const EnvSchema = z.object({
     .optional()
     .transform((v) => v === 'true'),
   RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(120),
+  /** Límite por IP para endpoints expuestos a fuerza bruta (control de edad, OTP). */
+  AUTH_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(10),
+  /** Duración de la sesión de acceso (cookie) en días. */
+  SESSION_TTL_DAYS: z.coerce.number().int().min(1).max(90).default(30),
+  /**
+   * Proveedor de códigos OTP (WhatsApp/SMS/correo). "console" solo existe para desarrollo/pruebas;
+   * "none" deshabilita el login por código hasta contratar proveedor (Guía Técnica §15).
+   */
+  OTP_PROVIDER: z.enum(['console', 'none']).default('none'),
   APP_VERSION: z.string().default(packageVersion()),
 });
 
@@ -41,8 +50,12 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
     const issues = parsed.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n');
     throw new Error(`Configuración inválida:\n${issues}`);
   }
-  if (parsed.data.NODE_ENV === 'production' && parsed.data.APP_SECRET.startsWith('cambiar')) {
+  const deployed = parsed.data.NODE_ENV === 'production' || parsed.data.NODE_ENV === 'staging';
+  if (deployed && parsed.data.APP_SECRET.startsWith('cambiar')) {
     throw new Error('Configuración inválida: APP_SECRET de ejemplo en producción');
+  }
+  if (deployed && parsed.data.OTP_PROVIDER === 'console') {
+    throw new Error('Configuración inválida: OTP_PROVIDER=console solo se permite en desarrollo y pruebas');
   }
   return parsed.data;
 }

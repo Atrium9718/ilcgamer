@@ -19,3 +19,25 @@ describe('OpenAPI', () => {
     expect(Object.keys(c.HealthResponse?.properties ?? {})).toContain('checks');
   });
 });
+
+import { AgeGateRequestSchema, AliasSchema, OtpVerifySchema } from '../src/index.ts';
+
+describe('identidad', () => {
+  it('el alias admite tildes y ñ, no símbolos ni textos largos', () => {
+    expect(AliasSchema.safeParse('Andrés Ñ').success).toBe(true);
+    expect(AliasSchema.safeParse('<script>').success).toBe(false);
+    expect(AliasSchema.safeParse('a').success).toBe(false);
+    expect(AliasSchema.safeParse('x'.repeat(21)).success).toBe(false);
+  });
+
+  it('el control de edad exige la declaración explícita', () => {
+    expect(AgeGateRequestSchema.safeParse({ birthDate: '1990-08-14', declaration: true }).success).toBe(true);
+    expect(AgeGateRequestSchema.safeParse({ birthDate: '1990-08-14', declaration: false }).success).toBe(false);
+    expect(AgeGateRequestSchema.safeParse({ birthDate: '1990-02-30', declaration: true }).success).toBe(false);
+  });
+
+  it('el OTP tiene exactamente 6 dígitos', () => {
+    expect(OtpVerifySchema.safeParse({ channel: 'whatsapp', destination: '3001234567', code: '123456' }).success).toBe(true);
+    expect(OtpVerifySchema.safeParse({ channel: 'whatsapp', destination: '3001234567', code: '12345a' }).success).toBe(false);
+  });
+});

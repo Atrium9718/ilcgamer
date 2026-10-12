@@ -13,13 +13,15 @@ export interface PinInputProps {
   disabled?: boolean;
   /** Se llama cuando se completan todas las casillas. */
   onComplete?: (value: string) => void;
+  /** "compact" para códigos de 6 dígitos en pantallas angostas. */
+  size?: 'regular' | 'compact';
 }
 
 /**
  * PIN en casillas grandes (56px) con números tabulares, pegado y autocompletado OTP.
  * Solo captura dígitos; la validación, límites de intento y expiración son del servidor.
  */
-export function PinInput({ value, onChange, length = 4, label = 'PIN del Parche', hint, error, disabled, onComplete }: PinInputProps) {
+export function PinInput({ value, onChange, length = 4, label = 'PIN del Parche', hint, error, disabled, onComplete, size = 'regular' }: PinInputProps) {
   const id = useId();
   const refs = useRef<Array<HTMLInputElement | null>>([]);
   const digits = Array.from({ length }, (_, i) => value[i] ?? '');
@@ -67,7 +69,7 @@ export function PinInput({ value, onChange, length = 4, label = 'PIN del Parche'
   return (
     <fieldset className="space-y-2">
       <legend className="w-full font-label-sm text-label-sm uppercase text-secondary text-center">{label}</legend>
-      <div className="flex justify-center gap-3">
+      <div className={cx('flex justify-center', size === 'compact' ? 'gap-2' : 'gap-3')}>
         {digits.map((d, i) => (
           <input
             // biome-ignore lint/suspicious/noArrayIndexKey: posiciones fijas del PIN
@@ -89,8 +91,9 @@ export function PinInput({ value, onChange, length = 4, label = 'PIN del Parche'
             onPaste={handlePaste}
             onFocus={(e) => e.target.select()}
             className={cx(
-              'w-14 h-16 rounded-xl text-center bg-surface-container border outline-none tabular-nums',
-              'font-numeric-xl text-[32px] text-primary transition-colors focus:border-primary focus:ring-1 focus:ring-primary',
+              size === 'compact' ? 'w-12 h-14 text-[26px]' : 'w-14 h-16 text-[32px]',
+              'rounded-xl text-center bg-surface-container border outline-none tabular-nums',
+              'font-numeric-xl text-primary transition-colors focus:border-primary focus:ring-1 focus:ring-primary',
               error ? 'border-error' : d ? 'border-primary/60' : 'border-outline-variant',
               disabled && 'opacity-60',
             )}

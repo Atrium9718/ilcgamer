@@ -16,6 +16,7 @@
     "openapi:export": "node --env-file-if-exists=.env dist/openapi-export.js"
   },
   "dependencies": {
+    "@fastify/cookie": "11.1.2",
     "@fastify/helmet": "13.1.1",
     "@fastify/rate-limit": "11.2.0",
     "@fastify/static": "10.1.5",

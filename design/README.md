@@ -44,6 +44,8 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 11 · Perfil y referidos | `31c99aa559004c68ab75a583906ba420` | `ProfileView` |
 | 12 · Compartir logro | `9ea01a45f5f34540a3919c8a633825fb` | `ShareCardView` |
 | 13 · Guarda tu progreso | `1a65677e0fa84920a5abb3b2458d907f` | `SignUpView` |
+| 14 · Verificación por código | `73017fc39ce2415db68c32549d62296b` | `OtpView` (teclado nativo con autocompletado, no teclado en pantalla) |
+| 15 · Tus autorizaciones | `af78a00baae44e2fb0b90da9759d6c84` | `ConsentsView` (cada interruptor se guarda al instante) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 

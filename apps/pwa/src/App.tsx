@@ -1,9 +1,11 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
-import { ProfileRoute, ProgressRoute, RewardsRoute, ShareRoute, SignUpRoute, WalletRoute } from './routes/Account.tsx';
+import { SessionProvider } from './lib/session.tsx';
+import { ProfileRoute, ProgressRoute, RewardsRoute, ShareRoute, WalletRoute } from './routes/Account.tsx';
 import { AgeGateRoute, UnderageRoute } from './routes/AgeGate.tsx';
 import { CodeLandingRoute } from './routes/CodeLanding.tsx';
 import { EventEntryRoute, ReferralEntryRoute } from './routes/Entry.tsx';
 import { GameResultRoute, GamesRoute } from './routes/Games.tsx';
+import { ConsentsRoute, OtpRoute, SignUpRoute } from './routes/Identity.tsx';
 import { CreateParcheRoute, JoinParcheRoute, ParcheRoomRoute } from './routes/Parche.tsx';
 import { NotFound, RequireAge, RootLayout } from './routes/shell.tsx';
 
@@ -37,6 +39,8 @@ export const routes = [
           { path: '/perfil', element: <ProfileRoute /> },
           { path: '/compartir', element: <ShareRoute /> },
           { path: '/registro', element: <SignUpRoute /> },
+          { path: '/registro/codigo', element: <OtpRoute /> },
+          { path: '/perfil/autorizaciones', element: <ConsentsRoute /> },
         ],
       },
       { path: '*', element: <NotFound /> },
@@ -47,5 +51,9 @@ export const routes = [
 const router = createBrowserRouter(routes);
 
 export function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <SessionProvider>
+      <RouterProvider router={router} />
+    </SessionProvider>
+  );
 }

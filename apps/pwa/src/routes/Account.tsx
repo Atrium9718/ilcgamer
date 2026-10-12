@@ -7,16 +7,18 @@ import {
   RewardsView,
   ShareCardView,
   type ShareTemplate,
-  SignUpView,
+  Sheet,
   StatusMessage,
   type WalletFilter,
   WalletView,
 } from '@ilc/ui';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { DEMO, demoRewardDetail } from '../demo/fixtures.ts';
+import { ApiRequestError } from '../lib/api.ts';
 import { data, type WalletData } from '../lib/data.ts';
-import { KEYS, readLocal } from '../lib/storage.ts';
+import { identityApi } from '../lib/identity.ts';
+import { useSession } from '../lib/session.tsx';
 import { useTabNavigate } from './shell.tsx';
 
 export function WalletRoute() {
@@ -103,26 +105,78 @@ export function ProgressRoute() {
 export function ProfileRoute() {
   const navigate = useNavigate();
   const onNavigate = useTabNavigate();
-  const alias = readLocal(KEYS.tempAlias, 'Jugador');
+  const [params] = useSearchParams();
+  const { me, setMe, config } = useSession();
+  const [confirmDelete, setConfirmDelete] = useState(params.get('eliminar') === '1');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string>();
+  if (!me) return null;
+  const marketing = me.consents.find((c) => c.purpose === 'MARKETING')?.granted ?? false;
+
+  const logout = async () => {
+    await identityApi.logout().catch(() => undefined);
+    setMe(null);
+    navigate('/edad', { replace: true });
+  };
+  const deleteAccount = async () => {
+    setBusy(true);
+    try {
+      await identityApi.deleteAccount();
+      setMe(null);
+      navigate('/edad', { replace: true });
+    } catch (err) {
+      setError(err instanceof ApiRequestError ? err.message : 'No pudimos eliminar la cuenta.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
-    <ProfileView
-      alias={alias}
-      verified={false}
-      referral={{
-        code: 'DEMO-7K2Q',
-        rewardText: `Ganas 50 ${DEMO.currencyName} cuando tu invitado (+18) completa su perfil o se une a su primer Parche. Máximo 5 bonificaciones por semana.`,
-        joined: 0,
-      }}
-      marketingOptIn={false}
-      onEdit={() => navigate('/registro')}
-      onCopyCode={() => navigator.clipboard?.writeText('DEMO-7K2Q').catch(() => undefined)}
-      onShareLink={() => navigator.share?.({ title: 'ILC Origen', url: `${location.origin}/r/DEMO-7K2Q` }).catch(() => undefined)}
-      onShowQr={() => undefined}
-      onOpenSetting={(id) => (id === 'datos' ? navigate('/registro') : navigate(`/legal/${id}`))}
-      onLogout={() => navigate('/')}
-      onDeleteAccount={() => undefined}
-      onNavigate={onNavigate}
-    />
+    <>
+      <ProfileView
+        alias={me.alias}
+        verified={me.status === 'ACTIVA'}
+        referral={{
+          code: 'DEMO-7K2Q',
+          rewardText: `Ganas 50 ${config.currencyName} cuando tu invitado (+18) completa su perfil o se une a su primer Parche. Máximo 5 bonificaciones por semana.`,
+          joined: 0,
+        }}
+        marketingOptIn={marketing}
+        onEdit={() => navigate(me.status === 'ACTIVA' ? '/perfil/autorizaciones' : '/registro')}
+        onCopyCode={() => navigator.clipboard?.writeText('DEMO-7K2Q').catch(() => undefined)}
+        onShareLink={() => navigator.share?.({ title: 'ILC Origen', url: `${location.origin}/r/DEMO-7K2Q` }).catch(() => undefined)}
+        onShowQr={() => undefined}
+        onOpenSetting={(id) =>
+          id === 'consentimientos'
+            ? navigate('/perfil/autorizaciones')
+            : id === 'datos'
+              ? navigate(me.status === 'ACTIVA' ? '/perfil/autorizaciones' : '/registro')
+              : navigate(`/legal/${id}`)
+        }
+        onLogout={() => void logout()}
+        onDeleteAccount={() => setConfirmDelete(true)}
+        onNavigate={onNavigate}
+      />
+      <Sheet
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        title="¿Eliminar tu cuenta?"
+        actions={
+          <>
+            <Button variant="danger" loading={busy} onClick={() => void deleteAccount()}>
+              Sí, eliminar mi cuenta
+            </Button>
+            <Button variant="text" onClick={() => setConfirmDelete(false)}>
+              Cancelar
+            </Button>
+          </>
+        }
+      >
+        <p>Borraremos tus datos personales y tus métodos de acceso, y cerraremos tu sesión en todos los dispositivos. Esta acción no se puede deshacer.</p>
+        <p className="mt-2">Conservamos solo el registro de tus autorizaciones, como exige la ley, sin datos de contacto.</p>
+        {error && <p className="mt-2 text-error">{error}</p>}
+      </Sheet>
+    </>
   );
 }
 
@@ -141,29 +195,6 @@ export function ShareRoute() {
       onTemplateChange={setTemplate}
       onShare={() => undefined}
       onClose={() => navigate(-1)}
-    />
-  );
-}
-
-export function SignUpRoute() {
-  const navigate = useNavigate();
-  const [terms, setTerms] = useState(false);
-  // Marketing SIEMPRE empieza desmarcado (Guía Técnica §5.2).
-  const [marketing, setMarketing] = useState(false);
-  return (
-    <SignUpView
-      tempAlias={readLocal(KEYS.tempAlias, 'Jugador')}
-      pending={{ points: 500, xp: 1250, badges: 2 }}
-      currencyName={DEMO.currencyName}
-      termsAccepted={terms}
-      onTermsAcceptedChange={setTerms}
-      marketingOptIn={marketing}
-      onMarketingOptInChange={setMarketing}
-      termsHref="/legal/terminos"
-      privacyHref="/legal/privacidad"
-      onAuth={() => undefined}
-      onSkip={() => navigate(-1)}
-      onBack={() => navigate(-1)}
     />
   );
 }

@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cx } from '../lib/cx.ts';
 import { Icon } from './Icon.tsx';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'text';
+export type ButtonVariant = 'primary' | 'secondary' | 'text' | 'danger';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -22,6 +22,9 @@ const VARIANTS: Record<ButtonVariant, string> = {
   secondary:
     'h-13 rounded-xl border border-primary/50 bg-transparent text-on-surface font-label-lg text-label-lg hover:bg-surface-container disabled:border-outline-variant disabled:text-outline',
   text: 'min-h-12 px-3 text-on-surface-variant font-label-lg text-label-lg hover:text-primary disabled:text-outline',
+  /** Acciones destructivas e irreversibles (eliminar cuenta). */
+  danger:
+    'h-14 rounded-xl bg-error-container text-on-error-container border border-error/50 font-label-lg text-label-lg hover:border-error disabled:opacity-60',
 };
 
 export function Button({

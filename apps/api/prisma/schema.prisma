@@ -200,8 +200,25 @@ model User {
   referralCode   ReferralCode?
   referredBy     ReferralAttribution?  @relation("Referred")
   referrals      ReferralAttribution[] @relation("Referrer")
+  authSessions   AuthSession[]
 
   @@map("users")
+}
+
+/// Sesión de acceso del navegador (cookie HttpOnly). El token en claro nunca se guarda: solo su SHA-256.
+/// Revocable (cerrar sesión, eliminar cuenta, cambio de cuenta).
+model AuthSession {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @db.Uuid
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String    @unique @db.VarChar(64)
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime  @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+
+  @@index([userId])
+  @@map("auth_sessions")
 }
 
 /// Datos personales con acceso restringido. Candidatos a cifrado a nivel de columna.

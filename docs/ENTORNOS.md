@@ -24,10 +24,13 @@ ni campañas sin aprobación (§4.4).
 | `DATABASE_URL` | sí | PostgreSQL. En prod: usuario con privilegios mínimos (sin DDL fuera de migraciones). |
 | `REDIS_URL` | sí | Sesiones del Parche, límites de intentos, tiempo real. |
 | `APP_SECRET` | sí | ≥ 32 caracteres. HMAC de PIN y hashes de tokens. **La API no arranca en producción con el valor de ejemplo.** Rotación documentada por TI. |
-| `CORS_ORIGINS` | sí | Dominios exactos de la PWA y la consola, separados por coma. |
+| `CORS_ORIGINS` | sí | Dominios exactos de la PWA y la consola, separados por coma. También es la lista de orígenes de la protección CSRF: una operación desde otro origen recibe 403. En local: `http://localhost:5173,http://localhost:4173`. |
 | `OPENAPI_UI` | no | Publica `/api/docs`. Siempre desactivado en producción (el JSON `/api/v1/openapi.json` sigue disponible). |
 | `RATE_LIMIT_PER_MINUTE` | no | Límite base por cliente (por defecto 120). Los endpoints sensibles tienen límites propios. |
-| `LOG_LEVEL` | no | `info` por defecto. Los logs redactan tokens, PIN, cookies y claves de idempotencia. |
+| `LOG_LEVEL` | no | `info` por defecto. Los logs redactan tokens, PIN, cookies, códigos OTP, destinos, fechas de nacimiento y claves de idempotencia. |
+| `AUTH_RATE_LIMIT_PER_MINUTE` | no | Límite por IP del control de edad y del acceso por código (por defecto 10). |
+| `SESSION_TTL_DAYS` | no | Duración de la sesión de acceso (por defecto 30 días). |
+| `OTP_PROVIDER` | sí | `none` hasta contratar proveedor. `console` (imprime el código en el log) **solo** en desarrollo/pruebas: la API no arranca en staging/producción con ese valor. |
 
 ### PWA (`apps/pwa/.env.example`)
 
@@ -66,6 +69,9 @@ pnpm db:migrate && pnpm --filter @ilc/api db:seed
 pnpm dev:api                                 # http://localhost:3000/api/v1/health · /api/docs
 pnpm dev:pwa                                 # http://localhost:5173 (proxy /api → 3000)
 ```
+
+Acceso por código en local: con `OTP_PROVIDER=console` el código aparece en el log de la API
+(`[solo desarrollo] código 123456 por whatsapp`).
 
 Entradas de prueba en modo demostración: `/v/demo-reconocido`, `/v/demo-amarillo`, `/v/demo-reclamado`, `/v/demo-revision`,
 `/p/4729` (PIN del Parche de demostración), `/e/feria`, `/r/DEMO-7K2Q`.

@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { randomUUID } from 'node:crypto';
 import type { IncomingMessage } from 'node:http';
+import cookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
-import { ApiErrorSchema, HEADERS, HealthResponseSchema, toOpenApiComponents } from '@ilc/contracts';
+import { ApiErrorSchema, ConsentStateSchema, HEADERS, HealthResponseSchema, MeSchema, PublicConfigSchema, toOpenApiComponents } from '@ilc/contracts';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
@@ -14,7 +15,18 @@ import type { Env } from './config/env.ts';
 const REQUEST_ID = /^[A-Za-z0-9._-]{8,64}$/;
 
 /** Rutas sensibles que nunca deben aparecer completas en logs (Guía Técnica §9.2). */
-const REDACT = ['req.headers.authorization', 'req.headers.cookie', 'req.headers["idempotency-key"]', 'req.params.token', 'req.params.pin', 'req.body.pin'];
+const REDACT = [
+  'req.headers.authorization',
+  'req.headers.cookie',
+  'res.headers["set-cookie"]',
+  'req.body.birthDate',
+  'req.body.destination',
+  'req.body.code',
+  'req.headers["idempotency-key"]',
+  'req.params.token',
+  'req.params.pin',
+  'req.body.pin',
+];
 
 export async function createApp(options: { logger?: boolean } = {}): Promise<NestFastifyApplication> {
   const adapter = new FastifyAdapter({
@@ -31,6 +43,7 @@ export async function createApp(options: { logger?: boolean } = {}): Promise<Nes
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, { logger: options.logger === false ? false : undefined });
   const env = app.get<Env>(ENV);
 
+  await app.register(cookie);
   await app.register(helmet, {
     contentSecurityPolicy: { directives: { defaultSrc: ["'none'"], frameAncestors: ["'none'"] } },
     crossOriginResourcePolicy: { policy: 'same-site' },
@@ -74,9 +87,13 @@ export function buildOpenApi(app: NestFastifyApplication, env: Env): OpenAPIObje
     ...document.components,
     schemas: {
       ...(document.components?.schemas ?? {}),
-      ...(toOpenApiComponents({ ApiError: ApiErrorSchema, HealthResponse: HealthResponseSchema }) as NonNullable<
-        NonNullable<OpenAPIObject['components']>['schemas']
-      >),
+      ...(toOpenApiComponents({
+        ApiError: ApiErrorSchema,
+        HealthResponse: HealthResponseSchema,
+        Me: MeSchema,
+        ConsentState: ConsentStateSchema,
+        PublicConfig: PublicConfigSchema,
+      }) as NonNullable<NonNullable<OpenAPIObject['components']>['schemas']>),
     },
   };
   return document;

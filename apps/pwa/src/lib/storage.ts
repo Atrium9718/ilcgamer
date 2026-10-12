@@ -20,9 +20,6 @@ export function writeLocal(key: string, value: unknown, store: 'local' | 'sessio
 }
 
 export const KEYS = {
-  /** Resultado del control de edad en esta pestaña. El servidor registra el definitivo (Paso 4). */
-  ageGate: 'ilc.ageGate',
-  tempAlias: 'ilc.alias',
   referral: 'ilc.referral',
   returnTo: 'ilc.returnTo',
 } as const;

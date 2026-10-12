@@ -27,6 +27,8 @@ export interface SignUpViewProps {
   privacyHref: string;
   /** Proveedor en curso (deshabilita los demás). */
   busyProvider?: AuthProvider;
+  /** Proveedores habilitados por la plataforma; los demás se muestran como "próximamente". */
+  availableProviders?: AuthProvider[];
   onAuth: (provider: AuthProvider) => void;
   onSkip: () => void;
   onBack: () => void;
@@ -43,6 +45,7 @@ export function SignUpView({
   termsHref,
   privacyHref,
   busyProvider,
+  availableProviders = ['google', 'apple', 'whatsapp', 'email'],
   onAuth,
   onSkip,
   onBack,
@@ -97,11 +100,19 @@ export function SignUpView({
 
           <section aria-label="Elige cómo crear tu cuenta" className="space-y-2">
             {providers.map((p) => (
-              <AuthButton key={p} provider={p} disabled={!termsAccepted || (busyProvider !== undefined && busyProvider !== p)} onSelect={() => onAuth(p)} />
+              <AuthButton
+                key={p}
+                provider={p}
+                comingSoon={!availableProviders.includes(p)}
+                disabled={!termsAccepted || !availableProviders.includes(p) || (busyProvider !== undefined && busyProvider !== p)}
+                onSelect={() => onAuth(p)}
+              />
             ))}
-            <Button variant="text" leadingIcon="mail" disabled={!termsAccepted} onClick={() => onAuth('email')}>
-              Prefiero usar mi correo
-            </Button>
+            {availableProviders.includes('email') && (
+              <Button variant="text" leadingIcon="mail" disabled={!termsAccepted} onClick={() => onAuth('email')}>
+                Prefiero usar mi correo
+              </Button>
+            )}
             {!termsAccepted && <p className="font-body-md text-[12px] text-on-surface-variant text-center">Acepta los términos para crear tu cuenta.</p>}
           </section>
 

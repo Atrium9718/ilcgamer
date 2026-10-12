@@ -13,7 +13,17 @@ const PROVIDER: Record<AuthProvider, { label: string; icon: string }> = {
  * Botón de acceso. Marcador: al integrar cada proveedor se usarán sus botones oficiales
  * (lineamientos de marca de Google/Apple) — Guía Técnica §5.2.
  */
-export function AuthButton({ provider, onSelect, disabled }: { provider: AuthProvider; onSelect: () => void; disabled?: boolean }) {
+export function AuthButton({
+  provider,
+  onSelect,
+  disabled,
+  comingSoon,
+}: {
+  provider: AuthProvider;
+  onSelect: () => void;
+  disabled?: boolean;
+  comingSoon?: boolean;
+}) {
   const p = PROVIDER[provider];
   return (
     <button
@@ -24,7 +34,11 @@ export function AuthButton({ provider, onSelect, disabled }: { provider: AuthPro
     >
       <Icon name={p.icon} className="text-[24px] text-on-surface-variant" />
       <span className="flex-1 text-left">{p.label}</span>
-      <Icon name="arrow_forward" className="text-[20px] text-on-surface-variant" />
+      {comingSoon ? (
+        <span className="px-2 py-0.5 rounded-full border border-outline-variant font-label-sm text-[10px] uppercase text-on-surface-variant">Próximamente</span>
+      ) : (
+        <Icon name="arrow_forward" className="text-[20px] text-on-surface-variant" />
+      )}
     </button>
   );
 }

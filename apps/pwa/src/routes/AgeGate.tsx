@@ -2,8 +2,10 @@ import { AgeGateView, type DateParts } from '@ilc/ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { checkBirthDate } from '../lib/age.ts';
-import { KEYS, readLocal, writeLocal } from '../lib/storage.ts';
-import type { AgeGateResult } from './shell.tsx';
+import { ApiRequestError } from '../lib/api.ts';
+import { identityApi } from '../lib/identity.ts';
+import { useSession } from '../lib/session.tsx';
+import { KEYS, readLocal } from '../lib/storage.ts';
 
 const LINKS = [
   { label: 'Términos y condiciones', href: '/legal/terminos' },
@@ -11,18 +13,23 @@ const LINKS = [
   { label: 'Consumo responsable', href: '/legal/consumo-responsable' },
 ];
 
+const pad = (v: string) => v.padStart(2, '0');
+
 /**
- * Control +18. Guarda solo el resultado (no la fecha) en esta pestaña; el Paso 4 lo registra en servidor
- * con el mecanismo aprobado por campaña (Guía Técnica §5.2: no almacenar fecha de nacimiento completa).
+ * Control +18 contra la API: el servidor calcula la edad, registra solo el resultado y abre una cuenta
+ * temporal con alias (Guía Técnica §5.2). La validación local solo mejora la experiencia.
  */
 export function AgeGateRoute() {
   const navigate = useNavigate();
+  const { setMe } = useSession();
   const [birthDate, setBirthDate] = useState<DateParts>({ day: '', month: '', year: '' });
   const [confirmed, setConfirmed] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string>();
   const check = checkBirthDate(birthDate);
 
-  const error = !touched
+  const localError = !touched
     ? undefined
     : check.kind === 'invalid'
       ? 'La fecha no es válida. Revisa el día, el mes y el año.'
@@ -30,23 +37,36 @@ export function AgeGateRoute() {
         ? 'Este contenido es solo para mayores de 18 años.'
         : undefined;
 
+  const submit = async () => {
+    setSubmitting(true);
+    setServerError(undefined);
+    try {
+      const me = await identityApi.ageGate({ birthDate: `${birthDate.year}-${pad(birthDate.month)}-${pad(birthDate.day)}`, declaration: true });
+      setMe(me);
+      const returnTo = readLocal<string>(KEYS.returnTo, '/', 'session');
+      navigate(returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/', { replace: true });
+    } catch (err) {
+      if (err instanceof ApiRequestError && err.code === 'AGE_REQUIREMENT_NOT_MET') navigate('/menor-de-edad', { replace: true });
+      else setServerError(err instanceof ApiRequestError ? err.message : 'No pudimos continuar. Intenta de nuevo.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <AgeGateView
       birthDate={birthDate}
       onBirthDateChange={(v) => {
         setBirthDate(v);
         setTouched(v.year.length === 4);
+        setServerError(undefined);
       }}
       confirmed={confirmed}
       onConfirmedChange={setConfirmed}
       canSubmit={confirmed && check.kind === 'ok'}
-      error={error}
-      onSubmit={() => {
-        const result: AgeGateResult = { passedAt: new Date().toISOString(), method: 'fecha_y_declaracion' };
-        writeLocal(KEYS.ageGate, result, 'session');
-        const returnTo = readLocal<string>(KEYS.returnTo, '/', 'session');
-        navigate(returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/', { replace: true });
-      }}
+      submitting={submitting}
+      error={serverError ?? localError}
+      onSubmit={submit}
       onUnderage={() => navigate('/menor-de-edad', { replace: true })}
       privacyHref="/legal/privacidad"
       termsHref="/legal/terminos"

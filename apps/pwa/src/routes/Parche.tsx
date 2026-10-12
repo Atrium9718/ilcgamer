@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { DEMO } from '../demo/fixtures.ts';
 import { data } from '../lib/data.ts';
-import { KEYS, readLocal, writeLocal } from '../lib/storage.ts';
+import { identityApi } from '../lib/identity.ts';
+import { useSession } from '../lib/session.tsx';
 import { useOnline } from '../lib/useOnline.ts';
 
 const validName = (v: string) => v.trim().length >= 2;
@@ -11,7 +12,8 @@ const validName = (v: string) => v.trim().length >= 2;
 export function CreateParcheRoute() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
-  const [alias, setAlias] = useState(readLocal(KEYS.tempAlias, ''));
+  const { me, setMe } = useSession();
+  const [alias, setAlias] = useState(me && me.alias !== 'Jugador' ? me.alias : '');
   const [mode, setMode] = useState<ParcheMode>('multi');
   return (
     <CreateParcheView
@@ -24,8 +26,8 @@ export function CreateParcheRoute() {
       onModeChange={setMode}
       energyMinutes={DEMO.energyMinutes}
       canSubmit={validName(name) && validName(alias)}
-      onSubmit={() => {
-        writeLocal(KEYS.tempAlias, alias.trim());
+      onSubmit={async () => {
+        if (alias.trim() !== me?.alias) await identityApi.updateAlias(alias.trim()).then(setMe, () => undefined);
         navigate(`/parche/${DEMO.parche.id}`, { replace: true });
       }}
       onBack={() => navigate(-1)}
@@ -39,7 +41,8 @@ export function JoinParcheRoute() {
   const [method, setMethod] = useState<JoinMethod>('pin');
   // /p/:pin — enlace de invitación con el PIN incluido.
   const [pin, setPin] = useState(/^\d{4}$/.test(params.pin ?? '') ? (params.pin as string) : '');
-  const [alias, setAlias] = useState(readLocal(KEYS.tempAlias, ''));
+  const { me, setMe } = useSession();
+  const [alias, setAlias] = useState(me && me.alias !== 'Jugador' ? me.alias : '');
   const [attemptsLeft, setAttemptsLeft] = useState<number | undefined>();
   const [pinError, setPinError] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
@@ -64,7 +67,7 @@ export function JoinParcheRoute() {
         const r = await data.joinParche(pin, alias.trim());
         setSubmitting(false);
         if ('sessionId' in r) {
-          writeLocal(KEYS.tempAlias, alias.trim());
+          if (alias.trim() !== me?.alias) await identityApi.updateAlias(alias.trim()).then(setMe, () => undefined);
           navigate(`/parche/${r.sessionId}`, { replace: true });
         } else {
           setAttemptsLeft(r.attemptsLeft);

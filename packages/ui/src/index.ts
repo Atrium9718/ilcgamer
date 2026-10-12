@@ -26,6 +26,7 @@ export { SegmentedControl, type SegmentedControlProps, type SegmentOption } from
 export { type SettingsItem, SettingsList } from './components/SettingsList.tsx';
 export { Sheet, type SheetProps } from './components/Sheet.tsx';
 export { OfflineBanner, type StatusKind, StatusMessage, type StatusMessageProps } from './components/StatusMessage.tsx';
+export { Switch, type SwitchProps } from './components/Switch.tsx';
 export { TextField, type TextFieldProps } from './components/TextField.tsx';
 export { Toast, type ToastProps, type ToastTone } from './components/Toast.tsx';
 export { TopBar, type TopBarProps } from './components/TopBar.tsx';
@@ -36,10 +37,12 @@ export { applyCampaignTheme, type CampaignTheme } from './lib/theme.ts';
 // Vistas puras (traducidas desde Google Stitch)
 export { AgeGateView, type AgeGateViewProps } from './views/AgeGateView.tsx';
 export { CodeLandingView, type CodeLandingViewProps } from './views/CodeLandingView.tsx';
+export { ConsentsView, type ConsentsViewProps, type ConsentView } from './views/ConsentsView.tsx';
 export { CreateParcheView, type CreateParcheViewProps, type ParcheMode } from './views/CreateParcheView.tsx';
 export { GameResultView, type GameResultViewProps, type ResultState, type VerifiedResult } from './views/GameResultView.tsx';
 export { type Experience, GamesCatalogView, type GamesCatalogViewProps, MAX_ROUTE_B_EXPERIENCES, type QuickGame } from './views/GamesCatalogView.tsx';
 export { type JoinMethod, JoinParcheView, type JoinParcheViewProps, type ParchePreview } from './views/JoinParcheView.tsx';
+export { type OtpChannelView, type OtpStep, OtpView, type OtpViewProps } from './views/OtpView.tsx';
 export { type ConnectionState, type GameEntry, ParcheRoomView, type ParcheRoomViewProps } from './views/ParcheRoomView.tsx';
 export { ProfileView, type ProfileViewProps } from './views/ProfileView.tsx';
 export { type BadgeView, ProgressView, type ProgressViewProps, type StoryView } from './views/ProgressView.tsx';

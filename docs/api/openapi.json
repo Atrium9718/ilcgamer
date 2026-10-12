@@ -1,6 +1,27 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/v1/config": {
+      "get": {
+        "operationId": "PlatformController_config",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicConfig"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Plataforma"
+        ]
+      }
+    },
     "/api/v1/health": {
       "get": {
         "operationId": "HealthController_check",
@@ -29,6 +50,203 @@
         },
         "tags": [
           "Operación"
+        ]
+      }
+    },
+    "/api/v1/age-gate": {
+      "post": {
+        "operationId": "IdentityController_ageGate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Identidad"
+        ]
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "operationId": "IdentityController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      },
+      "patch": {
+        "operationId": "IdentityController_updateMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      },
+      "delete": {
+        "operationId": "IdentityController_deleteMe",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      }
+    },
+    "/api/v1/consents": {
+      "get": {
+        "operationId": "IdentityController_consents",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      },
+      "post": {
+        "operationId": "IdentityController_recordConsent",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/otp/request": {
+      "post": {
+        "operationId": "IdentityController_requestOtp",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/otp/verify": {
+      "post": {
+        "operationId": "IdentityController_verifyOtp",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/oauth/{provider}": {
+      "post": {
+        "operationId": "IdentityController_oauth",
+        "parameters": [
+          {
+            "name": "provider",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Identidad"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "IdentityController_logout",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Identidad"
         ]
       }
     }
@@ -61,6 +279,13 @@
                   "IDEMPOTENCY_KEY_REQUIRED",
                   "IDEMPOTENCY_KEY_REUSED",
                   "AGE_GATE_REQUIRED",
+                  "AGE_REQUIREMENT_NOT_MET",
+                  "CONSENT_REQUIRED",
+                  "OTP_INVALID",
+                  "OTP_EXPIRED",
+                  "OTP_LOCKED",
+                  "AUTH_PROVIDER_NOT_CONFIGURED",
+                  "ACCOUNT_UNAVAILABLE",
                   "CAMPAIGN_NOT_ACTIVE",
                   "CODE_NOT_RECOGNIZED",
                   "CODE_ALREADY_CLAIMED",
@@ -164,6 +389,173 @@
           "environment",
           "time",
           "checks"
+        ],
+        "additionalProperties": false
+      },
+      "Me": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "TEMPORAL",
+              "ACTIVA",
+              "SUSPENDIDA",
+              "ELIMINADA"
+            ]
+          },
+          "ageVerified": {
+            "type": "boolean"
+          },
+          "credentials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string"
+                },
+                "hint": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider",
+                "hint"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "consents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "purpose": {
+                  "type": "string",
+                  "enum": [
+                    "TERMINOS_Y_PRIVACIDAD",
+                    "MARKETING",
+                    "UBICACION"
+                  ]
+                },
+                "granted": {
+                  "type": "boolean"
+                },
+                "noticeVersion": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "nullable": true,
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                }
+              },
+              "required": [
+                "purpose",
+                "granted",
+                "noticeVersion",
+                "updatedAt"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "alias",
+          "status",
+          "ageVerified",
+          "credentials",
+          "consents"
+        ],
+        "additionalProperties": false
+      },
+      "ConsentState": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "TERMINOS_Y_PRIVACIDAD",
+              "MARKETING",
+              "UBICACION"
+            ]
+          },
+          "granted": {
+            "type": "boolean"
+          },
+          "noticeVersion": {
+            "nullable": true,
+            "type": "string"
+          },
+          "updatedAt": {
+            "nullable": true,
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          }
+        },
+        "required": [
+          "purpose",
+          "granted",
+          "noticeVersion",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "PublicConfig": {
+        "type": "object",
+        "properties": {
+          "currencyName": {
+            "type": "string"
+          },
+          "legalNoticeVersion": {
+            "type": "string"
+          },
+          "minAge": {
+            "type": "integer",
+            "minimum": 18,
+            "maximum": 9007199254740991
+          },
+          "otpChannels": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "whatsapp",
+                "sms",
+                "email"
+              ]
+            }
+          },
+          "oauthProviders": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "google",
+                "apple"
+              ]
+            }
+          }
+        },
+        "required": [
+          "currencyName",
+          "legalNoticeVersion",
+          "minAge",
+          "otpChannels",
+          "oauthProviders"
         ],
         "additionalProperties": false
       }

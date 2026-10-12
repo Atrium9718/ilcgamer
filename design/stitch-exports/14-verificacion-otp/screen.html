@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verificación de Código - Industria Licorera de Caldas</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ffb4ab",
+            "tertiary": "#ffb77c",
+            "surface-dim": "#0b1512",
+            "surface": "#0b1512",
+            "primary-container": "#b79b5b",
+            "secondary-fixed": "#a8f2c8",
+            "inverse-surface": "#dae5e0",
+            "tertiary-fixed-dim": "#ffb77c",
+            "secondary-container": "#005738",
+            "on-secondary": "#003823",
+            "on-surface-variant": "#d0c5b5",
+            "on-primary-container": "#453300",
+            "on-primary-fixed": "#251a00",
+            "outline": "#999081",
+            "surface-container-highest": "#2d3733",
+            "on-primary-fixed-variant": "#59440b",
+            "on-tertiary": "#4d2600",
+            "tertiary-container": "#d38f55",
+            "on-error-container": "#ffdad6",
+            "inverse-on-surface": "#28332f",
+            "secondary": "#8dd6ad",
+            "on-surface": "#dae5e0",
+            "surface-container-high": "#222c29",
+            "surface-container-lowest": "#06100d",
+            "on-background": "#dae5e0",
+            "error-container": "#93000a",
+            "surface-bright": "#313b38",
+            "secondary-fixed-dim": "#8dd6ad",
+            "on-secondary-fixed": "#002112",
+            "primary-fixed-dim": "#e2c37f",
+            "on-secondary-container": "#82cba3",
+            "surface-variant": "#2d3733",
+            "surface-container-low": "#141e1a",
+            "surface-container": "#18221e",
+            "primary-fixed": "#ffdf99",
+            "on-tertiary-container": "#542b00",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "on-primary": "#3f2e00",
+            "on-tertiary-fixed": "#2e1500",
+            "tertiary-fixed": "#ffdcc3",
+            "on-error": "#690005",
+            "on-secondary-fixed-variant": "#005234",
+            "surface-tint": "#e2c37f",
+            "primary": "#e2c37f",
+            "inverse-primary": "#725b22",
+            "outline-variant": "#4d4639",
+            "background": "#0b1512"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "8px",
+            "margin": "16px",
+            "space-lg": "24px",
+            "space-xs": "4px",
+            "gutter": "16px",
+            "space-xl": "32px",
+            "space-md": "16px"
+          },
+          "fontFamily": {
+            "title-md": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "numeric-xl": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["EB Garamond"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["EB Garamond"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "title-md": ["17px", {"lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600"}],
+            "title-lg": ["20px", {"lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700"}],
+            "numeric-xl": ["40px", {"lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800"}],
+            "body-md": ["15px", {"lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600"}],
+            "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700"}],
+            "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+            "label-lg": ["15px", {"lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700"}],
+            "display-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700"}],
+            "body-lg": ["17px", {"lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes pulse-gold {
+      0%, 100% {
+        border-color: #e2c37f;
+        box-shadow: 0 0 16px rgba(226, 195, 127, 0.35);
+      }
+      50% {
+        border-color: rgba(226, 195, 127, 0.4);
+        box-shadow: 0 0 6px rgba(226, 195, 127, 0.15);
+      }
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .active-otp-box {
+      animation: pulse-gold 2s infinite ease-in-out;
+    }
+
+    .cursor-active {
+      animation: cursor-blink 1s infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex justify-center items-center">
+<!-- Mobile Container Mockup (PWA Target max-w-md) -->
+<div class="w-full max-w-md min-h-screen bg-background flex flex-col relative overflow-hidden shadow-2xl">
+<!-- Atmospheric Ambient Heritage Glow -->
+<div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-secondary-container/15 blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/3 -left-32 w-72 h-72 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<!-- 1. Cabecera (Top Bar) -->
+<header class="flex justify-between items-center w-full px-margin h-14 max-w-md mx-auto z-20 shrink-0">
+<button aria-label="Volver atrás" class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high/40 active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-title-lg">arrow_back</span>
+</button>
+<h1 class="text-title-md font-title-md text-on-surface tracking-tight">
+        Verifica tu número
+      </h1>
+<div class="w-10 h-10 -mr-2 rounded-full flex items-center justify-center text-primary/80">
+<span class="material-symbols-outlined text-title-lg" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+</header>
+<!-- Main Content Canvas (Scrollable area) -->
+<main class="flex-1 px-margin pt-space-xs pb-6 flex flex-col z-10 overflow-y-auto">
+<!-- 2. Indicador de paso -->
+<div class="flex items-center gap-2 mt-2 mb-4">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/30 text-secondary text-label-sm font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Paso 2 de 2</span>
+</div>
+<div class="h-px flex-1 bg-gradient-to-r from-outline-variant/30 to-transparent"></div>
+</div>
+<!-- 3. Bloque de título e instrucciones -->
+<section class="space-y-2 mb-6">
+<h2 class="text-headline-lg font-headline-lg text-on-surface leading-tight">
+          Escribe el código
+        </h2>
+<p class="text-body-md font-body-md text-on-surface-variant">
+          Te enviamos un código de 6 dígitos por WhatsApp al 
+          <span class="text-on-surface font-semibold tracking-wide">+57 300 •••• 567</span>.
+        </p>
+<div class="pt-1">
+<button class="inline-flex items-center gap-1 text-label-lg font-label-lg text-primary hover:text-primary-fixed transition-colors group" type="button">
+<span>Cambiar número</span>
+<span class="material-symbols-outlined text-title-md group-hover:translate-x-0.5 transition-transform">edit</span>
+</button>
+</div>
+</section>
+<!-- 4. Casillas de código OTP -->
+<section class="mb-5">
+<div class="grid grid-cols-6 gap-2 w-full max-w-sm mx-auto">
+<!-- Box 1: Filled -->
+<div class="h-14 rounded-xl bg-surface-container border border-outline-variant/40 flex items-center justify-center text-on-surface font-numeric-xl text-numeric-xl font-bold shadow-inner">
+<span class="text-primary-fixed-dim">4</span>
+</div>
+<!-- Box 2: Filled -->
+<div class="h-14 rounded-xl bg-surface-container border border-outline-variant/40 flex items-center justify-center text-on-surface font-numeric-xl text-numeric-xl font-bold shadow-inner">
+<span class="text-primary-fixed-dim">8</span>
+</div>
+<!-- Box 3: Filled -->
+<div class="h-14 rounded-xl bg-surface-container border border-outline-variant/40 flex items-center justify-center text-on-surface font-numeric-xl text-numeric-xl font-bold shadow-inner">
+<span class="text-primary-fixed-dim">1</span>
+</div>
+<!-- Box 4: Active / Focused -->
+<div class="h-14 rounded-xl bg-surface-container-high border-2 border-primary active-otp-box flex items-center justify-center relative shadow-lg">
+<span class="w-0.5 h-7 bg-primary cursor-active rounded-full"></span>
+</div>
+<!-- Box 5: Empty -->
+<div class="h-14 rounded-xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-outline-variant/30"></span>
+</div>
+<!-- Box 6: Empty -->
+<div class="h-14 rounded-xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-outline-variant/30"></span>
+</div>
+</div>
+</section>
+<!-- 5. Tiempos y reenvío -->
+<section class="flex flex-col items-center justify-center space-y-3 mb-6 text-center">
+<!-- Expiry countdown -->
+<div class="inline-flex items-center gap-1.5 text-body-md font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-title-md text-outline">timer</span>
+<span>El código vence en <strong class="text-on-surface font-semibold tabular-nums">04:32</strong></span>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+<!-- Disabled timer resend -->
+<button class="inline-flex items-center gap-1 text-label-sm font-label-sm text-outline opacity-70 cursor-not-allowed" disabled="" type="button">
+<span class="material-symbols-outlined text-title-md">schedule</span>
+<span>Reenviar código en <span class="tabular-nums">0:45</span></span>
+</button>
+<span class="text-outline-variant text-label-sm font-label-sm">•</span>
+<!-- Secondary Alternative -->
+<button class="inline-flex items-center gap-1 text-label-sm font-label-sm text-secondary hover:text-secondary-fixed transition-colors active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-title-md">sms</span>
+<span>Prefiero recibirlo por SMS</span>
+</button>
+</div>
+</section>
+<!-- 6. Nota de privacidad (Salvaguarda de datos) -->
+<section class="mt-auto mb-4">
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start gap-3">
+<div class="p-2 rounded-lg bg-surface-container-high text-secondary shrink-0">
+<span class="material-symbols-outlined text-title-md" data-weight="fill" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div class="flex-1">
+<p class="text-body-md font-body-md text-on-surface-variant leading-snug">
+              Usamos tu número solo para proteger tu cuenta. No lo verá nadie más en El Parche.
+            </p>
+</div>
+</div>
+</section>
+<!-- 7. Teclado Numérico Virtual Sutil -->
+<section class="mb-4 pt-1">
+<div class="grid grid-cols-3 gap-1.5 max-w-xs mx-auto">
+<!-- Row 1 -->
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>1</span>
+</button>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>2</span>
+</button>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>3</span>
+</button>
+<!-- Row 2 -->
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>4</span>
+</button>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>5</span>
+</button>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>6</span>
+</button>
+<!-- Row 3 -->
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>7</span>
+</button>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>8</span>
+</button>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>9</span>
+</button>
+<!-- Row 4 -->
+<div class="h-11 flex items-center justify-center"></div>
+<button class="h-11 rounded-lg bg-surface-container/60 hover:bg-surface-container-high/80 active:scale-[0.96] text-title-md font-title-md text-on-surface transition-all flex flex-col items-center justify-center" type="button">
+<span>0</span>
+</button>
+<button aria-label="Borrar" class="h-11 rounded-lg bg-surface-container/30 hover:bg-surface-container-high/50 active:scale-[0.96] text-on-surface-variant transition-all flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-title-md">backspace</span>
+</button>
+</div>
+</section>
+</main>
+<!-- 8. Barra de Acción Fija Inferior & Pie Legal -->
+<div class="w-full bg-surface-container-lowest/95 backdrop-blur-md px-margin pt-3 pb-safe z-30 shrink-0">
+<!-- Primary Action CTA -->
+<button class="w-full h-14 rounded-xl bg-primary text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center shadow-lg hover:bg-primary-fixed active:scale-[0.98] transition-all duration-150" type="button">
+<span>Verificar</span>
+</button>
+<!-- Mandatory Legal Notice (Guía §3.5 & Shared Footer Anchor) -->
+<footer class="w-full px-gutter py-space-xs text-center max-w-md mx-auto mt-2">
+<p class="text-outline text-label-sm font-label-sm tracking-wider uppercase leading-tight opacity-80">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</footer>
+</div>
+</div>
+</body></html>

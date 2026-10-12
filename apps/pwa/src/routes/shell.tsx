@@ -2,7 +2,8 @@ import { applyCampaignTheme, Button, type NavTab, OfflineBanner, StatusMessage }
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
 import { data } from '../lib/data.ts';
-import { KEYS, readLocal, writeLocal } from '../lib/storage.ts';
+import { useSession } from '../lib/session.tsx';
+import { KEYS, writeLocal } from '../lib/storage.ts';
 import { useOnline } from '../lib/useOnline.ts';
 
 export const TAB_PATH: Record<NavTab, string> = { inicio: '/', jugar: '/jugar', billetera: '/billetera', perfil: '/perfil' };
@@ -31,19 +32,22 @@ export function RootLayout() {
   );
 }
 
-export interface AgeGateResult {
-  passedAt: string;
-  method: 'fecha_y_declaracion';
-}
-
-export function hasPassedAgeGate(): boolean {
-  return readLocal<AgeGateResult | null>(KEYS.ageGate, null, 'session') !== null;
-}
-
-/** Ninguna pantalla promocional se muestra sin control de edad (Guía Técnica §5.1, §12.2). */
+/** Ninguna pantalla promocional se muestra sin control de edad registrado en el servidor (Guía Técnica §5.1, §12.2). */
 export function RequireAge() {
   const location = useLocation();
-  if (!hasPassedAgeGate()) {
+  const { status, me, refresh } = useSession();
+  if (status === 'loading') return <StatusMessage kind="pending" title="Cargando…" body="Un momento." className="min-h-dvh justify-center bg-surface" />;
+  if (status === 'error')
+    return (
+      <StatusMessage
+        kind="error"
+        title="No pudimos conectar"
+        body="Revisa tu conexión e intenta de nuevo."
+        className="min-h-dvh justify-center bg-surface"
+        action={<Button onClick={() => void refresh()}>Reintentar</Button>}
+      />
+    );
+  if (!me?.ageVerified) {
     writeLocal(KEYS.returnTo, `${location.pathname}${location.search}`, 'session');
     return <Navigate to="/edad" replace />;
   }

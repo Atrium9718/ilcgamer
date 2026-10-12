@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tus autorizaciones | ILC Origen</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#28332f",
+            "error-container": "#93000a",
+            "tertiary-fixed": "#ffdcc3",
+            "inverse-primary": "#725b22",
+            "tertiary": "#ffb77c",
+            "surface": "#0b1512",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#003823",
+            "on-primary-container": "#453300",
+            "on-surface-variant": "#d0c5b5",
+            "secondary-fixed": "#a8f2c8",
+            "on-tertiary-container": "#542b00",
+            "on-secondary-fixed-variant": "#005234",
+            "tertiary-fixed-dim": "#ffb77c",
+            "primary": "#e2c37f",
+            "surface-container-low": "#141e1a",
+            "on-tertiary-fixed": "#2e1500",
+            "outline-variant": "#4d4639",
+            "primary-fixed-dim": "#e2c37f",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "surface-container-lowest": "#06100d",
+            "on-secondary-fixed": "#002112",
+            "on-secondary-container": "#82cba3",
+            "on-primary-fixed": "#251a00",
+            "primary-container": "#b79b5b",
+            "surface-container-highest": "#2d3733",
+            "primary-fixed": "#ffdf99",
+            "outline": "#999081",
+            "secondary-fixed-dim": "#8dd6ad",
+            "secondary-container": "#005738",
+            "background": "#0b1512",
+            "on-surface": "#dae5e0",
+            "on-background": "#dae5e0",
+            "surface-variant": "#2d3733",
+            "surface-bright": "#313b38",
+            "surface-tint": "#e2c37f",
+            "on-tertiary": "#4d2600",
+            "surface-dim": "#0b1512",
+            "secondary": "#8dd6ad",
+            "tertiary-container": "#d38f55",
+            "surface-container-high": "#222c29",
+            "on-primary-fixed-variant": "#59440b",
+            "error": "#ffb4ab",
+            "on-primary": "#3f2e00",
+            "inverse-surface": "#dae5e0",
+            "on-error": "#690005",
+            "surface-container": "#18221e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "32px",
+            "space-lg": "24px",
+            "space-md": "16px",
+            "margin": "16px",
+            "space-xs": "4px",
+            "space-sm": "8px",
+            "gutter": "16px"
+          },
+          "fontFamily": {
+            "title-md": ["Plus Jakarta Sans"],
+            "display-lg": ["EB Garamond"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond"],
+            "numeric-xl": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["EB Garamond"]
+          },
+          "fontSize": {
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom subtle scrollbar & tap highlights */
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between items-center selection:bg-primary-container selection:text-on-primary-container">
+<!-- Mobile Canvas Frame -->
+<div class="w-full max-w-md min-h-screen flex flex-col bg-surface shadow-2xl relative pb-28">
+<!-- Subtle Ambient Fog Overlay at Top -->
+<div class="pointer-events-none absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-secondary-container/10 via-surface-container-low/30 to-transparent"></div>
+<!-- Status Bar Simulation -->
+<div class="w-full h-8 px-6 flex justify-between items-center text-outline text-label-sm font-label-sm z-20">
+<span>9:41</span>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[15px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[15px]">wifi</span>
+<span class="material-symbols-outlined text-[15px]">battery_full</span>
+</div>
+</div>
+<!-- TopAppBar (Based on Shared Components JSON) -->
+<header class="bg-surface dark:bg-surface sticky top-0 z-30 flex justify-between items-center w-full px-margin h-14 bg-surface-container-low/80 dark:bg-surface-container-low/80 backdrop-blur-md">
+<button aria-label="Volver" class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high/40 transition-colors active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="font-title-lg text-title-lg text-primary tracking-tight font-bold">
+        Tus autorizaciones
+      </h1>
+<div class="w-10 h-10 flex items-center justify-center -mr-2">
+<span class="material-symbols-outlined text-outline text-xl" title="ILC Origen Seguridad">verified_user</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 px-margin pt-space-md space-y-space-lg relative z-10">
+<!-- Editorial Intro Header -->
+<section class="space-y-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high border border-outline-variant/30 text-secondary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-sm" data-weight="fill">shield_lock</span>
+<span>Habeas Data · Ley 1581 de 2012</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-snug">
+          Tú decides cómo usamos tus datos.
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Puedes cambiar estas opciones cuando quieras. La custodia de tu privacidad y el respeto por tus decisiones son parte de nuestro origen.
+        </p>
+</section>
+<!-- Section: Tarjetas de Consentimientos -->
+<section aria-label="Opciones de consentimiento" class="space-y-space-md">
+<!-- Card 1: Necesario (Sin Switch) -->
+<article class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 relative overflow-hidden transition-all duration-200">
+<div class="flex items-start justify-between gap-3 mb-2.5">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-xl" data-weight="fill">verified</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Términos y aviso de privacidad</h3>
+<p class="text-label-sm font-label-sm text-outline">Versión 1.0 · Aceptado el 12 oct. 2026</p>
+</div>
+</div>
+<!-- Badge Necesario -->
+<span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary-container/50 text-secondary border border-secondary/30 shrink-0">
+              Necesario
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-3 text-sm">
+            Habilita tu acceso seguro, validación de mayoría de edad y la administración técnica de tu cuenta en ILC Origen.
+          </p>
+<!-- Interactive links -->
+<div class="pt-2.5 border-t border-outline-variant/20 flex flex-wrap gap-4 text-label-sm font-label-sm">
+<a class="inline-flex items-center gap-1 text-primary hover:underline hover:text-primary-fixed focus:outline-none" href="#terminos">
+<span>Ver términos</span>
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+<a class="inline-flex items-center gap-1 text-primary hover:underline hover:text-primary-fixed focus:outline-none" href="#aviso">
+<span>Ver aviso de privacidad</span>
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</article>
+<!-- Card 2: Marketing y Novedades (Opcional - OFF) -->
+<article class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 relative transition-all duration-200">
+<div class="flex items-start justify-between gap-3 mb-2">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-xl">campaign</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Novedades y promociones</h3>
+<span class="inline-block px-1.5 py-0.5 rounded text-[11px] font-label-sm bg-surface-container-highest text-outline">
+                  Desactivado
+                </span>
+</div>
+</div>
+<!-- Custom Switch: OFF -->
+<label aria-label="Permitir novedades y promociones de ILC y sus marcas" class="relative inline-flex items-center cursor-pointer min-h-[48px] min-w-[48px] justify-center">
+<input class="sr-only peer" id="toggle-marketing" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface peer-checked:bg-primary-container peer-checked:after:bg-on-primary-container after:content-[''] after:absolute after:top-[14px] after:left-[2px] after:bg-outline after:border-surface after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+<h4 class="text-label-sm font-label-sm text-on-surface-variant font-medium mb-1">
+            Novedades y promociones de ILC y sus marcas
+          </h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">
+            Recibe invitaciones a experiencias y campañas. Si lo desactivas, todo sigue funcionando igual.
+          </p>
+</article>
+<!-- Card 3: Ubicación aproximada (Opcional - OFF) -->
+<article class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 relative transition-all duration-200">
+<div class="flex items-start justify-between gap-3 mb-2">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-xl">location_searching</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Ubicación aproximada</h3>
+<span class="inline-block px-1.5 py-0.5 rounded text-[11px] font-label-sm bg-surface-container-highest text-outline">
+                  Desactivado
+                </span>
+</div>
+</div>
+<!-- Custom Switch: OFF -->
+<label aria-label="Permitir ubicación aproximada" class="relative inline-flex items-center cursor-pointer min-h-[48px] min-w-[48px] justify-center">
+<input class="sr-only peer" id="toggle-location" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface peer-checked:bg-primary-container peer-checked:after:bg-on-primary-container after:content-[''] after:absolute after:top-[14px] after:left-[2px] after:bg-outline after:border-surface after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">
+            Solo para campañas que la necesiten, como actividades en tu ciudad. Nunca usamos GPS continuo.
+          </p>
+</article>
+</section>
+<!-- Section: Tus derechos sobre tus datos -->
+<section class="pt-space-sm space-y-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">
+            Tus derechos sobre tus datos
+          </h2>
+<p class="font-body-md text-body-md text-outline text-sm">
+            Conoce, actualiza, rectifica o suprime tu información personal en cualquier momento.
+          </p>
+</div>
+<div class="bg-surface-container rounded-xl border border-outline-variant/30 divide-y divide-outline-variant/20 overflow-hidden">
+<!-- Fila 1: Descargar datos -->
+<a class="flex items-center justify-between px-4 py-3.5 min-h-[48px] hover:bg-surface-container-high/60 transition-colors active:scale-[0.99] group" href="#descargar">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary group-hover:text-primary-fixed">
+<span class="material-symbols-outlined text-lg">download</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">Descargar mis datos</span>
+</div>
+<span class="material-symbols-outlined text-outline text-lg group-hover:text-on-surface transition-transform group-hover:translate-x-0.5">chevron_right</span>
+</a>
+<!-- Fila 2: Corregir datos -->
+<a class="flex items-center justify-between px-4 py-3.5 min-h-[48px] hover:bg-surface-container-high/60 transition-colors active:scale-[0.99] group" href="#corregir">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary group-hover:text-primary-fixed">
+<span class="material-symbols-outlined text-lg">edit_square</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">Corregir mis datos</span>
+</div>
+<span class="material-symbols-outlined text-outline text-lg group-hover:text-on-surface transition-transform group-hover:translate-x-0.5">chevron_right</span>
+</a>
+<!-- Fila 3: Eliminar cuenta (advertencia suave) -->
+<a class="flex items-center justify-between px-4 py-3.5 min-h-[48px] hover:bg-error-container/20 transition-colors active:scale-[0.99] group" href="#eliminar">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-error-container/40 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-lg">delete_forever</span>
+</div>
+<span class="font-label-lg text-label-lg text-error">Eliminar mi cuenta</span>
+</div>
+<span class="material-symbols-outlined text-error/60 text-lg group-hover:text-error transition-transform group-hover:translate-x-0.5">chevron_right</span>
+</a>
+</div>
+</section>
+<!-- CTA Principal & Timestamp Metadata -->
+<section class="pt-space-sm space-y-space-sm pb-space-md">
+<button class="w-full h-14 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-lg hover:bg-primary-fixed active:scale-[0.98] transition-transform duration-150" id="btn-save" type="button">
+<span class="material-symbols-outlined text-xl" data-weight="fill">check_circle</span>
+<span>Guardar preferencias</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-outline text-xs">
+          Última actualización de tus autorizaciones: 12 oct. 2026.
+        </p>
+</section>
+<!-- Pie Legal Obligatorio (Ley 30 de 1986) -->
+<footer class="w-full px-gutter py-space-xs text-center border-t border-outline-variant/20 pt-4">
+<p class="font-label-sm text-label-sm text-outline tracking-wider uppercase leading-relaxed text-[11px]">
+          EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+        </p>
+</footer>
+</main>
+<!-- BottomNavBar (Shared Component from JSON, 4 destinations, "Perfil" Active) -->
+<nav aria-label="Navegación principal" class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pt-space-xs pb-space-sm max-w-md mx-auto bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/30 shadow-2xl backdrop-blur-lg">
+<!-- Inicio -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant min-w-[56px] min-h-[48px] hover:text-primary dark:hover:text-primary transition-colors active:scale-[0.96]" type="button">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Inicio</span>
+</button>
+<!-- Jugar -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant min-w-[56px] min-h-[48px] hover:text-primary dark:hover:text-primary transition-colors active:scale-[0.96]" type="button">
+<span class="material-symbols-outlined text-2xl">sports_esports</span>
+<span class="text-label-sm font-label-sm mt-0.5">Jugar</span>
+</button>
+<!-- Mi billetera -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant min-w-[56px] min-h-[48px] hover:text-primary dark:hover:text-primary transition-colors active:scale-[0.96]" type="button">
+<span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mi billetera</span>
+</button>
+<!-- Perfil (ACTIVE STATE according to rules and screen context) -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary font-bold min-w-[56px] min-h-[48px] active:scale-[0.96]" type="button">
+<span class="material-symbols-outlined text-2xl" data-weight="fill">person</span>
+<span class="text-label-sm font-label-sm mt-0.5 font-bold">Perfil</span>
+</button>
+</nav>
+<!-- Toast Notification for interaction feedback -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-sm px-4 py-3 rounded-lg bg-surface-container-high border border-primary/40 text-on-surface flex items-center gap-3 shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50" id="toast">
+<span class="material-symbols-outlined text-primary" data-weight="fill">task_alt</span>
+<span class="text-label-sm font-label-sm">Preferencias de privacidad actualizadas con éxito.</span>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    const saveButton = document.getElementById('btn-save');
+    const toast = document.getElementById('toast');
+
+    if (saveButton && toast) {
+      saveButton.addEventListener('click', () => {
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        toast.classList.add('opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0', 'pointer-events-none');
+        }, 3000);
+      });
+    }
+  </script>
+</body></html>
