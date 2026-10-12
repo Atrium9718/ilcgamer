@@ -1,0 +1,34 @@
+/* Hoja base de la capa visual ILC. Tokens generados desde design/DESIGN.md. */
+@import "tailwindcss";
+@import "@ilc/design-tokens/theme.css";
+
+@source "./";
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-surface text-on-surface font-body antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Material Symbols: misma familia de íconos que usa Stitch. */
+@utility icon-fill {
+  font-variation-settings: 'FILL' 1;
+}

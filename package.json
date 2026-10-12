@@ -1,0 +1,26 @@
+{
+  "name": "ilcgamer",
+  "private": true,
+  "description": "Plataforma de gamificación y fidelización phygital — Industria Licorera de Caldas",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "tokens": "pnpm --filter @ilc/design-tokens build",
+    "storybook": "pnpm --filter @ilc/ui storybook",
+    "design:pull": "python3 tools/stitch_pull.py"
+  },
+  "devDependencies": {
+    "turbo": "2.11.7",
+    "typescript": "6.0.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

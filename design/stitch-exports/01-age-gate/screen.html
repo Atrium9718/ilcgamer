@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verificación de Edad | ILC Origen</title>
+<!-- Google Fonts: EB Garamond, Plus Jakarta Sans, Public Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Public+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim from Design System -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-dim": "#16130f",
+            "secondary-fixed-dim": "#d7c4a4",
+            "surface-tint": "#e2c37f",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed": "#dbe1ff",
+            "inverse-primary": "#735b22",
+            "tertiary-fixed-dim": "#b9c5f4",
+            "error-container": "#93000a",
+            "on-surface-variant": "#d0c5b5",
+            "primary": "#e2c37f",
+            "on-secondary-fixed": "#241a06",
+            "primary-fixed": "#ffdf9b",
+            "outline-variant": "#4d4639",
+            "surface-container": "#221f1b",
+            "surface-container-high": "#2d2925",
+            "primary-container": "#b89b5b",
+            "secondary-container": "#52452c",
+            "surface-container-low": "#1e1b17",
+            "on-tertiary-fixed": "#0b193f",
+            "error": "#ffb4ab",
+            "surface": "#16130f",
+            "on-secondary-container": "#c5b394",
+            "outline": "#999081",
+            "secondary-fixed": "#f4e0bf",
+            "tertiary-container": "#919dca",
+            "on-surface": "#e9e1da",
+            "on-primary": "#3f2e00",
+            "tertiary": "#b9c5f4",
+            "on-tertiary-container": "#28345a",
+            "secondary": "#d7c4a4",
+            "surface-bright": "#3c3934",
+            "on-tertiary": "#222f55",
+            "on-error": "#690005",
+            "on-tertiary-fixed-variant": "#39456d",
+            "inverse-on-surface": "#33302b",
+            "on-secondary-fixed-variant": "#52452c",
+            "primary-fixed-dim": "#e2c37f",
+            "on-background": "#e9e1da",
+            "on-primary-fixed": "#251a00",
+            "surface-variant": "#38342f",
+            "background": "#16130f",
+            "surface-container-highest": "#38342f",
+            "inverse-surface": "#e9e1da",
+            "on-primary-container": "#463300",
+            "on-secondary": "#3a2f18",
+            "on-primary-fixed-variant": "#59440b",
+            "surface-container-lowest": "#100e0a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "title-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Public Sans"],
+            "display-lg": ["EB Garamond"],
+            "headline-md": ["EB Garamond"],
+            "title-md": ["Plus Jakarta Sans"],
+            "numeric-xl": ["Public Sans"],
+            "label-sm": ["Public Sans"]
+          },
+          "fontSize": {
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary-container selection:text-on-primary-container relative overflow-x-hidden">
+<!-- Background Forest Atmosphere with Heritage Gradient Vignette -->
+<div class="fixed inset-0 z-0 pointer-events-none">
+<img alt="Bosque nublado andino de Caldas" class="w-full h-full object-cover object-top opacity-35" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ1P6RKvycyCbhqOJEe0ExmOotBxuSdN88bvuxIHS1TRKVSPu-hb6kj0YtcDr5GHnavGRJ6TNzFVqgDh8rqgcimu0npy72XgNFqDHvLP5NQ2oJdsXELtITHHr9e444T2-Cxxx_6Ox9laNgLNVqobW3Y1wbIxC5w5xSagVvehbUoQ5jBx7DwNkOECdsFTo4JziAf8zkQ8wkMIwWa3sG-Y10Jo77FI9d5MpXsoHsBWVi8s7dqi2hlhP4O4qdc9xSlFOuF4udTmK_HJ0"/>
+<div class="absolute inset-0 bg-gradient-to-b from-surface-dim/75 via-surface-dim/90 to-surface-container-lowest"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top,transparent_20%,rgba(16,14,10,0.95)_90%)]"></div>
+</div>
+<!-- Shared Component: TopAppBar (docked full-width top) -->
+<header class="relative z-10 w-full bg-surface dark:bg-surface border-b border-outline-variant/20 dark:border-outline-variant/20 shadow-none">
+<div class="flex justify-between items-center w-full px-4 h-16 max-w-lg mx-auto"><div class="flex items-center space-x-2"><span class="text-headline-md font-headline-md tracking-wider text-primary uppercase">ILC Origen</span></div><button aria-label="Ayuda" class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95" type="button"><span class="material-symbols-outlined text-[22px]">help_outline</span></button></div>
+</header>
+<!-- Main Content Container: Age Gate / Verificación de Mayoría de Edad -->
+<main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 max-w-lg mx-auto w-full">
+<!-- Heraldic Heritage Seal -->
+<div class="mb-5 flex flex-col items-center animate-fade-in">
+<div class="relative w-20 h-20 rounded-full flex items-center justify-center bg-surface-container-low/80 border border-primary/30 p-1 shadow-[0_0_24px_rgba(184,155,91,0.18)]">
+<!-- Outer refined ring -->
+<div class="w-full h-full rounded-full border border-primary-container/40 flex flex-col items-center justify-center relative bg-gradient-to-b from-surface-container-high to-surface-container-low"><span class="font-headline-lg text-primary font-bold text-2xl tracking-widest leading-none">ILC</span></div>
+</div>
+<span class="mt-2 text-label-sm font-label-sm text-secondary uppercase tracking-widest">Industria Licorera de Caldas</span>
+</div>
+<!-- Poetic Headline & Subtitle -->
+<div class="text-center space-y-2 mb-6 max-w-md">
+<h1 class="text-headline-lg font-headline-lg text-primary tracking-normal leading-tight">
+        Hay historias que empiezan mucho antes de llegar a la botella.
+      </h1>
+<p class="text-body-md font-body-md text-on-surface-variant">
+        Para continuar confirma que eres mayor de edad.
+      </p>
+</div>
+<!-- Verification Card (Glassmorphism & Heritage Depth) -->
+<div class="w-full bg-surface-container-low/90 backdrop-blur-md rounded-xl p-5 sm:p-6 border border-outline-variant/30 shadow-[0_8px_32px_rgba(0,0,0,0.55)]">
+<form class="space-y-5" id="ageGateForm" onsubmit="event.preventDefault(); validateAge();">
+<!-- Birthdate Inputs (DD / MM / AAAA) -->
+<fieldset class="space-y-2">
+<legend class="text-label-sm font-label-sm text-secondary uppercase tracking-wider block text-center mb-1">
+            Ingresa tu fecha de nacimiento
+          </legend>
+<div class="grid grid-cols-3 gap-2.5 sm:gap-3">
+<!-- Día -->
+<div class="flex flex-col items-center">
+<label class="text-label-sm font-label-sm text-outline mb-1.5" for="birth-day">Día</label>
+<input class="w-full h-14 bg-surface-container/90 border border-outline-variant/60 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg text-center font-numeric-xl text-title-lg text-primary placeholder-outline/40 tabular-nums transition-colors outline-none" id="birth-day" inputmode="numeric" max="31" min="1" name="day" placeholder="DD" required="" type="number"/>
+</div>
+<!-- Mes -->
+<div class="flex flex-col items-center">
+<label class="text-label-sm font-label-sm text-outline mb-1.5" for="birth-month">Mes</label>
+<input class="w-full h-14 bg-surface-container/90 border border-outline-variant/60 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg text-center font-numeric-xl text-title-lg text-primary placeholder-outline/40 tabular-nums transition-colors outline-none" id="birth-month" inputmode="numeric" max="12" min="1" name="month" placeholder="MM" required="" type="number"/>
+</div>
+<!-- Año -->
+<div class="flex flex-col items-center">
+<label class="text-label-sm font-label-sm text-outline mb-1.5" for="birth-year">Año</label>
+<input class="w-full h-14 bg-surface-container/90 border border-outline-variant/60 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg text-center font-numeric-xl text-title-lg text-primary placeholder-outline/40 tabular-nums transition-colors outline-none" id="birth-year" inputmode="numeric" max="2026" min="1900" name="year" placeholder="AAAA" required="" type="number"/>
+</div>
+</div>
+</fieldset>
+<!-- Custom Tactile Checkbox (+18 Confirmation) -->
+<label class="flex items-center space-x-3.5 p-3 rounded-lg bg-surface-container/50 border border-outline-variant/30 hover:border-outline cursor-pointer select-none min-h-[48px] transition-colors" for="confirm-age">
+<input class="w-6 h-6 rounded bg-surface-container-high border-outline-variant text-primary-container focus:ring-primary focus:ring-offset-0 focus:ring-1 cursor-pointer transition-colors" id="confirm-age" name="confirm_18" required="" type="checkbox"/>
+<span class="text-body-md font-body-md text-on-surface font-medium select-none">
+            Confirmo que soy mayor de 18 años
+          </span>
+</label>
+<!-- Dynamic Feedback Container -->
+<div class="hidden text-center text-label-sm font-label-sm p-2 rounded-lg bg-error-container/40 text-error border border-error/30" id="feedbackMsg"></div>
+<!-- Action Buttons -->
+<div class="space-y-3 pt-1">
+<!-- Primary CTA Button (56px ergonomic height) -->
+<button class="w-full h-14 rounded-lg bg-primary-container text-on-primary-container font-label-lg text-label-lg font-bold flex items-center justify-center space-x-2 shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-150" type="submit">
+<span>Continuar</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- Secondary Button -->
+<button class="w-full h-12 rounded-lg bg-transparent border border-outline-variant text-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-container hover:text-on-surface transition-colors active:scale-[0.98] duration-150 flex items-center justify-center" onclick="handleUnderage()" type="button">
+            Soy menor de edad
+          </button>
+</div>
+</form>
+<!-- Legal Policy Sub-links -->
+<div class="mt-4 pt-3 border-t border-outline-variant/15 flex justify-center items-center space-x-4 text-label-sm font-label-sm text-outline">
+<a class="hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Aviso de Privacidad</a>
+<span class="text-outline-variant">•</span>
+<a class="hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Términos</a>
+</div>
+</div>
+</main>
+<!-- Shared Component: Footer (docked full-width bottom with Colombian Alcohol Regulation) -->
+<footer class="relative z-10 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/10 dark:border-outline-variant/10">
+<div class="w-full max-w-lg mx-auto px-4 py-6 text-center space-y-3">
+<div class="flex justify-center items-center gap-1.5 text-secondary dark:text-secondary mb-1"><span class="text-label-sm font-label-sm tracking-wider uppercase text-secondary">Industria Licorera de Caldas S.A.</span></div>
+<p class="text-label-sm font-label-sm uppercase tracking-wider text-outline dark:text-outline leading-relaxed px-2">
+        El exceso de alcohol es perjudicial para la salud. Ley 30 de 1986. Prohíbase el expendio de bebidas embriagantes a menores de edad.
+      </p>
+<div class="flex justify-center flex-wrap gap-x-4 gap-y-1 pt-1">
+<a class="text-label-sm font-label-sm text-outline dark:text-outline hover:text-on-surface-variant dark:hover:text-on-surface-variant transition-colors duration-200" href="#">Términos y Condiciones</a>
+<a class="text-label-sm font-label-sm text-outline dark:text-outline hover:text-on-surface-variant dark:hover:text-on-surface-variant transition-colors duration-200" href="#">Política de Privacidad</a>
+<a class="text-label-sm font-label-sm text-outline dark:text-outline hover:text-on-surface-variant dark:hover:text-on-surface-variant transition-colors duration-200" href="#">Consumo Responsable</a>
+</div>
+</div>
+</footer>
+<!-- Light Vanilla Script for Verification Interaction -->
+<script>
+    // Auto-advance inputs for swift mobile UX
+    const dayInput = document.getElementById('birth-day');
+    const monthInput = document.getElementById('birth-month');
+    const yearInput = document.getElementById('birth-year');
+    const feedback = document.getElementById('feedbackMsg');
+
+    dayInput.addEventListener('input', () => {
+      if (dayInput.value.length >= 2) monthInput.focus();
+    });
+    monthInput.addEventListener('input', () => {
+      if (monthInput.value.length >= 2) yearInput.focus();
+    });
+
+    function validateAge() {
+      const d = parseInt(dayInput.value, 10);
+      const m = parseInt(monthInput.value, 10) - 1;
+      const y = parseInt(yearInput.value, 10);
+      const checkbox = document.getElementById('confirm-age');
+
+      if (!d || isNaN(m) || !y || y < 1900) {
+        showError('Por favor ingresa una fecha válida.');
+        return;
+      }
+
+      if (!checkbox.checked) {
+        showError('Debes confirmar que eres mayor de 18 años.');
+        return;
+      }
+
+      const birthDate = new Date(y, m, d);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      if (age >= 18) {
+        feedback.classList.remove('hidden', 'bg-error-container/40', 'text-error', 'border-error/30');
+        feedback.classList.add('bg-secondary-container/60', 'text-primary', 'border-primary/40');
+        feedback.textContent = 'Acceso verificado. Bienvenido al archivo de origen...';
+        setTimeout(() => {
+          feedback.textContent = 'Redirigiendo a la experiencia ILC...';
+        }, 800);
+      } else {
+        handleUnderage();
+      }
+    }
+
+    function handleUnderage() {
+      showError('Lo sentimos. El ingreso a esta plataforma está reservado exclusivamente para mayores de 18 años.');
+    }
+
+    function showError(msg) {
+      feedback.classList.remove('hidden', 'bg-secondary-container/60', 'text-primary', 'border-primary/40');
+      feedback.classList.add('bg-error-container/40', 'text-error', 'border-error/30');
+      feedback.textContent = msg;
+    }
+  </script>
+</body></html>

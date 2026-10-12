@@ -34,7 +34,7 @@ servidos por el CMS), tal como exige Instrucciones.md §2 ("temas estéticos por
 | # | Decisión | Fundamento en las fuentes |
 |---|---|---|
 | ADR-01 | **PWA primero** (React + TypeScript + Vite), instalable, abierta por QR desde la cámara nativa. Empaquetado a tiendas con **Capacitor** solo si el piloto lo justifica (Fase 4). | Instrucciones §2 (Flutter **o** PWA, zero-friction); Guía Técnica §4.1 y §2.3.2 ("PWA primero"). |
-| ADR-02 | **Tailwind CSS + tokens CSS variables**. Stitch exporta HTML+Tailwind → la traducción a componentes es directa y fiel. | Requisito del usuario: capa visual modificable; Guía Gamificación §22.2 (design system común + capa editorial por marca). |
+| ADR-02 | **Tailwind CSS v4 + tokens CSS variables** (`@theme` generado desde DESIGN.md con los mismos nombres de clase que usa Stitch). Stitch exporta HTML+Tailwind → la traducción a componentes es directa y fiel. | Requisito del usuario: capa visual modificable; Guía Gamificación §22.2 (design system común + capa editorial por marca). |
 | ADR-03 | **Backend monolito modular**: Node.js + TypeScript + **NestJS**, API versionada `/api/v1`, OpenAPI publicado. | Guía Técnica §4.2 y §4.3. |
 | ADR-04 | **PostgreSQL** (transaccional: claims, ledger, inventario) + **Prisma** como ORM/migraciones. | Guía Técnica §4.3, §5.7 (ledger), §6. |
 | ADR-05 | **Redis** solo para: expiración de sesiones del Parche, rate limiting y pub/sub de tiempo real. | Guía Técnica §4.3. |
@@ -156,11 +156,14 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Plan maestro y ADRs.
 - [ ] Confirmar decisiones abiertas (§7) con el equipo.
 
-### Paso 1 — Sistema de diseño (capa visual base)
-- Redactar `design/DESIGN.md` v2 (ajustes §2.2) y subirlo a Stitch.
-- `packages/design-tokens`: parser DESIGN.md → CSS variables + preset Tailwind; tema oscuro/claro; mecanismo de tema por campaña en runtime.
-- `packages/ui`: primitivas (Button, Card/GlassCard, Input, Chip, Badge de verificación, Sheet, Toast, LegalNotice, PinInput, QRFrame) + Storybook.
-- **Entregable:** Storybook publicado con el design system aplicado.
+### Paso 1 — Sistema de diseño (capa visual base) *(en curso)*
+- [x] `design/DESIGN.md` v2 **"ILC Origen"** (ajustes §2.2, colores de ilc.com.co) subido a Stitch como design system.
+- [x] Titulares en EB Garamond (la API de Stitch rechaza Playfair Display) y lectura en Plus Jakarta Sans.
+- [x] `packages/design-tokens`: DESIGN.md + themes.yaml → `theme.css` Tailwind v4; tema oscuro/claro; 4 submarcas; puerta WCAG AA en build.
+- [x] `packages/ui`: Button, SealMark, BrandChip, VerificationSeal (4 estados), RouteCard, LegalNotice, Checkbox, DateOfBirthInput, `applyCampaignTheme` + Storybook con selector de tema/submarca.
+- [x] Pantallas 01 (edad) y 02 (landing de código) diseñadas en Stitch, corregidas y traducidas a vistas puras con pruebas.
+- [ ] Pendientes del sistema: PinInput, visor QR, Sheet/modal, Toast, estados vacío/error/sin conexión, barra de navegación inferior.
+- **Entregable:** Storybook con el design system aplicado.
 
 ### Paso 2 — Diseño de pantallas P0 en Stitch
 - Generar en Stitch las pantallas 1–14 con prompts versionados; iterar variantes con el equipo.
@@ -227,8 +230,8 @@ pasos 3–8 son el MVP P0; 9–12 completan P0/P1; 13 prepara el piloto controla
 
 | Decisión | Por qué importa | Propuesta por defecto mientras se decide |
 |---|---|---|
-| Marca del piloto (corporativa ILC vs una marca: p. ej. Ron Viejo de Caldas) | Define capa de marca del diseño | Diseño neutro "ILC" con slot de tema por marca |
-| Manual de marca / assets oficiales | Logos, tipografías y paleta reales | Placeholders y tipografías libres (Space Grotesk / Plus Jakarta Sans) |
+| ~~Marca del piloto~~ **Decidido:** ILC y todas sus submarcas | Define capa de marca del diseño | Capa funcional ILC + temas por submarca |
+| Manual de marca / assets oficiales | Logos, tipografías y paleta reales | Referencia ilc.com.co (dorado #B89B5B, verde #2F4941, rojo #D01217); sello y fotos son marcadores |
 | Proveedor de OTP WhatsApp y nube | Coste y cumplimiento | Mock en dev; Google Cloud propuesto |
 | Dominio oficial de QR (`ilc.app` u otro) | URLs de Smart Tag y deep links | Configurable desde consola |
 | Mecanismo de verificación +18 | Riesgo legal | Autodeclaración + fecha de nacimiento, configurable por campaña |

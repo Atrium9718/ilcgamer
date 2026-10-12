@@ -1,0 +1,64 @@
+# Temas adicionales sobre DESIGN.md (tema base = oscuro).
+# - light: tema claro (Ruta B diurna, off-premise, consolas).
+# - brands: capa de submarca. SOLO sobrescribe variables --color-brand-*.
+#   Valores PROVISIONALES tomados de etiquetas públicas: validar con el manual de cada marca.
+# En producción, las campañas pueden enviar overrides adicionales desde el CMS (tema de temporada).
+
+light:
+  background: '#FAF7F0'
+  surface: '#FAF7F0'
+  surface-dim: '#E6E0D2'
+  surface-bright: '#FFFFFF'
+  surface-container-lowest: '#FFFFFF'
+  surface-container-low: '#F5F1E7'
+  surface-container: '#F1ECE0'
+  surface-container-high: '#EAE4D6'
+  surface-container-highest: '#E2DCCD'
+  on-background: '#13201B'
+  on-surface: '#13201B'
+  on-surface-variant: '#43524B'
+  inverse-surface: '#13201B'
+  inverse-on-surface: '#F4EFE3'
+  outline: '#6B7A73'
+  outline-variant: '#C9C4B6'
+  primary: '#7A5F22'
+  on-primary: '#FFFFFF'
+  primary-container: '#E9D6A6'
+  on-primary-container: '#2A1F05'
+  inverse-primary: '#D4B673'
+  secondary: '#2F4941'
+  on-secondary: '#FFFFFF'
+  secondary-container: '#CFE8DA'
+  on-secondary-container: '#0E2A20'
+  tertiary: '#9A4F17'
+  on-tertiary: '#FFFFFF'
+  tertiary-container: '#FFDCC2'
+  on-tertiary-container: '#3A1A03'
+  error: '#B3261E'
+  on-error: '#FFFFFF'
+  error-container: '#F9DEDC'
+  on-error-container: '#410E0B'
+  warning: '#7A5400'
+  on-warning: '#FFFFFF'
+
+brands:
+  ilc:
+    label: ILC corporativo
+    brand-accent: '#B89B5B'
+    brand-surface: '#1F3A31'
+    on-brand-surface: '#F4EFE3'
+  ron-viejo-de-caldas:
+    label: Ron Viejo de Caldas
+    brand-accent: '#C9A45C'
+    brand-surface: '#1E4A2E'
+    on-brand-surface: '#F4EFE3'
+  aguardiente-amarillo:
+    label: Aguardiente Amarillo de Manzanares
+    brand-accent: '#F2B90F'
+    brand-surface: '#3A2E08'
+    on-brand-surface: '#FFF6D6'
+  aguardiente-cristal:
+    label: Aguardiente Cristal
+    brand-accent: '#5B8FD6'
+    brand-surface: '#132A45'
+    on-brand-surface: '#EAF2FF'

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ILC Origen · Código Reconocido</title>
+<!-- Google Fonts: EB Garamond & Public Sans & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Public+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-container": "#463300",
+            "inverse-on-surface": "#33302b",
+            "on-background": "#e9e1da",
+            "secondary-fixed-dim": "#d7c4a4",
+            "on-tertiary": "#222f55",
+            "on-secondary-fixed": "#241a06",
+            "on-secondary": "#3a2f18",
+            "secondary-container": "#52452c",
+            "tertiary-fixed-dim": "#b9c5f4",
+            "surface": "#16130f",
+            "on-primary-fixed": "#251a00",
+            "primary-fixed-dim": "#e2c37f",
+            "surface-container": "#221f1b",
+            "surface-tint": "#e2c37f",
+            "tertiary-container": "#919dca",
+            "secondary-fixed": "#f4e0bf",
+            "inverse-surface": "#e9e1da",
+            "on-error-container": "#ffdad6",
+            "on-error": "#690005",
+            "surface-dim": "#16130f",
+            "on-surface": "#e9e1da",
+            "surface-container-lowest": "#100e0a",
+            "primary-fixed": "#ffdf9b",
+            "primary": "#e2c37f",
+            "on-primary": "#3f2e00",
+            "inverse-primary": "#735b22",
+            "surface-variant": "#38342f",
+            "on-tertiary-fixed": "#0b193f",
+            "surface-bright": "#3c3934",
+            "outline": "#999081",
+            "background": "#16130f",
+            "primary-container": "#b89b5b",
+            "on-secondary-fixed-variant": "#52452c",
+            "error-container": "#93000a",
+            "secondary": "#d7c4a4",
+            "tertiary": "#b9c5f4",
+            "error": "#ffb4ab",
+            "surface-container-high": "#2d2925",
+            "on-surface-variant": "#d0c5b5",
+            "on-secondary-container": "#c5b394",
+            "on-tertiary-container": "#28345a",
+            "outline-variant": "#4d4639",
+            "tertiary-fixed": "#dbe1ff",
+            "surface-container-highest": "#38342f",
+            "on-tertiary-fixed-variant": "#39456d",
+            "surface-container-low": "#1e1b17",
+            "on-primary-fixed-variant": "#59440b"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "numeric-xl": ["Public Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["EB Garamond"],
+            "headline-md": ["EB Garamond"],
+            "display-lg": ["EB Garamond"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Public Sans"],
+            "label-sm": ["Public Sans"],
+            "title-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "numeric-xl": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.5px", "fontWeight": "800" }],
+            "title-md": ["17px", { "lineHeight": "24px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0px", "fontWeight": "600" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.5px", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "22px", "letterSpacing": "0px", "fontWeight": "400" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.2px", "fontWeight": "700" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.8px", "fontWeight": "700" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Estructura táctil y brillo sutil artesanal */
+    .moss-seal-glow {
+      box-shadow: 0 0 24px -4px rgba(78, 114, 76, 0.35);
+    }
+    .amber-card-glow {
+      box-shadow: 0 6px 20px -6px rgba(226, 195, 127, 0.12);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary-container selection:text-on-primary-container font-body-md text-body-md pb-32">
+<!-- CONTENEDOR MÓVIL PRINCIPAL (PWA Shell) -->
+<div class="w-full max-w-md mx-auto flex flex-col flex-1 relative bg-surface-container-lowest shadow-2xl">
+<!-- 1. CABECERA (TOP BAR) -->
+<header class="sticky top-0 z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 h-14 flex items-center justify-between">
+<!-- Botón atrás con flecha sutil -->
+<button aria-label="Volver" class="w-10 h-10 -ml-1 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<!-- Centro: Monograma ILC + Chip Submarca -->
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-primary/40 bg-surface-container flex items-center justify-center">
+<span class="font-headline-md text-[11px] font-bold text-primary tracking-tighter leading-none">ILC</span>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-label-sm font-semibold tracking-wide bg-surface-container-high border border-outline-variant/40 text-primary-fixed-dim">
+          Ron Viejo de Caldas
+        </span>
+</div>
+<!-- Icono de sello verificado heráldico discreto -->
+<div class="w-10 h-10 -mr-1 flex items-center justify-center text-primary-fixed-dim/70">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</header>
+<main class="flex-1 flex flex-col px-4 pt-3 pb-8">
+<!-- 2. IMAGEN PROTAGONISTA (HERO PRODUCTO) -->
+<section class="relative w-full rounded-2xl overflow-hidden aspect-[4/3] bg-surface-container-high border border-outline-variant/30 shadow-md">
+<img alt="Botella de Ron Viejo de Caldas en vidrio verde esmeralda reposando sobre una barrica de roble centenario en medio del bosque de niebla andino húmedo y místico" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdpkT0WEByqzv4GNrySwQpfAewvmU2xF3Q77EdsIGBrx3aYw1tZfBbFTkn6GyK56ucdE-ZuzvttSIRH0REaZPJkbR09lxkWzDWs_zoWARtxBohyUk6Zx0u8t79n9CLV-hZxbCqCrXh0U-lKxg4LIKJHLFKs23xTb2XdRjTIw_nTK03_llQiCS81vB0T_TUHHPoD8fMQSdCFiSLWIopHkQB2Ot8oKNIMjpzAerRv0n6n_5Sfq1K_QBDuIl6ggbtBxlfuR12fgXcw9k"/>
+<!-- Degradado inferior para transición cálida y orgánica -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/20 to-transparent"></div>
+</section>
+<!-- 3. SELLO DE VERIFICACIÓN EN VERDE MUSGO (MOSS GREEN) -->
+<section class="mt-4 bg-surface-container-low rounded-2xl border border-[#4e724c]/40 p-4 moss-seal-glow relative overflow-hidden">
+<div class="flex items-start gap-3.5">
+<!-- Doble anillo distintivo con check estilizado en Moss Green -->
+<div class="relative shrink-0 mt-0.5">
+<div class="w-11 h-11 rounded-full border border-[#4e724c]/50 bg-[#1e2a1d] flex items-center justify-center">
+<div class="w-8 h-8 rounded-full border-2 border-[#6d9e6a] bg-[#243522] flex items-center justify-center text-[#9ed39a]">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+</div>
+<!-- Textos de estado técnico -->
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-[19px] font-semibold text-on-surface tracking-tight">
+                Código reconocido
+              </h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5 text-[14px] leading-tight">
+              Ron Viejo de Caldas Gran Reserva Especial · Lote #4092
+            </p>
+<a class="inline-flex items-center gap-1 text-[13px] font-label-sm text-secondary hover:text-primary mt-2 underline decoration-outline/60 underline-offset-4 transition-colors duration-150" href="#">
+              ¿Qué verifica este código?
+              <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- 4. SECCIÓN '¿QUÉ QUIERES HACER?' -->
+<section class="mt-7">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+            ¿Qué quieres hacer?
+          </h3>
+<span class="text-[12px] font-label-sm text-outline tracking-wider uppercase">Elige tu senda</span>
+</div>
+<div class="flex flex-col gap-3.5">
+<!-- Tarjeta 1: Ruta A (Acento dorado/ámbar cálido) -->
+<div class="group relative bg-surface-container rounded-2xl p-4 border border-primary/35 amber-card-glow cursor-pointer transition-all duration-200 hover:border-primary/70 active:scale-[0.99]">
+<div class="flex items-start justify-between gap-3">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-title-md text-title-md text-primary font-bold">
+                    Ruta A · Activa tu código
+                  </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px] leading-snug">
+                  Conoce tu beneficio y suma Puntos ILC. Revisa las reglas de la campaña.
+                </p>
+</div>
+<!-- Badge Prominente Dorado -->
+<span class="shrink-0 bg-secondary-container/90 border border-primary/40 text-primary-fixed px-2.5 py-1 rounded-xl font-label-sm text-[12px] font-bold tracking-tight shadow-sm whitespace-nowrap">
+                +500 Puntos ILC
+              </span>
+</div>
+<!-- Detalle sutil de interacción -->
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-primary-fixed-dim">
+<span class="font-label-sm text-[11px] uppercase tracking-wider text-outline">Ver condiciones</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform duration-150">arrow_forward</span>
+</div>
+</div>
+<!-- Tarjeta 2: Ruta B (Acento verde musgo / roble andino) -->
+<div class="group relative bg-surface-container-low rounded-2xl p-4 border border-[#4e724c]/40 cursor-pointer transition-all duration-200 hover:border-[#6d9e6a]/70 active:scale-[0.99]">
+<div class="flex items-start justify-between gap-3">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1.5">
+<span class="w-2 h-2 rounded-full bg-[#6d9e6a]"></span>
+<span class="font-title-md text-title-md text-[#9ed39a] font-bold">
+                    Ruta B · Explora el origen
+                  </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px] leading-snug">
+                  Resuelve la pista del bosque de niebla y gana insignias. No requiere compra.
+                </p>
+</div>
+<!-- Badge sutil Aventura & Relatos -->
+<span class="shrink-0 bg-[#212c1f] border border-[#4e724c]/50 text-[#b6e4b3] px-2.5 py-1 rounded-xl font-label-sm text-[12px] font-semibold tracking-tight whitespace-nowrap">
+                Aventura &amp; Relatos
+              </span>
+</div>
+<!-- Detalle sutil de interacción -->
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-[#9ed39a]">
+<span class="font-label-sm text-[11px] uppercase tracking-wider text-outline">Relato interactivo</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform duration-150">menu_book</span>
+</div>
+</div>
+</div>
+</section>
+<!-- NOTA EDITORIAL DE ORIGEN -->
+<section class="mt-6 p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-center">
+<p class="font-headline-md italic text-secondary text-[15px] leading-relaxed">«Relato de origen pendiente de aprobación de marca»</p>
+</section>
+</main>
+<!-- 5. ACCIONES FIJAS ABAJO / ÁREA INFERIOR DE INTERACCIÓN -->
+<div class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 py-3.5 px-4 max-w-md mx-auto inset-x-0 shadow-2xl">
+<div class="flex flex-col gap-2">
+<!-- Botón Primario Dorado Cálido (56px ergonómico) -->
+<button class="w-full h-14 bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-2 font-bold shadow-lg hover:bg-primary-fixed transition-all duration-150 active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">lock_open</span>
+          Activar código y crear mi Parche
+        </button>
+<!-- Botón de texto/secundario inmediatamente debajo -->
+<button class="w-full py-2.5 text-center text-on-surface-variant hover:text-primary font-label-sm text-[13px] font-semibold tracking-wide transition-colors duration-150 active:opacity-75" type="button">
+          Unirme a un Parche con PIN
+        </button>
+</div>
+</div>
+<!-- 6. PIE LEGAL OBLIGATORIO -->
+<footer class="w-full px-4 pt-6 pb-20 text-center max-w-md mx-auto border-t border-outline-variant/20 mt-4">
+<p class="text-[11px] font-label-sm leading-relaxed text-outline tracking-wider font-semibold">
+        EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+      </p>
+<div class="flex items-center justify-center gap-4 mt-3 text-[12px] font-label-sm text-outline/80">
+<a class="hover:text-primary transition-colors" href="#">Consumo Responsable</a>
+<span>·</span>
+<a class="hover:text-primary transition-colors" href="#">Términos y Condiciones</a>
+</div>
+</footer>
+</div>
+</body></html>
