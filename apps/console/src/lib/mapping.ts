@@ -10,7 +10,16 @@ import {
   PUBLISH_CHECKLIST,
   type Role,
 } from '@ilc/contracts';
-import type { ApprovalRow, CampaignDetailData, CampaignEditorValue, CampaignPermissions, CampaignRow, LifecycleAction, NewRewardValue } from '@ilc/ui';
+import type {
+  ApprovalRow,
+  CampaignDetailData,
+  CampaignEditorValue,
+  CampaignPermissions,
+  CampaignRow,
+  LifecycleAction,
+  NewRewardValue,
+  NewVenueValue,
+} from '@ilc/ui';
 
 /**
  * Traducción entre los contratos de la API y los modelos de las vistas puras de la consola.
@@ -46,6 +55,8 @@ export const ROLE_LABEL: Record<string, string> = {
   REVISOR_MARCA: 'Revisión de marca',
   REVISOR_JURIDICO: 'Revisión jurídica',
   RESPONSABLE_PRIVACIDAD: 'Privacidad',
+  STAFF: 'Staff',
+  DEALER: 'Comercio',
 };
 
 /** "2026-12-15T00:00" (hora Colombia) → ISO UTC. */
@@ -341,3 +352,7 @@ export function rewardFormToInput(v: NewRewardValue): CreateReward {
     zones: parseZones(v.zonesText),
   };
 }
+
+// ───────────── Comercios ─────────────
+
+export const emptyVenueForm = (): NewVenueValue => ({ name: '', channel: 'ON_PREMISE', city: '', department: '', address: '' });

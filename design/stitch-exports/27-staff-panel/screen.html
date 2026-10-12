@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>27 · Staff · Mi actividad - ILC Origen</title>
+  <!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Material Symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // ILC Origen - Tema Claro
+            'page-bg': '#FAF7F0',
+            'surface-light': '#F1ECE0',
+            'surface-card': '#FAF7F0',
+            'surface-dark': '#EAE4D6',
+            'sidebar-bg': '#13201B',
+            'sidebar-hover': '#1C2E27',
+            'text-main': '#13201B',
+            'text-muted': '#52635B',
+            'border-subtle': '#DFD7C7',
+            'gold-primary': '#6E561E',
+            'forest-sec': '#2F4941',
+            'oak-tertiary': '#9A4F17',
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAF7F0;
+      color: #13201B;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif {
+      font-family: 'EB Garamond', serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-page-bg text-text-main flex flex-col antialiased selection:bg-[#EAE4D6]">
+
+  <div class="flex-1 flex w-full">
+    <!-- BARRA LATERAL VERDE BOSQUE (#13201B) -->
+    <aside class="w-64 bg-sidebar-bg text-[#FAF7F0] flex flex-col justify-between shrink-0 border-r border-[#1C2E27]">
+      <!-- Superior: Logo y Navegación -->
+      <div>
+        <!-- Sello ILC y Título de Consola -->
+        <div class="p-6 border-b border-[#243B32] flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full border border-[#D4B673]/60 flex items-center justify-center bg-[#182822]">
+            <span class="font-serif font-bold text-lg tracking-wider text-[#D4B673]">ILC</span>
+          </div>
+          <div>
+            <h1 class="font-serif text-lg font-bold leading-tight tracking-wide text-[#FAF7F0]">Consola Staff</h1>
+            <p class="text-xs text-[#8BA49A] font-sans font-medium tracking-normal">Atención & Vinculación</p>
+          </div>
+        </div>
+
+        <!-- Menú de navegación con una sola sección activa -->
+        <nav class="px-3 py-6 space-y-1">
+          <div class="px-3 pb-2 text-[11px] font-bold tracking-wider text-[#718E83] uppercase">
+            Módulo Operativo
+          </div>
+          <!-- Sección única activa: Mi actividad -->
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#243B32] text-[#FAF7F0] font-semibold text-sm border-l-4 border-[#D4B673] shadow-sm">
+            <span class="material-symbols-outlined text-lg text-[#D4B673]">assignment</span>
+            <span>Mi actividad</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Inferior: Información del Staff y Botón Salir -->
+      <div class="p-4 border-t border-[#243B32] bg-[#0E1714]">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <div class="w-8 h-8 rounded-full bg-[#243B32] flex items-center justify-center text-xs font-bold text-[#FAF7F0] shrink-0 border border-[#345347]">
+              CP
+            </div>
+            <div class="truncate">
+              <p class="text-xs font-bold text-[#FAF7F0] truncate">Carlos Pérez</p>
+              <p class="text-[11px] text-[#8BA49A] truncate">Staff #STF-409</p>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-md bg-[#1C2E27] hover:bg-[#253D34] text-[#D8E4DF] text-xs font-semibold transition-colors duration-150 border border-[#2B473C]">
+          <span class="material-symbols-outlined text-sm">logout</span>
+          <span>Salir de turno</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DE CONTENIDO (1440px layout) -->
+    <main class="flex-1 flex flex-col min-w-0 bg-page-bg">
+      
+      <!-- Sub-cabecera superior con contexto y breadcrumb -->
+      <header class="px-8 py-6 bg-surface-light border-b border-border-subtle flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <h2 class="font-serif text-3xl font-bold tracking-tight text-text-main">Mi actividad</h2>
+          <!-- Chip de establecimiento -->
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAE4D6] border border-border-subtle text-xs font-semibold text-forest-sec">
+            <span class="material-symbols-outlined text-sm text-forest-sec">storefront</span>
+            <span>Gastrobar La Terraza Manizales</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <span class="text-xs text-text-muted font-medium">Turno activo</span>
+            <p class="text-xs font-bold text-text-main">Viernes, 24 Octubre 2026</p>
+          </div>
+          <div class="w-2.5 h-2.5 rounded-full bg-forest-sec"></div>
+        </div>
+      </header>
+
+      <!-- Contenedor central -->
+      <div class="p-8 space-y-8 max-w-7xl w-full mx-auto">
+        
+        <!-- SECCIÓN SUPERIOR: TARJETA QR + INDICADORES METRICAS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          <!-- TARJETA PRINCIPAL: TU CÓDIGO DE STAFF (Columna izquierda 5/12) -->
+          <div class="lg:col-span-5 bg-surface-light rounded-xl border border-border-subtle p-6 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-border-subtle mb-4">
+                <span class="text-xs font-bold tracking-wider text-forest-sec uppercase">Identificación Operativa</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-text-muted">
+                  <span class="material-symbols-outlined text-xs text-forest-sec">verified</span> Válido hoy
+                </span>
+              </div>
+              <h3 class="font-serif text-2xl font-bold text-text-main mb-1">Tu código de Staff</h3>
+              <p class="text-xs text-text-muted leading-relaxed mb-6">
+                La persona escanea este código en la mesa y luego la botella; así queda vinculada tu atención.
+              </p>
+            </div>
+
+            <!-- Bloque de QR y Código de 8 caracteres -->
+            <div class="bg-surface-card p-5 rounded-lg border border-border-subtle flex flex-col items-center justify-center text-center space-y-4">
+              <!-- Placeholder de Código QR grande -->
+              <div class="w-48 h-48 bg-white p-3 rounded-lg border-2 border-border-subtle shadow-inner flex flex-col items-center justify-center relative">
+                <!-- Simulación gráfica de patrón QR limpio -->
+                <svg viewBox="0 0 100 100" class="w-full h-full text-text-main" fill="currentColor">
+                  <!-- Posicionadores QR esquinas -->
+                  <rect x="0" y="0" width="28" height="28" fill="#13201B" rx="2" />
+                  <rect x="4" y="4" width="20" height="20" fill="white" rx="1" />
+                  <rect x="8" y="8" width="12" height="12" fill="#13201B" />
+
+                  <rect x="72" y="0" width="28" height="28" fill="#13201B" rx="2" />
+                  <rect x="76" y="4" width="20" height="20" fill="white" rx="1" />
+                  <rect x="80" y="8" width="12" height="12" fill="#13201B" />
+
+                  <rect x="0" y="72" width="28" height="28" fill="#13201B" rx="2" />
+                  <rect x="4" y="76" width="20" height="20" fill="white" rx="1" />
+                  <rect x="8" y="80" width="12" height="12" fill="#13201B" />
+
+                  <!-- Patrón central y bits decorativos -->
+                  <rect x="36" y="8" width="8" height="8" />
+                  <rect x="52" y="16" width="8" height="8" />
+                  <rect x="36" y="36" width="12" height="12" fill="#6E561E" />
+                  <rect x="56" y="36" width="8" height="8" />
+                  <rect x="72" y="44" width="8" height="8" />
+                  <rect x="44" y="56" width="12" height="12" />
+                  <rect x="64" y="64" width="16" height="8" />
+                  <rect x="36" y="80" width="8" height="12" />
+                  <rect x="52" y="84" width="12" height="8" />
+                  <rect x="76" y="80" width="12" height="12" />
+                  <rect x="16" y="36" width="8" height="16" />
+                  <rect x="8" y="56" width="8" height="8" />
+                </svg>
+                <!-- Badge central ILC en QR -->
+                <div class="absolute inset-0 m-auto w-10 h-10 bg-surface-card border-2 border-border-subtle rounded flex items-center justify-center shadow-sm">
+                  <span class="font-serif font-bold text-xs text-gold-primary">ILC</span>
+                </div>
+              </div>
+
+              <!-- Código de 8 caracteres alfanumérico -->
+              <div class="w-full">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-text-muted block mb-1">Código de mesa</span>
+                <div class="py-2.5 px-4 bg-surface-dark rounded-md border border-border-subtle flex items-center justify-center gap-3">
+                  <span class="font-mono text-xl font-bold tracking-widest text-text-main">K7M2Q9XD</span>
+                  <button type="button" title="Copiar código" class="text-forest-sec hover:text-text-main transition-colors">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón primario de refrescar / proyectar -->
+            <div class="mt-4 pt-3 border-t border-border-subtle flex justify-end">
+              <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-gold-primary hover:bg-[#5C4819] text-white rounded-md text-xs font-semibold shadow-sm transition-colors">
+                <span class="material-symbols-outlined text-sm">fullscreen</span>
+                <span>Mostrar QR en pantalla completa</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TRES INDICADORES EN TARJETAS (Columna derecha 7/12) -->
+          <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
+            
+            <!-- Bloque de 3 métricas -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              
+              <!-- Tarjeta 1: Botellas vinculadas hoy -->
+              <div class="bg-surface-light rounded-xl border border-border-subtle p-5 flex flex-col justify-between shadow-sm">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-forest-sec uppercase tracking-wide">Jornada</span>
+                    <span class="material-symbols-outlined text-base text-forest-sec">today</span>
+                  </div>
+                  <h4 class="text-xs font-medium text-text-muted">Botellas vinculadas hoy</h4>
+                </div>
+                <div class="mt-4">
+                  <span class="font-serif text-4xl font-bold text-text-main">6</span>
+                  <span class="text-xs text-text-muted ml-1">unidades</span>
+                </div>
+              </div>
+
+              <!-- Tarjeta 2: Esta semana -->
+              <div class="bg-surface-light rounded-xl border border-border-subtle p-5 flex flex-col justify-between shadow-sm">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-forest-sec uppercase tracking-wide">Acumulado</span>
+                    <span class="material-symbols-outlined text-base text-forest-sec">date_range</span>
+                  </div>
+                  <h4 class="text-xs font-medium text-text-muted">Esta semana</h4>
+                </div>
+                <div class="mt-4">
+                  <span class="font-serif text-4xl font-bold text-text-main">14</span>
+                  <span class="text-xs text-text-muted ml-1">unidades</span>
+                </div>
+              </div>
+
+              <!-- Tarjeta 3: Meta de la semana con barra de avance -->
+              <div class="bg-surface-light rounded-xl border border-border-subtle p-5 flex flex-col justify-between shadow-sm">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-forest-sec uppercase tracking-wide">Objetivo</span>
+                    <span class="material-symbols-outlined text-base text-forest-sec">flag</span>
+                  </div>
+                  <h4 class="text-xs font-medium text-text-muted">Meta de la semana</h4>
+                </div>
+                <div class="mt-3">
+                  <div class="flex items-baseline justify-between mb-2">
+                    <span class="font-serif text-3xl font-bold text-text-main">14 <span class="text-lg font-normal text-text-muted">/ 40</span></span>
+                    <span class="text-xs font-bold text-forest-sec">35%</span>
+                  </div>
+                  <!-- Barra de avance -->
+                  <div class="w-full bg-surface-dark h-2 rounded-full overflow-hidden border border-border-subtle">
+                    <div class="bg-forest-sec h-full rounded-full" style="width: 35%"></div>
+                  </div>
+                  <p class="text-[10px] text-text-muted mt-1.5 font-medium">Faltan 26 vinculaciones para cumplir meta</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel informativo de gobernanza y acuerdos comerciales -->
+            <div class="bg-[#FAF7F0] rounded-xl border border-border-subtle p-5 flex items-start gap-4 shadow-sm">
+              <div class="w-10 h-10 rounded-lg bg-surface-light border border-border-subtle flex items-center justify-center shrink-0 text-gold-primary">
+                <span class="material-symbols-outlined text-xl">gavel</span>
+              </div>
+              <div class="space-y-1">
+                <h5 class="text-xs font-bold text-text-main uppercase tracking-wider">Marco de Transparencia Operativa</h5>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  Los incentivos del Staff se liquidan según el acuerdo comercial vigente. El sistema registra únicamente eventos de vinculación técnica de códigos sin contabilizar rapidez de consumo ni requerir intermediación de montos monetarios en sala.
+                </p>
+              </div>
+            </div>
+
+            <!-- Resumen de estado de conexión con el motor de sincronización -->
+            <div class="bg-surface-light rounded-xl border border-border-subtle p-4 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2 text-forest-sec font-medium">
+                <span class="w-2 h-2 rounded-full bg-forest-sec animate-pulse"></span>
+                <span>Conexión en vivo con el sistema de sala</span>
+              </div>
+              <span class="text-[11px] text-text-muted">ID de dispositivo registrado: STF-TERM-09</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- SECCIÓN INFERIOR: TABLA DE ÚLTIMAS VINCULACIONES -->
+        <div class="bg-surface-light rounded-xl border border-border-subtle overflow-hidden shadow-sm">
+          
+          <div class="p-6 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="font-serif text-2xl font-bold text-text-main">Últimas vinculaciones</h3>
+              <p class="text-xs text-text-muted mt-0.5">Registro inmutable de atenciones asociadas a tu código durante este turno.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-text-muted">Filtrar por turno:</span>
+              <span class="px-2.5 py-1 rounded bg-[#EAE4D6] text-xs font-bold text-forest-sec border border-border-subtle">Hoy (En curso)</span>
+            </div>
+          </div>
+
+          <!-- Tabla HTML estructurada -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-surface-dark/60 border-b border-border-subtle text-text-main font-bold uppercase tracking-wider text-[11px]">
+                  <th scope="col" class="py-3.5 px-6">Hora</th>
+                  <th scope="col" class="py-3.5 px-6">Campaña</th>
+                  <th scope="col" class="py-3.5 px-6">Mesa (Nombre del Parche)</th>
+                  <th scope="col" class="py-3.5 px-6 text-right">Estado</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border-subtle bg-surface-light">
+                
+                <!-- Fila 1 -->
+                <tr class="hover:bg-[#FAF7F0]/80 transition-colors">
+                  <td class="py-4 px-6 font-mono text-text-main font-semibold whitespace-nowrap">
+                    22:45
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-semibold text-text-main">Feria de Manizales 2027</div>
+                    <div class="text-[11px] text-text-muted">Código RVC-8A</div>
+                  </div>
+                  <td class="py-4 px-6 font-medium text-text-main">
+                    Los del Nevado
+                  </td>
+                  <td class="py-4 px-6 text-right whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-forest-sec/10 text-forest-sec border border-forest-sec/20">
+                      <span class="w-1.5 h-1.5 rounded-full bg-forest-sec"></span> Vinculada
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Fila 2 -->
+                <tr class="hover:bg-[#FAF7F0]/80 transition-colors">
+                  <td class="py-4 px-6 font-mono text-text-main font-semibold whitespace-nowrap">
+                    21:30
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-semibold text-text-main">Ruta del Origen</div>
+                    <div class="text-[11px] text-text-muted">Código AA-750</div>
+                  </div>
+                  <td class="py-4 px-6 font-medium text-text-main">
+                    Parche La 23
+                  </td>
+                  <td class="py-4 px-6 text-right whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-forest-sec/10 text-forest-sec border border-forest-sec/20">
+                      <span class="w-1.5 h-1.5 rounded-full bg-forest-sec"></span> Vinculada
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Fila 3 -->
+                <tr class="hover:bg-[#FAF7F0]/80 transition-colors">
+                  <td class="py-4 px-6 font-mono text-text-main font-semibold whitespace-nowrap">
+                    20:15
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-semibold text-text-main">Temporada Fin de Año</div>
+                    <div class="text-[11px] text-text-muted">Código RVC-GRE</div>
+                  </div>
+                  <td class="py-4 px-6 font-medium text-text-main">
+                    Amigos de Chipre
+                  </td>
+                  <td class="py-4 px-6 text-right whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-forest-sec/10 text-forest-sec border border-forest-sec/20">
+                      <span class="w-1.5 h-1.5 rounded-full bg-forest-sec"></span> Vinculada
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Fila 4 -->
+                <tr class="hover:bg-[#FAF7F0]/80 transition-colors">
+                  <td class="py-4 px-6 font-mono text-text-main font-semibold whitespace-nowrap">
+                    19:50
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-semibold text-text-main">Feria de Manizales 2027</div>
+                    <div class="text-[11px] text-text-muted">Código RVC-8A</div>
+                  </div>
+                  <td class="py-4 px-6 font-medium text-text-main">
+                    Los Paisas de la 19
+                  </td>
+                  <td class="py-4 px-6 text-right whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-forest-sec/10 text-forest-sec border border-forest-sec/20">
+                      <span class="w-1.5 h-1.5 rounded-full bg-forest-sec"></span> Vinculada
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Fila 5 -->
+                <tr class="hover:bg-[#FAF7F0]/80 transition-colors">
+                  <td class="py-4 px-6 font-mono text-text-main font-semibold whitespace-nowrap">
+                    19:05
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-semibold text-text-main">Feria de Manizales 2027</div>
+                    <div class="text-[11px] text-text-muted">Código AA-750</div>
+                  </div>
+                  <td class="py-4 px-6 font-medium text-text-main">
+                    Mesa El Cable
+                  </td>
+                  <td class="py-4 px-6 text-right whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-forest-sec/10 text-forest-sec border border-forest-sec/20">
+                      <span class="w-1.5 h-1.5 rounded-full bg-forest-sec"></span> Vinculada
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Fila 6 -->
+                <tr class="hover:bg-[#FAF7F0]/80 transition-colors">
+                  <td class="py-4 px-6 font-mono text-text-main font-semibold whitespace-nowrap">
+                    18:20
+                  </td>
+                  <td class="py-4 px-6">
+                    <div class="font-semibold text-text-main">Ruta del Origen</div>
+                    <div class="text-[11px] text-text-muted">Código RVC-8A</div>
+                  </div>
+                  <td class="py-4 px-6 font-medium text-text-main">
+                    Los de la Montaña
+                  </td>
+                  <td class="py-4 px-6 text-right whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-forest-sec/10 text-forest-sec border border-forest-sec/20">
+                      <span class="w-1.5 h-1.5 rounded-full bg-forest-sec"></span> Vinculada
+                    </span>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pie de tabla informativo sobre privacidad -->
+          <div class="p-4 bg-surface-dark/40 border-t border-border-subtle flex items-center justify-between text-[11px] text-text-muted">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-forest-sec">privacy_tip</span>
+              <span>Protección de datos (Ley 1581): El sistema no muestra identidades ni teléfonos de los comensales.</span>
+            </div>
+            <div>Mostrando 6 vinculaciones de hoy</div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PIE LEGAL INSTITUCIONAL OBLIGATORIO (Ley 30 de 1986) -->
+      <footer class="mt-auto py-4 px-8 border-t border-border-subtle bg-surface-dark text-center text-[11px] tracking-wide text-text-muted uppercase font-medium">
+        EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+      </footer>
+
+    </main>
+  </div>
+
+</body>
+</html>

@@ -274,3 +274,17 @@ describe('recompensas (modo demostración)', () => {
     expect(screen.getByRole('button', { name: /Visita guiada/ })).toBeInTheDocument();
   });
 });
+
+describe('QR del Staff (/s/:code)', () => {
+  it('recuerda el código válido para la próxima activación y entra a jugar; ignora un código mal formado', async () => {
+    sessionStorage.clear();
+    installFakeApi({ loggedIn: true });
+    const router = renderAt('/s/k7m2q9xd');
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/jugar'));
+    expect(JSON.parse(sessionStorage.getItem('ilc.staff') ?? '{}').code).toBe('K7M2Q9XD');
+    sessionStorage.clear();
+    installFakeApi({ loggedIn: true });
+    renderAt('/s/corto');
+    await vi.waitFor(() => expect(sessionStorage.getItem('ilc.staff')).toBeNull());
+  });
+});

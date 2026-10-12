@@ -328,16 +328,24 @@ model Batch {
 }
 
 model Venue {
-  id         String          @id @default(uuid(7)) @db.Uuid
-  name       String
-  channel    Channel
-  city       String
-  department String
-  approvedAt DateTime?
-  createdAt  DateTime        @default(now())
-  staff      StaffAccount[]
-  campaigns  VenueCampaign[]
-  sessions   Session[]
+  id           String          @id @default(uuid(7)) @db.Uuid
+  name         String
+  channel      Channel
+  city         String
+  department   String
+  /// Un establecimiento solo opera (vincular botellas, entregar) mientras está aprobado y no suspendido.
+  approvedAt   DateTime?
+  approvedById String?         @db.Uuid
+  suspendedAt  DateTime?
+  address      String          @default("")
+  hours        String          @default("")
+  description  String          @default("")
+  /// Aparece en el directorio público solo si el comercio lo decide y está aprobado.
+  listed       Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  staff        StaffAccount[]
+  campaigns    VenueCampaign[]
+  sessions     Session[]
 
   @@map("venues")
 }
@@ -733,6 +741,7 @@ model Claim {
   @@index([userId])
   /// Límites de activación por persona y día (§5.7 regla 2).
   @@index([userId, createdAt])
+  @@index([staffUserId, createdAt])
   @@map("claims")
 }
 

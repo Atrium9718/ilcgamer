@@ -24,3 +24,16 @@ describe('billetera: contrato de la API → vista', () => {
     expect(w.entries[0]).toMatchObject({ kind: 'expiry', amount: -200, dateLabel: '1 de oct' });
   });
 });
+
+describe('código de Staff recordado', () => {
+  it('solo vale mientras no pasen 6 horas y si tiene el formato correcto', async () => {
+    const { readStaffCode, writeLocal, KEYS } = await import('./storage.ts');
+    sessionStorage.clear();
+    expect(readStaffCode()).toBeUndefined();
+    writeLocal(KEYS.staff, { code: 'K7M2Q9XD', at: 1_000 }, 'session');
+    expect(readStaffCode(1_000 + 5 * 3_600_000)).toBe('K7M2Q9XD');
+    expect(readStaffCode(1_000 + 7 * 3_600_000)).toBeUndefined();
+    writeLocal(KEYS.staff, { code: 'mal', at: 1_000 }, 'session');
+    expect(readStaffCode(2_000)).toBeUndefined();
+  });
+});

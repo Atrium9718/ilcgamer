@@ -22,6 +22,8 @@ const DEFAULTS = {
   'parche.endsAtLocalTime': '06:00',
   'parche.inactivityMinutes': 120,
   'parche.capacity': 12,
+  /** Meta semanal de vinculaciones de un Staff (indicador de avance; nunca premia rapidez ni volumen de consumo). */
+  'staff.weeklyGoal': 40,
   /** Días para retirar una recompensa reservada; después vence y se devuelven stock y puntos (§5.8). */
   'rewards.reservationDays': 14,
   /** Juegos disponibles cuando no hay campaña (o la campaña no define los suyos). Máximo 2 de Ruta B. */

@@ -1974,6 +1974,275 @@
           "Consola · Recompensas"
         ]
       }
+    },
+    "/api/v1/venues": {
+      "get": {
+        "operationId": "VenuesController_directory",
+        "parameters": [
+          {
+            "name": "city",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Establecimientos"
+        ]
+      }
+    },
+    "/api/v1/staff/me": {
+      "get": {
+        "operationId": "VenueStaffController_staff",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Staff y Comercio"
+        ]
+      }
+    },
+    "/api/v1/dealer/me": {
+      "get": {
+        "operationId": "VenueStaffController_dealer",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Staff y Comercio"
+        ]
+      }
+    },
+    "/api/v1/dealer/me/profile": {
+      "put": {
+        "operationId": "VenueStaffController_profile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Staff y Comercio"
+        ]
+      }
+    },
+    "/api/v1/admin/venues": {
+      "get": {
+        "operationId": "AdminVenuesController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      },
+      "post": {
+        "operationId": "AdminVenuesController_create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      }
+    },
+    "/api/v1/admin/venues/{id}/approve": {
+      "post": {
+        "operationId": "AdminVenuesController_approve",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      }
+    },
+    "/api/v1/admin/venues/{id}/suspend": {
+      "post": {
+        "operationId": "AdminVenuesController_suspend",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      }
+    },
+    "/api/v1/admin/venues/{id}/campaigns": {
+      "put": {
+        "operationId": "AdminVenuesController_linkCampaigns",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      }
+    },
+    "/api/v1/admin/venues/{id}/personnel": {
+      "post": {
+        "operationId": "AdminVenuesController_add",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      }
+    },
+    "/api/v1/admin/venues/{id}/personnel/{userId}": {
+      "delete": {
+        "operationId": "AdminVenuesController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Comercios"
+        ]
+      }
     }
   },
   "info": {

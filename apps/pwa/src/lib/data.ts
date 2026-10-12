@@ -45,7 +45,7 @@ export interface DataSource {
   /** Consulta del código de producto (no consume ninguna promoción — Guía Técnica §5.6). */
   lookupCode(token: string): Promise<ProductCodeLookup>;
   /** Reclamación de la promoción de la botella. Reutilice la MISMA clave al reintentar (§5.7 regla 8). */
-  claimCode(token: string, idempotencyKey: string, sessionId?: string): Promise<ClaimResult>;
+  claimCode(token: string, idempotencyKey: string, sessionId?: string, staffCode?: string): Promise<ClaimResult>;
   wallet(cursor?: string): Promise<WalletData>;
   /** XP, nivel e insignias (Ruta B). */
   progress(): Promise<Progress>;
@@ -119,8 +119,12 @@ const demoSource: DataSource = {
 const apiSource: DataSource = {
   demo: false,
   lookupCode: (token) => apiRequest<ProductCodeLookup>(`/product-codes/${encodeURIComponent(token)}/status`),
-  claimCode: (token, idempotencyKey, sessionId) =>
-    apiRequest<ClaimResult>(`/campaign-codes/${encodeURIComponent(token)}/claim`, { method: 'POST', idempotencyKey, body: sessionId ? { sessionId } : {} }),
+  claimCode: (token, idempotencyKey, sessionId, staffCode) =>
+    apiRequest<ClaimResult>(`/campaign-codes/${encodeURIComponent(token)}/claim`, {
+      method: 'POST',
+      idempotencyKey,
+      body: { ...(sessionId ? { sessionId } : {}), ...(staffCode ? { staffCode } : {}) },
+    }),
   wallet: async (cursor) => toWalletData(await apiRequest<Wallet>(`/wallet${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ''}`)),
   progress: () => apiRequest<Progress>('/profile/progress'),
 };

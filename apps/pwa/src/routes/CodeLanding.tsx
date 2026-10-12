@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 import { ApiRequestError, newIdempotencyKey } from '../lib/api.ts';
 import { data } from '../lib/data.ts';
 import { useSession } from '../lib/session.tsx';
-import { KEYS, readLocal, removeLocal, writeLocal } from '../lib/storage.ts';
+import { KEYS, readLocal, readStaffCode, removeLocal, writeLocal } from '../lib/storage.ts';
 
 const fmt = (n: number) => n.toLocaleString('es-CO');
 const dateFmt = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Bogota' });
@@ -94,7 +94,7 @@ export function CodeLandingRoute() {
     setClaimError(undefined);
     try {
       const activeParche = readLocal<string | null>(KEYS.activeParche, null, 'session') ?? undefined;
-      const r = await data.claimCode(token, key, activeParche);
+      const r = await data.claimCode(token, key, activeParche, readStaffCode());
       removeLocal(claimKeyFor(token), 'session');
       setConditions(false);
       setResult(r);

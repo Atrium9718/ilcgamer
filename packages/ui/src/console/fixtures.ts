@@ -377,3 +377,32 @@ export const CLAIMS_ADMIN_DEMO: import('./RewardsAdminView.tsx').ClaimAdminRow[]
     cancelReason: 'Producto dañado',
   },
 ];
+
+export const VENUES_DEMO: import('./VenuesAdminView.tsx').VenueRow[] = [
+  {
+    id: 'v1',
+    name: 'Bar de prueba',
+    channel: 'ON_PREMISE',
+    city: 'Manizales',
+    department: 'Caldas',
+    status: 'APROBADO',
+    listed: true,
+    personnel: [
+      { userId: 'u1', alias: 'Mesera 1', role: 'STAFF', code: 'K7M2Q9XD', active: true },
+      { userId: 'u2', alias: 'Dueño 1', role: 'DEALER', code: null, active: true },
+      { userId: 'u3', alias: 'Mesero 2', role: 'STAFF', code: 'A1B2C3D4', active: false },
+    ],
+    campaigns: [{ slug: 'feria-manizales-2027', title: 'Feria de Manizales 2027' }],
+  },
+  {
+    id: 'v2',
+    name: 'Licorera de prueba',
+    channel: 'OFF_PREMISE',
+    city: 'Pereira',
+    department: 'Risaralda',
+    status: 'PENDIENTE',
+    listed: false,
+    personnel: [],
+    campaigns: [],
+  },
+];

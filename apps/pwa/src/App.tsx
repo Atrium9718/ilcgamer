@@ -3,7 +3,7 @@ import { SessionProvider } from './lib/session.tsx';
 import { ProfileRoute, ProgressRoute, ShareRoute, WalletRoute } from './routes/Account.tsx';
 import { AgeGateRoute, UnderageRoute } from './routes/AgeGate.tsx';
 import { CodeLandingRoute } from './routes/CodeLanding.tsx';
-import { EventEntryRoute, ReferralEntryRoute } from './routes/Entry.tsx';
+import { EventEntryRoute, ReferralEntryRoute, StaffEntryRoute } from './routes/Entry.tsx';
 import { GamePlayRoute, GameResultRoute, GamesRoute } from './routes/Games.tsx';
 import { ConsentsRoute, OtpRoute, SignUpRoute } from './routes/Identity.tsx';
 import { CreateParcheRoute, JoinParcheRoute, ParcheRoomRoute } from './routes/Parche.tsx';
@@ -28,6 +28,7 @@ export const routes = [
           { path: '/v/:token', element: <CodeLandingRoute /> },
           { path: '/c/:token', element: <CodeLandingRoute /> },
           { path: '/e/:slug', element: <EventEntryRoute /> },
+          { path: '/s/:code', element: <StaffEntryRoute /> },
           { path: '/p/:pin', element: <JoinParcheRoute /> },
           { path: '/parche/nuevo', element: <CreateParcheRoute /> },
           { path: '/parche/unirse', element: <JoinParcheRoute /> },

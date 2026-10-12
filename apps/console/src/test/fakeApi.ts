@@ -25,6 +25,37 @@ export const DRAFT: CampaignDraft = {
   modules: [],
 };
 
+const VENUE = {
+  id: '00000000-0000-7000-8000-0000000000c1',
+  name: 'Bar de prueba',
+  channel: 'ON_PREMISE',
+  city: 'Manizales',
+  department: 'Caldas',
+  address: '',
+  status: 'PENDIENTE',
+  listed: false,
+  personnel: [],
+  campaigns: [],
+};
+
+const STAFF_DASH = {
+  venue: { name: 'Bar de prueba', city: 'Manizales' },
+  code: 'K7M2Q9XD',
+  qrPath: '/s/K7M2Q9XD',
+  counts: { today: 3, week: 14 },
+  weeklyGoal: 40,
+  recent: [{ at: '2026-10-12T23:00:00.000Z', campaignTitle: 'Feria de Manizales', tableName: 'Mesa 4' }],
+};
+
+const DEALER_DASH = {
+  venue: { id: VENUE.id, name: 'Bar de prueba', city: 'Manizales', channel: 'ON_PREMISE' },
+  counts: { today: 4, week: 21, month: 80 },
+  series: [{ date: '2026-10-12', count: 4 }],
+  rank: { position: 3, total: 12, city: 'Manizales' },
+  campaigns: [{ slug: 'feria', title: 'Feria de Manizales' }],
+  profile: { description: '', hours: '', address: '', listed: false },
+};
+
 const REWARD = {
   id: '00000000-0000-7000-8000-0000000000b1',
   slug: 'gorra-prueba',
@@ -256,6 +287,10 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
     if (url.startsWith('/admin/economy/accounts?userId=')) return json(200, ACCOUNT);
     if (url.endsWith('/reverse')) return json(200, { ...ACCOUNT, balance: 0, ledgerSum: 0 });
     if (url === '/admin/economy/badges') return json(200, []);
+    if (url === '/admin/venues') return json(200, [VENUE]);
+    if (url.startsWith('/admin/venues/') && url.endsWith('/approve')) return json(200, { ...VENUE, status: 'APROBADO' });
+    if (url === '/staff/me') return json(200, STAFF_DASH);
+    if (url === '/dealer/me') return json(200, DEALER_DASH);
     if (url === '/admin/rewards') return json(200, [REWARD]);
     if (url.startsWith('/admin/rewards/claims')) return json(200, []);
     if (url.endsWith('/activate') && url.startsWith('/admin/rewards')) return json(200, { ...REWARD, active: true });

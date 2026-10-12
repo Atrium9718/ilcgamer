@@ -12,6 +12,8 @@ import type {
   CreateCampaign,
   CreateProduct,
   CreateReward,
+  CreateVenue,
+  DealerDashboard,
   DefaultModules,
   GenerateCodes,
   ImportPreview,
@@ -20,7 +22,10 @@ import type {
   ProductView,
   Reconciliation,
   RewardAdminView,
+  StaffDashboard,
   UrlTemplate,
+  VenueAdminView,
+  VenueProfile,
 } from '@ilc/contracts';
 import { apiRequest, type DownloadedFile } from './api.ts';
 
@@ -114,4 +119,25 @@ export const rewardsAdminApi = {
   claims: (status?: string) => apiRequest<AdminRewardClaim[]>(`${rw}/claims${status ? `?status=${enc(status)}` : ''}`),
   deliver: (code: string) => apiRequest<AdminRewardClaim>(`${rw}/claims/deliver`, { method: 'POST', body: { code } }),
   cancel: (id: string, reason: string) => apiRequest<AdminRewardClaim>(`${rw}/claims/${enc(id)}/cancel`, { method: 'POST', body: { reason } }),
+};
+
+const vn = '/admin/venues';
+
+/** Comercios (Paso 11): establecimientos, personal y campañas. La API valida roles y estado de aprobación. */
+export const venuesAdminApi = {
+  list: () => apiRequest<VenueAdminView[]>(vn),
+  create: (body: CreateVenue) => apiRequest<VenueAdminView>(vn, { method: 'POST', body }),
+  approve: (id: string) => apiRequest<VenueAdminView>(`${vn}/${enc(id)}/approve`, { method: 'POST' }),
+  suspend: (id: string, reason: string) => apiRequest<VenueAdminView>(`${vn}/${enc(id)}/suspend`, { method: 'POST', body: { reason } }),
+  linkCampaigns: (id: string, campaignSlugs: string[]) => apiRequest<VenueAdminView>(`${vn}/${enc(id)}/campaigns`, { method: 'PUT', body: { campaignSlugs } }),
+  addPersonnel: (id: string, body: { email: string; role: 'STAFF' | 'DEALER' }) =>
+    apiRequest<VenueAdminView>(`${vn}/${enc(id)}/personnel`, { method: 'POST', body }),
+  removePersonnel: (id: string, userId: string) => apiRequest<VenueAdminView>(`${vn}/${enc(id)}/personnel/${enc(userId)}`, { method: 'DELETE' }),
+};
+
+/** Paneles de Staff y Comercio: solo lo propio y en agregado. */
+export const venueSelfApi = {
+  staff: () => apiRequest<StaffDashboard>('/staff/me'),
+  dealer: () => apiRequest<DealerDashboard>('/dealer/me'),
+  saveProfile: (body: VenueProfile) => apiRequest<DealerDashboard>('/dealer/me/profile', { method: 'PUT', body }),
 };

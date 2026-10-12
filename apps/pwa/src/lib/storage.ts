@@ -31,6 +31,8 @@ export const KEYS = {
   afterSignup: 'ilc.afterSignup',
   /** Parche activo en esta pestaña: una activación de botella recarga su energía (Instrucciones §5 paso 5). */
   activeParche: 'ilc.activeParche',
+  /** Código del Staff que atendió la mesa (QR /s/:code); vale unas horas para la activación siguiente. */
+  staff: 'ilc.staff',
 } as const;
 
 export function removeLocal(key: string, store: 'local' | 'session' = 'local'): void {
@@ -39,4 +41,12 @@ export function removeLocal(key: string, store: 'local' | 'session' = 'local'): 
   } catch {
     /* sin almacenamiento disponible */
   }
+}
+
+const STAFF_TTL_MS = 6 * 3_600_000;
+
+/** Código de Staff recordado, si sigue vigente (una noche de servicio). */
+export function readStaffCode(now = Date.now()): string | undefined {
+  const saved = readLocal<{ code: string; at: number } | null>(KEYS.staff, null, 'session');
+  return saved && /^[0-9A-Z]{8}$/.test(saved.code) && now - saved.at < STAFF_TTL_MS ? saved.code : undefined;
 }

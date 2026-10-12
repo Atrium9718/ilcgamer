@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>28 · Comercio · Mi establecimiento (escritorio) - ILC Origen</title>
+  <!-- Google Fonts: EB Garamond & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            papel: '#FAF7F0',
+            superficie: '#F1ECE0',
+            'superficie-borde': '#EAE4D6',
+            'superficie-alt': '#E4DDD0',
+            texto: '#13201B',
+            'texto-suave': '#4B554F',
+            'texto-tenue': '#707C75',
+            'oro-oscuro': '#6E561E',
+            'verde-bosque': '#2F4941',
+            'verde-profundo': '#13201B',
+            roble: '#9A4F17',
+            'borde-suave': '#D9D0BE'
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Material Symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.filled {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="h-full bg-papel text-texto font-sans antialiased flex flex-col justify-between selection:bg-oro-oscuro selection:text-white">
+
+  <div class="flex-1 flex overflow-hidden">
+    <!-- BARRA LATERAL (Sidebar en verde bosque muy oscuro #13201B) -->
+    <aside class="w-64 bg-verde-profundo text-[#E1E8E4] flex flex-col justify-between flex-shrink-0 border-r border-[#1E2E28] z-20">
+      <div>
+        <!-- Sello ILC y Título de Consola de Comercio -->
+        <div class="p-6 border-b border-[#22332C] flex items-center space-x-3.5">
+          <div class="w-10 h-10 rounded-full border border-[#BFA76B]/60 flex items-center justify-center bg-[#182822] shadow-inner flex-shrink-0">
+            <span class="font-serif font-bold text-sm tracking-widest text-[#D4BC7B]">ILC</span>
+          </div>
+          <div class="leading-tight">
+            <span class="font-serif text-lg font-semibold tracking-wide text-[#F3EFE6] block">Consola Comercio</span>
+            <span class="text-[11px] font-medium tracking-wider text-[#98A8A0] uppercase block">Gestión Aliada B2B</span>
+          </div>
+        </div>
+
+        <!-- Perfil del Establecimiento en Sidebar -->
+        <div class="px-5 py-4 mx-3 my-3 rounded-lg bg-[#182822]/90 border border-[#263A32]">
+          <div class="flex items-center space-x-2.5">
+            <div class="w-8 h-8 rounded-full bg-verde-bosque/80 border border-[#426156] flex items-center justify-center text-white text-xs font-semibold">
+              <span class="material-symbols-outlined text-[18px] text-[#D4BC7B]">storefront</span>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-xs font-semibold text-[#F0EBE0] truncate">El Almacén Gastrobar</p>
+              <p class="text-[11px] text-[#8EA097] flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>
+                Establecimiento Aliado
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secciones de Navegación -->
+        <nav class="px-3 pt-2 space-y-1.5">
+          <!-- Mi Establecimiento (Activa) -->
+          <a href="#mi-establecimiento" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-md text-sm font-semibold bg-[#22362F] text-[#F3EFE6] border-l-4 border-[#D4BC7B] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#D4BC7B]">domain</span>
+            <span>Mi establecimiento</span>
+          </a>
+
+          <!-- Entregas -->
+          <a href="#entregas" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-md text-sm font-medium text-[#A9BCB2] hover:bg-[#1A2A24] hover:text-[#E8F0EA] transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#82998E]">inventory_2</span>
+            <span>Entregas</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Pie de Sidebar con Gobernanza y Privacidad B2B -->
+      <div class="p-4 border-t border-[#22332C] bg-[#101B17]">
+        <div class="flex items-start gap-2.5 text-[11px] leading-relaxed text-[#869A90]">
+          <span class="material-symbols-outlined text-[16px] text-[#CBB274] flex-shrink-0 mt-0.5">verified_user</span>
+          <div>
+            <p class="font-medium text-[#C8D6CF]">Gobernanza de Datos B2B</p>
+            <p class="text-[10px] text-[#6E8077] mt-0.5">Métricas agregadas sin datos personales (§5.9 Guía Técnica).</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+    <main class="flex-1 overflow-y-auto bg-papel">
+      <!-- Barra superior / Header -->
+      <header class="bg-superficie border-b border-borde-suave px-8 py-5 flex items-center justify-between sticky top-0 z-10">
+        <div>
+          <div class="flex items-center space-x-3">
+            <h1 class="font-serif text-3xl font-bold tracking-tight text-texto">El Almacén Gastrobar</h1>
+            <div class="flex items-center gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#E4DDD0] text-verde-bosque border border-borde-suave">
+                Canal On-Premise
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-superficie-alt text-texto-suave border border-borde-suave flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-oro-oscuro">location_on</span>
+                Manizales
+              </span>
+            </div>
+          </div>
+          <p class="text-xs text-texto-suave mt-1">Panel de control de operaciones locales y cumplimiento comercial ILC</p>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <div class="text-right">
+            <p class="text-xs font-semibold text-texto">ID Comercial: COM-MNZ-410</p>
+            <p class="text-[11px] text-texto-tenue">Periodo activo: Octubre 2026</p>
+          </div>
+          <div class="h-8 w-px bg-borde-suave"></div>
+          <div class="w-8 h-8 rounded-full bg-superficie-alt border border-borde-suave flex items-center justify-center text-texto-suave">
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenedor central -->
+      <div class="max-w-6xl mx-auto px-8 py-7 space-y-8">
+        
+        <!-- Pestañas de Navegación del Establecimiento -->
+        <div class="border-b border-borde-suave flex items-center space-x-2">
+          <!-- Pestaña 1: Resumen (Activa) -->
+          <button class="px-5 py-3 border-b-2 border-oro-oscuro font-medium text-sm text-oro-oscuro font-semibold flex items-center gap-2 bg-superficie/60 rounded-t-md transition-colors">
+            <span class="material-symbols-outlined text-[18px]">analytics</span>
+            Resumen
+          </button>
+          
+          <!-- Pestaña 2: Perfil público -->
+          <a href="#seccion-perfil" class="px-5 py-3 border-b-2 border-transparent font-medium text-sm text-texto-suave hover:text-texto hover:border-borde-suave flex items-center gap-2 transition-colors">
+            <span class="material-symbols-outlined text-[18px]">badge</span>
+            Perfil público
+          </a>
+
+          <!-- Pestaña 3: Entregar recompensa -->
+          <a href="#seccion-entregar" class="px-5 py-3 border-b-2 border-transparent font-medium text-sm text-texto-suave hover:text-texto hover:border-borde-suave flex items-center gap-2 transition-colors">
+            <span class="material-symbols-outlined text-[18px]">redeem</span>
+            Entregar recompensa
+          </a>
+        </div>
+
+        <!-- SECCIÓN 1: RESUMEN (TARJETAS + GRÁFICO + CAMPAÑAS ACTIVAS) -->
+        <section class="space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="font-serif text-2xl font-bold text-texto">Resumen Operativo</h2>
+              <p class="text-xs text-texto-suave">Métricas de rotación comercial y posición local basada en activaciones verificadas.</p>
+            </div>
+            <div class="text-xs bg-superficie px-3 py-1.5 rounded border border-borde-suave text-texto-suave flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[15px] text-verde-bosque">schedule</span>
+              Corte actualizado: Hoy, 21:40
+            </div>
+          </div>
+
+          <!-- Cuatro Tarjetas de Métricas -->
+          <div class="grid grid-cols-4 gap-5">
+            <!-- Tarjeta 1: Botellas activadas hoy -->
+            <div class="bg-superficie rounded-xl border border-superficie-borde p-5 shadow-sm">
+              <div class="flex items-center justify-between text-texto-suave mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider">Hoy</span>
+                <span class="material-symbols-outlined text-[18px] text-verde-bosque">today</span>
+              </div>
+              <p class="text-xs text-texto-suave">Botellas activadas</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-3xl font-bold font-serif text-texto">18</span>
+                <span class="text-[11px] font-semibold text-verde-bosque bg-[#E0EBE6] px-1.5 py-0.5 rounded">En sala</span>
+              </div>
+              <p class="text-[11px] text-texto-tenue mt-3 pt-2.5 border-t border-borde-suave/70 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-verde-bosque">trending_up</span>
+                +4 frente al promedio diario
+              </p>
+            </div>
+
+            <!-- Tarjeta 2: Esta semana -->
+            <div class="bg-superficie rounded-xl border border-superficie-borde p-5 shadow-sm">
+              <div class="flex items-center justify-between text-texto-suave mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider">Esta semana</span>
+                <span class="material-symbols-outlined text-[18px] text-verde-bosque">date_range</span>
+              </div>
+              <p class="text-xs text-texto-suave">Total activaciones</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-3xl font-bold font-serif text-texto">114</span>
+                <span class="text-[11px] text-texto-suave font-medium">unidades</span>
+              </div>
+              <p class="text-[11px] text-texto-tenue mt-3 pt-2.5 border-t border-borde-suave/70 flex items-center gap-1">
+                Ritmo acumulado: 16.2 / día
+              </p>
+            </div>
+
+            <!-- Tarjeta 3: Este mes -->
+            <div class="bg-superficie rounded-xl border border-superficie-borde p-5 shadow-sm">
+              <div class="flex items-center justify-between text-texto-suave mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider">Este mes</span>
+                <span class="material-symbols-outlined text-[18px] text-verde-bosque">calendar_month</span>
+              </div>
+              <p class="text-xs text-texto-suave">Acumulado mensual</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-3xl font-bold font-serif text-texto">462</span>
+                <span class="text-[11px] text-texto-suave font-medium">unidades</span>
+              </div>
+              <p class="text-[11px] text-texto-tenue mt-3 pt-2.5 border-t border-borde-suave/70">
+                Límite de liquidación: 31 oct.
+              </p>
+            </div>
+
+            <!-- Tarjeta 4: Posición en tu ciudad: 3.º de 12 (Solo posición, sin nombres de otros locales) -->
+            <div class="bg-superficie rounded-xl border-2 border-borde-suave p-5 shadow-sm relative overflow-hidden">
+              <div class="flex items-center justify-between text-texto-suave mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-oro-oscuro">Ranking Local</span>
+                <span class="material-symbols-outlined text-[20px] text-oro-oscuro filled">military_tech</span>
+              </div>
+              <p class="text-xs text-texto-suave">Posición en tu ciudad</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-3xl font-bold font-serif text-oro-oscuro">3.º <span class="text-lg font-sans font-medium text-texto-suave">de 12</span></span>
+              </div>
+              <p class="text-[11px] text-texto-suave mt-3 pt-2.5 border-t border-borde-suave/70 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-verde-bosque">shield</span>
+                Privacidad: datos de pares anonimizados
+              </p>
+            </div>
+          </div>
+
+          <!-- Gráfico de barras de los últimos 14 días + Panel de campañas -->
+          <div class="grid grid-cols-12 gap-6">
+            
+            <!-- Gráfico de barras simple de los últimos 14 días -->
+            <div class="col-span-8 bg-superficie rounded-xl border border-superficie-borde p-6 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-serif text-xl font-bold text-texto">Activaciones en los últimos 14 días</h3>
+                  <span class="text-xs text-texto-tenue font-medium">Volumen diario consolidado</span>
+                </div>
+                <p class="text-xs text-texto-suave mb-6">Muestra la rotación de botellas activadas en tu local durante las dos últimas semanas.</p>
+              </div>
+
+              <!-- Contenedor del gráfico de barras CSS puro -->
+              <div class="pt-4 pb-2 border-b border-borde-suave">
+                <div class="h-44 flex items-end justify-between gap-2 px-2">
+                  <!-- Día 1 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">12</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 48%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">01</span>
+                  </div>
+                  <!-- Día 2 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">15</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 60%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">02</span>
+                  </div>
+                  <!-- Día 3 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">19</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 76%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">03</span>
+                  </div>
+                  <!-- Día 4 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">22</span>
+                    <div class="w-full max-w-[28px] bg-verde-bosque/70 rounded-t transition-all" style="height: 88%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">04</span>
+                  </div>
+                  <!-- Día 5 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">24</span>
+                    <div class="w-full max-w-[28px] bg-verde-bosque/70 rounded-t transition-all" style="height: 96%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">05</span>
+                  </div>
+                  <!-- Día 6 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">14</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 56%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">06</span>
+                  </div>
+                  <!-- Día 7 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">10</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 40%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">07</span>
+                  </div>
+                  <!-- Día 8 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">13</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 52%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">08</span>
+                  </div>
+                  <!-- Día 9 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">16</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 64%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">09</span>
+                  </div>
+                  <!-- Día 10 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">18</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 72%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">10</span>
+                  </div>
+                  <!-- Día 11 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">21</span>
+                    <div class="w-full max-w-[28px] bg-verde-bosque/70 rounded-t transition-all" style="height: 84%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">11</span>
+                  </div>
+                  <!-- Día 12 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">25</span>
+                    <div class="w-full max-w-[28px] bg-verde-bosque rounded-t transition-all" style="height: 100%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">12</span>
+                  </div>
+                  <!-- Día 13 -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-texto-tenue font-semibold opacity-0 group-hover:opacity-100 transition-opacity">17</span>
+                    <div class="w-full max-w-[28px] bg-superficie-alt group-hover:bg-verde-bosque/40 rounded-t transition-all" style="height: 68%;"></div>
+                    <span class="text-[10px] text-texto-tenue font-medium">13</span>
+                  </div>
+                  <!-- Día 14 (Hoy) -->
+                  <div class="flex-1 flex flex-col items-center gap-1.5 group">
+                    <span class="text-[10px] text-oro-oscuro font-bold opacity-100">18</span>
+                    <div class="w-full max-w-[28px] bg-oro-oscuro rounded-t shadow-sm transition-all" style="height: 72%;"></div>
+                    <span class="text-[10px] text-oro-oscuro font-bold">Hoy</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pie explicativo del gráfico -->
+              <div class="flex items-center justify-between pt-3 text-[11px] text-texto-tenue">
+                <span>Rango: 01 oct. - 14 oct.</span>
+                <div class="flex items-center gap-4">
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-sm bg-verde-bosque inline-block"></span>
+                    Jueves a Sábado (Pico)
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-sm bg-oro-oscuro inline-block"></span>
+                    Turno actual
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista: Campañas activas en tu local -->
+            <div class="col-span-4 bg-superficie rounded-xl border border-superficie-borde p-6 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-serif text-xl font-bold text-texto">Campañas activas</h3>
+                  <span class="text-xs bg-[#E4DDD0] text-verde-bosque px-2 py-0.5 rounded font-semibold">2 en curso</span>
+                </div>
+                <p class="text-xs text-texto-suave mb-4">Campañas autorizadas por Trade Marketing ILC para tu establecimiento.</p>
+
+                <div class="space-y-3.5">
+                  <!-- Campaña 1 -->
+                  <div class="p-3.5 rounded-lg bg-papel border border-borde-suave">
+                    <div class="flex items-start justify-between">
+                      <div>
+                        <span class="text-[10px] font-bold text-verde-bosque uppercase tracking-wider block">Ruta A · Comercial</span>
+                        <h4 class="font-serif text-base font-bold text-texto">Feria de Manizales 2027</h4>
+                      </div>
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1"></span>
+                    </div>
+                    <p class="text-[11px] text-texto-suave mt-1.5">Aplica para Ron Viejo de Caldas y Aguardiente Amarillo.</p>
+                    <div class="mt-2.5 pt-2 border-t border-borde-suave flex items-center justify-between text-[11px] text-texto-tenue">
+                      <span>Multiplicador: x1.5</span>
+                      <span>Vence: 12 ene.</span>
+                    </div>
+                  </div>
+
+                  <!-- Campaña 2 -->
+                  <div class="p-3.5 rounded-lg bg-papel border border-borde-suave">
+                    <div class="flex items-start justify-between">
+                      <div>
+                        <span class="text-[10px] font-bold text-roble uppercase tracking-wider block">Ruta Mixta (A + B)</span>
+                        <h4 class="font-serif text-base font-bold text-texto">Temporada Fin de Año</h4>
+                      </div>
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1"></span>
+                    </div>
+                    <p class="text-[11px] text-texto-suave mt-1.5">Acertijos en mesa y bonificación por descorche verificado.</p>
+                    <div class="mt-2.5 pt-2 border-t border-borde-suave flex items-center justify-between text-[11px] text-texto-tenue">
+                      <span>Módulos: El Parche</span>
+                      <span>Vence: 31 dic.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-borde-suave text-[11px] text-texto-tenue flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[15px] text-verde-bosque">info</span>
+                Las campañas se asignan según zona y categoría.
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECCIÓN 2: PERFIL PÚBLICO -->
+        <section id="seccion-perfil" class="bg-superficie rounded-xl border border-superficie-borde p-7 shadow-sm space-y-6">
+          <div class="border-b border-borde-suave pb-4 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-oro-oscuro text-[22px]">badge</span>
+                <h2 class="font-serif text-2xl font-bold text-texto">Perfil público del establecimiento</h2>
+              </div>
+              <p class="text-xs text-texto-suave mt-0.5">Información visible para los usuarios de la PWA en el mapa y directorio oficial de la ILC.</p>
+            </div>
+            <span class="text-xs text-texto-tenue">Campos auditados</span>
+          </div>
+
+          <div class="grid grid-cols-12 gap-7">
+            <!-- Columna izquierda: Formulario -->
+            <div class="col-span-8 space-y-5">
+              <!-- Campo: Descripción -->
+              <div>
+                <label for="descripcion-comercio" class="block text-xs font-semibold text-texto uppercase tracking-wider mb-2">
+                  Descripción del establecimiento
+                </label>
+                <textarea id="descripcion-comercio" rows="3" class="w-full bg-papel border border-borde-suave rounded-lg p-3.5 text-sm text-texto placeholder-texto-tenue focus:outline-none focus:ring-1 focus:ring-oro-oscuro focus:border-oro-oscuro transition-all" placeholder="Describe tu espacio, ambiente musical, especialidades de coctelería y oferta gastronómica...">Gastrobar tradicional en la zona rosa de Manizales, especializado en gastronomía andina, coctelería de autor con destilados de la Industria Licorera de Caldas y ambiente acogedor para parches de amigos.</textarea>
+                <p class="text-[11px] text-texto-tenue mt-1.5">Máximo 300 caracteres. No incluyas promociones engañosas ni menciones de precios.</p>
+              </div>
+
+              <!-- Campo: Horarios -->
+              <div>
+                <label for="horarios-comercio" class="block text-xs font-semibold text-texto uppercase tracking-wider mb-2">
+                  Horarios de atención
+                </label>
+                <input type="text" id="horarios-comercio" value="Miércoles a Sábado: 5:00 p. m. a 2:00 a. m. · Domingos: 4:00 p. m. a 11:00 p. m." class="w-full bg-papel border border-borde-suave rounded-lg px-3.5 py-2.5 text-sm text-texto focus:outline-none focus:ring-1 focus:ring-oro-oscuro focus:border-oro-oscuro transition-all">
+                <p class="text-[11px] text-texto-tenue mt-1.5">Especifica los días y franjas horarias de operación para los asistentes.</p>
+              </div>
+
+              <!-- Interruptor: "Mostrar en el directorio" -->
+              <div class="p-4 bg-papel rounded-lg border border-borde-suave flex items-center justify-between">
+                <div>
+                  <label for="toggle-directorio" class="text-sm font-semibold text-texto cursor-pointer">Mostrar en el directorio</label>
+                  <p class="text-xs text-texto-suave mt-0.5">Permite que tu local aparezca en la lista de establecimientos recomendados para canje y parches.</p>
+                </div>
+                
+                <!-- Toggle switch accesible -->
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="toggle-directorio" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-superficie-alt peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-verde-bosque"></div>
+                </label>
+              </div>
+
+              <!-- Botón "Guardar" (Primario oro oscuro #6E561E con texto blanco) -->
+              <div class="pt-2 flex items-center justify-end">
+                <button type="button" class="bg-oro-oscuro hover:bg-[#5C4818] active:bg-[#4E3D14] text-white font-semibold text-sm px-6 py-2.5 rounded-lg shadow-sm flex items-center gap-2 transition-all">
+                  <span class="material-symbols-outlined text-[18px]">save</span>
+                  Guardar
+                </button>
+              </div>
+            </div>
+
+            <!-- Columna derecha: Tarjeta informativa de validación -->
+            <div class="col-span-4 bg-papel rounded-lg border border-borde-suave p-5 flex flex-col justify-between">
+              <div>
+                <h3 class="font-serif text-lg font-bold text-texto mb-2">Visibilidad de Marca ILC</h3>
+                <p class="text-xs text-texto-suave leading-relaxed">Al mantener tu perfil activo en el directorio:</p>
+                <ul class="text-xs text-texto-suave space-y-2.5 mt-3">
+                  <li class="flex items-start gap-2">
+                    <span class="material-symbols-outlined text-verde-bosque text-[16px] mt-0.5">check_circle</span>
+                    <span>Tus clientes pueden crear <strong>El Parche</strong> con beneficios locales autorizados.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="material-symbols-outlined text-verde-bosque text-[16px] mt-0.5">check_circle</span>
+                    <span>Habilitas tu barra como <strong>punto oficial de entrega de recompensas</strong> de la ILC.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="material-symbols-outlined text-verde-bosque text-[16px] mt-0.5">check_circle</span>
+                    <span>Accedes al esquema de notas comerciales y patrocinios de Trade Marketing.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="pt-4 border-t border-borde-suave text-[11px] text-texto-tenue">
+                Última sincronización con servidor central: 14 oct. 2026.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECCIÓN 3: ENTREGAR RECOMPENSA -->
+        <section id="seccion-entregar" class="bg-superficie rounded-xl border border-superficie-borde p-7 shadow-sm space-y-6">
+          <div class="border-b border-borde-suave pb-4 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-verde-bosque text-[22px]">redeem</span>
+                <h2 class="font-serif text-2xl font-bold text-texto">Entregar recompensa en barra</h2>
+              </div>
+              <p class="text-xs text-texto-suave mt-0.5">Valida el código alfanumérico presentado por el usuario para asentar la entrega física de su beneficio.</p>
+            </div>
+            <span class="text-xs bg-[#E4DDD0] text-texto px-2.5 py-1 rounded font-medium">Validación síncrona</span>
+          </div>
+
+          <div class="max-w-2xl bg-papel rounded-xl border border-borde-suave p-6 space-y-5">
+            <!-- Formulario de entrega -->
+            <div>
+              <label for="codigo-entrega" class="block text-xs font-semibold text-texto uppercase tracking-wider mb-2">
+                Código de entrega
+              </label>
+              <div class="flex gap-3">
+                <div class="relative flex-1">
+                  <input type="text" id="codigo-entrega" placeholder="Ej. K7M2Q9XD" class="w-full uppercase font-mono tracking-widest text-base font-bold bg-white border border-borde-suave rounded-lg px-4 py-2.5 text-texto placeholder-texto-tenue focus:outline-none focus:ring-2 focus:ring-oro-oscuro focus:border-oro-oscuro transition-all">
+                  <span class="absolute right-3 top-2.5 material-symbols-outlined text-texto-tenue text-[20px]">qr_code_scanner</span>
+                </div>
+
+                <!-- Botón "Entregar" (Primario oro oscuro #6E561E con texto blanco) -->
+                <button type="button" class="bg-oro-oscuro hover:bg-[#5C4818] active:bg-[#4E3D14] text-white font-semibold text-sm px-7 py-2.5 rounded-lg shadow-sm flex items-center gap-2 transition-all">
+                  <span class="material-symbols-outlined text-[18px]">check</span>
+                  Entregar
+                </button>
+              </div>
+              <p class="text-[11px] text-texto-tenue mt-1.5">Ingresa los 8 caracteres que el usuario muestra en su pantalla de «Mis canjes».</p>
+            </div>
+
+            <!-- Aviso obligatorio exacto: "Solo puedes entregar recompensas de tu ciudad." -->
+            <div class="p-3.5 rounded-lg bg-superficie border-l-4 border-roble flex items-start gap-3 text-xs text-texto">
+              <span class="material-symbols-outlined text-roble text-[18px] flex-shrink-0 mt-0.5">location_city</span>
+              <div class="leading-relaxed">
+                <strong class="font-semibold text-roble">Restricción territorial activa:</strong>
+                <span class="ml-1">Solo puedes entregar recompensas de tu ciudad.</span>
+                <p class="text-[11px] text-texto-suave mt-0.5">La entrega realiza una transacción atómica que descuenta el inventario físico asignado a Manizales.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- PIE DE PÁGINA INSTITUCIONAL OBLIGATORIO LEY 30 DE 1986 -->
+  <footer class="bg-superficie border-t border-borde-suave py-3 px-8 text-center text-xs text-texto-suave flex-shrink-0 z-30">
+    <p class="font-medium tracking-wide">
+      EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+    </p>
+    <div class="text-[11px] text-texto-tenue mt-1 flex items-center justify-center gap-3">
+      <span>Industria Licorera de Caldas S.A.</span>
+      <span>·</span>
+      <span>Consola Operativa B2B de Establecimientos</span>
+      <span>·</span>
+      <span>Gobernanza §5.9 y §6.D</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -69,7 +69,17 @@ export const ClaimResultSchema = z.object({
 export type ClaimResult = z.infer<typeof ClaimResultSchema>;
 
 /** Cuerpo opcional de la reclamación: si se activa dentro de un Parche, recarga su energía (Instrucciones §5 paso 5). */
-export const ClaimRequestSchema = z.object({ sessionId: z.uuid().optional() }).default({});
+export const ClaimRequestSchema = z
+  .object({
+    sessionId: z.uuid().optional(),
+    staffCode: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .regex(/^[0-9A-Z]{8}$/)
+      .optional(),
+  })
+  .default({});
 export type ClaimRequest = z.infer<typeof ClaimRequestSchema>;
 
 /** POST /smarttags/validate (integración ERP — Instrucciones §10). Solo estado del producto; nunca reclama. */

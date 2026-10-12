@@ -124,9 +124,10 @@ export class AdminRewardsController {
     return this.rewards.claims({ status, code });
   }
 
+  /** Entrega: Marca y TI en general; Staff y Dealer, solo de su ciudad (lo valida el servicio). */
   @Post('claims/deliver')
   @HttpCode(200)
-  @RequireRoles(...BRAND)
+  @RequireRoles(...BRAND, 'STAFF', 'DEALER')
   deliver(@Body(new ZodValidationPipe(DeliverClaimSchema)) body: { code: string }, @Req() req: RoledRequest): Promise<AdminRewardClaim> {
     return this.rewards.deliver(actorOf(req), body.code);
   }

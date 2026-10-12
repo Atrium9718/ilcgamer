@@ -2,9 +2,21 @@ import type { ReactNode } from 'react';
 import { Icon } from '../components/Icon.tsx';
 import { cx } from '../lib/cx.ts';
 
-export type ConsoleSection = 'campanas' | 'juegos' | 'recompensas' | 'smart-tags' | 'comercios' | 'economia' | 'analitica' | 'auditoria';
+export type ConsoleSection =
+  | 'mi-actividad'
+  | 'mi-comercio'
+  | 'campanas'
+  | 'juegos'
+  | 'recompensas'
+  | 'smart-tags'
+  | 'comercios'
+  | 'economia'
+  | 'analitica'
+  | 'auditoria';
 
 const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = [
+  { id: 'mi-actividad', label: 'Mi actividad', icon: 'monitoring' },
+  { id: 'mi-comercio', label: 'Mi establecimiento', icon: 'storefront' },
   { id: 'campanas', label: 'Campañas', icon: 'campaign' },
   { id: 'juegos', label: 'Juegos', icon: 'sports_esports' },
   { id: 'recompensas', label: 'Recompensas', icon: 'redeem' },
@@ -25,6 +37,8 @@ export interface ConsoleLayoutProps {
   sections?: ConsoleSection[];
   /** Secciones que existen pero no corresponden al rol de esta persona: se muestran como "Sin acceso". */
   restricted?: ConsoleSection[];
+  /** Si se indica, solo se muestran estas secciones (Staff y Comercio ven únicamente lo suyo). */
+  only?: ConsoleSection[];
   /** Migas de pan: último elemento = página actual. */
   breadcrumbs?: Array<{ label: string; onSelect?: () => void }>;
   children: ReactNode;
@@ -42,6 +56,7 @@ export function ConsoleLayout({
   onLogout,
   sections = ['campanas'],
   restricted = [],
+  only,
   breadcrumbs = [],
   children,
 }: ConsoleLayoutProps) {
@@ -62,7 +77,7 @@ export function ConsoleLayout({
         </div>
         <nav aria-label="Secciones" className="flex-1 py-4">
           <ul className="space-y-1 px-3">
-            {NAV.map((item) => (
+            {NAV.filter((item) => (only ? only.includes(item.id) : item.id !== 'mi-actividad' && item.id !== 'mi-comercio')).map((item) => (
               <li key={item.id}>
                 <button
                   type="button"

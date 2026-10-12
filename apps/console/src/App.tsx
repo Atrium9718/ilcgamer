@@ -9,7 +9,9 @@ import { Economy } from './routes/Economy.tsx';
 import { Games } from './routes/Games.tsx';
 import { Login } from './routes/Login.tsx';
 import { Rewards } from './routes/Rewards.tsx';
+import { DealerPanel, StaffPanel } from './routes/SelfPanels.tsx';
 import { SmartTags } from './routes/SmartTags.tsx';
+import { Venues } from './routes/Venues.tsx';
 
 const CONSOLE_ROLES = ['SUPERADMIN', 'ADMIN_MARCA', 'EDITOR_CONTENIDO', 'REVISOR_MARCA', 'REVISOR_JURIDICO', 'RESPONSABLE_PRIVACIDAD'];
 
@@ -29,6 +31,9 @@ function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   if (parts[0] === 'economia') return [{ label: 'Economía' }];
   if (parts[0] === 'juegos') return [{ label: 'Juegos' }];
   if (parts[0] === 'recompensas') return [{ label: 'Recompensas' }];
+  if (parts[0] === 'comercios') return [{ label: 'Comercios' }];
+  if (parts[0] === 'mi-actividad') return [{ label: 'Mi actividad' }];
+  if (parts[0] === 'mi-comercio') return [{ label: 'Mi establecimiento' }];
   const crumbs: Array<{ label: string; onSelect?: () => void }> = [{ label: 'Campañas', onSelect: parts.length > 1 ? () => go('/campanas') : undefined }];
   if (parts[1] === 'nueva') crumbs.push({ label: 'Nueva campaña' });
   else if (parts[1]) {
@@ -47,7 +52,10 @@ function Shell() {
   if (status === 'loading') return <StatusMessage kind="pending" title="Abriendo la consola" body="Un momento…" />;
   if (status === 'error') return <StatusMessage kind="offline" title="No pudimos conectar con el servidor" body="Revisa tu conexión e intenta de nuevo." />;
   if (!me) return <Login />;
-  if (!me.roles.some((r) => CONSOLE_ROLES.includes(r)))
+  const isConsole = me.roles.some((r) => CONSOLE_ROLES.includes(r));
+  const isStaff = me.roles.includes('STAFF');
+  const isDealer = me.roles.includes('DEALER');
+  if (!isConsole && !isStaff && !isDealer)
     return (
       <main className="min-h-dvh flex items-center justify-center bg-surface">
         <StatusMessage
@@ -64,13 +72,17 @@ function Shell() {
     );
 
   const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
-  const sections: ConsoleSection[] = smartTags ? ['campanas', 'juegos', 'recompensas', 'smart-tags', 'economia'] : ['campanas', 'juegos'];
+  const consoleSections: ConsoleSection[] = smartTags ? ['campanas', 'juegos', 'recompensas', 'comercios', 'smart-tags', 'economia'] : ['campanas', 'juegos'];
+  const fieldSections: ConsoleSection[] = [...(isStaff ? (['mi-actividad'] as const) : []), ...(isDealer ? (['mi-comercio'] as const) : [])];
+  const sections: ConsoleSection[] = [...fieldSections, ...(isConsole ? consoleSections : [])];
+  const only = isConsole ? undefined : fieldSections;
   const active = (Object.entries(SECTION_PATHS).find(([, path]) => pathname.startsWith(path ?? '-'))?.[0] ?? 'campanas') as ConsoleSection;
   return (
     <ConsoleLayout
       active={active}
       sections={sections}
-      restricted={smartTags ? [] : ['recompensas', 'smart-tags', 'economia']}
+      restricted={smartTags ? [] : ['recompensas', 'comercios', 'smart-tags', 'economia']}
+      only={only}
       userAlias={me.alias}
       roleLabel={roleLabel(me.roles)}
       onNavigate={(section) => navigate(SECTION_PATHS[section] ?? '/campanas')}
@@ -82,17 +94,31 @@ function Shell() {
   );
 }
 
+/** Entrada según el rol: el personal de punto de venta aterriza en su propio panel. */
+function Home() {
+  const { me } = useSession();
+  const roles = me?.roles ?? [];
+  if (!roles.some((r) => CONSOLE_ROLES.includes(r))) {
+    if (roles.includes('STAFF')) return <Navigate to="/mi-actividad" replace />;
+    if (roles.includes('DEALER')) return <Navigate to="/mi-comercio" replace />;
+  }
+  return <Navigate to="/campanas" replace />;
+}
+
 export function AppRoutes() {
   return (
     <Routes>
       <Route element={<Shell />}>
-        <Route index element={<Navigate to="/campanas" replace />} />
+        <Route index element={<Home />} />
         <Route path="campanas" element={<CampaignList />} />
         <Route path="campanas/nueva" element={<CampaignEditor />} />
         <Route path="campanas/:slug" element={<CampaignDetail />} />
         <Route path="campanas/:slug/editar" element={<CampaignEditor />} />
         <Route path="juegos" element={<Games />} />
         <Route path="recompensas" element={<Rewards />} />
+        <Route path="comercios" element={<Venues />} />
+        <Route path="mi-actividad" element={<StaffPanel />} />
+        <Route path="mi-comercio" element={<DealerPanel />} />
         <Route path="smart-tags" element={<SmartTags />} />
         <Route path="economia" element={<Economy />} />
         <Route path="*" element={<Navigate to="/campanas" replace />} />

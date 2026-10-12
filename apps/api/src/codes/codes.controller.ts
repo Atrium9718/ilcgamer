@@ -67,7 +67,7 @@ export class CodesController {
     @Auth() auth: AuthContext,
     @Req() req: FastifyRequest,
   ): Promise<ClaimResult> {
-    return this.claims.claim(token, auth, idempotencyKeyOf(req), String(req.id), body.sessionId);
+    return this.claims.claim(token, auth, idempotencyKeyOf(req), String(req.id), body.sessionId, undefined, body.staffCode);
   }
 
   /** POST /api/v1/smarttags/validate (Instrucciones §10): validación síncrona para el ERP. Nunca reclama. */

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ILC Origen — Consola Central: Red de Comercios y Staff</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-variant": "#2d3733",
+            "on-tertiary-container": "#542b00",
+            "inverse-on-surface": "#28332f",
+            "primary-container": "#b79b5b",
+            "outline-variant": "#4d4639",
+            "outline": "#999081",
+            "on-primary-fixed-variant": "#59440b",
+            "surface-container-highest": "#2d3733",
+            "tertiary-fixed-dim": "#ffb77c",
+            "surface-container-low": "#141e1a",
+            "primary": "#e2c37f",
+            "tertiary": "#ffb77c",
+            "surface-container": "#18221e",
+            "on-surface-variant": "#d0c5b5",
+            "on-error": "#690005",
+            "secondary-container": "#005738",
+            "on-error-container": "#ffdad6",
+            "on-primary": "#3f2e00",
+            "surface-container-high": "#222c29",
+            "tertiary-container": "#d38f55",
+            "secondary": "#8dd6ad",
+            "on-tertiary-fixed-variant": "#6c3a05",
+            "primary-fixed-dim": "#e2c37f",
+            "on-surface": "#dae5e0",
+            "on-primary-fixed": "#251a00",
+            "tertiary-fixed": "#ffdcc3",
+            "on-secondary-container": "#82cba3",
+            "error-container": "#93000a",
+            "on-tertiary-fixed": "#2e1500",
+            "surface": "#0b1512",
+            "secondary-fixed": "#a8f2c8",
+            "on-secondary-fixed": "#002112",
+            "on-secondary": "#003823",
+            "surface-dim": "#0b1512",
+            "surface-bright": "#313b38",
+            "primary-fixed": "#ffdf99",
+            "on-primary-container": "#453300",
+            "surface-tint": "#e2c37f",
+            "surface-container-lowest": "#06100d",
+            "background": "#0b1512",
+            "inverse-surface": "#dae5e0",
+            "on-secondary-fixed-variant": "#005234",
+            "error": "#ffb4ab",
+            "on-background": "#dae5e0",
+            "inverse-primary": "#725b22",
+            "secondary-fixed-dim": "#8dd6ad",
+            "on-tertiary": "#4d2600",
+            /* Console Light Palette custom tokens */
+            console: {
+              paper: "#FAF7F0",
+              surface: "#F1ECE0",
+              surface2: "#EAE4D6",
+              card: "#FFFFFF",
+              text: "#13201B",
+              gold: "#6E561E",
+              goldLight: "#F5EFE0",
+              forest: "#13201B",
+              forestAlt: "#2F4941",
+              roble: "#9A4F17",
+              border: "#DCD5C5",
+              borderLight: "#E2DCCF",
+              danger: "#B3261E",
+              successBg: "#E8F5E9",
+              successText: "#1E5C38",
+              warningBg: "#FFF8E1",
+              warningText: "#8D6E12"
+            }
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            margin: "16px",
+            "space-xs": "4px",
+            "space-lg": "24px",
+            gutter: "16px",
+            "space-md": "16px",
+            "space-xl": "32px",
+            "space-sm": "8px"
+          },
+          fontFamily: {
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "display-lg": ["EB Garamond", "serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["EB Garamond", "serif"],
+            "title-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["EB Garamond", "serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "title-md": ["Plus Jakarta Sans", "sans-serif"],
+            "numeric-xl": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          fontSize: {
+            "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.2px", fontWeight: "700" }],
+            "display-lg": ["44px", { lineHeight: "52px", letterSpacing: "-0.5px", fontWeight: "700" }],
+            "body-md": ["15px", { lineHeight: "22px", letterSpacing: "0px", fontWeight: "400" }],
+            "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "0px", fontWeight: "600" }],
+            "title-lg": ["20px", { lineHeight: "28px", letterSpacing: "0px", fontWeight: "700" }],
+            "headline-lg": ["30px", { lineHeight: "38px", letterSpacing: "-0.25px", fontWeight: "700" }],
+            "body-lg": ["17px", { lineHeight: "26px", letterSpacing: "0px", fontWeight: "400" }],
+            "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.8px", fontWeight: "700" }],
+            "title-md": ["17px", { lineHeight: "24px", letterSpacing: "0px", fontWeight: "600" }],
+            "numeric-xl": ["40px", { lineHeight: "44px", letterSpacing: "-0.5px", fontWeight: "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+    body {
+      background-color: #FAF7F0;
+      color: #13201B;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #DCD5C5;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FAF7F0] text-[#13201B] flex flex-col antialiased selection:bg-[#EAE4D6]">
+<!-- Top Wrapper (Desktop Canvas 1440px target) -->
+<div class="flex-1 flex w-full max-w-[1440px] mx-auto min-h-screen bg-[#FAF7F0]">
+<!-- LEFT SIDEBAR: Persistent Forest Green Sidebar (width 260px) -->
+<aside class="w-[260px] flex-shrink-0 bg-[#13201B] text-[#DAE5E0] flex flex-col justify-between border-r border-[#222C29]">
+<div>
+<!-- Brand & Console Title Header -->
+<div class="p-5 border-b border-[#222C29]">
+<div class="flex items-center gap-3">
+<!-- Circular Seal "ILC" (no year 1905, no Caldas) -->
+<div class="w-10 h-10 rounded-full border border-[#D4B673]/60 bg-[#18221E] flex items-center justify-center shadow-inner">
+<span class="font-headline-md font-semibold text-[#E2C37F] text-base tracking-widest">ILC</span>
+</div>
+<div>
+<div class="font-headline-md text-lg text-[#E2C37F] leading-tight tracking-wide">Consola</div>
+<div class="font-label-sm text-[10px] uppercase tracking-wider text-[#999081]">GOBERNANZA &amp; CMS</div>
+</div>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="py-4 px-3 space-y-1">
+<!-- Campañas -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">campaign</span>
+<span>Campañas</span>
+</a>
+<!-- Juegos -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">sports_esports</span>
+<span>Juegos</span>
+</a>
+<!-- Recompensas -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">award_star</span>
+<span>Recompensas</span>
+</a>
+<!-- Smart Tags -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">nfc</span>
+<span>Smart Tags</span>
+</a>
+<!-- Comercios (ACTIVE) -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded bg-[#18221E] text-[#E2C37F] border-l-2 border-[#E2C37F] font-body-md text-sm font-semibold shadow-sm" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-[#E2C37F]" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span>Comercios</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-[#E2C37F] shadow-[0_0_6px_#E2C37F]"></span>
+</a>
+<!-- Economía -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">account_balance</span>
+<span>Economía</span>
+</a>
+<!-- Analítica -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">insights</span>
+<span>Analítica</span>
+</a>
+<!-- Auditoría -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#D0C5B5] hover:bg-[#18221E] hover:text-[#E2C37F] transition-colors font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#999081]">verified_user</span>
+<span>Auditoría</span>
+</a>
+</nav>
+</div>
+<!-- Bottom User Badge: Trade Marketing / Admin de Marca, v1.0 §5.9 -->
+<div class="p-4 border-t border-[#222C29] bg-[#0E1714]">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-[#2F4941] text-[#E2C37F] flex items-center justify-center font-bold text-xs border border-[#4D4639]">
+            LM
+          </div>
+<div class="overflow-hidden">
+<div class="font-title-md text-xs text-[#DAE5E0] truncate font-medium">Laura M.</div>
+<div class="font-label-sm text-[11px] text-[#999081] truncate">Trade Marketing / Admin</div>
+</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-[#222C29]/60 flex items-center justify-between text-[10px] text-[#999081] font-label-sm">
+<span>Gobernanza SoD</span>
+<span class="text-[#E2C37F]">v1.0 §5.9</span>
+</div>
+</div>
+</aside>
+<!-- MAIN WORKSPACE COLUMN -->
+<div class="flex-1 flex flex-col min-w-0 bg-[#FAF7F0]">
+<!-- Top Breadcrumb Bar -->
+<header class="h-14 border-b border-[#DCD5C5] bg-[#F1ECE0] px-6 flex items-center justify-between">
+<div class="flex items-center gap-2 text-xs font-body-md text-[#13201B]">
+<span class="text-[#999081]">ILC Origen</span>
+<span class="text-[#999081]">/</span>
+<span class="text-[#999081]">Consola Central</span>
+<span class="text-[#999081]">/</span>
+<span class="font-semibold text-[#13201B]">Red de Comercios y Staff</span>
+</div>
+<div class="flex items-center gap-4">
+<!-- Status Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-[#E8F5E9] text-[#1E5C38] border border-[#C8E6C9] rounded-full text-xs font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1E5C38]"></span>
+<span>Servicio Comercial: Activo (v1.0 §5.9)</span>
+</div>
+<div class="h-4 w-px bg-[#DCD5C5]"></div>
+<!-- Perfil Laura M. -->
+<div class="flex items-center gap-2 text-xs font-label-sm text-[#13201B]">
+<span class="material-symbols-outlined text-[18px] text-[#6E561E]">shield_person</span>
+<span class="font-medium">Perfil Laura M.</span>
+</div>
+</div>
+</header>
+<!-- Main Content Layout (Columns: Left Main Feed + Right Governance Sidebar) -->
+<div class="flex-1 p-8 grid grid-cols-12 gap-8 items-start">
+<!-- Left Area (9 cols): Content, Cards, Details -->
+<main class="col-span-12 xl:col-span-8 space-y-6">
+<!-- Header block -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#DCD5C5] pb-5">
+<div>
+<h1 class="font-headline-lg font-display-lg text-4xl text-[#13201B] tracking-tight">Comercios</h1>
+<p class="font-body-md text-sm text-[#546059] mt-1">Establecimientos aliados, su personal y las campañas donde participan.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 text-xs font-label-sm font-semibold rounded border border-[#DCD5C5] bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#13201B] transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Exportar directorio</span>
+</button>
+<button class="px-4 py-2 text-xs font-label-sm font-semibold rounded bg-[#6E561E] hover:bg-[#59440B] text-white transition-all shadow-sm flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>+ Registrar comercio</span>
+</button>
+</div>
+</div>
+<!-- Pestañas de Vista -->
+<div class="flex items-center gap-6 border-b border-[#DCD5C5] text-xs font-label-sm">
+<button class="pb-3 text-[#6E561E] font-bold border-b-2 border-[#6E561E] flex items-center gap-2">
+<span>Establecimientos</span>
+<span class="px-1.5 py-0.5 rounded-full bg-[#EAE4D6] text-[#6E561E] text-[10px]">2</span>
+</button>
+<button class="pb-3 text-[#546059] hover:text-[#13201B] transition-colors flex items-center gap-2">
+<span>Nuevo establecimiento</span>
+</button>
+</div>
+<!-- Notice / Aviso Banner (§5.9) -->
+<div class="p-4 rounded-lg bg-[#EAE4D6] border border-[#DCD5C5] flex items-start gap-3">
+<span class="material-symbols-outlined text-[#6E561E] text-2xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div class="text-xs space-y-1">
+<div class="font-label-sm font-semibold text-[#13201B]">Aviso de Gobernanza Comercial (§5.9)</div>
+<p class="text-[#2F4941] leading-relaxed">
+                Aprobar un establecimiento lo habilita para vincular botellas y entregar recompensas de su ciudad. 
+                Toda autorización de credenciales Staff responde a los criterios de segregación de funciones (SoD) de Trade Marketing.
+              </p>
+</div>
+</div>
+<!-- Filters Bar -->
+<div class="bg-[#FFFFFF] p-3 rounded-lg border border-[#DCD5C5] shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+<div class="relative flex-1">
+<span class="material-symbols-outlined text-[18px] text-[#999081] absolute left-3 top-1/2 -translate-y-1/2">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 text-xs bg-[#FAF7F0] border border-[#DCD5C5] rounded focus:outline-none focus:border-[#6E561E] text-[#13201B] placeholder-[#999081]" placeholder="Buscar por nombre, NIT/código o ciudad..." type="text"/>
+</div>
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs font-label-sm">
+<button class="px-3 py-1.5 rounded-full bg-[#13201B] text-white font-medium">Todos (2)</button>
+<button class="px-3 py-1.5 rounded-full bg-[#FAF7F0] border border-[#DCD5C5] text-[#13201B] hover:bg-[#EAE4D6]">On-premise (1)</button>
+<button class="px-3 py-1.5 rounded-full bg-[#FAF7F0] border border-[#DCD5C5] text-[#13201B] hover:bg-[#EAE4D6]">Off-premise (1)</button>
+<button class="px-3 py-1.5 rounded-full bg-[#FAF7F0] border border-[#DCD5C5] text-[#13201B] hover:bg-[#EAE4D6]">Aprobados (1)</button>
+<button class="px-3 py-1.5 rounded-full bg-[#FAF7F0] border border-[#DCD5C5] text-[#13201B] hover:bg-[#EAE4D6]">Pendientes (1)</button>
+</div>
+</div>
+<!-- ESTABLISHMENTS CONTAINER -->
+<div class="space-y-4">
+<!-- CARD 1 (EXPANDED): Bar de prueba -->
+<div class="bg-[#FFFFFF] border-2 border-[#DCD5C5] rounded-xl overflow-hidden shadow-sm">
+<!-- Card Header -->
+<div class="p-5 bg-[#F1ECE0] border-b border-[#DCD5C5] flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-2">
+<div class="flex items-center gap-2 flex-wrap">
+<h2 class="font-headline-md text-2xl text-[#13201B]">Bar de prueba</h2>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-[#FAF7F0] border border-[#DCD5C5] text-[#2F4941]">On-premise</span>
+<span class="px-2.5 py-0.5 rounded-full text-[11px] font-label-sm font-semibold bg-[#E8F5E9] text-[#1E5C38] border border-[#C8E6C9] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1E5C38]"></span>
+                      Aprobado
+                    </span>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-[#FAF7F0] text-[#13201B] border border-[#DCD5C5]">
+                      En el directorio: Sí
+                    </span>
+</div>
+<div class="flex items-center gap-4 text-xs text-[#546059] font-body-md">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-[#6E561E]">location_on</span>
+                      Manizales, Caldas
+                    </span>
+<span>•</span>
+<span class="font-medium text-[#13201B]">4 Personal activo</span>
+<span>•</span>
+<span class="font-medium text-[#13201B]">2 Campañas vinculadas</span>
+</div>
+</div>
+<div>
+<button class="px-3.5 py-1.5 text-xs font-label-sm font-medium rounded border border-[#DCD5C5] bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#13201B] flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+<span>Contraer ficha</span>
+</button>
+</div>
+</div>
+<!-- Expanded Details Section -->
+<div class="p-6 space-y-8 bg-[#FFFFFF]">
+<!-- Sub-section A: Personal autorizado -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<div>
+<h3 class="font-title-md text-sm font-bold text-[#13201B] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-[#6E561E]">group</span>
+                        Personal autorizado (Staff y Administradores de Comercio)
+                      </h3>
+<p class="font-body-md text-xs text-[#546059]">Operadores habilitados para escaneo de códigos de botella y redención de experiencias.</p>
+</div>
+<span class="text-xs font-label-sm text-[#999081]">3 asignados</span>
+</div>
+<!-- Table -->
+<div class="border border-[#DCD5C5] rounded-lg overflow-hidden bg-[#FFFFFF]">
+<table class="w-full text-left border-collapse text-xs">
+<thead>
+<tr class="bg-[#FAF7F0] border-b border-[#DCD5C5] text-[#546059] font-label-sm">
+<th class="p-3 font-semibold">Alias de Staff</th>
+<th class="p-3 font-semibold">Rol</th>
+<th class="p-3 font-semibold">Código de Staff</th>
+<th class="p-3 font-semibold">Estado</th>
+<th class="p-3 font-semibold text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E2DCCF] font-body-md text-[#13201B]">
+<tr class="hover:bg-[#FAF7F0]/60 transition-colors">
+<td class="p-3 font-semibold flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#EAE4D6] text-[#6E561E] flex items-center justify-center font-bold text-[10px]">M1</span>
+                            Staff M-01
+                          </td>
+<td class="p-3 text-[#546059]">Staff de barra</td>
+<td class="p-3 font-mono text-[11px] text-[#2F4941]">STF-MNZ-841</td>
+<td class="p-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E8F5E9] text-[#1E5C38]">
+<span class="w-1 h-1 rounded-full bg-[#1E5C38]"></span>
+                              Activo
+                            </span>
+</td>
+<td class="p-3 text-right">
+<button class="px-2.5 py-1 text-[11px] font-label-sm font-medium rounded border border-[#B3261E]/30 text-[#B3261E] hover:bg-[#B3261E]/5 transition-colors" type="button">
+                              Retirar
+                            </button>
+</td>
+</tr>
+<tr class="hover:bg-[#FAF7F0]/60 transition-colors">
+<td class="p-3 font-semibold flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#EAE4D6] text-[#6E561E] flex items-center justify-center font-bold text-[10px]">M2</span>
+                            Staff M-02
+                          </td>
+<td class="p-3 text-[#546059]">Mesero de turno</td>
+<td class="p-3 font-mono text-[11px] text-[#2F4941]">STF-MNZ-842</td>
+<td class="p-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E8F5E9] text-[#1E5C38]">
+<span class="w-1 h-1 rounded-full bg-[#1E5C38]"></span>
+                              Activo
+                            </span>
+</td>
+<td class="p-3 text-right">
+<button class="px-2.5 py-1 text-[11px] font-label-sm font-medium rounded border border-[#B3261E]/30 text-[#B3261E] hover:bg-[#B3261E]/5 transition-colors" type="button">
+                              Retirar
+                            </button>
+</td>
+</tr>
+<tr class="hover:bg-[#FAF7F0]/60 transition-colors">
+<td class="p-3 font-semibold flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#13201B] text-[#E2C37F] flex items-center justify-center font-bold text-[10px]">CA</span>
+                            Comercio Admin
+                          </td>
+<td class="p-3 text-[#546059]">Administrador Bar</td>
+<td class="p-3 font-mono text-[11px] text-[#6E561E]">DLR-MNZ-101</td>
+<td class="p-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E8F5E9] text-[#1E5C38]">
+<span class="w-1 h-1 rounded-full bg-[#1E5C38]"></span>
+                              Activo
+                            </span>
+</td>
+<td class="p-3 text-right">
+<button class="px-2.5 py-1 text-[11px] font-label-sm font-medium rounded border border-[#B3261E]/30 text-[#B3261E] hover:bg-[#B3261E]/5 transition-colors" type="button">
+                              Retirar
+                            </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Sub-section B: Formulario "Agregar personal por correo" -->
+<div class="p-5 rounded-lg bg-[#FAF7F0] border border-[#DCD5C5] space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#6E561E] text-[20px]">person_add</span>
+<h4 class="font-title-md text-xs font-bold text-[#13201B]">Agregar personal por correo</h4>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div>
+<label class="block text-[11px] font-label-sm font-medium text-[#546059] mb-1">Correo de invitación</label>
+<input class="w-full px-3 py-2 text-xs bg-[#FFFFFF] border border-[#DCD5C5] rounded focus:outline-none focus:border-[#6E561E] text-[#13201B]" placeholder="alias.personal@comercio.ejemplo" type="text"/>
+</div>
+<div>
+<label class="block text-[11px] font-label-sm font-medium text-[#546059] mb-1">Rol operativo</label>
+<select class="w-full px-3 py-2 text-xs bg-[#FFFFFF] border border-[#DCD5C5] rounded focus:outline-none focus:border-[#6E561E] text-[#13201B]">
+<option>Staff de mesa / atención</option>
+<option>Administrador de Comercio</option>
+</select>
+</div>
+<div>
+<label class="block text-[11px] font-label-sm font-medium text-[#546059] mb-1">Código o PIN temporal asignado</label>
+<input class="w-full px-3 py-2 text-xs bg-[#FFFFFF] border border-[#DCD5C5] rounded focus:outline-none focus:border-[#6E561E] text-[#13201B] font-mono" type="text" value="STF-TEMP-2027"/>
+</div>
+</div>
+<div class="flex justify-end pt-2">
+<button class="px-4 py-2 text-xs font-label-sm font-semibold rounded bg-[#6E561E] hover:bg-[#59440B] text-white transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">send</span>
+<span>Enviar invitación a Staff</span>
+</button>
+</div>
+</div>
+<!-- Sub-section C: Campañas comerciales vinculadas -->
+<div class="space-y-4 pt-2 border-t border-[#E2DCCF]">
+<div>
+<h4 class="font-title-md text-sm font-bold text-[#13201B] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-[#6E561E]">inventory_2</span>
+                      Campañas comerciales y experienciales vinculadas
+                    </h4>
+<p class="font-body-md text-xs text-[#546059]">Define las iniciativas en las que este punto puede autorizar canjes de botellas y retos grupales.</p>
+</div>
+<div class="space-y-2.5">
+<!-- Check 1 -->
+<label class="flex items-start gap-3 p-3 rounded-lg border border-[#DCD5C5] bg-[#FAF7F0] cursor-pointer hover:bg-[#F1ECE0]/50 transition-colors">
+<input checked="" class="mt-0.5 rounded border-[#DCD5C5] text-[#6E561E] focus:ring-[#6E561E]" type="checkbox"/>
+<div class="text-xs">
+<div class="font-semibold text-[#13201B]">Feria de Manizales 2027 (Ruta A - Activación y Puntos ILC)</div>
+<div class="text-[#546059]">Punto de canje acreditado para dinámicas de mesa y verificación de tapas con sello.</div>
+</div>
+</label>
+<!-- Check 2 -->
+<label class="flex items-start gap-3 p-3 rounded-lg border border-[#DCD5C5] bg-[#FAF7F0] cursor-pointer hover:bg-[#F1ECE0]/50 transition-colors">
+<input checked="" class="mt-0.5 rounded border-[#DCD5C5] text-[#6E561E] focus:ring-[#6E561E]" type="checkbox"/>
+<div class="text-xs">
+<div class="font-semibold text-[#13201B]">Temporada Fin de Año (Mixta A + B - Recompensas de ciudad)</div>
+<div class="text-[#546059]">Habilitado para dinámicas de cata guiada sin consumo y entrega de sellos de origen.</div>
+</div>
+</label>
+<!-- Check 3 -->
+<label class="flex items-start gap-3 p-3 rounded-lg border border-[#DCD5C5]/70 bg-[#FAF7F0]/40 opacity-70 cursor-not-allowed">
+<input class="mt-0.5 rounded border-[#DCD5C5] text-[#999081]" disabled="" type="checkbox"/>
+<div class="text-xs">
+<div class="font-medium text-[#546059]">Piloto Pereira Nocturno (Inactivo para esta zona)</div>
+<div class="text-[#999081]">Campaña restringida geográficamente a establecimientos de Risaralda.</div>
+</div>
+</label>
+</div>
+<div class="flex justify-end pt-2">
+<button class="px-4 py-2 text-xs font-label-sm font-semibold rounded border border-[#6E561E] text-[#6E561E] hover:bg-[#FAF7F0] transition-colors" type="button">
+                      Guardar vinculación de campañas
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 2 (COLLAPSED): Licorera de prueba -->
+<div class="bg-[#FFFFFF] border border-[#DCD5C5] rounded-xl overflow-hidden shadow-sm hover:border-[#999081] transition-colors">
+<div class="p-5 bg-[#FAF7F0] flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-2">
+<div class="flex items-center gap-2 flex-wrap">
+<h2 class="font-headline-md text-2xl text-[#13201B]">Licorera de prueba</h2>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-[#FFFFFF] border border-[#DCD5C5] text-[#9A4F17]">Off-premise</span>
+<span class="px-2.5 py-0.5 rounded-full text-[11px] font-label-sm font-semibold bg-[#FFF8E1] text-[#8D6E12] border border-[#FFE082] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#8D6E12]"></span>
+                      Pendiente
+                    </span>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-[#FFF8E1] text-[#8D6E12] border border-[#FFE082]">
+                      En el directorio: No (requiere aprobación)
+                    </span>
+</div>
+<div class="flex items-center gap-4 text-xs text-[#546059] font-body-md">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-[#6E561E]">location_on</span>
+                      Pereira, Risaralda
+                    </span>
+<span>•</span>
+<span class="font-medium text-[#13201B]">1 Personal registrado</span>
+<span>•</span>
+<span class="font-medium text-[#546059]">0 Campañas</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-1.5 text-xs font-label-sm font-semibold rounded bg-[#6E561E] hover:bg-[#59440B] text-white transition-colors flex items-center gap-1 shadow-sm" type="button">
+<span>Revisar y Aprobación</span>
+</button>
+<button class="px-3 py-1.5 text-xs font-label-sm font-medium rounded border border-[#DCD5C5] bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#13201B] flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+<span>Expandir ficha</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Governance Sidebar Widget (Col-span 4) -->
+<aside class="col-span-12 xl:col-span-4 space-y-6">
+<!-- Governance Card Widget -->
+<div class="bg-[#F1ECE0] border border-[#DCD5C5] rounded-xl p-5 shadow-sm space-y-4">
+<div class="flex items-start gap-3 border-b border-[#DCD5C5] pb-3">
+<span class="material-symbols-outlined text-[#6E561E] text-2xl flex-shrink-0" style="font-variation-settings: 'FILL' 1;">policy</span>
+<div>
+<div class="font-label-sm text-[10px] uppercase tracking-wider text-[#9A4F17]">GOBERNANZA §5.9</div>
+<h3 class="font-title-md text-sm font-bold text-[#13201B]">CONTROL DE COMERCIOS</h3>
+</div>
+</div>
+<p class="font-body-md text-xs text-[#2F4941] leading-relaxed">
+              La aprobación de un Dealer o Staff requiere validación de identidad comercial y acta de capacitación sobre consumo responsable y trazabilidad ILC.
+            </p>
+<!-- Checklist de Idoneidad -->
+<div class="space-y-2 pt-2">
+<div class="font-label-sm text-[11px] font-bold text-[#13201B] uppercase tracking-wide">Checklist de idoneidad institucional:</div>
+<ul class="space-y-2 text-xs text-[#546059]">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[#1E5C38] text-[16px] flex-shrink-0">check_circle</span>
+<span>Verificación de cámara de comercio o RUT de prueba vigente.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[#1E5C38] text-[16px] flex-shrink-0">check_circle</span>
+<span>Código único QR de punto de venta generado bajo HSM central.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[#1E5C38] text-[16px] flex-shrink-0">check_circle</span>
+<span>Sin incidentes de duplicidad de códigos o alertas de reclamo.</span>
+</li>
+</ul>
+</div>
+<!-- Botón descarga protocolo -->
+<div class="pt-3 border-t border-[#DCD5C5]">
+<button class="w-full py-2 px-3 text-xs font-label-sm font-semibold rounded border border-[#6E561E] bg-[#FFFFFF] hover:bg-[#FAF7F0] text-[#6E561E] flex items-center justify-center gap-2 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">description</span>
+<span>Descargar protocolo de auditoría</span>
+</button>
+</div>
+</div>
+<!-- Mini Stats / Summary Card -->
+<div class="bg-[#FFFFFF] border border-[#DCD5C5] rounded-xl p-5 shadow-sm space-y-3">
+<h4 class="font-title-md text-xs font-bold text-[#13201B] flex items-center justify-between">
+<span>Red territorial de Caldas</span>
+<span class="text-[#999081] font-normal text-[11px]">Corte semanal</span>
+</h4>
+<div class="grid grid-cols-2 gap-3 pt-1">
+<div class="p-3 bg-[#FAF7F0] rounded border border-[#E2DCCF]">
+<div class="text-[11px] font-label-sm text-[#546059]">Staff Activo</div>
+<div class="text-xl font-bold font-numeric-xl text-[#13201B] mt-1">4</div>
+<div class="text-[10px] text-[#1E5C38] mt-0.5">● Operativo normal</div>
+</div>
+<div class="p-3 bg-[#FAF7F0] rounded border border-[#E2DCCF]">
+<div class="text-[11px] font-label-sm text-[#546059]">Puntos en cola</div>
+<div class="text-xl font-bold font-numeric-xl text-[#8D6E12] mt-1">1</div>
+<div class="text-[10px] text-[#8D6E12] mt-0.5">● Requiere firma</div>
+</div>
+</div>
+<div class="p-3 bg-[#F1ECE0] rounded border border-[#DCD5C5] text-[11px] text-[#546059]">
+<span class="font-semibold text-[#13201B]">Nota de seguridad:</span> La inactivación de un establecimiento revoca instantáneamente los tokens de su Staff asociado.
+            </div>
+</div>
+</aside>
+</div>
+<!-- FOOTER -->
+<footer class="mt-auto border-t border-[#DCD5C5] bg-[#EAE4D6]">
+<!-- Regulatory Legal Alcohol Banner -->
+<div class="w-full px-6 py-2.5 text-center bg-[#FAF7F0] border-b border-[#DCD5C5]">
+<p class="font-label-sm text-[11px] tracking-wider uppercase text-[#546059] font-bold">
+            EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+          </p>
+</div>
+<!-- Credits -->
+<div class="px-6 py-3 flex flex-col md:flex-row items-center justify-between text-xs text-[#546059] font-body-md">
+<div>
+            Industria Licorera de Caldas S.A. · Consola de Comercios y Red B2B v1.0.4
+          </div>
+<div class="flex items-center gap-4 mt-2 md:mt-0 font-label-sm text-[11px]">
+<a class="hover:text-[#13201B] transition-colors" href="#">Términos de Red Comercial</a>
+<span>•</span>
+<a class="hover:text-[#13201B] transition-colors" href="#">Política de Tratamiento de Datos</a>
+<span>•</span>
+<a class="hover:text-[#13201B] transition-colors" href="#">Soporte B2B</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

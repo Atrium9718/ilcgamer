@@ -60,3 +60,14 @@ export function EventEntryRoute() {
     </main>
   );
 }
+
+/**
+ * /s/:code — QR del Staff: recuerda quién atendió la mesa para vincular la próxima activación (Instrucciones §3.3).
+ * No concede nada por sí solo; el servidor valida el código al activar y lo ignora si no sirve.
+ */
+export function StaffEntryRoute() {
+  const { code = '' } = useParams();
+  const normalized = code.toUpperCase();
+  if (/^[0-9A-Z]{8}$/.test(normalized)) writeLocal(KEYS.staff, { code: normalized, at: Date.now() }, 'session');
+  return <Navigate to="/jugar" replace />;
+}

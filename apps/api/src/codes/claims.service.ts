@@ -29,7 +29,15 @@ export class ClaimsService {
     private readonly parche: ParcheService,
   ) {}
 
-  async claim(token: string, auth: AuthContext, idempotencyKey: string, requestId: string, sessionId?: string, now = new Date()): Promise<ClaimResult> {
+  async claim(
+    token: string,
+    auth: AuthContext,
+    idempotencyKey: string,
+    requestId: string,
+    sessionId?: string,
+    now = new Date(),
+    staffCode?: string,
+  ): Promise<ClaimResult> {
     const previous = await this.prisma.claim.findUnique({ where: { idempotencyKey } });
     if (previous) return this.replay(previous, auth, token);
 
@@ -89,8 +97,17 @@ export class ClaimsService {
         const taken = await tx.campaignCode.updateMany({ where: { id: code.id, status: 'DISPONIBLE' }, data: { status: 'RECLAMADO' } });
         if (taken.count === 0) throw new DomainError('CODE_ALREADY_CLAIMED', 'Este código ya registra una reclamación.');
 
+        // Quien atendió la mesa (Instrucciones §3.3): el código de Staff es opcional y, si no sirve, la activación sigue igual.
+        const staff = staffCode ? await this.resolveStaff(tx, staffCode, auth.user.id) : null;
         const created = await tx.claim.create({
-          data: { campaignCodeId: code.id, campaignVersionId: version.id, userId: auth.user.id, idempotencyKey, confirmed: true },
+          data: {
+            campaignCodeId: code.id,
+            campaignVersionId: version.id,
+            userId: auth.user.id,
+            idempotencyKey,
+            confirmed: true,
+            staffUserId: staff?.userId ?? null,
+          },
         });
         if (points > 0) {
           const account = await tx.ledgerAccount.upsert({
@@ -127,12 +144,17 @@ export class ClaimsService {
             resource: 'claim',
             resourceId: created.id,
             requestId,
-            metadata: { campaignId: code.campaignId, version: version.version, points, factor, codeHint: code.codeHint },
+            metadata: { campaignId: code.campaignId, version: version.version, points, factor, codeHint: code.codeHint, staffLinked: !!staff },
           },
           tx,
         );
         // Activación dentro de un Parche: recarga un bloque de energía (Instrucciones §5 paso 5).
         const recharged = sessionId ? await this.parche.rechargeFromClaim(tx, sessionId, auth.user.id, now) : false;
+        if (recharged && sessionId) {
+          // Solo se liga al Parche si la persona de verdad está en él; el Parche hereda el establecimiento del Staff.
+          await tx.claim.update({ where: { id: created.id }, data: { sessionId } });
+          if (staff) await tx.session.updateMany({ where: { id: sessionId, venueId: null }, data: { venueId: staff.venueId } });
+        }
         await tx.analyticsEvent.create({
           data: { name: 'campaign_code_claimed', schemaVersion: 1, campaignId: code.campaignId, properties: { points, factor }, occurredAt: now },
         });
@@ -181,5 +203,12 @@ export class ClaimsService {
       claimedAt: claim.createdAt.toISOString(),
       parcheRecharged,
     };
+  }
+
+  /** Staff activo de un establecimiento aprobado; nunca la propia persona (no se acredita a uno mismo). */
+  private async resolveStaff(tx: Prisma.TransactionClient, code: string, claimantId: string): Promise<{ userId: string; venueId: string } | null> {
+    const s = await tx.staffAccount.findUnique({ where: { staffCode: code }, include: { venue: true } });
+    if (!s?.active || s.userId === claimantId || !s.venue.approvedAt || s.venue.suspendedAt) return null;
+    return { userId: s.userId, venueId: s.venueId };
   }
 }

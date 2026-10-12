@@ -20,6 +20,7 @@ import type { User } from '../generated/prisma/client.ts';
 import { Prisma } from '../generated/prisma/client.ts';
 import { SettingsService } from '../platform/settings.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
+import { operatingVenue } from '../venues/venue-access.ts';
 
 type Tx = Prisma.TransactionClient;
 const DAY = 86_400_000;
@@ -404,6 +405,14 @@ export class RewardsService {
     const claim = await this.prisma.rewardClaim.findUnique({ where: { code } });
     if (!claim) throw new DomainError('NOT_FOUND', 'No encontramos un canje con ese código.');
     if (claim.userId === actor.userId) throw new DomainError('FORBIDDEN', 'No puedes entregarte tu propio canje.');
+    // Marca y TI entregan cualquier canje; el personal de un establecimiento, solo los de su ciudad y con el local aprobado.
+    let venueId: string | null = null;
+    if (!actor.roles.some((r) => r === 'ADMIN_MARCA' || r === 'SUPERADMIN')) {
+      const venue = await operatingVenue(this.prisma, actor.userId);
+      if (!venue) throw new DomainError('FORBIDDEN', 'Tu establecimiento no está aprobado o tu cuenta no está activa.');
+      if (venue.city.toLowerCase() !== claim.zone.toLowerCase()) throw new DomainError('FORBIDDEN', 'Solo puedes entregar recompensas de tu ciudad.');
+      venueId = venue.id;
+    }
     if (claim.status === 'ENTREGADO') throw new DomainError('CONFLICT', 'Este canje ya fue entregado.');
     if (claim.status !== 'RESERVADO' && claim.status !== 'RECLAMADO') throw new DomainError('CONFLICT', 'Este canje ya no está vigente.');
     if (claim.expiresAt && claim.expiresAt <= now) throw new DomainError('CONFLICT', 'La reserva de este canje venció.');
@@ -414,7 +423,14 @@ export class RewardsService {
       });
       if (done.count === 0) throw new DomainError('CONFLICT', 'Este canje ya fue entregado.');
       await this.audit.record(
-        { actorId: actor.userId, action: 'reward.delivered', resource: 'reward_claim', resourceId: claim.id, requestId: actor.requestId },
+        {
+          actorId: actor.userId,
+          action: 'reward.delivered',
+          resource: 'reward_claim',
+          resourceId: claim.id,
+          requestId: actor.requestId,
+          metadata: { venueId },
+        },
         tx,
       );
     });
