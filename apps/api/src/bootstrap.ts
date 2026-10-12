@@ -81,14 +81,13 @@ export async function createApp(options: { logger?: boolean } = {}): Promise<Nes
     }
     jsonParser(req, String(body), done);
   });
-  fastify
-    .addContentTypeParser('application/octet-stream', { parseAs: 'buffer', bodyLimit: MAX_IMPORT_BYTES }, (req, body, done) => {
-      if (!BINARY_ROUTES.test(req.url)) {
-        done(Object.assign(new Error('Tipo de contenido no admitido en esta ruta.'), { statusCode: 415 }), undefined);
-        return;
-      }
-      done(null, body);
-    });
+  fastify.addContentTypeParser('application/octet-stream', { parseAs: 'buffer', bodyLimit: MAX_IMPORT_BYTES }, (req, body, done) => {
+    if (!BINARY_ROUTES.test(req.url)) {
+      done(Object.assign(new Error('Tipo de contenido no admitido en esta ruta.'), { statusCode: 415 }), undefined);
+      return;
+    }
+    done(null, body);
+  });
 
   await app.register(cookie);
   await app.register(helmet, {
