@@ -9,7 +9,8 @@ RUN pnpm install --frozen-lockfile
 # Sin datos de demostración y con la dirección pública de la PWA para el QR del Staff.
 ARG PWA_URL=https://app.example.com
 ENV VITE_DEMO_DATA=false VITE_API_URL=/api/v1 VITE_PWA_URL=$PWA_URL
-RUN pnpm --filter @ilc/design-tokens --filter @ilc/contracts build && pnpm --filter @ilc/pwa --filter @ilc/console build
+# "..." construye primero las dependencias internas (design-tokens, contracts, game-sdk, ui).
+RUN pnpm --filter "@ilc/pwa..." --filter "@ilc/console..." build
 
 FROM caddy:2-alpine
 COPY --from=build /repo/apps/pwa/dist /srv/pwa
