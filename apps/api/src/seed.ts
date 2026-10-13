@@ -3,12 +3,11 @@ import { loadEnv } from './config/env.ts';
 import { PrismaClient } from './generated/prisma/client.ts';
 
 /**
- * Datos mínimos para desarrollo/staging. NO inventa SKUs, lotes ni valores de puntos: esos los define
- * ILC (Guía Técnica §15) y se cargan por campaña desde la consola.
+ * Datos base: marcas y ajustes por defecto. Es idempotente (no pisa ajustes ya editados) y por eso también se usa en
+ * producción tras la primera migración. NO inventa SKUs, lotes ni valores de puntos: esos los define ILC
+ * (Guía Técnica §15) y se cargan por campaña desde la consola.
  */
 const env = loadEnv();
-if (env.NODE_ENV === 'production') throw new Error('El seed no se ejecuta en producción.');
-
 const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: env.DATABASE_URL }) });
 
 const BRANDS = [

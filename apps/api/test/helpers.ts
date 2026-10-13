@@ -17,6 +17,7 @@ export function useTestEnv(overrides: Record<string, string> = {}): void {
     RATE_LIMIT_PER_MINUTE: '1000',
     AUTH_RATE_LIMIT_PER_MINUTE: '1000',
     CODE_RATE_LIMIT_PER_MINUTE: '1000',
+    METRICS_TOKEN: 'token-de-metricas-de-prueba-0123456789',
     ...overrides,
   });
 }

@@ -17,7 +17,9 @@ El Parche (sesión grupal en tiempo real), economía dual con ledger y consolas 
 | `packages/design-tokens` | `design/DESIGN.md` → tema Tailwind v4 (con puerta de contraste WCAG AA). |
 | `packages/contracts` | Contratos compartidos API ⇄ PWA (zod): estados de dominio, errores, cabeceras. |
 | `design/` | Sistema de diseño, prompts y exportes de Stitch. |
-| `docs/` | Plan maestro, entornos, OpenAPI exportado. |
+| `docs/` | Plan maestro, entornos, despliegue, operación, checklist de piloto, integración de juegos, OpenAPI exportado. |
+| `deploy/` · `infra/` | Docker, Caddy, Compose de producción, copias de seguridad y prueba de restauración. |
+| `tools/` | Auditoría de accesibilidad, E2E de ruta crítica, carga de humo, búsqueda de secretos, sincronización de fuentes. |
 
 ## Empezar
 

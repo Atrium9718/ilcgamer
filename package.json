@@ -21,7 +21,10 @@
     "dev:console": "pnpm --filter @ilc/console dev",
     "db:up": "docker compose up -d",
     "db:migrate": "pnpm --filter @ilc/api db:migrate",
-    "design:pull": "python3 tools/stitch_pull.py"
+    "design:pull": "python3 tools/stitch_pull.py",
+    "e2e": "node tools/e2e/critical-path.cjs",
+    "loadtest": "node tools/loadtest.cjs",
+    "secrets": "bash tools/secret_scan.sh"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
@@ -38,6 +41,11 @@
     ],
     "ignoredBuiltDependencies": [
       "@scarf/scarf"
-    ]
+    ],
+    "overrides": {
+      "uuid": ">=11.1.1",
+      "mysql2": ">=3.23.1",
+      "deepmerge-ts": ">=8.0.0"
+    }
   }
 }

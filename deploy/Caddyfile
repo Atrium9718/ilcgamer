@@ -1,0 +1,58 @@
+# HTTPS automático (Let's Encrypt). Variables: APP_DOMAIN, CONSOLE_DOMAIN, ACME_EMAIL y FRAME_SRC (orígenes de proveedores
+# de juegos aprobados, separados por espacio; vacío si no hay ninguno). Guía Técnica §9.1: CSP, HSTS, cookies seguras.
+{
+	email {$ACME_EMAIL}
+}
+
+(seguridad) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Cross-Origin-Opener-Policy "same-origin"
+		-Server
+	}
+}
+
+(api) {
+	handle /api/* {
+		# Sin buffer: el canal en vivo del Parche (SSE) debe llegar al instante.
+		reverse_proxy api:3000 {
+			flush_interval -1
+		}
+	}
+}
+
+{$APP_DOMAIN} {
+	import seguridad
+	encode zstd gzip
+	header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' {$FRAME_SRC}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"
+	header Permissions-Policy "camera=(self), microphone=(), geolocation=(), payment=()"
+	import api
+	handle {
+		root * /srv/pwa
+		# El service worker y el manifiesto nunca se cachean; los archivos con hash, un año.
+		@sw path /sw.js /manifest.webmanifest /registerSW.js
+		header @sw Cache-Control "no-cache"
+		@assets path /assets/* /fonts/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
+}
+
+{$CONSOLE_DOMAIN} {
+	import seguridad
+	encode zstd gzip
+	header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"
+	header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+	header X-Robots-Tag "noindex, nofollow"
+	import api
+	handle {
+		root * /srv/console
+		@assets path /assets/* /fonts/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
+}

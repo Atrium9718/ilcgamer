@@ -1,0 +1,110 @@
+# Producción en un solo servidor (VPS): PostgreSQL, Redis, API, PWA/consola con HTTPS y copias de seguridad.
+#   cp deploy/.env.production.example .env.production   # y completar (no versionar)
+#   docker compose --env-file .env.production -f deploy/compose.prod.yml up -d --build
+# Los datos viven en volúmenes con nombre; PostgreSQL y Redis NO publican puertos al exterior.
+name: ilc
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ilc
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD}
+      POSTGRES_DB: ilc
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ilc -d ilc"]
+      interval: 10s
+      retries: 10
+    networks: [internal]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:?define REDIS_PASSWORD}"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" ping | grep PONG"]
+      interval: 10s
+      retries: 10
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    networks: [internal]
+
+  migrate:
+    build: { context: .., dockerfile: deploy/Dockerfile.api }
+    image: ilc-api
+    command: ["node", "node_modules/prisma/build/index.js", "migrate", "deploy"]
+    environment:
+      DATABASE_URL: postgresql://ilc:${POSTGRES_PASSWORD}@postgres:5432/ilc
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: "no"
+    networks: [internal]
+
+  api:
+    image: ilc-api
+    restart: unless-stopped
+    env_file: ../.env.production
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATABASE_URL: postgresql://ilc:${POSTGRES_PASSWORD}@postgres:5432/ilc
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      CORS_ORIGINS: https://${APP_DOMAIN},https://${CONSOLE_DOMAIN}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    networks: [internal]
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.web
+      args: { PWA_URL: "https://${APP_DOMAIN}" }
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?define APP_DOMAIN}
+      CONSOLE_DOMAIN: ${CONSOLE_DOMAIN:?define CONSOLE_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?define ACME_EMAIL}
+      FRAME_SRC: ${FRAME_SRC:-}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api]
+    networks: [internal, public]
+
+  backup:
+    build: { context: .., dockerfile: deploy/Dockerfile.backup }
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/backup/backup.sh", "--loop"]
+    environment:
+      PGHOST: postgres
+      PGUSER: ilc
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: ilc
+      BACKUP_DIR: /backups
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+      BACKUP_AGE_RECIPIENT: ${BACKUP_AGE_RECIPIENT:-}
+    volumes:
+      - ../infra/backup:/backup:ro
+      - backups:/backups
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [internal]
+
+volumes:
+  pgdata:
+  redisdata:
+  caddy_data:
+  caddy_config:
+  backups:
+
+networks:
+  internal:
+    internal: true
+  public:

@@ -1,0 +1,17 @@
+# PWA y consola servidas por Caddy (HTTPS automático) y proxy hacia la API.
+#   docker build -f deploy/Dockerfile.web -t ilc-web .
+FROM node:22-bookworm-slim AS build
+ENV PNPM_HOME=/pnpm PATH=/pnpm:$PATH
+RUN corepack enable
+WORKDIR /repo
+COPY . .
+RUN pnpm install --frozen-lockfile
+# Sin datos de demostración y con la dirección pública de la PWA para el QR del Staff.
+ARG PWA_URL=https://app.example.com
+ENV VITE_DEMO_DATA=false VITE_API_URL=/api/v1 VITE_PWA_URL=$PWA_URL
+RUN pnpm --filter @ilc/design-tokens --filter @ilc/contracts build && pnpm --filter @ilc/pwa --filter @ilc/console build
+
+FROM caddy:2-alpine
+COPY --from=build /repo/apps/pwa/dist /srv/pwa
+COPY --from=build /repo/apps/console/dist /srv/console
+COPY deploy/Caddyfile /etc/caddy/Caddyfile

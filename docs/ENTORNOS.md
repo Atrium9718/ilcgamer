@@ -33,6 +33,8 @@ ni campañas sin aprobación (§4.4).
 | `CODE_RATE_LIMIT_PER_MINUTE` | no | Límite por IP de `GET /product-codes/{token}/status` y de las reclamaciones (por defecto 30). Además, 20 consultas de códigos inexistentes en 10 min desde una IP frenan esa IP y dejan un evento de seguridad. |
 | `GAME_RATE_LIMIT_PER_MINUTE` | no | Límite por cliente de iniciar y enviar partidas (por defecto 60). Los juegos por defecto de la plataforma se configuran en la consola (*Juegos → Juegos por defecto*), no por variable. La guía `docs/INTEGRACION_JUEGOS.md` se copia a `dist/` al compilar la API para mostrarse en la consola. |
 | `EVENT_RATE_LIMIT_PER_MINUTE` | no | Límite por cliente de `POST /events` (eventos de analítica de la PWA; por defecto 60). |
+| `METRICS_TOKEN` | no | ≥ 24 caracteres. Habilita `GET /api/v1/metrics` (Prometheus) con `Authorization: Bearer`. Vacío = apagado (404). |
+| `OTP_PROVIDER=webhook` | no | Con `OTP_WEBHOOK_URL` (https en staging/producción) y `OTP_WEBHOOK_TOKEN` (≥ 16): la API envía `{channel,destination,code,locale,message}` a la pasarela de WhatsApp/SMS/correo que ILC contrate. |
 | `VITE_PWA_URL` (consola) | no | Dirección pública de la PWA que abre el QR del Staff (`{VITE_PWA_URL}/s/{código}`). Por defecto `http://localhost:5173`; en staging y producción debe ser el dominio real. |
 | `SMARTTAGS_INTEGRATION_KEY_HASHES` | no | Integración ERP (`POST /smarttags/validate`). Solo el SHA-256 de cada clave, separado por coma; vacío = apagada. Para emitir una clave: `openssl rand -base64 48 \| tr -d '/+=' \| tee clave.txt \| tr -d '\n' \| sha256sum` → la clave se entrega al ERP por canal seguro y el hash va en esta variable. El ERP la envía como `Authorization: Bearer <clave>`. |
 | `OTP_PROVIDER` | sí | `none` hasta contratar proveedor. `console` (imprime el código en el log) **solo** en desarrollo/pruebas: la API no arranca en staging/producción con ese valor. |
@@ -60,7 +62,7 @@ Las variables `VITE_*` quedan dentro del bundle público: **nunca** poner secret
 - Reglas de integridad críticas viven en la base de datos (migración `*_integridad`): ledger inmutable, claim único por código,
   stock y saldo no negativos, PIN único entre sesiones activas, consentimientos append-only. Las pruebas `apps/api/test/integrity.spec.ts`
   las verifican.
-- La semilla (`pnpm --filter @ilc/api db:seed`) se niega a correr en producción y no inventa SKUs, lotes ni puntos.
+- La semilla (`pnpm --filter @ilc/api db:seed`) solo carga marcas y ajustes por defecto, es idempotente (no pisa ajustes editados) y no inventa SKUs, lotes ni puntos; también se corre en producción tras la primera migración.
 
 ## Desarrollo local
 

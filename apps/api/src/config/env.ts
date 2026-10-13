@@ -38,7 +38,10 @@ export const EnvSchema = z.object({
    * Proveedor de códigos OTP (WhatsApp/SMS/correo). "console" solo existe para desarrollo/pruebas;
    * "none" deshabilita el login por código hasta contratar proveedor (Guía Técnica §15).
    */
-  OTP_PROVIDER: z.enum(['console', 'none']).default('none'),
+  OTP_PROVIDER: z.enum(['console', 'webhook', 'none']).default('none'),
+  /** Con OTP_PROVIDER=webhook: pasarela que entrega el código por WhatsApp, SMS o correo (el proveedor lo define ILC). */
+  OTP_WEBHOOK_URL: z.url({ protocol: /^https?$/ }).optional(),
+  OTP_WEBHOOK_TOKEN: z.string().min(16, 'OTP_WEBHOOK_TOKEN debe tener al menos 16 caracteres').optional(),
   /** Límite por IP de la consulta pública de códigos (protección contra enumeración — §5.6). */
   CODE_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(30),
   /**
@@ -55,6 +58,8 @@ export const EnvSchema = z.object({
         .filter(Boolean),
     )
     .pipe(z.array(z.string().regex(/^[0-9a-f]{64}$/, 'Cada valor debe ser un SHA-256 en hexadecimal'))),
+  /** Token (≥ 24 caracteres) para leer GET /api/v1/metrics. Vacío = métricas deshabilitadas (404). */
+  METRICS_TOKEN: z.string().min(24, 'METRICS_TOKEN debe tener al menos 24 caracteres').optional(),
   APP_VERSION: z.string().default(packageVersion()),
 });
 
@@ -72,6 +77,12 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   }
   if (deployed && parsed.data.OTP_PROVIDER === 'console') {
     throw new Error('Configuración inválida: OTP_PROVIDER=console solo se permite en desarrollo y pruebas');
+  }
+  if (parsed.data.OTP_PROVIDER === 'webhook') {
+    if (!parsed.data.OTP_WEBHOOK_URL || !parsed.data.OTP_WEBHOOK_TOKEN)
+      throw new Error('Configuración inválida: OTP_PROVIDER=webhook exige OTP_WEBHOOK_URL y OTP_WEBHOOK_TOKEN');
+    if (deployed && !parsed.data.OTP_WEBHOOK_URL.startsWith('https://'))
+      throw new Error('Configuración inválida: OTP_WEBHOOK_URL debe ser https en staging y producción');
   }
   return parsed.data;
 }

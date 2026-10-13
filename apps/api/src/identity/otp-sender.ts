@@ -24,6 +24,43 @@ export class ConsoleOtpSender extends OtpSender {
   }
 }
 
+/**
+ * Entrega por una pasarela HTTP del proveedor que ILC elija (WhatsApp Business, SMS o correo transaccional): la API solo
+ * le pasa canal, destino, código y texto. El código no se registra en logs y un fallo no revela detalles a quien pidió el código.
+ */
+@Injectable()
+export class WebhookOtpSender extends OtpSender {
+  private readonly logger = new Logger('OTP');
+  constructor(
+    private readonly url: string,
+    private readonly token: string,
+    private readonly fetchImpl: typeof fetch = fetch,
+  ) {
+    super();
+  }
+
+  async send(channel: OtpChannel, destination: string, code: string): Promise<void> {
+    try {
+      const res = await this.fetchImpl(this.url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${this.token}` },
+        body: JSON.stringify({
+          channel,
+          destination,
+          code,
+          locale: 'es-CO',
+          message: `Tu código de ILC Origen es ${code}. Vence en 5 minutos. Solo para mayores de 18 años.`,
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) throw new Error(`pasarela respondió ${res.status}`);
+    } catch (err) {
+      this.logger.error(`No se pudo entregar un código por ${channel}: ${err instanceof Error ? err.message : 'error'}`);
+      throw new DomainError('SERVICE_UNAVAILABLE', 'No pudimos enviar el código. Intenta de nuevo en un momento.');
+    }
+  }
+}
+
 @Injectable()
 export class DisabledOtpSender extends OtpSender {
   async send(): Promise<void> {
@@ -34,5 +71,9 @@ export class DisabledOtpSender extends OtpSender {
 export const otpSenderProvider = {
   provide: OtpSender,
   inject: [ENV],
-  useFactory: (env: Env): OtpSender => (env.OTP_PROVIDER === 'console' ? new ConsoleOtpSender() : new DisabledOtpSender()),
+  useFactory: (env: Env): OtpSender => {
+    if (env.OTP_PROVIDER === 'console') return new ConsoleOtpSender();
+    if (env.OTP_PROVIDER === 'webhook' && env.OTP_WEBHOOK_URL && env.OTP_WEBHOOK_TOKEN) return new WebhookOtpSender(env.OTP_WEBHOOK_URL, env.OTP_WEBHOOK_TOKEN);
+    return new DisabledOtpSender();
+  },
 };

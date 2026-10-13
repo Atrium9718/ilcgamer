@@ -56,6 +56,12 @@ jobs:
         env:
           DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
 
+      - name: Dependencias de producción sin vulnerabilidades conocidas
+        run: pnpm audit --prod
+
+      - name: Búsqueda de secretos versionados
+        run: pnpm secrets
+
       - name: Tipos
         run: pnpm typecheck
 
@@ -71,3 +77,58 @@ jobs:
           (cd packages/ui/storybook-static && python3 -m http.server 6007 &) 
           sleep 2
           pnpm a11y
+
+  e2e:
+    name: E2E · ruta crítica (QR → edad → cuenta → activación → canje → entrega)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: checks
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ilc
+          POSTGRES_PASSWORD: ilc
+          POSTGRES_DB: ilc_e2e
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ilc -d ilc_e2e" --health-interval 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-retries 10
+    env:
+      VITE_DEMO_DATA: "false"
+      NODE_ENV: development
+      DATABASE_URL: postgresql://ilc:ilc@localhost:5432/ilc_e2e
+      REDIS_URL: redis://localhost:6379
+      APP_SECRET: e2e-secreto-solo-para-pruebas-de-al-menos-32-caracteres
+      CORS_ORIGINS: http://localhost:4173
+      OTP_PROVIDER: console
+      AUTH_RATE_LIMIT_PER_MINUTE: "1000"
+      CODE_RATE_LIMIT_PER_MINUTE: "1000"
+      API_URL: http://localhost:3000/api/v1
+      PWA_URL: http://localhost:4173
+      API_LOG: /tmp/ilc-api.log
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm --filter @ilc/api db:migrate && pnpm --filter @ilc/api db:seed
+      - name: Levantar API y PWA
+        run: |
+          (cd apps/api && node dist/main.js > /tmp/ilc-api.log 2>&1 &)
+          (cd apps/pwa && pnpm exec vite preview --port 4173 --strictPort > /tmp/ilc-pwa.log 2>&1 &)
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/api/v1/health && curl -sf http://localhost:4173/ > /dev/null && break; sleep 1; done
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Recorrido de la ruta crítica
+        run: pnpm e2e
+      - name: Registros si falla
+        if: failure()
+        run: tail -n 80 /tmp/ilc-api.log /tmp/ilc-pwa.log

@@ -10,9 +10,11 @@ import type { User } from '../generated/prisma/client.ts';
 import { Prisma } from '../generated/prisma/client.ts';
 import { SettingsService } from '../platform/settings.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
+import { RedisService } from '../redis/redis.service.ts';
 
 type Tx = Prisma.TransactionClient;
 const DAY = 86_400_000;
+const MAX_ATTEMPTS_PER_HOUR = 10;
 const ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const newCode = () => Array.from(randomBytes(8), (b) => ALPHABET[b % 32]).join('');
 const lockUser = (tx: Tx, userId: string) => tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${userId}, 0))`;
@@ -30,6 +32,7 @@ export class ReferralsService {
     private readonly audit: AuditService,
     private readonly analytics: AnalyticsService,
     private readonly progress: ProgressService,
+    private readonly redis: RedisService,
   ) {}
 
   async config(): Promise<ReferralSettings> {
@@ -73,6 +76,7 @@ export class ReferralsService {
    */
   async attribute(user: User, code: string, requestId: string, now = new Date()): Promise<{ attributed: boolean }> {
     if (user.status !== 'ACTIVA') throw new DomainError('ACCOUNT_REQUIRED', 'Guarda tu progreso para usar un código de invitación.');
+    await this.guessLimit(user.id);
     const config = await this.config();
     if (now.getTime() - user.createdAt.getTime() > config.attributionWindowDays * DAY) return { attributed: false };
     const owner = await this.prisma.referralCode.findUnique({ where: { code } });
@@ -91,6 +95,22 @@ export class ReferralsService {
       throw err;
     }
     return { attributed: true };
+  }
+
+  /**
+   * Anti-enumeración (Guía Técnica §9.2): como un código desconocido no se distingue de uno válido en la respuesta, cada
+   * persona tiene un máximo de intentos por hora; pasado el tope se frena y queda un evento de seguridad.
+   */
+  private async guessLimit(userId: string): Promise<void> {
+    if (!(await this.redis.isHealthy())) return;
+    const key = `referral:attempts:${userId}`;
+    const n = await this.redis.client.incr(key);
+    if (n === 1) await this.redis.client.expire(key, 3600);
+    if (n > MAX_ATTEMPTS_PER_HOUR) {
+      if (n === MAX_ATTEMPTS_PER_HOUR + 1)
+        await this.prisma.securityEvent.create({ data: { type: 'referral.code_guessing', severity: 'BAJA', subjectId: userId, metadata: { attempts: n } } });
+      throw new DomainError('RATE_LIMITED', 'Demasiados intentos con códigos de invitación. Intenta más tarde.');
+    }
   }
 
   /**

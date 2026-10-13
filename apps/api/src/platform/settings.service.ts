@@ -29,6 +29,11 @@ const DEFAULTS = {
   >,
   /** Vigencia por defecto (días) de los Puntos ILC por bonificación de referidos; 0 = sin vencimiento. */
   'economy.defaultPointsExpiryDays': 0,
+  /** Retención (Guía Técnica §9.3): días que se conserva cada tipo de dato. El ledger y la auditoría NO se purgan. */
+  'retention.analyticsEventsDays': 730,
+  'retention.resolvedSecurityEventsDays': 730,
+  'retention.productCodeConsultationsDays': 365,
+  'retention.missionPrivateStateDays': 30,
   /** Meta semanal de vinculaciones de un Staff (indicador de avance; nunca premia rapidez ni volumen de consumo). */
   'staff.weeklyGoal': 40,
   /** Días para retirar una recompensa reservada; después vence y se devuelven stock y puntos (§5.8). */

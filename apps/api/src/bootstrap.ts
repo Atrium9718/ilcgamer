@@ -20,6 +20,9 @@ import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swag
 import { AppModule } from './app.module.ts';
 import { ENV } from './config/config.module.ts';
 import type { Env } from './config/env.ts';
+import { bearerMatches, Metrics } from './observability/metrics.ts';
+import { PrismaService } from './prisma/prisma.service.ts';
+import { RedisService } from './redis/redis.service.ts';
 
 const REQUEST_ID = /^[A-Za-z0-9._-]{8,64}$/;
 
@@ -109,6 +112,34 @@ export async function createApp(options: { logger?: boolean } = {}): Promise<Nes
     .addHook('onSend', async (req, reply) => {
       reply.header(HEADERS.requestId, String(req.id));
     });
+
+  // Métricas: contador y duración por ruta con plantilla; lectura protegida por token (apagada si no hay token).
+  const metrics = new Metrics();
+  fastify.addHook('onResponse', async (req, reply) => {
+    metrics.record(req.method, req.routeOptions?.url ?? 'sin_ruta', reply.statusCode, reply.elapsedTime / 1000);
+  });
+  fastify.get('/api/v1/metrics', async (req, reply) => {
+    if (!env.METRICS_TOKEN) return reply.code(404).send({ error: { code: 'NOT_FOUND', message: 'No encontrado.', retryable: false } });
+    if (!bearerMatches(req.headers.authorization, env.METRICS_TOKEN))
+      return reply.code(401).send({ error: { code: 'UNAUTHENTICATED', message: 'Sin autorización.', retryable: false } });
+    const prisma = app.get(PrismaService);
+    const redis = app.get(RedisService);
+    const [db, cache, openIncidents, pendingRewards] = await Promise.all([
+      prisma.isHealthy(),
+      redis.isHealthy(),
+      prisma.securityEvent.count({ where: { resolvedAt: null } }).catch(() => -1),
+      prisma.rewardClaim.count({ where: { status: 'RESERVADO' } }).catch(() => -1),
+    ]);
+    return reply.header('content-type', 'text/plain; version=0.0.4; charset=utf-8').send(
+      metrics.render({
+        ilc_up: db ? 1 : 0,
+        ilc_database_up: db ? 1 : 0,
+        ilc_cache_up: cache ? 1 : 0,
+        ilc_security_events_open: openIncidents,
+        ilc_reward_reservations_pending: pendingRewards,
+      }),
+    );
+  });
 
   app.setGlobalPrefix('api/v1');
   app.enableShutdownHooks();

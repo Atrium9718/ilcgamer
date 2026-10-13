@@ -23,3 +23,18 @@ describe('configuración (falla temprano)', () => {
     expect(() => loadEnv({ ...base, NODE_ENV: 'production', APP_SECRET: 'cambiar-por-un-secreto-aleatorio-de-al-menos-32-caracteres' })).toThrow(/producción/);
   });
 });
+
+describe('proveedor de códigos por pasarela (webhook)', () => {
+  const base = { DATABASE_URL: 'postgresql://u:p@localhost:5432/db', REDIS_URL: 'redis://localhost:6379', APP_SECRET: 'x'.repeat(40) };
+
+  it('exige URL y token, y en producción solo https', () => {
+    expect(() => loadEnv({ ...base, OTP_PROVIDER: 'webhook' })).toThrow(/OTP_WEBHOOK_URL/);
+    expect(() =>
+      loadEnv({ ...base, NODE_ENV: 'production', OTP_PROVIDER: 'webhook', OTP_WEBHOOK_URL: 'http://pasarela.local/otp', OTP_WEBHOOK_TOKEN: 't'.repeat(20) }),
+    ).toThrow(/https/);
+    expect(
+      loadEnv({ ...base, NODE_ENV: 'production', OTP_PROVIDER: 'webhook', OTP_WEBHOOK_URL: 'https://pasarela.example/otp', OTP_WEBHOOK_TOKEN: 't'.repeat(20) })
+        .OTP_PROVIDER,
+    ).toBe('webhook');
+  });
+});

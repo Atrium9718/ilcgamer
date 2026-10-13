@@ -37,3 +37,22 @@
 @utility icon-fill {
   font-variation-settings: "FILL" 1;
 }
+
+/* Íconos autoalojados (carpeta public/fonts de cada app). En una capa para que `text-[22px]` etc. sigan ganando. */
+@layer components {
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+  }
+}
