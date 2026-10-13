@@ -40,6 +40,11 @@ export const EnvSchema = z.object({
    */
   OTP_PROVIDER: z.enum(['console', 'webhook', 'none']).default('none'),
   /** Con OTP_PROVIDER=webhook: pasarela que entrega el código por WhatsApp, SMS o correo (el proveedor lo define ILC). */
+  /**
+   * Excepción SOLO para staging sin usuarios reales: permite OTP_PROVIDER=console en un servidor desplegado (el código sale en
+   * el log de la API). Exige escribir exactamente esta frase; con usuarios reales debe estar vacío y usarse la pasarela.
+   */
+  STAGING_OTP_LOG_ACK: z.string().optional(),
   OTP_WEBHOOK_URL: z.url({ protocol: /^https?$/ }).optional(),
   OTP_WEBHOOK_TOKEN: z.string().min(16, 'OTP_WEBHOOK_TOKEN debe tener al menos 16 caracteres').optional(),
   /** Límite por IP de la consulta pública de códigos (protección contra enumeración — §5.6). */
@@ -63,6 +68,8 @@ export const EnvSchema = z.object({
   APP_VERSION: z.string().default(packageVersion()),
 });
 
+export const STAGING_OTP_LOG_PHRASE = 'solo-staging-sin-usuarios-reales';
+
 export type Env = z.infer<typeof EnvSchema>;
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
@@ -75,8 +82,8 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   if (deployed && parsed.data.APP_SECRET.startsWith('cambiar')) {
     throw new Error('Configuración inválida: APP_SECRET de ejemplo en producción');
   }
-  if (deployed && parsed.data.OTP_PROVIDER === 'console') {
-    throw new Error('Configuración inválida: OTP_PROVIDER=console solo se permite en desarrollo y pruebas');
+  if (deployed && parsed.data.OTP_PROVIDER === 'console' && parsed.data.STAGING_OTP_LOG_ACK !== STAGING_OTP_LOG_PHRASE) {
+    throw new Error('Configuración inválida: OTP_PROVIDER=console solo se permite en desarrollo y pruebas (o en staging con STAGING_OTP_LOG_ACK explícito)');
   }
   if (parsed.data.OTP_PROVIDER === 'webhook') {
     if (!parsed.data.OTP_WEBHOOK_URL || !parsed.data.OTP_WEBHOOK_TOKEN)

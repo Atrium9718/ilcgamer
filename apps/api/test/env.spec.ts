@@ -38,3 +38,15 @@ describe('proveedor de códigos por pasarela (webhook)', () => {
     ).toBe('webhook');
   });
 });
+
+describe('código en el log (excepción de staging)', () => {
+  const base = { DATABASE_URL: 'postgresql://u:p@localhost:5432/db', REDIS_URL: 'redis://localhost:6379', APP_SECRET: 'x'.repeat(40) };
+
+  it('en un servidor desplegado exige la frase explícita', () => {
+    expect(() => loadEnv({ ...base, NODE_ENV: 'production', OTP_PROVIDER: 'console' })).toThrow(/OTP_PROVIDER=console/);
+    expect(() => loadEnv({ ...base, NODE_ENV: 'production', OTP_PROVIDER: 'console', STAGING_OTP_LOG_ACK: 'si' })).toThrow(/OTP_PROVIDER=console/);
+    expect(loadEnv({ ...base, NODE_ENV: 'production', OTP_PROVIDER: 'console', STAGING_OTP_LOG_ACK: 'solo-staging-sin-usuarios-reales' }).OTP_PROVIDER).toBe(
+      'console',
+    );
+  });
+});

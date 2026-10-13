@@ -20,7 +20,7 @@ export class ConsoleOtpSender extends OtpSender {
 
   async send(channel: OtpChannel, destination: string, code: string): Promise<void> {
     this.outbox.set(destination, code);
-    this.logger.warn(`[solo desarrollo] código ${code} por ${channel}`);
+    this.logger.warn(`[solo desarrollo o staging sin usuarios reales] código ${code} por ${channel}`);
   }
 }
 

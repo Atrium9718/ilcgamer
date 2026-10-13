@@ -63,6 +63,10 @@ En producción `OTP_PROVIDER=console` está prohibido. Con `OTP_PROVIDER=webhook
 `POST` JSON `{ channel, destination, code, locale, message }` con `Authorization: Bearer <OTP_WEBHOOK_TOKEN>` (HTTPS obligatorio).
 La pasarela decide si entrega por WhatsApp, SMS o correo. Sin pasarela configurada nadie puede iniciar sesión por código.
 
+**Excepción solo para staging sin usuarios reales:** `OTP_PROVIDER=console` junto con `STAGING_OTP_LOG_ACK=solo-staging-sin-usuarios-reales`
+deja el código en el log de la API (`docker compose … logs api | grep OTP`). Sin esa frase exacta la API no arranca. Hay que quitarla
+(y usar la pasarela) antes de abrir a personas reales.
+
 ## Seguridad que ya trae esta configuración
 
 HTTPS con renovación automática, HSTS, CSP estricta (sin scripts ni fuentes de terceros), cookie de sesión `__Host-` `Secure`
