@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react';
 import { Button } from '../components/Button.tsx';
 import { PinInput } from '../components/PinInput.tsx';
+import { SealMark } from '../components/SealMark.tsx';
 import { TextField } from '../components/TextField.tsx';
 
 /** Vista pura: ingreso del personal a la consola con código enviado al correo corporativo. */
@@ -29,12 +30,7 @@ export function ConsoleLoginView(p: ConsoleLoginViewProps) {
     <main className="min-h-dvh flex items-center justify-center bg-surface px-4">
       <form onSubmit={submit} noValidate className="w-full max-w-md p-8 rounded-3xl border border-outline-variant bg-surface-container-lowest space-y-6">
         <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center font-headline text-[15px] font-bold text-primary"
-          >
-            ILC
-          </span>
+          <SealMark size="lg" className="w-12 h-12 shrink-0" />
           <div>
             <h1 className="font-headline-lg text-[28px] leading-8 text-on-surface">Consola ILC Origen</h1>
             <p className="font-body-md text-[13px] text-on-surface-variant">Acceso exclusivo para personal autorizado</p>

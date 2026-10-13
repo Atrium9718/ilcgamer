@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Icon } from '../components/Icon.tsx';
+import { SealMark } from '../components/SealMark.tsx';
 import { cx } from '../lib/cx.ts';
 
 export type ConsoleSection =
@@ -64,12 +65,7 @@ export function ConsoleLayout({
     <div className="min-h-dvh flex bg-surface text-on-surface">
       <aside className="w-64 shrink-0 bg-inverse-surface text-inverse-on-surface flex flex-col">
         <div className="flex items-center gap-3 px-5 h-20 border-b border-white/10">
-          <span
-            aria-hidden="true"
-            className="w-10 h-10 rounded-full border border-inverse-primary/60 flex items-center justify-center font-headline text-[13px] font-bold text-inverse-primary"
-          >
-            ILC
-          </span>
+          <SealMark size="lg" className="w-10 h-10 shrink-0" />
           <div>
             <p className="font-headline-md text-[20px] leading-6 text-inverse-on-surface">Consola</p>
             <p className="font-label-sm text-[10px] uppercase tracking-widest text-inverse-primary">Gobernanza y CMS</p>
