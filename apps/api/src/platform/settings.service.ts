@@ -34,6 +34,8 @@ const DEFAULTS = {
   'retention.resolvedSecurityEventsDays': 730,
   'retention.productCodeConsultationsDays': 365,
   'retention.missionPrivateStateDays': 30,
+  /** Fotos de concursos: se eliminan estos días después de cerrar el concurso (son datos personales). */
+  'retention.contestPhotosDays': 30,
   /** Meta semanal de vinculaciones de un Staff (indicador de avance; nunca premia rapidez ni volumen de consumo). */
   'staff.weeklyGoal': 40,
   /** Días para retirar una recompensa reservada; después vence y se devuelven stock y puntos (§5.8). */

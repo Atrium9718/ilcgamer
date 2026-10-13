@@ -212,6 +212,8 @@ model User {
   referredBy     ReferralAttribution?  @relation("Referred")
   referrals      ReferralAttribution[] @relation("Referrer")
   authSessions   AuthSession[]
+  contestEntries ContestEntry[]
+  contestVotes   ContestVote[]
 
   @@map("users")
 }
@@ -946,4 +948,131 @@ model AnalyticsEvent {
 
   @@index([name, occurredAt])
   @@map("analytics_events")
+}
+
+// ─────────────────────── Eventos y concursos ───────────────────────
+
+enum EventStatus {
+  BORRADOR
+  PUBLICADO
+  CERRADO
+}
+
+enum ContestKind {
+  DISFRACES
+}
+
+enum ContestStatus {
+  BORRADOR
+  ABIERTO
+  CERRADO
+}
+
+enum EntryStatus {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+}
+
+model Event {
+  id          String      @id @default(uuid(7)) @db.Uuid
+  slug        String      @unique @db.VarChar(60)
+  title       String      @db.VarChar(80)
+  description String      @default("")
+  city        String      @default("")
+  status      EventStatus @default(BORRADOR)
+  startsAt    DateTime
+  endsAt      DateTime
+  createdById String?     @db.Uuid
+  createdAt   DateTime    @default(now())
+  contests    Contest[]
+
+  @@map("events")
+}
+
+model Contest {
+  id                 String         @id @default(uuid(7)) @db.Uuid
+  eventId            String         @db.Uuid
+  event              Event          @relation(fields: [eventId], references: [id])
+  slug               String         @db.VarChar(60)
+  kind               ContestKind    @default(DISFRACES)
+  title              String         @db.VarChar(80)
+  description        String         @default("")
+  /// Lo que se lleva quien gane. Se entrega en persona; no es Puntos ILC ni XP.
+  prize              String         @db.VarChar(160)
+  prizeConditions    String         @default("")
+  status             ContestStatus  @default(BORRADOR)
+  uploadsCloseAt     DateTime
+  votingOpensAt      DateTime
+  votingClosesAt     DateTime
+  /// Secreto de la pantalla pública (URL que se proyecta); se puede rotar.
+  screenToken        String         @unique @db.VarChar(40)
+  createdById        String?        @db.Uuid
+  openedById         String?        @db.Uuid
+  closedAt           DateTime?
+  winnerEntryId      String?        @unique @db.Uuid
+  winnerEntry        ContestEntry?  @relation("ContestWinner", fields: [winnerEntryId], references: [id], onDelete: SetNull)
+  /// Código que el ganador presenta para reclamar el premio en persona.
+  winnerCode         String?        @db.VarChar(12)
+  prizeDeliveredAt   DateTime?
+  prizeDeliveredById String?        @db.Uuid
+  createdAt          DateTime       @default(now())
+  entries            ContestEntry[] @relation("ContestEntries")
+  votes              ContestVote[]
+
+  @@unique([eventId, slug])
+  @@map("contests")
+}
+
+model ContestEntry {
+  id               String        @id @default(uuid(7)) @db.Uuid
+  contestId        String        @db.Uuid
+  contest          Contest       @relation("ContestEntries", fields: [contestId], references: [id], onDelete: Cascade)
+  userId           String        @db.Uuid
+  user             User          @relation(fields: [userId], references: [id])
+  title            String        @db.VarChar(60)
+  caption          String        @default("") @db.VarChar(200)
+  status           EntryStatus   @default(PENDIENTE)
+  rejectionReason  String?
+  /// Autorización expresa para mostrar la foto (app y pantalla del evento).
+  consentDisplayAt DateTime
+  moderatedById    String?       @db.Uuid
+  moderatedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  photo            EntryPhoto?
+  votes            ContestVote[]
+  wonContest       Contest?      @relation("ContestWinner")
+
+  /// Una inscripción por persona y concurso.
+  @@unique([contestId, userId])
+  @@map("contest_entries")
+}
+
+/// La imagen vive aparte para no cargarla en los listados. Solo JPEG, sin metadatos (el servidor los quita).
+model EntryPhoto {
+  entryId   String       @id @db.Uuid
+  entry     ContestEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  data      Bytes
+  bytes     Int
+  sha256    String       @db.VarChar(64)
+  createdAt DateTime     @default(now())
+
+  @@map("entry_photos")
+}
+
+/// Un voto por cuenta y concurso (UNIQUE): es también la garantía de idempotencia. Los votos no se editan.
+model ContestVote {
+  id        String       @id @default(uuid(7)) @db.Uuid
+  contestId String       @db.Uuid
+  contest   Contest      @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  entryId   String       @db.Uuid
+  entry     ContestEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  userId    String       @db.Uuid
+  user      User         @relation(fields: [userId], references: [id])
+  createdAt DateTime     @default(now())
+
+  @@unique([contestId, userId])
+  @@index([entryId])
+  @@map("contest_votes")
 }

@@ -9,6 +9,7 @@ import { IdempotencyKeyGuard } from './common/idempotency.ts';
 import { OriginGuard } from './common/origin.guard.ts';
 import { ConfigModule } from './config/config.module.ts';
 import { EconomyModule } from './economy/economy.module.ts';
+import { EventsModule } from './events/events.module.ts';
 import { GamesModule } from './games/games.module.ts';
 import { HealthModule } from './health/health.module.ts';
 import { IdentityModule } from './identity/identity.module.ts';
@@ -43,6 +44,7 @@ import { VenuesModule } from './venues/venues.module.ts';
     VenuesModule,
     AnalyticsModule,
     ReferralsModule,
+    EventsModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

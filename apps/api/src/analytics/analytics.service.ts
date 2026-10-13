@@ -30,6 +30,8 @@ const REGISTRY: Record<AnalyticsEventName, { version: number; allowed: readonly 
   share_card_generated: { version: 1, allowed: ['template', 'target'] },
   share_link_opened: { version: 1, allowed: ['source'] },
   staff_activation_recorded: { version: 1, allowed: [] },
+  contest_entry_submitted: { version: 1, allowed: ['kind'] },
+  contest_vote_cast: { version: 1, allowed: ['kind'] },
   referral_attributed: { version: 1, allowed: [] },
   referral_rewarded: { version: 1, allowed: ['kind'] },
   referral_capped: { version: 1, allowed: ['kind', 'window'] },

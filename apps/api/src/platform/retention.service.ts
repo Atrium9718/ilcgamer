@@ -14,6 +14,7 @@ export interface PurgeResult {
   securityEvents: number;
   productCodeConsultations: number;
   missionStates: number;
+  contestPhotos: number;
 }
 
 /**
@@ -59,9 +60,10 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
         | 'retention.analyticsEventsDays'
         | 'retention.resolvedSecurityEventsDays'
         | 'retention.productCodeConsultationsDays'
-        | 'retention.missionPrivateStateDays',
+        | 'retention.missionPrivateStateDays'
+        | 'retention.contestPhotosDays',
     ) => new Date(now.getTime() - Number(await this.settings.get(key)) * DAY);
-    const [analytics, security, consults, missions] = await Promise.all([
+    const [analytics, security, consults, missions, photos] = await Promise.all([
       this.prisma.analyticsEvent.deleteMany({ where: { occurredAt: { lt: await ago('retention.analyticsEventsDays') } } }),
       this.prisma.securityEvent.deleteMany({ where: { resolvedAt: { not: null, lt: await ago('retention.resolvedSecurityEventsDays') } } }),
       this.prisma.productCodeEvent.deleteMany({ where: { type: 'CONSULTA', createdAt: { lt: await ago('retention.productCodeConsultationsDays') } } }),
@@ -74,7 +76,15 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
         },
         data: { state: Prisma.DbNull },
       }),
+      // Las fotos de concursos cerrados son datos personales: se eliminan pasado el plazo (queda el título y el resultado).
+      this.prisma.entryPhoto.deleteMany({ where: { entry: { contest: { closedAt: { lt: await ago('retention.contestPhotosDays') } } } } }),
     ]);
-    return { analyticsEvents: analytics.count, securityEvents: security.count, productCodeConsultations: consults.count, missionStates: missions.count };
+    return {
+      analyticsEvents: analytics.count,
+      securityEvents: security.count,
+      productCodeConsultations: consults.count,
+      missionStates: missions.count,
+      contestPhotos: photos.count,
+    };
   }
 }

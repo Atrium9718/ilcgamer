@@ -46,6 +46,9 @@ const PUBLIC = new Set([
   'POST /api/v1/auth/oauth/{provider}',
   'GET /api/v1/product-codes/{token}/status',
   'GET /api/v1/campaigns/{slug}',
+  // Pantalla del concurso: el acceso es la URL secreta (token) del concurso, no una sesión; solo expone alias, foto aprobada y conteos.
+  'GET /api/v1/screens/{token}',
+  'GET /api/v1/screens/{token}/photos/{entryId}',
   // Con firma HMAC propia del proveedor o llave de integración (no sesión).
   'POST /api/v1/games/provider-callback',
   'POST /api/v1/smarttags/validate',

@@ -191,6 +191,9 @@ export class IdentityService {
    */
   async deleteAccount(auth: AuthContext, reply: FastifyReply, requestId: string): Promise<void> {
     await this.prisma.$transaction(async (tx) => {
+      // Las fotos y los votos de concursos son datos personales: se eliminan junto con la cuenta.
+      await tx.contestVote.deleteMany({ where: { userId: auth.user.id } });
+      await tx.contestEntry.deleteMany({ where: { userId: auth.user.id } });
       await tx.userPii.deleteMany({ where: { userId: auth.user.id } });
       await tx.identityCredential.deleteMany({ where: { userId: auth.user.id } });
       await tx.userRole.deleteMany({ where: { userId: auth.user.id } });

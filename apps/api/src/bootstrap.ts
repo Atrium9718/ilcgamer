@@ -9,6 +9,7 @@ import {
   ConsentStateSchema,
   HEADERS,
   HealthResponseSchema,
+  MAX_ENTRY_PHOTO_BYTES,
   MAX_IMPORT_BYTES,
   MeSchema,
   PublicConfigSchema,
@@ -86,6 +87,15 @@ export async function createApp(options: { logger?: boolean } = {}): Promise<Nes
   });
   fastify.addContentTypeParser('application/octet-stream', { parseAs: 'buffer', bodyLimit: MAX_IMPORT_BYTES }, (req, body, done) => {
     if (!BINARY_ROUTES.test(req.url)) {
+      done(Object.assign(new Error('Tipo de contenido no admitido en esta ruta.'), { statusCode: 415 }), undefined);
+      return;
+    }
+    done(null, body);
+  });
+
+  // Foto de una inscripción de concurso: JPEG crudo, solo en su ruta y hasta 2 MB (el servidor lo valida y limpia).
+  fastify.addContentTypeParser('image/jpeg', { parseAs: 'buffer', bodyLimit: MAX_ENTRY_PHOTO_BYTES }, (req, body, done) => {
+    if (!/^\/api\/v1\/contests\/[0-9a-f-]{36}\/entries\/me\/photo(\?.*)?$/.test(req.url)) {
       done(Object.assign(new Error('Tipo de contenido no admitido en esta ruta.'), { statusCode: 415 }), undefined);
       return;
     }

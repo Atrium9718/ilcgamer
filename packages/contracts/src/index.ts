@@ -5,6 +5,7 @@ export * from './campaigns.ts';
 export * from './domain.ts';
 export * from './economy.ts';
 export * from './errors.ts';
+export * from './events.ts';
 export * from './games.ts';
 export * from './health.ts';
 export * from './http.ts';

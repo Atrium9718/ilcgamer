@@ -26,6 +26,8 @@ export const SERVER_EVENTS = [
   'referral_attributed',
   'referral_rewarded',
   'referral_capped',
+  'contest_entry_submitted',
+  'contest_vote_cast',
 ] as const;
 export type AnalyticsEventName = (typeof SERVER_EVENTS)[number];
 
