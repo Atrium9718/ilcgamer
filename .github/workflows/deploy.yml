@@ -10,6 +10,14 @@ on:
         description: Rama o etiqueta a desplegar
         required: true
         default: main
+      app_domain:
+        description: "Opcional: nuevo dominio de la PWA (vacío = no cambiar)"
+        required: false
+        default: ""
+      console_domain:
+        description: "Opcional: nuevo dominio de la consola (vacío = no cambiar)"
+        required: false
+        default: ""
 
 concurrency:
   group: deploy-staging
@@ -27,11 +35,19 @@ jobs:
       - name: Validar la referencia
         env:
           REF: ${{ inputs.ref }}
+          APP_DOMAIN: ${{ inputs.app_domain }}
+          CONSOLE_DOMAIN: ${{ inputs.console_domain }}
         run: |
           if ! printf '%s' "$REF" | grep -Eq '^[A-Za-z0-9._/-]{1,100}$'; then
             echo "Referencia inválida" >&2
             exit 1
           fi
+          for d in "$APP_DOMAIN" "$CONSOLE_DOMAIN"; do
+            if [ -n "$d" ] && ! printf '%s' "$d" | grep -Eq '^[a-z0-9]([a-z0-9.-]{0,251}[a-z0-9])?$'; then
+              echo "Dominio inválido" >&2
+              exit 1
+            fi
+          done
 
       - name: Preparar SSH
         env:
@@ -46,13 +62,17 @@ jobs:
       - name: Actualizar código y reconstruir en el servidor
         env:
           REF: ${{ inputs.ref }}
+          APP_DOMAIN: ${{ inputs.app_domain }}
+          CONSOLE_DOMAIN: ${{ inputs.console_domain }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
-          ssh -i ~/.ssh/id_deploy -o BatchMode=yes "$VPS_USER@$VPS_HOST" bash -s -- "$REF" <<'REMOTE'
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes "$VPS_USER@$VPS_HOST" bash -s -- "$REF" "$APP_DOMAIN" "$CONSOLE_DOMAIN" <<'REMOTE'
           set -euo pipefail
-          REF="$1"
+          REF="$1"; NEW_APP="$2"; NEW_CONSOLE="$3"
           cd /opt/ilc
+          if [ -n "$NEW_APP" ]; then sed -i "s|^APP_DOMAIN=.*|APP_DOMAIN=$NEW_APP|" .env.production; fi
+          if [ -n "$NEW_CONSOLE" ]; then sed -i "s|^CONSOLE_DOMAIN=.*|CONSOLE_DOMAIN=$NEW_CONSOLE|" .env.production; fi
           git fetch --tags origin "$REF"
           git checkout --detach FETCH_HEAD
           echo "Desplegando $(git rev-parse --short HEAD)"
