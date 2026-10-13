@@ -86,3 +86,9 @@ relaja "quien crea no aprueba/activa" en juegos, campañas y recompensas. Autori
 HTTPS con renovación automática, HSTS, CSP estricta (sin scripts ni fuentes de terceros), cookie de sesión `__Host-` `Secure`
 `HttpOnly` `SameSite=Lax`, bases de datos solo en red interna, contenedor de la API sin root, copias cifrables y métricas protegidas
 por token. Los proveedores de juegos en iframe se habilitan agregando su origen a `FRAME_SRC`.
+
+## Staging en construcción: despliegue automático (excepción temporal)
+Autorizado por la persona responsable del proyecto mientras la app está en construcción y **sin usuarios reales**:
+- `.github/workflows/deploy.yml` se ejecuta solo con cada *push* a la rama `claude/mobile-app-planning-pgnveo` y, al terminar, corre `deploy/staging_demo.sh` para dejar los datos de demostración (idempotente).
+- Para que no pida aprobación: GitHub → Settings → Environments → `staging` → quitar *Required reviewers*.
+- **Antes de usuarios reales o de producción**: quitar el disparo `push` y el paso «Cargar datos de demostración», volver a exigir aprobación de una persona de TI en el entorno, y retirar las excepciones de staging (OTP en el log y separación de funciones relajada).
