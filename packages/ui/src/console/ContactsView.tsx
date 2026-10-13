@@ -44,41 +44,44 @@ export function ContactsView({ rows, total, loading, error, onDownload, onRetry 
           {rows.length === 0 ? (
             <p className="font-body-md text-body-md text-on-surface-variant">Todavía no hay contactos con autorización vigente.</p>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-outline-variant" tabIndex={0} role="region" aria-label="Tabla de contactos">
-              <table className="w-full text-left font-body-md text-[14px]">
-                <caption className="sr-only">Contactos con autorización de novedades</caption>
-                <thead className="bg-surface-container-high text-on-surface">
-                  <tr>
-                    <th scope="col" className="p-3">
-                      Alias
-                    </th>
-                    <th scope="col" className="p-3">
-                      Correo
-                    </th>
-                    <th scope="col" className="p-3">
-                      Celular
-                    </th>
-                    <th scope="col" className="p-3">
-                      Autorizó
-                    </th>
-                    <th scope="col" className="p-3">
-                      Desde
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((r) => (
-                    <tr key={`${r.alias}-${r.optedInLabel}-${r.email ?? r.phone}`} className="border-t border-outline-variant text-on-surface">
-                      <td className="p-3">{r.alias}</td>
-                      <td className="p-3">{r.email ?? '—'}</td>
-                      <td className="p-3">{r.phone ?? '—'}</td>
-                      <td className="p-3">{r.optedInLabel}</td>
-                      <td className="p-3">{r.source}</td>
+            <>
+              {/* biome-ignore lint/a11y/useSemanticElements lint/a11y/noNoninteractiveTabindex: región con desplazamiento: debe poder enfocarse con el teclado (axe) */}
+              <div className="overflow-x-auto rounded-2xl border border-outline-variant" tabIndex={0} role="region" aria-label="Tabla de contactos">
+                <table className="w-full text-left font-body-md text-[14px]">
+                  <caption className="sr-only">Contactos con autorización de novedades</caption>
+                  <thead className="bg-surface-container-high text-on-surface">
+                    <tr>
+                      <th scope="col" className="p-3">
+                        Alias
+                      </th>
+                      <th scope="col" className="p-3">
+                        Correo
+                      </th>
+                      <th scope="col" className="p-3">
+                        Celular
+                      </th>
+                      <th scope="col" className="p-3">
+                        Autorizó
+                      </th>
+                      <th scope="col" className="p-3">
+                        Desde
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {rows.map((r) => (
+                      <tr key={`${r.alias}-${r.optedInLabel}-${r.email ?? r.phone}`} className="border-t border-outline-variant text-on-surface">
+                        <td className="p-3">{r.alias}</td>
+                        <td className="p-3">{r.email ?? '—'}</td>
+                        <td className="p-3">{r.phone ?? '—'}</td>
+                        <td className="p-3">{r.optedInLabel}</td>
+                        <td className="p-3">{r.source}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </>
       )}
