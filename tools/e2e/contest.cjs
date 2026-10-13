@@ -128,7 +128,7 @@ const HOUR = 3_600_000;
     await a.req('POST', `/admin/events/${ev.id}/contests`, {
       slug: 'disfraces',
       kind: 'DISFRACES',
-      title: 'Concurso de disfraces E2E',
+      title: `Concurso de disfraces E2E ${stamp}`,
       prize: 'Palco para la feria',
       prizeConditions: 'Se entrega en persona',
       uploadsCloseAt: new Date(opens).toISOString(),
@@ -150,7 +150,7 @@ const HOUR = 3_600_000;
   p1.on('pageerror', (e) => errors.push(e.message));
   await signUp(p1, `/concursos/${contest.id}`);
   await p1.goto(`${PWA}/eventos`);
-  await p1.getByRole('button', { name: /Concurso de disfraces E2E/ }).click();
+  await p1.getByRole('button', { name: new RegExp(`Concurso de disfraces E2E ${stamp}`) }).click();
   await p1.getByRole('heading', { name: 'Inscribe tu disfraz' }).waitFor();
   assert(await p1.getByText(/sin copas, botellas ni consumo de alcohol/).isVisible(), 'la norma de la foto (sin alcohol) se muestra al inscribirse');
   await p1.getByLabel(/Nombre de tu disfraz/).fill('El pirata del Cable');
@@ -206,7 +206,7 @@ const HOUR = 3_600_000;
   const screenPath = must(await a.req('GET', `/admin/contests/${contest.id}`), 'detalle').screenPath;
   await p3.goto(`${PWA}${screenPath}`);
   await p3.getByRole('list', { name: 'Clasificación en vivo' }).waitFor();
-  await p3.getByText('1 votos en total').waitFor({ timeout: 10_000 });
+  await p3.getByText('1 voto en total').waitFor({ timeout: 10_000 });
   assert(await p3.getByText('El pirata del Cable').first().isVisible(), 'la pantalla pública muestra el ranking en vivo sin iniciar sesión');
   assert(await p3.getByAltText(/Código QR para votar/).isVisible(), 'la pantalla muestra el QR para votar');
   const photoOk = await p3.evaluate(() => [...document.images].some((i) => i.alt.includes('El pirata') && i.naturalWidth > 0));
