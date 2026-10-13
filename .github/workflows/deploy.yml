@@ -1,0 +1,70 @@
+name: Desplegar a staging (VPS)
+
+# Manual: se lanza desde GitHub (Actions → "Desplegar a staging") o desde el agente con una rama o etiqueta.
+# Usa el entorno "staging" de GitHub: ahí viven los secretos y se puede exigir aprobación de una persona de TI.
+# Secretos del entorno: VPS_HOST, VPS_USER, VPS_SSH_KEY (llave privada de un usuario sin root con acceso a Docker).
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Rama o etiqueta a desplegar
+        required: true
+        default: main
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    timeout-minutes: 40
+    steps:
+      - name: Validar la referencia
+        env:
+          REF: ${{ inputs.ref }}
+        run: |
+          if ! printf '%s' "$REF" | grep -Eq '^[A-Za-z0-9._/-]{1,100}$'; then
+            echo "Referencia inválida" >&2
+            exit 1
+          fi
+
+      - name: Preparar SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
+
+      - name: Actualizar código y reconstruir en el servidor
+        env:
+          REF: ${{ inputs.ref }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes "$VPS_USER@$VPS_HOST" bash -s -- "$REF" <<'REMOTE'
+          set -euo pipefail
+          REF="$1"
+          cd /opt/ilc
+          git fetch --tags origin "$REF"
+          git checkout --detach FETCH_HEAD
+          echo "Desplegando $(git rev-parse --short HEAD)"
+          COMPOSE="sudo docker compose --env-file .env.production -f deploy/compose.prod.yml"
+          $COMPOSE up -d --build
+          $COMPOSE ps
+          APP="$(grep '^APP_DOMAIN=' .env.production | cut -d= -f2)"
+          for i in $(seq 1 30); do
+            if curl -fsS "https://$APP/api/v1/health" >/dev/null; then echo "Salud: ok"; exit 0; fi
+            sleep 5
+          done
+          echo "La API no respondió a tiempo" >&2
+          $COMPOSE logs --tail=50 api >&2
+          exit 1
+          REMOTE
