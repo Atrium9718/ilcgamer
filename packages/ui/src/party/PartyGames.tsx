@@ -24,7 +24,8 @@ const fitSize = (text: string, max: number, width: number) => Math.min(max, widt
 
 /** Girador: una flecha o una aguja (nunca una botella) con los colores y el nombre que defina la configuración. */
 export function SpinnerArt({ spinner }: { spinner: SpinnerConfigView['spinner'] }) {
-  const { shape, body, tip, labelColor, labelTop, labelBottom } = spinner;
+  const { shape, body, tip, labelColor, labelTop, labelBottom, image } = spinner;
+  if (image) return <image href={image} x={0} y={0} width={100} height={300} preserveAspectRatio="xMidYMid meet" />;
   return (
     <>
       {shape === 'flecha' ? (

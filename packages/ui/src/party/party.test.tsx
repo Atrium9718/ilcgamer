@@ -171,6 +171,19 @@ describe('adivina en la frente con el sensor de movimiento', () => {
   });
 });
 
+describe('girador con imagen propia', () => {
+  it('dibuja la imagen en lugar de la flecha', () => {
+    const image = 'data:image/png;base64,iVBORw0KGgo=';
+    const { container } = render(
+      <svg role="img" aria-label="girador">
+        <SpinnerArt spinner={{ ...SPINNER.spinner, image }} />
+      </svg>,
+    );
+    expect(container.querySelector('image')?.getAttribute('href')).toBe(image);
+    expect(container.querySelector('polygon')).toBeNull();
+  });
+});
+
 describe('pulso firme', () => {
   it('muestra las instrucciones, el cronómetro y el área de juego', () => {
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);

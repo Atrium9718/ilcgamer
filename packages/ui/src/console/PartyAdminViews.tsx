@@ -16,6 +16,7 @@ type Field =
   | { kind: 'long'; path: string; label: string; max?: number; hint?: string }
   | { kind: 'number'; path: string; label: string; min: number; max: number; hint?: string }
   | { kind: 'color'; path: string; label: string }
+  | { kind: 'image'; path: string; label: string; hint: string }
   | { kind: 'select'; path: string; label: string; options: Array<{ value: string; label: string }>; hint?: string }
   | { kind: 'lines'; path: string; label: string; hint: string }
   | { kind: 'pairs'; path: string; label: string; hint: string };
@@ -41,6 +42,12 @@ export const PARTY_EDITOR: Record<PartyGameKind, { appearance: Field[]; texts: F
           { value: 'aguja', label: 'Aguja' },
         ],
         hint: 'Los juegos no usan botellas ni copas (reglas de contenido de ILC).',
+      },
+      {
+        kind: 'image',
+        path: 'spinner.image',
+        label: 'Imagen del girador (reemplaza la flecha)',
+        hint: 'PNG, WebP o JPEG; la parte de arriba de la imagen es la que señala. Sin botellas ni copas. Se reduce sola y se revisa al aprobar.',
       },
       { kind: 'color', path: 'spinner.body', label: 'Color del girador' },
       { kind: 'color', path: 'spinner.tip', label: 'Color de la punta' },
@@ -293,6 +300,98 @@ function BufferedTextarea({
   );
 }
 
+/** Mismo tope que `MAX_PARTY_IMAGE_CHARS` del contrato (la vista no depende del paquete de contratos; el servidor lo valida de nuevo). */
+const MAX_PARTY_IMAGE_CHARS = 150_000;
+
+/** Reduce la imagen elegida (PNG con transparencia, o WebP/JPEG si pesa mucho) hasta que quepa en el tope del contrato. */
+async function shrinkImage(file: File, maxChars: number): Promise<string> {
+  const bitmap = await createImageBitmap(file);
+  let side = 256;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const scale = Math.min(1, side / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    for (const [type, q] of [
+      ['image/png', undefined],
+      ['image/webp', 0.85],
+      ['image/webp', 0.6],
+    ] as const) {
+      const url = canvas.toDataURL(type, q);
+      if (url.startsWith(`data:${type}`) && url.length <= maxChars) return url;
+    }
+    side = Math.round(side * 0.75);
+  }
+  throw new Error('La imagen es demasiado pesada. Prueba con una más sencilla.');
+}
+
+function ImageField({
+  id,
+  label,
+  hint,
+  value,
+  onChange,
+  error,
+}: {
+  id: string;
+  label: string;
+  hint: string;
+  value?: string;
+  onChange: (v: string | undefined) => void;
+  error?: string;
+}) {
+  const [localError, setLocalError] = useState<string>();
+  const [busy, setBusy] = useState(false);
+  const pick = async (file: File | undefined) => {
+    if (!file) return;
+    setLocalError(undefined);
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return setLocalError('Usa una imagen PNG, WebP o JPEG.');
+    setBusy(true);
+    try {
+      onChange(await shrinkImage(file, MAX_PARTY_IMAGE_CHARS));
+    } catch (e) {
+      setLocalError(e instanceof Error ? e.message : 'No pudimos leer la imagen.');
+    } finally {
+      setBusy(false);
+    }
+  };
+  const shown = error ?? localError;
+  return (
+    <div className="space-y-2">
+      <label className="block font-label-lg text-label-lg text-on-surface" htmlFor={id}>
+        {label}
+      </label>
+      <input
+        id={id}
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        disabled={busy}
+        onChange={(e) => void pick(e.target.files?.[0])}
+        className="block w-full min-h-12 text-on-surface"
+      />
+      {value && (
+        <div className="flex items-center gap-3">
+          <img
+            src={value}
+            alt="Vista previa de la imagen del girador"
+            className="h-24 w-auto rounded-lg border border-outline-variant bg-surface-container-high p-1"
+          />
+          <Button variant="secondary" onClick={() => onChange(undefined)}>
+            Quitar imagen
+          </Button>
+        </div>
+      )}
+      <p className="font-body-md text-[12px] text-on-surface-variant">{hint}</p>
+      {shown && (
+        <p role="alert" className="font-body-md text-[13px] text-error">
+          {shown}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function FieldInput({
   f,
   config,
@@ -335,6 +434,10 @@ function FieldInput({
           error={errs[0]}
         />
       </div>
+    );
+  if (f.kind === 'image')
+    return (
+      <ImageField id={full} label={f.label} hint={f.hint} value={typeof value === 'string' ? value : undefined} onChange={(v) => set(v)} error={errs[0]} />
     );
   if (f.kind === 'color')
     return (

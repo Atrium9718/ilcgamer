@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { defaultPartyManifest, PARTY_GAMES, PARTY_TEMPLATES, partyTextIssue, validateManifest } from '../src/index.ts';
+import { defaultPartyManifest, MAX_PARTY_IMAGE_CHARS, PARTY_GAMES, PARTY_TEMPLATES, partyTextIssue, validateManifest } from '../src/index.ts';
 
 describe('juegos de fiesta: contrato', () => {
   it('las seis plantillas son manifiestos válidos (Ruta A, sin puntuación, sin presión de alcohol)', () => {
@@ -62,5 +62,18 @@ describe('plantillas: aislamiento', () => {
     const b = defaultPartyManifest('spinner');
     expect((b.delivery.config as { heading: string }).heading).toBe('PICO DE FLECHA');
     expect(b.players.max).toBe(12);
+  });
+
+  it('el girador acepta una imagen propia en data: PNG/WebP/JPEG y rechaza SVG, enlaces externos o archivos enormes', () => {
+    const png = 'data:image/png;base64,iVBORw0KGgo=';
+    const make = (image: string) => {
+      const m = defaultPartyManifest('spinner');
+      (m.delivery.config as { spinner: { image?: string } }).spinner.image = image;
+      return validateManifest(m);
+    };
+    expect(make(png).ok).toBe(true);
+    expect(make('data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=').ok).toBe(false);
+    expect(make('https://tercero.example/flecha.png').ok).toBe(false);
+    expect(make(`data:image/png;base64,${'A'.repeat(MAX_PARTY_IMAGE_CHARS)}`).ok).toBe(false);
   });
 });

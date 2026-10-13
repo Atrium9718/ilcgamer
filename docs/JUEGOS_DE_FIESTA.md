@@ -17,6 +17,7 @@ Seis juegos para animar un grupo, instalados como módulos de la plataforma y **
 3. **Guardar** crea la siguiente versión (p. ej. 1.0.1) como borrador. Luego, en **Juegos** (Catálogo): pasar a prueba → aprobar (Marca y Jurídica) → activar. Mientras no se active, la gente sigue viendo la versión anterior; se puede volver a ella en cualquier momento.
 
 ## Reglas
+- **Imagen propia en el girador**: en el editor del Pico de Flecha puedes subir una imagen (PNG, WebP o JPEG) que reemplaza la flecha; la parte de arriba señala. Se reduce sola (máx. ~110 KB) y viaja dentro de la versión, por lo que Marca y Jurídica la revisan al aprobar. Sin botellas ni copas.
 - **Sin alcohol como castigo ni incentivo**: no se aceptan textos con shot, trago, fondo blanco, brindar, «toma un…», etc. La consola avisa y el servidor lo rechaza. Tampoco hay botellas ni copas en los gráficos (por eso el girador es una flecha o una aguja).
 - Los juegos **no dan Puntos ILC ni XP** y el servidor no guarda resultados ni datos personales de la partida.
 - Cambiar estas reglas (p. ej. recuperar «Pico de Botella») requiere una decisión explícita de ILC/TI.

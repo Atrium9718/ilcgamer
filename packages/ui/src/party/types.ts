@@ -17,7 +17,7 @@ interface Base {
 export interface SpinnerConfigView extends Base {
   game: 'spinner';
   badge: string;
-  spinner: { shape: 'flecha' | 'aguja'; body: string; tip: string; labelColor: string; labelTop: string; labelBottom: string };
+  spinner: { shape: 'flecha' | 'aguja'; body: string; tip: string; labelColor: string; labelTop: string; labelBottom: string; image?: string };
   spinLabel: string;
   hint: string;
   modalTag: string;

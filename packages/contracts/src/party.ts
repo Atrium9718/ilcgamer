@@ -63,6 +63,8 @@ const Safe = (max: number, min = 1) =>
       if (issue) ctx.addIssue({ code: 'custom', message: issue });
     });
 const List = (itemMax: number, min: number, max: number) => z.array(Safe(itemMax)).min(min).max(max);
+/** Tope de la imagen del girador (caracteres del `data:`): cabe en el cuerpo máximo de la API (256 KB) con el resto del manifiesto. */
+export const MAX_PARTY_IMAGE_CHARS = 150_000;
 const Hex = z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Color en formato #RRGGBB');
 
 /** Aspecto común: colores de acento y fondo. */
@@ -96,6 +98,15 @@ export const SpinnerConfigSchema = z
         /** Texto grande y pequeño sobre el girador (p. ej. el nombre de la marca). */
         labelTop: Safe(20, 0).default(''),
         labelBottom: Safe(30, 0).default(''),
+        /**
+         * Imagen propia que reemplaza a la flecha (PNG, WebP o JPEG en `data:`, ya reducida por la consola). La parte de arriba de la
+         * imagen es la que señala. Se revisa como el resto del contenido: Marca y Jurídica la aprueban antes de activarla.
+         */
+        image: z
+          .string()
+          .max(MAX_PARTY_IMAGE_CHARS)
+          .regex(/^data:image\/(png|webp|jpeg);base64,[A-Za-z0-9+/]+={0,2}$/, 'Debe ser una imagen PNG, WebP o JPEG')
+          .optional(),
       })
       .strict()
       .default({ shape: 'flecha', body: '#E8C340', tip: '#2E6B3B', labelColor: '#2E6B3B', labelTop: '', labelBottom: '' }),
