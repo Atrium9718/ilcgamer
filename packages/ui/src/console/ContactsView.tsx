@@ -44,7 +44,7 @@ export function ContactsView({ rows, total, loading, error, onDownload, onRetry 
           {rows.length === 0 ? (
             <p className="font-body-md text-body-md text-on-surface-variant">Todavía no hay contactos con autorización vigente.</p>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-outline-variant">
+            <div className="overflow-x-auto rounded-2xl border border-outline-variant" tabIndex={0} role="region" aria-label="Tabla de contactos">
               <table className="w-full text-left font-body-md text-[14px]">
                 <caption className="sr-only">Contactos con autorización de novedades</caption>
                 <thead className="bg-surface-container-high text-on-surface">
