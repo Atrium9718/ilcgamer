@@ -18,6 +18,8 @@ export class ApiRequestError extends Error {
 export interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: unknown;
+  /** Cuerpo binario (p. ej. la foto de un concurso); se envía tal cual con su tipo de contenido. */
+  rawBody?: Blob;
   /**
    * Obligatoria en operaciones con efecto económico/promocional. Reutilice LA MISMA clave al reintentar
    * para que el servidor no duplique la operación (Guía Técnica §5.7 regla 8).
@@ -34,10 +36,14 @@ export function newIdempotencyKey(): string {
   return crypto.randomUUID().replaceAll('-', '');
 }
 
-export async function apiRequest<T>(path: string, { method = 'GET', body, idempotencyKey, timeoutMs = 15_000, signal }: RequestOptions = {}): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  { method = 'GET', body, rawBody, idempotencyKey, timeoutMs = 15_000, signal }: RequestOptions = {},
+): Promise<T> {
   const timeout = AbortSignal.timeout(timeoutMs);
   const headers: Record<string, string> = { Accept: 'application/json', [HEADERS.requestId]: crypto.randomUUID() };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
+  if (rawBody) headers['Content-Type'] = rawBody.type;
   if (idempotencyKey) headers[HEADERS.idempotencyKey] = idempotencyKey;
 
   let res: Response;
@@ -45,7 +51,7 @@ export async function apiRequest<T>(path: string, { method = 'GET', body, idempo
     res = await fetch(`${BASE}${path}`, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: rawBody ?? (body === undefined ? undefined : JSON.stringify(body)),
       credentials: 'include',
       signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
     });

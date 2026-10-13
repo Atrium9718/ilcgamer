@@ -9,6 +9,7 @@ export type ConsoleSection =
   | 'campanas'
   | 'juegos'
   | 'recompensas'
+  | 'eventos'
   | 'smart-tags'
   | 'comercios'
   | 'economia'
@@ -21,6 +22,7 @@ const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = 
   { id: 'campanas', label: 'Campañas', icon: 'campaign' },
   { id: 'juegos', label: 'Juegos', icon: 'sports_esports' },
   { id: 'recompensas', label: 'Recompensas', icon: 'redeem' },
+  { id: 'eventos', label: 'Eventos', icon: 'celebration' },
   { id: 'smart-tags', label: 'Smart Tags', icon: 'qr_code_2' },
   { id: 'comercios', label: 'Comercios', icon: 'storefront' },
   { id: 'economia', label: 'Economía', icon: 'account_balance_wallet' },

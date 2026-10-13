@@ -34,6 +34,6 @@ describe('Analítica en la consola', () => {
 
   it('quien no es de Marca ni TI no tiene la sección', async () => {
     open(['REVISOR_MARCA']);
-    expect((await screen.findAllByText('Sin acceso')).length).toBe(5);
+    expect((await screen.findAllByText('Sin acceso')).length).toBe(6);
   });
 });

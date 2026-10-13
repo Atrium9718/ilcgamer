@@ -65,6 +65,7 @@ export function GamesRoute() {
       experiences={experiences}
       onSelectGame={play}
       onSelectExperience={play}
+      onOpenEvents={() => navigate('/eventos')}
       onNavigate={onNavigate}
     />
   );

@@ -10,12 +10,16 @@ import type {
   CampaignDraft,
   CampaignSummary,
   CampaignView,
+  ContestAdminView,
   CreateCampaign,
+  CreateContest,
+  CreateEvent,
   CreateProduct,
   CreateReward,
   CreateVenue,
   DealerDashboard,
   DefaultModules,
+  EventAdminView,
   GenerateCodes,
   ImportPreview,
   Me,
@@ -151,4 +155,22 @@ export const analyticsApi = {
   referralSettings: () => apiRequest<ReferralSettings>('/admin/referrals/settings'),
   saveReferralSettings: (body: ReferralSettings) => apiRequest<ReferralSettings>('/admin/referrals/settings', { method: 'PUT', body }),
   referralSummary: (days: number) => apiRequest<ReferralSummary>(`/admin/referrals/summary?days=${days}`),
+};
+
+const ev = '/admin';
+
+/** Eventos y concursos (Paso 14): la API valida roles, fases y separación de funciones. */
+export const eventsAdminApi = {
+  list: () => apiRequest<EventAdminView[]>(`${ev}/events`),
+  create: (body: CreateEvent) => apiRequest<EventAdminView>(`${ev}/events`, { method: 'POST', body }),
+  setStatus: (id: string, status: 'PUBLICADO' | 'CERRADO') =>
+    apiRequest<EventAdminView>(`${ev}/events/${enc(id)}/${status === 'PUBLICADO' ? 'publish' : 'close'}`, { method: 'POST' }),
+  createContest: (eventId: string, body: CreateContest) => apiRequest<ContestAdminView>(`${ev}/events/${enc(eventId)}/contests`, { method: 'POST', body }),
+  contest: (id: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}`),
+  open: (id: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/open`, { method: 'POST' }),
+  close: (id: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/close`, { method: 'POST' }),
+  moderate: (id: string, entryId: string, decision: 'APROBADA' | 'RECHAZADA', reason?: string) =>
+    apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/entries/${enc(entryId)}/moderate`, { method: 'POST', body: { decision, reason } }),
+  rotateScreen: (id: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/screen/rotate`, { method: 'POST' }),
+  deliverPrize: (id: string, code: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/prize/deliver`, { method: 'POST', body: { code } }),
 };

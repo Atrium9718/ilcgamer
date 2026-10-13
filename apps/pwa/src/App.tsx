@@ -3,6 +3,7 @@ import { SessionProvider } from './lib/session.tsx';
 import { ProfileRoute, ProgressRoute, ShareRoute, WalletRoute } from './routes/Account.tsx';
 import { AgeGateRoute, UnderageRoute } from './routes/AgeGate.tsx';
 import { CodeLandingRoute } from './routes/CodeLanding.tsx';
+import { ContestRoute, ContestScreenRoute, EventsRoute } from './routes/Contests.tsx';
 import { EventEntryRoute, ReferralEntryRoute, StaffEntryRoute } from './routes/Entry.tsx';
 import { GamePlayRoute, GameResultRoute, GamesRoute } from './routes/Games.tsx';
 import { ConsentsRoute, OtpRoute, SignUpRoute } from './routes/Identity.tsx';
@@ -21,6 +22,8 @@ export const routes = [
       { path: '/edad', element: <AgeGateRoute /> },
       { path: '/menor-de-edad', element: <UnderageRoute /> },
       { path: '/r/:ref', element: <ReferralEntryRoute /> },
+      // Pantalla que se proyecta en el evento: sin sesión ni control de edad; el acceso es el enlace secreto.
+      { path: '/pantalla/:token', element: <ContestScreenRoute /> },
       {
         element: <RequireAge />,
         children: [
@@ -34,6 +37,8 @@ export const routes = [
           { path: '/parche/unirse', element: <JoinParcheRoute /> },
           { path: '/parche/:id/unirse', element: <JoinParcheRoute /> },
           { path: '/parche/:id', element: <ParcheRoomRoute /> },
+          { path: '/eventos', element: <EventsRoute /> },
+          { path: '/concursos/:id', element: <ContestRoute /> },
           { path: '/jugar', element: <GamesRoute /> },
           { path: '/jugar/:gameId/partida', element: <GamePlayRoute /> },
           { path: '/jugar/:gameId/resultado', element: <GameResultRoute /> },

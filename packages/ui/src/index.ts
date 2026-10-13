@@ -31,6 +31,16 @@ export { TextField, type TextFieldProps } from './components/TextField.tsx';
 export { Toast, type ToastProps, type ToastTone } from './components/Toast.tsx';
 export { TopBar, type TopBarProps } from './components/TopBar.tsx';
 export { CODE_STATUS_COPY, type CodeStatus, VerificationSeal, type VerificationSealProps } from './components/VerificationSeal.tsx';
+export {
+  type AdminContestDetail,
+  type AdminContestSummaryRow,
+  type AdminEntryRow,
+  type AdminEventRow,
+  EventsAdminView,
+  type EventsAdminViewProps,
+  type NewContestValue,
+  type NewEventValue,
+} from './console/EventsAdminView.tsx';
 // Consola (escritorio)
 export * from './console/index.ts';
 export { formatNumber, formatSigned } from './lib/format.ts';
@@ -40,6 +50,21 @@ export { applyCampaignTheme, type CampaignTheme } from './lib/theme.ts';
 export { AgeGateView, type AgeGateViewProps } from './views/AgeGateView.tsx';
 export { CodeLandingView, type CodeLandingViewProps } from './views/CodeLandingView.tsx';
 export { ConsentsView, type ConsentsViewProps, type ConsentView } from './views/ConsentsView.tsx';
+export {
+  type ContestDetail,
+  ContestDetailView,
+  type ContestDetailViewProps,
+  type ContestEntryRow,
+  type ContestPhaseView,
+  ContestScreenView,
+  type ContestScreenViewProps,
+  type EntrySubmission,
+  type EventRow,
+  EventsListView,
+  type EventsListViewProps,
+  phaseLabel,
+  type ScreenEntryRow,
+} from './views/ContestViews.tsx';
 export { CreateParcheView, type CreateParcheViewProps, type ParcheMode } from './views/CreateParcheView.tsx';
 export { GameResultView, type GameResultViewProps, type ResultState, type VerifiedResult } from './views/GameResultView.tsx';
 export { type Experience, GamesCatalogView, type GamesCatalogViewProps, MAX_ROUTE_B_EXPERIENCES, type QuickGame } from './views/GamesCatalogView.tsx';

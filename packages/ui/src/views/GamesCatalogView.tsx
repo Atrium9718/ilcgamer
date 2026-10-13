@@ -34,6 +34,8 @@ export interface GamesCatalogViewProps {
   experiences: Experience[];
   onSelectGame: (id: string) => void;
   onSelectExperience: (id: string) => void;
+  /** Entrada a «Eventos y concursos» (p. ej. el concurso de disfraces de la feria). */
+  onOpenEvents?: () => void;
   activeTab?: NavTab;
   onNavigate: (tab: NavTab) => void;
 }
@@ -44,6 +46,7 @@ export function GamesCatalogView({
   experiences,
   onSelectGame,
   onSelectExperience,
+  onOpenEvents,
   activeTab = 'jugar',
   onNavigate,
 }: GamesCatalogViewProps) {
@@ -113,6 +116,21 @@ export function GamesCatalogView({
                 ))}
               </div>
             </section>
+          )}
+
+          {onOpenEvents && (
+            <button
+              type="button"
+              onClick={onOpenEvents}
+              className="w-full min-h-14 rounded-2xl border border-outline-variant bg-surface-container-low px-4 py-3 flex items-center gap-3 text-left active:scale-[0.99]"
+            >
+              <Icon name="celebration" className="text-[28px] text-primary" />
+              <span className="flex-1">
+                <span className="block font-label-lg text-label-lg text-on-surface">Eventos y concursos</span>
+                <span className="block font-body-md text-[13px] text-on-surface-variant">Disfraces, votaciones y premios de la feria</span>
+              </span>
+              <Icon name="chevron_right" className="text-[24px] text-on-surface-variant" />
+            </button>
           )}
 
           <p className="flex items-start gap-2 font-body-md text-[13px] text-on-surface-variant">
