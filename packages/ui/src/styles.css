@@ -56,3 +56,26 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+/* Estrellas de la pantalla del concurso cuando llega un voto. */
+@keyframes ilc-star-burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 40%) scale(0.3);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 0), -90%) scale(1.3) rotate(25deg);
+  }
+}
+.ilc-star-burst {
+  animation: ilc-star-burst 2.6s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ilc-star-burst {
+    animation: none;
+  }
+}

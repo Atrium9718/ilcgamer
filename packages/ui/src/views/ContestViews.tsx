@@ -1,4 +1,4 @@
-import { type ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '../components/Button.tsx';
 import { Checkbox } from '../components/Checkbox.tsx';
 import { Icon } from '../components/Icon.tsx';
@@ -454,7 +454,30 @@ export function ContestScreenView({
   offline,
 }: ContestScreenViewProps) {
   const max = Math.max(1, ...entries.map((e) => e.votes));
-  const top = entries.slice(0, 8);
+  const top = entries.slice(0, 6);
+  // Estrella en vivo: cuando el recuento de una inscripción sube respecto a la lectura anterior, se destaca unos segundos.
+  const prev = useRef<Map<string, number> | null>(null);
+  const [bursts, setBursts] = useState<Record<string, number>>({});
+  const [announce, setAnnounce] = useState('');
+  useEffect(() => {
+    const before = prev.current;
+    prev.current = new Map(entries.map((e) => [e.id, e.votes]));
+    if (!before) return;
+    const up = entries.filter((e) => e.votes > (before.get(e.id) ?? e.votes));
+    if (up.length === 0) return;
+    const stamp = Date.now();
+    setBursts((b) => ({ ...b, ...Object.fromEntries(up.map((e) => [e.id, stamp])) }));
+    setAnnounce(`Nuevo voto para ${up.map((e) => `«${e.title}»`).join(' y ')}`);
+    setTimeout(
+      () =>
+        setBursts((b) => {
+          const next = { ...b };
+          for (const e of up) if (next[e.id] === stamp) delete next[e.id];
+          return next;
+        }),
+      3500,
+    );
+  }, [entries]);
   return (
     <main className="min-h-dvh bg-surface text-on-surface p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-10">
       <section aria-labelledby="titulo" className="space-y-6 min-w-0">
@@ -485,33 +508,65 @@ export function ContestScreenView({
         {entries.length === 0 ? (
           <p className="font-body-md text-[24px]">Aún no hay disfraces aprobados.</p>
         ) : (
-          <ol className="space-y-4" aria-label="Clasificación en vivo">
-            {top.map((e) => (
-              <li key={e.id} className="flex items-center gap-5">
-                <span className="w-12 text-center font-headline-lg text-[40px] text-primary" aria-hidden="true">
-                  {e.rank}
-                </span>
-                <Photo url={e.photoUrl} alt={`Disfraz «${e.title}» de ${e.alias}`} className="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl shrink-0" />
-                <div className="flex-1 min-w-0 space-y-2">
-                  <p className="font-headline-md text-[28px] leading-tight truncate">
-                    <span className="sr-only">Puesto {e.rank}: </span>
-                    {e.title} <span className="font-body-md text-[20px] text-primary">· {e.alias}</span>
-                  </p>
-                  <div className="h-4 rounded-full bg-surface-container-high overflow-hidden" aria-hidden="true">
-                    <div
-                      className="h-full rounded-full bg-primary motion-safe:transition-[width] motion-safe:duration-700"
-                      style={{ width: `${Math.max(4, Math.round((e.votes / max) * 100))}%` }}
-                    />
+          <ol className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6" aria-label="Clasificación en vivo">
+            {top.map((e) => {
+              const fresh = bursts[e.id];
+              return (
+                <li
+                  key={e.id}
+                  className={cx('relative rounded-3xl overflow-hidden bg-surface-container-low border-4', fresh ? 'border-[#FFD700]' : 'border-transparent')}
+                >
+                  <div className="relative">
+                    <Photo url={e.photoUrl} alt={`Disfraz «${e.title}» de ${e.alias}`} className="w-full aspect-square" />
+                    <span
+                      className="absolute top-3 left-3 min-w-14 h-14 px-3 rounded-full bg-primary text-on-primary font-headline-lg text-[32px] flex items-center justify-center"
+                      aria-hidden="true"
+                    >
+                      {e.rank}
+                    </span>
+                    <p className="absolute top-3 right-3 rounded-full bg-black/80 text-white px-5 py-2 font-headline-lg text-[44px] leading-none tabular-nums flex items-center gap-2">
+                      <Icon name="star" filled className="text-[#FFD700] text-[40px]" />
+                      {formatNumber(e.votes)}
+                      <span className="sr-only">{e.votes === 1 ? ' voto' : ' votos'}</span>
+                    </p>
+                    {fresh && (
+                      <div key={fresh} aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <span
+                            key={i}
+                            className="ilc-star-burst absolute text-[#FFD700] drop-shadow-[0_0_12px_rgba(255,215,0,0.9)]"
+                            style={{ ['--dx' as string]: `${(i - 2) * 22}%`, animationDelay: `${i * 90}ms` }}
+                          >
+                            <Icon name="star" filled className="text-[96px]" />
+                          </span>
+                        ))}
+                        <span className="ilc-star-burst absolute bottom-1/3 rounded-full bg-[#FFD700] text-black px-5 py-1 font-headline-lg text-[40px]">
+                          +1 voto
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
-                <p className="w-28 text-right font-headline-lg text-[40px] tabular-nums">
-                  {formatNumber(e.votes)}
-                  <span className="sr-only">{e.votes === 1 ? ' voto' : ' votos'}</span>
-                </p>
-              </li>
-            ))}
+                  <div className="p-4 space-y-2">
+                    <p className="font-headline-md text-[28px] leading-tight truncate">
+                      <span className="sr-only">Puesto {e.rank}: </span>
+                      {e.title}
+                    </p>
+                    <p className="font-body-md text-[20px] text-primary truncate">{e.alias}</p>
+                    <div className="h-3 rounded-full bg-surface-container-high overflow-hidden" aria-hidden="true">
+                      <div
+                        className="h-full rounded-full bg-primary motion-safe:transition-[width] motion-safe:duration-700"
+                        style={{ width: `${Math.max(4, Math.round((e.votes / max) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ol>
         )}
+        <p role="status" className="sr-only">
+          {announce}
+        </p>
       </section>
 
       <aside aria-label="Cómo votar" className="rounded-3xl bg-white text-[#1b1b1b] p-6 flex flex-col items-center text-center gap-4 self-start">

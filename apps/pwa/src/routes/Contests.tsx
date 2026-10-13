@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router';
 import { ApiRequestError } from '../lib/api.ts';
 import { contestsApi, preparePhoto } from '../lib/contests.ts';
 import { useSession } from '../lib/session.tsx';
+import { KEYS, writeLocal } from '../lib/storage.ts';
 
 const messageOf = (err: unknown) => (err instanceof ApiRequestError ? err.message : 'Ocurrió un error inesperado. Intenta de nuevo.');
 const dayFmt = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', timeZone: 'America/Bogota' });
@@ -147,7 +148,11 @@ export function ContestRoute() {
       }
       onVote={(entryId) => void run('vote', () => contestsApi.vote(id, entryId), '¡Voto registrado!')}
       onWithdraw={() => void run('withdraw', async () => (await contestsApi.withdraw(id), undefined), 'Retiraste tu inscripción.')}
-      onSaveAccount={() => navigate('/registro')}
+      onSaveAccount={() => {
+        // Al terminar el registro vuelve a este concurso para poder votar.
+        writeLocal(KEYS.afterSignup, `/concursos/${id}`, 'session');
+        navigate('/registro');
+      }}
       onRetry={load}
       onBack={() => navigate('/eventos')}
     />
@@ -184,7 +189,7 @@ export function ContestScreenRoute() {
         },
       );
     void tick();
-    const t = setInterval(() => void tick(), 4000);
+    const t = setInterval(() => void tick(), 2000);
     return () => {
       ctrl.abort();
       clearInterval(t);

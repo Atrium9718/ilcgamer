@@ -172,6 +172,25 @@ describe('ContestScreenView (pantalla del evento)', () => {
     expect(screen.getByText('ilc.fusioncg.com/concursos/abc')).toBeInTheDocument();
   });
 
+  it('cuando llega un voto muestra una estrella y «+1 voto» en ese disfraz y lo anuncia', () => {
+    const { rerender } = render(<ContestScreenView {...base} />);
+    expect(screen.queryByText('+1 voto')).not.toBeInTheDocument();
+    rerender(
+      <ContestScreenView
+        {...base}
+        totalVotes={13}
+        entries={
+          [
+            { ...base.entries[0], votes: 8 },
+            { ...base.entries[1], votes: 5 },
+          ] as ContestScreenViewProps['entries']
+        }
+      />,
+    );
+    expect(screen.getByText('+1 voto')).toBeInTheDocument();
+    expect(screen.getByText('Nuevo voto para «Robot»')).toBeInTheDocument();
+  });
+
   it('al terminar anuncia al ganador y, sin conexión, avisa que muestra lo último', () => {
     render(<ContestScreenView {...base} phase="TERMINADO" winner={{ title: 'Pirata', alias: 'Ana', votes: 8 }} offline />);
     expect(screen.getByText('¡Ganador!')).toBeInTheDocument();

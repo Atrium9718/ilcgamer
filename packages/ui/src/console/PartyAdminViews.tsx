@@ -309,11 +309,11 @@ function FieldInput({
   const set = (value: unknown) => onChange(setPath(config, f.path, value));
   const value = getPath(config, f.path);
   const errNode = errs.length > 0 && (
-    <ul role="alert" className="font-body-md text-[13px] text-error space-y-1">
+    <div role="alert" className="font-body-md text-[13px] text-error space-y-1">
       {errs.map((e) => (
-        <li key={e}>{e}</li>
+        <p key={e}>{e}</p>
       ))}
-    </ul>
+    </div>
   );
   if (f.kind === 'text')
     return (
