@@ -7,6 +7,7 @@ import {
   MissionResultSchema,
   type MissionStart,
   MissionStartSchema,
+  PartyConfigSchema,
   type ProviderCallback,
   type StartMission,
   type SubmitMission,
@@ -29,7 +30,17 @@ import { ParcheService } from '../parche/parche.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
 import { ReferralsService } from '../referrals/referrals.service.ts';
 import { type ActiveModule, CatalogService } from './catalog.service.ts';
-import { type Evaluation, evaluateChapter, evaluateTrivia, evaluateWheel, type Prepared, prepareChapters, prepareTrivia, prepareWheel } from './engines.ts';
+import {
+  type Evaluation,
+  evaluateChapter,
+  evaluateTrivia,
+  evaluateWheel,
+  type Prepared,
+  prepareChapters,
+  prepareParty,
+  prepareTrivia,
+  prepareWheel,
+} from './engines.ts';
 import { providerSecret } from './modules.service.ts';
 
 type Tx = Prisma.TransactionClient;
@@ -152,6 +163,7 @@ export class MissionsService {
       return { play: { kind: 'iframe', entryUrl: d.entryUrl, allowedOrigin: d.allowedOrigin }, state: {}, maxSeconds: manifest.scoring.maxSeconds };
     if (d.engine === 'trivia') return prepareTrivia(TriviaConfigSchema.parse(d.config), manifest);
     if (d.engine === 'wheel') return prepareWheel(WheelConfigSchema.parse(d.config), manifest);
+    if (d.engine === 'party') return prepareParty(PartyConfigSchema.parse(d.config), manifest);
     return prepareChapters(ChaptersConfigSchema.parse(d.config), manifest, completed);
   }
 
@@ -200,6 +212,9 @@ export class MissionsService {
       await this.prisma.missionProgress.updateMany({ where: { id: m.id, status: 'INICIADA' }, data: { status: 'COMPLETADA_PENDIENTE', completedAt: now } });
       return this.resultOf(await this.load(missionId, user.id));
     }
+
+    // Los juegos de fiesta no tienen resultado que enviar (no puntúan): jugar nunca acredita nada.
+    if (d.engine === 'party') throw new DomainError('CONFLICT', 'Este juego no envía resultados.');
 
     const priv = ((m.state as { private?: Record<string, unknown> } | null)?.private ?? {}) as Record<string, unknown>;
     let evaluation: Evaluation;

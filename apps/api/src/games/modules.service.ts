@@ -95,6 +95,9 @@ export class ModulesService {
     const checked = validateManifest(input);
     if (!checked.ok) throw new DomainError('VALIDATION_FAILED', 'El manifiesto no es válido.', { fields: checked.errors });
     const m = checked.manifest;
+    // Marca personaliza juegos de fiesta (motor propio, sin código de terceros); el resto de módulos los registra TI.
+    const partyOnly = m.delivery.kind === 'engine' && m.delivery.engine === 'party';
+    if (!partyOnly && !actor.roles.includes('SUPERADMIN')) throw new DomainError('FORBIDDEN', 'Solo TI registra este tipo de módulo.');
     await this.assertBadges(m);
     try {
       await this.prisma.$transaction(async (tx) => {

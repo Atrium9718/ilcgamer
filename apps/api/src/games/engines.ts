@@ -1,5 +1,13 @@
 import { randomInt } from 'node:crypto';
-import { type ChaptersConfig, type GameManifest, type MissionStart, type SubmitMission, type TriviaConfig, type WheelConfig } from '@ilc/contracts';
+import {
+  type ChaptersConfig,
+  type GameManifest,
+  type MissionStart,
+  type PartyConfig,
+  type SubmitMission,
+  type TriviaConfig,
+  type WheelConfig,
+} from '@ilc/contracts';
 import { DomainError } from '../common/domain-error.ts';
 
 /**
@@ -107,6 +115,17 @@ export function evaluateWheel(config: WheelConfig): Evaluation {
     fact: null,
     outcome: { label: segment.label, challenge: segment.challenge ?? null },
   };
+}
+
+// ─────────────── Juegos de fiesta ───────────────
+
+/**
+ * Juegos de fiesta: el cliente recibe la configuración completa (textos, listas, aspecto) y juega sin enviar nada: no hay
+ * resultado que decidir ni nada que acreditar (no puntúan, no dan XP y jamás Puntos ILC). El sorteo de retos lo hace el
+ * dispositivo, porque no tiene consecuencias económicas.
+ */
+export function prepareParty(config: PartyConfig, manifest: GameManifest): Prepared {
+  return { play: { kind: 'party', config }, state: {}, maxSeconds: manifest.scoring.maxSeconds };
 }
 
 // ─────────────── Capítulos (Ruta B) ───────────────

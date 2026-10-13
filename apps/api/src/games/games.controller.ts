@@ -131,9 +131,9 @@ export class AdminGamesController {
     return this.modules.list();
   }
 
-  /** Registra una versión de un módulo con su manifiesto. Solo TI. */
+  /** Registra una versión de un módulo con su manifiesto. TI registra cualquier módulo; Marca solo personaliza juegos de fiesta (motor propio). */
   @Post('modules')
-  @RequireRoles(...MASTER)
+  @RequireRoles(...MASTER, ...BRAND)
   register(@Body(new ZodValidationPipe(RegisterModuleSchema)) body: { manifest: unknown }, @Req() req: RoledRequest): Promise<ModuleView> {
     return this.modules.register(actorOf(req), body.manifest);
   }

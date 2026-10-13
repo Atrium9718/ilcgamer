@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ApprovalKindSchema } from './campaigns.ts';
+import { PartyConfigSchema } from './party.ts';
 
 /**
  * Catálogo de juegos y misiones (Paso 9). Fuentes: Guía Técnica §5.4 (contrato del módulo, resultado verificado por
@@ -17,7 +18,7 @@ export const ModuleSlugSchema = z.string().regex(SLUG, 'Minúsculas con guiones'
 const Icon = z.string().regex(/^[a-z0-9_]{2,40}$/, 'Nombre de ícono de Material Symbols');
 const Text = (max: number, min = 1) => z.string().trim().min(min).max(max);
 
-export const GAME_ENGINES = ['trivia', 'wheel', 'chapters'] as const;
+export const GAME_ENGINES = ['trivia', 'wheel', 'chapters', 'party'] as const;
 export const GameEngineSchema = z.enum(GAME_ENGINES);
 export type GameEngine = z.infer<typeof GameEngineSchema>;
 
@@ -170,7 +171,7 @@ export const GameManifestSchema = z
     path: ['scoring', 'xpMax'],
   })
   .refine((m) => m.delivery.kind !== 'engine' || (m.delivery.engine === 'chapters') === (m.route === 'B'), {
-    message: 'El motor de capítulos es de Ruta B; trivia y ruleta son de Ruta A',
+    message: 'El motor de capítulos es de Ruta B; trivia, ruleta y juegos de fiesta son de Ruta A',
     path: ['delivery', 'engine'],
   });
 export type GameManifest = z.infer<typeof GameManifestSchema>;
@@ -188,7 +189,7 @@ export function validateManifest(input: unknown): { ok: true; manifest: GameMani
   }
   const m = parsed.data;
   if (m.delivery.kind === 'engine') {
-    const schema = { trivia: TriviaConfigSchema, wheel: WheelConfigSchema, chapters: ChaptersConfigSchema }[m.delivery.engine];
+    const schema = { trivia: TriviaConfigSchema, wheel: WheelConfigSchema, chapters: ChaptersConfigSchema, party: PartyConfigSchema }[m.delivery.engine];
     const cfg = schema.safeParse(m.delivery.config);
     if (!cfg.success) {
       for (const issue of cfg.error.issues) add(`delivery.config.${issue.path.join('.')}`, issue.message);
@@ -196,6 +197,10 @@ export function validateManifest(input: unknown): { ok: true; manifest: GameMani
       const c = cfg.data as TriviaConfig;
       if (c.perGame * c.parchePerCorrect > m.scoring.parcheScoreMax)
         add('scoring.parcheScoreMax', 'No cubre el máximo de una partida (preguntas por partida × puntos por acierto)');
+    } else if (m.delivery.engine === 'party') {
+      // Los juegos de fiesta no puntúan: ni marcador del Parche ni XP (y jamás Puntos ILC).
+      if (m.scoring.parcheScoreMax !== 0) add('scoring.parcheScoreMax', 'Los juegos de fiesta no puntúan: debe ser 0');
+      if (m.scoring.xpMax !== 0) add('scoring.xpMax', 'Los juegos de fiesta no dan XP: debe ser 0');
     } else if (m.delivery.engine === 'wheel') {
       const c = cfg.data as WheelConfig;
       if (Math.max(...c.segments.map((s) => s.score)) > m.scoring.parcheScoreMax) add('scoring.parcheScoreMax', 'Un segmento supera el máximo permitido');
@@ -322,6 +327,8 @@ export const MissionStartSchema = z.object({
       completedIds: z.array(z.string()),
     }),
     z.object({ kind: z.literal('iframe'), entryUrl: z.string(), allowedOrigin: z.string() }),
+    /** Juego de fiesta: el cliente recibe la configuración completa (textos, listas y aspecto) y juega sin enviar resultado. */
+    z.object({ kind: z.literal('party'), config: PartyConfigSchema }),
   ]),
 });
 export type MissionStart = z.infer<typeof MissionStartSchema>;
