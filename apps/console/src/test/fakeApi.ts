@@ -1,4 +1,4 @@
-import type { ApprovalStatus, CampaignDraft, CampaignView, Me } from '@ilc/contracts';
+import { type ApprovalStatus, type CampaignDraft, type CampaignView, defaultPartyManifest, type Me } from '@ilc/contracts';
 import { vi } from 'vitest';
 
 /**
@@ -118,6 +118,23 @@ const MODULE = {
         { kind: 'MARCA', required: true, status: 'pending', note: null },
         { kind: 'JURIDICA', required: true, status: 'pending', note: null },
       ],
+      createdAt: '2026-10-01T15:00:00.000Z',
+    },
+  ],
+};
+
+const PARTY_MODULE = {
+  moduleId: 'verdad-o-reto',
+  provider: 'ILC propio',
+  route: 'B',
+  activeVersion: '1.0.0',
+  versions: [
+    {
+      version: '1.0.0',
+      status: 'ACTIVO',
+      manifest: defaultPartyManifest('truth-dare'),
+      manifestHash: 'p',
+      approvals: [],
       createdAt: '2026-10-01T15:00:00.000Z',
     },
   ],
@@ -327,7 +344,8 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
     if (url === '/admin/rewards') return json(200, [REWARD]);
     if (url.startsWith('/admin/rewards/claims')) return json(200, []);
     if (url.endsWith('/activate') && url.startsWith('/admin/rewards')) return json(200, { ...REWARD, active: true });
-    if (url === '/admin/games/modules') return json(200, [MODULE]);
+    if (url === '/admin/games/modules' && method === 'POST') return json(201, PARTY_MODULE);
+    if (url === '/admin/games/modules') return json(200, [MODULE, PARTY_MODULE]);
     if (url === '/admin/games/guide') return json(200, { markdown: '# Guía de integración de juegos' });
     if (url === '/admin/games/defaults') return json(200, { modules: [] });
     if (url.includes('/approvals')) return json(200, MODULE);

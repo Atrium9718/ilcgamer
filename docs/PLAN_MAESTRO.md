@@ -304,6 +304,16 @@ Pedido del cliente: un espacio de **eventos** y, dentro, un **concurso de disfra
 - [x] Verificado: 403 pruebas (API 213 contra PostgreSQL), axe 200 combinaciones sin violaciones, E2E en navegador real (`tools/e2e/contest.cjs`: inscripción con foto → moderación → voto → pantalla en vivo → rotar enlace).
 - [ ] **Pendiente (ILC/Jurídica)**: texto legal de autorización de imagen y tratamiento de fotos, reglas y bases del concurso, y quién entrega el premio.
 
+### Paso 15 — Juegos de fiesta (6 juegos del cliente, editables desde la consola) ✅
+Pedido del cliente: montar seis juegos que ya existían como archivos HTML sueltos (Pico de Botella, Verdad o Reto, Cultura Chupística, Yo Nunca Nunca, El Frentazo, Mano de Cirujano) **sin dañar nada**, funcionando igual, y que cada uno tenga una parte en el admin para cambiar lo gráfico y los nombres. Guía en `docs/JUEGOS_DE_FIESTA.md`.
+- [x] **Motor `party`** (`packages/contracts/src/party.ts`): juegos nativos de React (la CSP prohíbe iframes con scripts en línea) guiados por configuración validada con zod; una configuración = una versión del módulo, así que **cada cambio pasa por el flujo existente** (registrar → prueba → aprobación de Marca y Jurídica → activar). Sin puntuación, sin Puntos ILC ni XP; el servidor no recibe resultados.
+- [x] **Regla de contenido compartida** (`partyTextIssue`): ningún texto puede incentivar ni penalizar con consumo de alcohol (shot, trago, fondo blanco, brindar, «toma un…»…). La valida la consola en vivo y el servidor al registrar.
+- [x] **Adaptaciones al contenido original** (decisión de producto, ver `CLAUDE.md`): botella → flecha/aguja con colores y nombre editables; «Pico de Botella» → *Pico de Flecha*; «Cultura Chupística» → *Cultura Rumbera*; penitencias de «tomar/fondo blanco» → retos sin alcohol; `alert()` → diálogo accesible. Volver a las versiones originales exige una decisión explícita de ILC/TI.
+- [x] **Consola → «Juegos de fiesta»**: lista, plantillas, editor con **vista previa jugable**, validación en vivo y guardado como siguiente versión (borrador). La puede usar TI (SUPERADMIN) y Marca; registrar otros motores sigue siendo solo de TI.
+- [x] **Demo**: `seed-demo.ts` instala los 6 por el flujo de aprobaciones y los deja en el catálogo general.
+- [x] Verificado: pruebas de contratos, API (216), vistas, PWA y consola; E2E en navegador (`tools/e2e/party.cjs`: instalación con aprobaciones, rechazo de texto con alcohol, versión personalizada y los 6 juegos jugados en un celular emulado).
+- [ ] **Pendiente (ILC)**: subir imágenes propias (hoy se personalizan colores, forma y rótulos del girador), aprobar el contenido final de cada juego y decidir si se permite volver al texto original.
+
 **Orden de valor:** pasos 1–2 dan un prototipo visual navegable rápido para validar con ILC;
 pasos 3–8 son el MVP P0; 9–12 completan P0/P1; 13 prepara el piloto controlado.
 

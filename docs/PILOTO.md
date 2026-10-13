@@ -55,6 +55,7 @@ marcar los 11 puntos de la lista; cada marca queda con su autor y el contenido e
 | Consultas de código | Detección de anomalías | Seguridad | 365 días | TI |
 | Estado privado de misiones | Evaluar en servidor | Funcional | 30 días tras terminar | Nadie |
 | Fotos y votos de concursos | Concurso de disfraces | Consentimiento expreso (mostrar la foto) | Foto: 30 días tras cerrar el concurso o al eliminar la cuenta; título y resultado se conservan | Marca (moderación); en pantalla solo alias, título y foto aprobada |
+| Juegos de fiesta | Entretenimiento en grupo (sin puntos) | Ninguno: no se guarda nada de la partida | No aplica | Marca y Jurídica aprueban cada versión del contenido |
 | Ubicación / contactos / huella de dispositivo | — | — | **No se recogen** | — |
 
 Pendiente: aprobación legal del inventario, canal de atención a derechos (acceso, corrección, supresión) y textos finales de aviso.

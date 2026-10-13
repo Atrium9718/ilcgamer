@@ -43,9 +43,30 @@ export {
 } from './console/EventsAdminView.tsx';
 // Consola (escritorio)
 export * from './console/index.ts';
+export {
+  PARTY_EDITOR,
+  PartyEditorView,
+  type PartyEditorViewProps,
+  type PartyGameKind,
+  type PartyGameRow,
+  PartyListView,
+  type PartyListViewProps,
+} from './console/PartyAdminViews.tsx';
 export { formatNumber, formatSigned } from './lib/format.ts';
 // Tema en tiempo de ejecución
 export { applyCampaignTheme, type CampaignTheme } from './lib/theme.ts';
+export { PartyDialog, PartyFrame } from './party/PartyFrame.tsx';
+export { PartyGameView, SpinnerArt } from './party/PartyGames.tsx';
+export type {
+  CategoriesConfigView,
+  HeadbandConfigView,
+  NeverNeverConfigView,
+  PartyConfigView,
+  PartyLookView,
+  SpinnerConfigView,
+  SteadyHandConfigView,
+  TruthDareConfigView,
+} from './party/types.ts';
 // Vistas puras (traducidas desde Google Stitch)
 export { AgeGateView, type AgeGateViewProps } from './views/AgeGateView.tsx';
 export { CodeLandingView, type CodeLandingViewProps } from './views/CodeLandingView.tsx';

@@ -10,6 +10,7 @@ import { Economy } from './routes/Economy.tsx';
 import { Events } from './routes/Events.tsx';
 import { Games } from './routes/Games.tsx';
 import { Login } from './routes/Login.tsx';
+import { PartyEditor, PartyList } from './routes/Party.tsx';
 import { Rewards } from './routes/Rewards.tsx';
 import { DealerPanel, StaffPanel } from './routes/SelfPanels.tsx';
 import { SmartTags } from './routes/SmartTags.tsx';
@@ -22,6 +23,7 @@ const SMARTTAG_ROLES = ['SUPERADMIN', 'ADMIN_MARCA'];
 const SECTION_PATHS: Partial<Record<ConsoleSection, string>> = {
   campanas: '/campanas',
   juegos: '/juegos',
+  fiesta: '/fiesta',
   recompensas: '/recompensas',
   eventos: '/eventos',
   'smart-tags': '/smart-tags',
@@ -33,6 +35,11 @@ function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   if (parts[0] === 'smart-tags') return [{ label: 'Smart Tags' }];
   if (parts[0] === 'economia') return [{ label: 'Economía' }];
   if (parts[0] === 'juegos') return [{ label: 'Juegos' }];
+  if (parts[0] === 'fiesta')
+    return [
+      { label: 'Juegos de fiesta', onSelect: parts.length > 1 ? () => go('/fiesta') : undefined },
+      ...(parts[1] ? [{ label: parts[1] === 'nuevo' ? 'Nuevo' : decodeURIComponent(parts[1]) }] : []),
+    ];
   if (parts[0] === 'recompensas') return [{ label: 'Recompensas' }];
   if (parts[0] === 'eventos') return [{ label: 'Eventos' }];
   if (parts[0] === 'comercios') return [{ label: 'Comercios' }];
@@ -78,7 +85,7 @@ function Shell() {
 
   const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
   const consoleSections: ConsoleSection[] = smartTags
-    ? ['campanas', 'juegos', 'recompensas', 'eventos', 'comercios', 'analitica', 'smart-tags', 'economia']
+    ? ['campanas', 'juegos', 'fiesta', 'recompensas', 'eventos', 'comercios', 'analitica', 'smart-tags', 'economia']
     : ['campanas', 'juegos'];
   const fieldSections: ConsoleSection[] = [...(isStaff ? (['mi-actividad'] as const) : []), ...(isDealer ? (['mi-comercio'] as const) : [])];
   const sections: ConsoleSection[] = [...fieldSections, ...(isConsole ? consoleSections : [])];
@@ -88,7 +95,7 @@ function Shell() {
     <ConsoleLayout
       active={active}
       sections={sections}
-      restricted={smartTags ? [] : ['recompensas', 'eventos', 'comercios', 'analitica', 'smart-tags', 'economia']}
+      restricted={smartTags ? [] : ['fiesta', 'recompensas', 'eventos', 'comercios', 'analitica', 'smart-tags', 'economia']}
       only={only}
       userAlias={me.alias}
       roleLabel={roleLabel(me.roles)}
@@ -122,6 +129,9 @@ export function AppRoutes() {
         <Route path="campanas/:slug" element={<CampaignDetail />} />
         <Route path="campanas/:slug/editar" element={<CampaignEditor />} />
         <Route path="juegos" element={<Games />} />
+        <Route path="fiesta" element={<PartyList />} />
+        <Route path="fiesta/nuevo/:game" element={<PartyEditor />} />
+        <Route path="fiesta/:slug" element={<PartyEditor />} />
         <Route path="recompensas" element={<Rewards />} />
         <Route path="eventos" element={<Events />} />
         <Route path="comercios" element={<Venues />} />

@@ -6,6 +6,7 @@ import {
   GameResultView,
   GamesCatalogView,
   IframeGameView,
+  PartyGameView,
   type QuickGame,
   type ResultState,
   StatusMessage,
@@ -116,6 +117,8 @@ export function GamePlayRoute() {
       />
     );
   }
+  // Juegos de fiesta: se juegan en el dispositivo con la configuración que define Marca; no envían resultado ni acreditan nada.
+  if (play.kind === 'party') return <PartyGameView config={play.config} onExit={exit} />;
   return <ProviderFlow mission={mission} entryUrl={play.entryUrl} allowedOrigin={play.allowedOrigin} onDone={finish} onClose={exit} />;
 }
 

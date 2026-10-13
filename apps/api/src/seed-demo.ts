@@ -1,4 +1,4 @@
-import { type CampaignDraft, CHECKLIST_KEYS, GameManifestSchema, type Role, requiredModuleApprovals } from '@ilc/contracts';
+import { type CampaignDraft, CHECKLIST_KEYS, defaultPartyManifest, GameManifestSchema, PARTY_GAMES, type Role, requiredModuleApprovals } from '@ilc/contracts';
 import { createApp } from './bootstrap.ts';
 import { CampaignsService } from './campaigns/campaigns.service.ts';
 import { SmartTagsAdminService } from './codes/smarttags-admin.service.ts';
@@ -69,7 +69,9 @@ async function step<T>(label: string, fn: () => Promise<T>): Promise<T | undefin
 const DAY = 86_400_000;
 console.log('1/5 Insignia y juegos');
 await step('insignia explorador-de-ejemplo', () => progress.createBadge(actor, { slug: 'explorador-de-ejemplo', name: 'Explorador', icon: 'explore' }));
-for (const raw of DEMO_MANIFESTS) {
+// Los 6 juegos de fiesta (contenido adaptado, sin presión de alcohol), editables desde la consola → «Juegos de fiesta».
+const PARTY_MANIFESTS: unknown[] = PARTY_GAMES.map((g) => defaultPartyManifest(g));
+for (const raw of [...DEMO_MANIFESTS, ...PARTY_MANIFESTS]) {
   const m = GameManifestSchema.parse(raw);
   const existing = await prisma.moduleVersion.findFirst({ where: { version: m.version, module: { slug: m.moduleId } } });
   if (existing?.status === 'ACTIVO') {
@@ -82,6 +84,9 @@ for (const raw of DEMO_MANIFESTS) {
     await step(`aprobar ${m.moduleId} (${kind})`, () => modules.decide(actor, m.moduleId, m.version, { kind, decision: 'APROBADO' }));
   await step(`activar ${m.moduleId}`, () => modules.activate(actor, m.moduleId, m.version));
 }
+
+const catalogIds = [...DEMO_MANIFESTS, ...PARTY_MANIFESTS].map((m) => (m as { moduleId: string }).moduleId);
+await step('catálogo general con los juegos de fiesta', () => modules.setDefaults(actor, catalogIds));
 
 console.log('2/5 Producto y códigos de demostración');
 const SKU = 'DEMO-001';

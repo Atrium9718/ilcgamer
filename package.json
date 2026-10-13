@@ -22,7 +22,7 @@
     "db:up": "docker compose up -d",
     "db:migrate": "pnpm --filter @ilc/api db:migrate",
     "design:pull": "python3 tools/stitch_pull.py",
-    "e2e": "node tools/e2e/critical-path.cjs",
+    "e2e": "node tools/e2e/critical-path.cjs && node tools/e2e/party.cjs",
     "loadtest": "node tools/loadtest.cjs",
     "secrets": "bash tools/secret_scan.sh"
   },
