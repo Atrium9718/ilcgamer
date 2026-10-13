@@ -288,3 +288,29 @@ describe('QR del Staff (/s/:code)', () => {
     await vi.waitFor(() => expect(sessionStorage.getItem('ilc.staff')).toBeNull());
   });
 });
+
+describe('referidos (Guía Gamificación §16.2)', () => {
+  it('el perfil muestra el código del servidor y no promete bonificación si no hay una activa', async () => {
+    installFakeApi({ loggedIn: true, status: 'ACTIVA' });
+    renderAt('/perfil');
+    expect(await screen.findByText('K7M2Q9XD')).toBeInTheDocument();
+    expect(screen.getByText(/Por ahora no hay bonificación activa/)).toBeInTheDocument();
+    expect(screen.getByText('2 invitados se unieron')).toBeInTheDocument();
+  });
+
+  it('al guardar la cuenta, el código del enlace /r se atribuye una sola vez y se descarta', async () => {
+    localStorage.setItem('ilc.referral', JSON.stringify('ABCD2345'));
+    const api = installFakeApi({ loggedIn: true });
+    renderAt('/registro');
+    await userEvent.click(await screen.findByLabelText(/acepto los términos/i));
+    await userEvent.click(screen.getByRole('button', { name: /código por whatsapp/i }));
+    await userEvent.type(await screen.findByLabelText('Celular'), '3001234567');
+    await userEvent.click(screen.getByRole('button', { name: 'Enviar código' }));
+    await screen.findByText('+57 300 •••• 567');
+    await userEvent.click(screen.getByLabelText('Dígito 1 de 6'));
+    await userEvent.keyboard('123456');
+    await userEvent.click(screen.getByRole('button', { name: 'Verificar' }));
+    await vi.waitFor(() => expect(api.requests).toContain('POST /referrals/attribute'));
+    expect(localStorage.getItem('ilc.referral')).toBeNull();
+  });
+});

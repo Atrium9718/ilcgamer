@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { AnalyticsModule } from './analytics/analytics.module.ts';
 import { AuditModule } from './audit/audit.module.ts';
 import { CampaignsModule } from './campaigns/campaigns.module.ts';
 import { CodesModule } from './codes/codes.module.ts';
@@ -15,6 +16,7 @@ import { ParcheModule } from './parche/parche.module.ts';
 import { PlatformModule } from './platform/platform.module.ts';
 import { PrismaModule } from './prisma/prisma.module.ts';
 import { RedisModule } from './redis/redis.module.ts';
+import { ReferralsModule } from './referrals/referrals.module.ts';
 import { RewardsModule } from './rewards/rewards.module.ts';
 import { VenuesModule } from './venues/venues.module.ts';
 
@@ -39,6 +41,8 @@ import { VenuesModule } from './venues/venues.module.ts';
     GamesModule,
     RewardsModule,
     VenuesModule,
+    AnalyticsModule,
+    ReferralsModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

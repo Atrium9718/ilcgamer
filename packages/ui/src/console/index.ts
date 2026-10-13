@@ -1,4 +1,12 @@
 export {
+  type AnalyticsData,
+  type AnalyticsTab,
+  AnalyticsView,
+  type AnalyticsViewProps,
+  type ReferralSettingsValue,
+  type SeriesView,
+} from './AnalyticsView.tsx';
+export {
   type ApprovalRow,
   type CampaignDetailData,
   CampaignDetailView,

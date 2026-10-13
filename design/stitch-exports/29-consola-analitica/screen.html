@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>29 · Consola · Analítica (escritorio) - ILC Origen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sidebar: '#13201B',
+            'sidebar-hover': '#1B2C26',
+            'sidebar-active': '#223830',
+            paper: '#FAF7F0',
+            surface: '#F1ECE0',
+            'surface-alt': '#EAE4D6',
+            'surface-card': '#FFFFFF',
+            'ink-primary': '#13201B',
+            'ink-muted': '#52635B',
+            'ink-subtle': '#7F9189',
+            'gold-dark': '#6E561E',
+            'gold-border': '#D8C7A0',
+            'gold-badge': '#F7F1DF',
+            'forest-green': '#2F4941',
+            'forest-light': '#E5ECE8',
+            roble: '#9A4F17',
+            'roble-light': '#FDF3EB',
+            'alert-red': '#B3261E',
+            'alert-light': '#FDE8E7',
+            border: '#E2DBD0',
+            'border-subtle': '#EDE7DC',
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      background-color: #FAF7F0;
+      color: #13201B;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-paper flex flex-col antialiased selection:bg-gold-dark selection:text-white">
+
+  <!-- Contenedor Principal (Layout de Escritorio 1440px) -->
+  <div class="flex-1 flex w-full min-h-[calc(100vh-42px)]">
+
+    <!-- BARRA LATERAL VERDE BOSQUE #13201B -->
+    <aside class="w-64 bg-sidebar text-white flex-shrink-0 flex flex-col justify-between border-r border-[#1B2C26]">
+      <div class="flex flex-col">
+        <!-- Brand / Sello ILC -->
+        <div class="px-6 py-6 border-b border-[#1D2E27] flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full border border-[#D4B673]/60 flex items-center justify-center bg-[#0C1613]">
+            <span class="font-serif font-bold text-sm tracking-widest text-[#D4B673]">ILC</span>
+          </div>
+          <div>
+            <div class="font-serif font-bold text-base tracking-wide text-[#F1ECE0] leading-tight">Consola Central</div>
+            <div class="text-[10px] tracking-wider text-[#A2B4AC] uppercase">Gobernanza &amp; CMS</div>
+          </div>
+        </div>
+
+        <!-- Navegación Lateral -->
+        <nav class="p-3 space-y-1">
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">campaign</span>
+            <span>Campañas</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">sports_esports</span>
+            <span>Juegos</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">featured_seasonal_and_gifts</span>
+            <span>Recompensas</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">qr_code_scanner</span>
+            <span>Smart Tags</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">storefront</span>
+            <span>Comercios</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">account_balance</span>
+            <span>Economía</span>
+          </a>
+          <!-- Opción Activa: Analítica -->
+          <a href="#" class="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-semibold text-white bg-sidebar-active border-l-4 border-[#D4B673] shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-[#D4B673] fill">analytics</span>
+              <span>Analítica</span>
+            </div>
+            <span class="w-1.5 h-1.5 rounded-full bg-[#D4B673]"></span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#C8D7D0] hover:bg-sidebar-hover hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[20px] text-[#8EA299]">verified_user</span>
+            <span>Auditoría</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Footer de Sidebar / Usuario y Gobernanza -->
+      <div class="p-4 border-t border-[#1D2E27] space-y-3">
+        <div class="bg-[#0C1613] p-3 rounded-lg border border-[#223830]">
+          <div class="flex items-center gap-2 text-[11px] text-[#A2B4AC] font-medium">
+            <span class="material-symbols-outlined text-[15px] text-[#D4B673]">shield</span>
+            <span>Guía Técnica §10.2</span>
+          </div>
+          <p class="text-[10px] text-[#788C83] mt-1 leading-snug">
+            Separación de datos: comercial vs experiencial activa.
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-1">
+          <div class="w-8 h-8 rounded-full bg-[#2F4941] border border-[#44665C] flex items-center justify-center text-xs font-semibold text-[#E5ECE8]">
+            LM
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-semibold text-[#F1ECE0] truncate">Laura M.</div>
+            <div class="text-[10px] text-[#8EA299] truncate">Trade Marketing &amp; BI</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE CONTENIDO PRINCIPAL (TEMA CLARO ILC ORIGEN) -->
+    <main class="flex-1 flex flex-col bg-paper overflow-y-auto">
+
+      <!-- Barra de Estado Superior -->
+      <header class="px-8 py-3.5 bg-paper border-b border-border flex items-center justify-between">
+        <div class="flex items-center gap-2 text-xs text-ink-muted">
+          <span>ILC Origen</span>
+          <span class="text-ink-subtle">/</span>
+          <span>Consola Central</span>
+          <span class="text-ink-subtle">/</span>
+          <span class="font-semibold text-ink-primary">Tableros de Analítica</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-forest-light text-forest-green text-xs font-medium border border-forest-green/20">
+            <span class="w-1.5 h-1.5 rounded-full bg-forest-green animate-pulse"></span>
+            <span>Datos consolidados (sincronizados hoy, 21:40)</span>
+          </div>
+          <div class="h-4 w-px bg-border"></div>
+          <button class="flex items-center gap-1 text-xs text-ink-muted hover:text-ink-primary transition-colors">
+            <span class="material-symbols-outlined text-[16px]">file_download</span>
+            <span>Exportar informe (CSV)</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Encabezado de la Pantalla -->
+      <section class="px-8 pt-7 pb-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 class="font-serif text-3xl md:text-4xl font-bold text-ink-primary tracking-tight">Analítica</h1>
+            <p class="text-sm text-ink-muted mt-1 max-w-2xl font-normal leading-relaxed">
+              Los tableros de Ruta A y Ruta B se miden por separado; no se combinan en una sola puntuación.
+            </p>
+          </div>
+
+          <!-- Selector de Período -->
+          <div class="flex items-center gap-1.5 bg-surface p-1 rounded-lg border border-border">
+            <button class="px-3.5 py-1.5 text-xs font-medium text-ink-muted hover:text-ink-primary rounded-md transition-colors">
+              Últimos 7 días
+            </button>
+            <button class="px-3.5 py-1.5 text-xs font-bold text-white bg-gold-dark rounded-md shadow-sm transition-all">
+              30 días
+            </button>
+            <button class="px-3.5 py-1.5 text-xs font-medium text-ink-muted hover:text-ink-primary rounded-md transition-colors">
+              Año 2026
+            </button>
+          </div>
+        </div>
+
+        <!-- Pestañas de Navegación de Tableros -->
+        <div class="mt-7 flex items-center gap-2 border-b border-border">
+          <button class="px-4 py-3 text-sm font-bold text-gold-dark border-b-2 border-gold-dark flex items-center gap-2 -mb-px bg-paper">
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+            <span>Ruta A · Comercial</span>
+            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full bg-gold-badge text-gold-dark font-semibold border border-gold-border/50">Activa</span>
+          </button>
+          <button class="px-4 py-3 text-sm font-medium text-ink-muted hover:text-ink-primary border-b-2 border-transparent hover:border-border transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">explore</span>
+            <span>Ruta B · Experiencia</span>
+          </button>
+          <button class="px-4 py-3 text-sm font-medium text-ink-muted hover:text-ink-primary border-b-2 border-transparent hover:border-border transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">sync_alt</span>
+            <span>Operación</span>
+          </button>
+          <button class="px-4 py-3 text-sm font-medium text-ink-muted hover:text-ink-primary border-b-2 border-transparent hover:border-border transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">insights</span>
+            <span>Ejecutiva</span>
+          </button>
+          <button class="px-4 py-3 text-sm font-medium text-ink-muted hover:text-ink-primary border-b-2 border-transparent hover:border-border transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">group_add</span>
+            <span>Referidos</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- CUERPO DE CONTENIDO: RUTA A · COMERCIAL -->
+      <section class="px-8 pb-10 space-y-7 flex-1">
+
+        <!-- FILA DE 4 INDICADORES CLAVE -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+          <!-- Indicador 1: Activaciones válidas -->
+          <div class="bg-surface rounded-xl p-5 border border-border hover:border-gold-dark/40 transition-shadow shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-ink-muted mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-ink-muted">Activaciones válidas</span>
+              <span class="material-symbols-outlined text-[20px] text-forest-green">check_circle</span>
+            </div>
+            <div>
+              <div class="font-serif text-3xl font-bold text-ink-primary tracking-tight">14.820</div>
+              <div class="flex items-center gap-1.5 mt-1 text-xs text-forest-green font-medium">
+                <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                <span>+8.4% frente al mes anterior</span>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-border-subtle text-[11px] text-ink-subtle">
+              Eventos en canal On y Off-Premise
+            </div>
+          </div>
+
+          <!-- Indicador 2: Puntos ILC emitidos -->
+          <div class="bg-surface rounded-xl p-5 border border-border hover:border-gold-dark/40 transition-shadow shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-ink-muted mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-ink-muted">Puntos ILC emitidos</span>
+              <span class="material-symbols-outlined text-[20px] text-gold-dark">monetization_on</span>
+            </div>
+            <div>
+              <div class="font-serif text-3xl font-bold text-ink-primary tracking-tight">5.928.000</div>
+              <div class="flex items-center gap-1.5 mt-1 text-xs text-ink-muted font-normal">
+                <span>Promedio: 400 pts / código</span>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-border-subtle text-[11px] text-ink-subtle">
+              Registrados en Ledger inmutable (§5.7)
+            </div>
+          </div>
+
+          <!-- Indicador 3: Reversos -->
+          <div class="bg-surface rounded-xl p-5 border border-border hover:border-gold-dark/40 transition-shadow shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-ink-muted mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-ink-muted">Reversos</span>
+              <span class="material-symbols-outlined text-[20px] text-alert-red">replay</span>
+            </div>
+            <div>
+              <div class="font-serif text-3xl font-bold text-ink-primary tracking-tight">42</div>
+              <div class="flex items-center gap-1.5 mt-1 text-xs text-alert-red font-medium">
+                <span>Tasa de ajuste: 0.28%</span>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-border-subtle text-[11px] text-ink-subtle">
+              Partidas compensatorias de auditoría
+            </div>
+          </div>
+
+          <!-- Indicador 4: Canjes de recompensas -->
+          <div class="bg-surface rounded-xl p-5 border border-border hover:border-gold-dark/40 transition-shadow shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-ink-muted mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-ink-muted">Canjes de recompensas</span>
+              <span class="material-symbols-outlined text-[20px] text-roble">redeem</span>
+            </div>
+            <div>
+              <div class="font-serif text-3xl font-bold text-ink-primary tracking-tight">1.890</div>
+              <div class="flex items-center gap-1.5 mt-1 text-xs text-roble font-medium">
+                <span>3.210.000 pts redimidos</span>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-border-subtle text-[11px] text-ink-subtle">
+              Descontados de stock verificado
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GRÁFICO DE BARRAS SIMPLE DE ACTIVACIONES POR DÍA -->
+        <div class="bg-surface rounded-xl p-6 border border-border shadow-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <div>
+              <h2 class="font-serif text-xl font-bold text-ink-primary">Activaciones por día</h2>
+              <p class="text-xs text-ink-muted mt-0.5">Volumen diario consolidado de los últimos 14 días (Ruta A).</p>
+            </div>
+            <div class="flex items-center gap-4 text-xs">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-xs bg-forest-green"></span>
+                <span class="text-ink-muted">Días hábiles</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-xs bg-gold-dark"></span>
+                <span class="text-ink-muted">Jueves a Sábado (Pico)</span>
+              </div>
+              <div class="h-3 w-px bg-border"></div>
+              <span class="text-ink-subtle">Máx: 820 activaciones / día</span>
+            </div>
+          </div>
+
+          <!-- Gráfico de Barras con CSS / Flexbox -->
+          <div class="h-48 w-full flex items-end gap-2 sm:gap-3 pt-6 pb-2 border-b border-border px-2">
+            <!-- D1 -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 38%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">310</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">01</span>
+            </div>
+            <!-- D2 -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 42%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">345</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">02</span>
+            </div>
+            <!-- D3 -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 48%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">390</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">03</span>
+            </div>
+            <!-- D4 (Jueves) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 64%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">520</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle font-medium text-gold-dark">04</span>
+            </div>
+            <!-- D5 (Viernes) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 85%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">690</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle font-medium text-gold-dark">05</span>
+            </div>
+            <!-- D6 (Sábado) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 98%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">820</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle font-medium text-gold-dark">06</span>
+            </div>
+            <!-- D7 (Domingo) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 52%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">430</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">07</span>
+            </div>
+            <!-- D8 -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 35%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">290</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">08</span>
+            </div>
+            <!-- D9 -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 44%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">360</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">09</span>
+            </div>
+            <!-- D10 -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-forest-green/90 rounded-t-sm transition-all hover:opacity-80" style="height: 49%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">405</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle">10</span>
+            </div>
+            <!-- D11 (Jueves) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 68%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">550</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle font-medium text-gold-dark">11</span>
+            </div>
+            <!-- D12 (Viernes) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 89%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">730</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle font-medium text-gold-dark">12</span>
+            </div>
+            <!-- D13 (Sábado) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 94%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">780</div>
+              </div>
+              <span class="text-[10px] text-ink-subtle font-medium text-gold-dark">13</span>
+            </div>
+            <!-- D14 (Hoy) -->
+            <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+              <div class="w-full bg-gold-dark rounded-t-sm transition-all hover:opacity-80" style="height: 72%;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-ink-primary text-white text-[10px] rounded px-1 py-0.5 -mt-6 text-center whitespace-nowrap">590</div>
+              </div>
+              <span class="text-[10px] font-bold text-ink-primary">Hoy</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-[11px] text-ink-subtle">
+            <span>Rango: 01 oct. – 14 oct. 2026</span>
+            <span>Promedio móvil: 494 activaciones / día</span>
+          </div>
+        </div>
+
+        <!-- DOS TABLAS: POR PRODUCTO (SKU) Y POR CAMPAÑA -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- TABLA 1: Por producto (SKU) -->
+          <div class="bg-surface rounded-xl border border-border shadow-xs overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-border bg-surface-alt/50 flex items-center justify-between">
+              <div>
+                <h3 class="font-serif text-lg font-bold text-ink-primary">Por producto (SKU)</h3>
+                <p class="text-xs text-ink-muted mt-0.5">Distribución comercial por referencia de botella ILC.</p>
+              </div>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-surface border border-border text-ink-muted">
+                5 referencias
+              </span>
+            </div>
+
+            <div class="overflow-x-auto flex-1">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="bg-surface-alt/80 text-ink-muted border-b border-border uppercase tracking-wider text-[10px]">
+                    <th class="py-3 px-4 font-semibold">Producto &amp; Línea</th>
+                    <th class="py-3 px-4 font-semibold">SKU / Ref</th>
+                    <th class="py-3 px-4 font-semibold text-right">Activaciones</th>
+                    <th class="py-3 px-4 font-semibold text-right">Puntos ILC</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle bg-paper/60">
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4 font-medium text-ink-primary">Ron Viejo de Caldas 8 Años</td>
+                    <td class="py-3 px-4 text-ink-muted font-mono text-[11px]">RVC-8-750</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">6.120</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">3.060.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4 font-medium text-ink-primary">Aguardiente Amarillo de Manzanares</td>
+                    <td class="py-3 px-4 text-ink-muted font-mono text-[11px]">AA-750</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">4.840</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">1.452.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4 font-medium text-ink-primary">Ron Viejo de Caldas Gran Reserva</td>
+                    <td class="py-3 px-4 text-ink-muted font-mono text-[11px]">RVC-GRE-750</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">1.950</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">975.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4 font-medium text-ink-primary">Aguardiente Cristal XS</td>
+                    <td class="py-3 px-4 text-ink-muted font-mono text-[11px]">AC-XS-375</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">1.280</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">384.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4 font-medium text-ink-primary">Licor de Cacao Origen</td>
+                    <td class="py-3 px-4 text-ink-muted font-mono text-[11px]">LC-CAC-700</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">630</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">189.000</td>
+                  </tr>
+                </tbody>
+                <tfoot class="border-t border-border bg-surface-alt/40 font-semibold text-ink-primary">
+                  <tr>
+                    <td class="py-2.5 px-4" colspan="2">Total consolidado</td>
+                    <td class="py-2.5 px-4 text-right">14.820</td>
+                    <td class="py-2.5 px-4 text-right text-gold-dark">6.060.000</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <!-- TABLA 2: Por campaña -->
+          <div class="bg-surface rounded-xl border border-border shadow-xs overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-border bg-surface-alt/50 flex items-center justify-between">
+              <div>
+                <h3 class="font-serif text-lg font-bold text-ink-primary">Por campaña</h3>
+                <p class="text-xs text-ink-muted mt-0.5">Rendimiento según reglas de emisión comercial activas.</p>
+              </div>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-surface border border-border text-ink-muted">
+                4 campañas
+              </span>
+            </div>
+
+            <div class="overflow-x-auto flex-1">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="bg-surface-alt/80 text-ink-muted border-b border-border uppercase tracking-wider text-[10px]">
+                    <th class="py-3 px-4 font-semibold">Campaña</th>
+                    <th class="py-3 px-4 font-semibold">Canal / Ámbito</th>
+                    <th class="py-3 px-4 font-semibold text-right">Activaciones</th>
+                    <th class="py-3 px-4 font-semibold text-right">Puntos ILC</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle bg-paper/60">
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4">
+                      <div class="font-medium text-ink-primary">Feria de Manizales 2027</div>
+                      <div class="text-[10px] text-ink-subtle">Mult. x1.5 fin de semana</div>
+                    </td>
+                    <td class="py-3 px-4 text-ink-muted">On-premise · Caldas</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">7.840</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">3.528.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4">
+                      <div class="font-medium text-ink-primary">Temporada Fin de Año</div>
+                      <div class="text-[10px] text-ink-subtle">Regla estándar SKU</div>
+                    </td>
+                    <td class="py-3 px-4 text-ink-muted">On / Off-premise</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">4.210</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">1.684.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4">
+                      <div class="font-medium text-ink-primary">Ruta del Origen (Mixta)</div>
+                      <div class="text-[10px] text-ink-subtle">Bono comercial de mesa</div>
+                    </td>
+                    <td class="py-3 px-4 text-ink-muted">Gastrobares aliados</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">1.920</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">576.000</td>
+                  </tr>
+                  <tr class="hover:bg-surface/60 transition-colors">
+                    <td class="py-3 px-4">
+                      <div class="font-medium text-ink-primary">Piloto Pereira Nocturno</div>
+                      <div class="text-[10px] text-ink-subtle">Segmentado territorial</div>
+                    </td>
+                    <td class="py-3 px-4 text-ink-muted">Risaralda · 12 locales</td>
+                    <td class="py-3 px-4 text-right font-semibold text-ink-primary">850</td>
+                    <td class="py-3 px-4 text-right font-medium text-gold-dark">272.000</td>
+                  </tr>
+                </tbody>
+                <tfoot class="border-t border-border bg-surface-alt/40 font-semibold text-ink-primary">
+                  <tr>
+                    <td class="py-2.5 px-4" colspan="2">Total consolidado</td>
+                    <td class="py-2.5 px-4 text-right">14.820</td>
+                    <td class="py-2.5 px-4 text-right text-gold-dark">6.060.000</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- AVISO DE GOBERNANZA AL PIE (§1.2 & §10.2) -->
+        <div class="bg-surface rounded-xl p-4 border border-gold-border/70 flex items-start gap-3.5">
+          <div class="w-8 h-8 rounded-lg bg-gold-badge border border-gold-border flex items-center justify-center text-gold-dark flex-shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-[19px]">info</span>
+          </div>
+          <div class="flex-1">
+            <div class="text-xs font-bold text-ink-primary">Aviso de gobernanza y tratamiento técnico (§10.2 Guía Técnica)</div>
+            <p class="text-xs text-ink-muted mt-0.5 leading-relaxed">
+              Una activación de código no prueba consumo: es un evento comercial válido.
+              Las métricas de consumo real están segregadas y nunca se equiparan con la interacción digital en mesa ni se usan para calificar velocidad de ingesta.
+            </p>
+          </div>
+          <div class="hidden sm:flex items-center gap-2 text-[11px] text-ink-subtle flex-shrink-0 font-medium">
+            <span class="material-symbols-outlined text-[15px] text-forest-green">gavel</span>
+            <span>Cumplimiento Ley 30 de 1986</span>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ADVERTENCIA LEGAL REGLAMENTARIA (LEY 30 DE 1986) -->
+  <footer class="bg-surface border-t border-border py-2.5 px-6 text-center text-[10px] tracking-wider text-ink-muted uppercase font-medium flex-shrink-0">
+    EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD. PROHÍBASE EL EXPENDIO DE BEBIDAS EMBRIAGANTES A MENORES DE EDAD (LEY 30 DE 1986).
+  </footer>
+
+</body>
+</html>

@@ -2,6 +2,7 @@ import { Button, ConsoleLayout, type ConsoleSection, StatusMessage } from '@ilc/
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { roleLabel } from './lib/mapping.ts';
 import { SessionProvider, useSession } from './lib/session.tsx';
+import { Analytics } from './routes/Analytics.tsx';
 import { CampaignDetail } from './routes/CampaignDetail.tsx';
 import { CampaignEditor } from './routes/CampaignEditor.tsx';
 import { CampaignList } from './routes/CampaignList.tsx';
@@ -32,6 +33,7 @@ function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   if (parts[0] === 'juegos') return [{ label: 'Juegos' }];
   if (parts[0] === 'recompensas') return [{ label: 'Recompensas' }];
   if (parts[0] === 'comercios') return [{ label: 'Comercios' }];
+  if (parts[0] === 'analitica') return [{ label: 'Analítica' }];
   if (parts[0] === 'mi-actividad') return [{ label: 'Mi actividad' }];
   if (parts[0] === 'mi-comercio') return [{ label: 'Mi establecimiento' }];
   const crumbs: Array<{ label: string; onSelect?: () => void }> = [{ label: 'Campañas', onSelect: parts.length > 1 ? () => go('/campanas') : undefined }];
@@ -72,7 +74,9 @@ function Shell() {
     );
 
   const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
-  const consoleSections: ConsoleSection[] = smartTags ? ['campanas', 'juegos', 'recompensas', 'comercios', 'smart-tags', 'economia'] : ['campanas', 'juegos'];
+  const consoleSections: ConsoleSection[] = smartTags
+    ? ['campanas', 'juegos', 'recompensas', 'comercios', 'analitica', 'smart-tags', 'economia']
+    : ['campanas', 'juegos'];
   const fieldSections: ConsoleSection[] = [...(isStaff ? (['mi-actividad'] as const) : []), ...(isDealer ? (['mi-comercio'] as const) : [])];
   const sections: ConsoleSection[] = [...fieldSections, ...(isConsole ? consoleSections : [])];
   const only = isConsole ? undefined : fieldSections;
@@ -81,7 +85,7 @@ function Shell() {
     <ConsoleLayout
       active={active}
       sections={sections}
-      restricted={smartTags ? [] : ['recompensas', 'comercios', 'smart-tags', 'economia']}
+      restricted={smartTags ? [] : ['recompensas', 'comercios', 'analitica', 'smart-tags', 'economia']}
       only={only}
       userAlias={me.alias}
       roleLabel={roleLabel(me.roles)}
@@ -117,6 +121,7 @@ export function AppRoutes() {
         <Route path="juegos" element={<Games />} />
         <Route path="recompensas" element={<Rewards />} />
         <Route path="comercios" element={<Venues />} />
+        <Route path="analitica" element={<Analytics />} />
         <Route path="mi-actividad" element={<StaffPanel />} />
         <Route path="mi-comercio" element={<DealerPanel />} />
         <Route path="smart-tags" element={<SmartTags />} />

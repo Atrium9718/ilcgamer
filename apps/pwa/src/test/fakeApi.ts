@@ -76,6 +76,8 @@ export function installFakeApi(options: { loggedIn?: boolean; status?: Me['statu
       state.consentLog.push(body);
       return json(200, consents());
     }
+    if (url === '/referrals/me') return json(200, { code: 'K7M2Q9XD', linkPath: '/r/K7M2Q9XD', joined: 2, rewarded: 1, rewardText: null });
+    if (url === '/referrals/attribute') return json(200, { attributed: true });
     if (url === '/auth/otp/request') return json(200, { maskedDestination: '+57 300 •••• 567', expiresInSeconds: 300, resendInSeconds: 60 });
     if (url === '/auth/otp/verify') {
       if (body.code !== state.otpCode) return fail(422, 'OTP_INVALID', 'Código incorrecto. Te quedan 4 intentos.');

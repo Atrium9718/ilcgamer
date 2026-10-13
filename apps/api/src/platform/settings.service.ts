@@ -22,6 +22,13 @@ const DEFAULTS = {
   'parche.endsAtLocalTime': '06:00',
   'parche.inactivityMinutes': 120,
   'parche.capacity': 12,
+  /** Referidos (apagados hasta que Marca, Finanzas y Jurídico aprueben términos y topes; Guía Técnica §5.10). */
+  'referrals.settings': { enabled: false, referrerPoints: 0, referrerXp: 0, dailyCap: 5, weeklyCap: 20, attributionWindowDays: 7 } as Record<
+    string,
+    string | number | boolean
+  >,
+  /** Vigencia por defecto (días) de los Puntos ILC por bonificación de referidos; 0 = sin vencimiento. */
+  'economy.defaultPointsExpiryDays': 0,
   /** Meta semanal de vinculaciones de un Staff (indicador de avance; nunca premia rapidez ni volumen de consumo). */
   'staff.weeklyGoal': 40,
   /** Días para retirar una recompensa reservada; después vence y se devuelven stock y puntos (§5.8). */

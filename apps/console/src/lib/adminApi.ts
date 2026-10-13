@@ -2,6 +2,7 @@ import type {
   AdjustStock,
   AdminAccount,
   AdminRewardClaim,
+  AnalyticsDashboard,
   ApprovalDecisionInput,
   BadgeAdmin,
   BadgeAdminView,
@@ -21,6 +22,8 @@ import type {
   ModuleView,
   ProductView,
   Reconciliation,
+  ReferralSettings,
+  ReferralSummary,
   RewardAdminView,
   StaffDashboard,
   UrlTemplate,
@@ -140,4 +143,12 @@ export const venueSelfApi = {
   staff: () => apiRequest<StaffDashboard>('/staff/me'),
   dealer: () => apiRequest<DealerDashboard>('/dealer/me'),
   saveProfile: (body: VenueProfile) => apiRequest<DealerDashboard>('/dealer/me/profile', { method: 'PUT', body }),
+};
+
+/** Analítica (Paso 12): tableros agregados y reglas de referidos. */
+export const analyticsApi = {
+  dashboard: (days: number) => apiRequest<AnalyticsDashboard>(`/admin/analytics?days=${days}`),
+  referralSettings: () => apiRequest<ReferralSettings>('/admin/referrals/settings'),
+  saveReferralSettings: (body: ReferralSettings) => apiRequest<ReferralSettings>('/admin/referrals/settings', { method: 'PUT', body }),
+  referralSummary: (days: number) => apiRequest<ReferralSummary>(`/admin/referrals/summary?days=${days}`),
 };

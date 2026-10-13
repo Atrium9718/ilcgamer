@@ -1,5 +1,6 @@
 import { CampaignDraftSchema, type ClaimAvailability, type IntegrationValidateResponse, type ProductCodeLookup, SmartTagTokenSchema } from '@ilc/contracts';
 import { Injectable } from '@nestjs/common';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { isCampaignOpen } from '../campaigns/campaign-state.ts';
 import { DomainError } from '../common/domain-error.ts';
 import type { Prisma } from '../generated/prisma/client.ts';
@@ -32,12 +33,14 @@ export class ProductCodesService {
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     private readonly settings: SettingsService,
+    private readonly analytics: AnalyticsService,
   ) {}
 
   async lookup(token: string, auth: AuthContext | null, ip: string, now = new Date()): Promise<ProductCodeLookup> {
     const code = SmartTagTokenSchema.safeParse(token).success ? await this.findProductCode(token) : null;
     if (!code) {
       await this.noteUnknown(ip);
+      await this.analytics.emit('product_code_status_checked', { properties: { status: 'unrecognized' }, occurredAt: now });
       return { status: 'unrecognized', ...CORPORATE, campaign: null };
     }
 
@@ -50,6 +53,7 @@ export class ProductCodesService {
     const productLabel = [code.product.name, code.batch ? `Lote ${code.batch.label}` : null].filter(Boolean).join(' · ');
     const campaign = await this.campaignFor(code, review, auth, now);
     const status = review ? 'needs_review' : campaign?.availability === 'claimed' ? 'already_claimed' : 'recognized';
+    await this.analytics.emit('product_code_status_checked', { properties: { status }, occurredAt: now });
     return { status, ...brand, productLabel, campaign };
   }
 

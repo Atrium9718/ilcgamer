@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { ApiRequestError } from '../lib/api.ts';
 import { identityApi } from '../lib/identity.ts';
+import { referralsApi } from '../lib/referrals.ts';
 import { useSession } from '../lib/session.tsx';
 import { KEYS, readLocal, removeLocal } from '../lib/storage.ts';
 import { useTabNavigate } from './shell.tsx';
@@ -118,6 +119,12 @@ export function OtpRoute() {
     setCodeError(undefined);
     try {
       setMe(await identityApi.verifyOtp(channel, destination, code));
+      // Si llegó por una invitación (/r/código), se atribuye una sola vez; si no sirve, no se avisa ni se bloquea nada.
+      const ref = readLocal<string | null>(KEYS.referral, null);
+      if (ref) {
+        removeLocal(KEYS.referral);
+        void referralsApi.attribute(ref).catch(() => undefined);
+      }
       // Si venía de activar un código, vuelve allí para terminar la activación.
       const next = readLocal<string | null>(KEYS.afterSignup, null, 'session');
       removeLocal(KEYS.afterSignup, 'session');

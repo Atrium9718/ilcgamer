@@ -3,6 +3,7 @@ import { EconomyModule } from '../economy/economy.module.ts';
 import { IdentityModule } from '../identity/identity.module.ts';
 import { RolesGuard } from '../identity/roles.guard.ts';
 import { ParcheModule } from '../parche/parche.module.ts';
+import { ReferralsModule } from '../referrals/referrals.module.ts';
 import { CatalogService } from './catalog.service.ts';
 import { AdminGamesController, GamesController } from './games.controller.ts';
 import { MissionsService } from './missions.service.ts';
@@ -10,7 +11,7 @@ import { ModulesService } from './modules.service.ts';
 
 /** Catálogo de juegos, ciclo de vida de módulos y misiones validadas en servidor (Guía Técnica §5.4). */
 @Module({
-  imports: [IdentityModule, EconomyModule, ParcheModule],
+  imports: [IdentityModule, EconomyModule, ParcheModule, ReferralsModule],
   controllers: [GamesController, AdminGamesController],
   providers: [ModulesService, CatalogService, MissionsService, RolesGuard],
   exports: [ModulesService],

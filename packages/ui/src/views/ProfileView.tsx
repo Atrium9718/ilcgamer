@@ -12,7 +12,8 @@ import { TopBar } from '../components/TopBar.tsx';
 export interface ProfileViewProps {
   alias: string;
   verified: boolean;
-  referral: { code: string; rewardText: string; joined: number };
+  /** null si no se pudo cargar el código: la sección se oculta en lugar de mostrar uno falso. */
+  referral: { code: string; rewardText: string | null; joined: number } | null;
   marketingOptIn: boolean;
   onEdit: () => void;
   onCopyCode: () => void;
@@ -78,34 +79,38 @@ export function ProfileView({
             </Button>
           </section>
 
-          <section aria-labelledby="invita" className="p-4 rounded-2xl border border-primary/40 bg-surface-container space-y-3">
-            <h2 id="invita" className="font-title-md text-title-md text-primary">
-              Invita a tu gente
-            </h2>
-            <div className="flex items-center gap-2">
-              <p className="flex-1 font-numeric-xl text-[26px] tracking-widest text-on-surface tabular-nums">{referral.code}</p>
-              <button
-                type="button"
-                aria-label="Copiar código"
-                onClick={onCopyCode}
-                className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center text-on-surface hover:border-primary"
-              >
-                <Icon name="content_copy" className="text-[22px]" />
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <Button variant="secondary" leadingIcon="share" onClick={onShareLink} className="h-12">
-                Compartir enlace
-              </Button>
-              <Button variant="secondary" leadingIcon="qr_code_2" onClick={onShowQr} className="h-12">
-                Mostrar mi QR
-              </Button>
-            </div>
-            <p className="font-body-md text-[13px] text-on-surface-variant">{referral.rewardText}</p>
-            <p className="font-label-lg text-[13px] text-secondary tabular-nums">
-              {referral.joined} {referral.joined === 1 ? 'invitado se unió' : 'invitados se unieron'}
-            </p>
-          </section>
+          {referral && (
+            <section aria-labelledby="invita" className="p-4 rounded-2xl border border-primary/40 bg-surface-container space-y-3">
+              <h2 id="invita" className="font-title-md text-title-md text-primary">
+                Invita a tu gente
+              </h2>
+              <div className="flex items-center gap-2">
+                <p className="flex-1 font-numeric-xl text-[26px] tracking-widest text-on-surface tabular-nums">{referral.code}</p>
+                <button
+                  type="button"
+                  aria-label="Copiar código"
+                  onClick={onCopyCode}
+                  className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center text-on-surface hover:border-primary"
+                >
+                  <Icon name="content_copy" className="text-[22px]" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <Button variant="secondary" leadingIcon="share" onClick={onShareLink} className="h-12">
+                  Compartir enlace
+                </Button>
+                <Button variant="secondary" leadingIcon="qr_code_2" onClick={onShowQr} className="h-12">
+                  Mostrar mi QR
+                </Button>
+              </div>
+              <p className="font-body-md text-[13px] text-on-surface-variant">
+                {referral.rewardText ?? 'Invitar es voluntario. Por ahora no hay bonificación activa.'}
+              </p>
+              <p className="font-label-lg text-[13px] text-secondary tabular-nums">
+                {referral.joined} {referral.joined === 1 ? 'invitado se unió' : 'invitados se unieron'}
+              </p>
+            </section>
+          )}
 
           <SettingsList label="Ajustes de la cuenta" items={settings} />
 

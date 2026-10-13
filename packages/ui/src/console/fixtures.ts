@@ -406,3 +406,46 @@ export const VENUES_DEMO: import('./VenuesAdminView.tsx').VenueRow[] = [
     campaigns: [],
   },
 ];
+
+export const ANALYTICS_DEMO: import('./AnalyticsView.tsx').AnalyticsData = {
+  routeA: {
+    claims: 1240,
+    pointsIssued: 512_000,
+    reversals: { count: 3, points: 1_500 },
+    redemptions: 86,
+    staffLinked: 410,
+    byDay: Array.from({ length: 14 }, (_, i) => ({ label: String(i + 1), count: 20 + ((i * 7) % 60) })),
+    bySku: [
+      { sku: 'RVC-8', name: 'Ron Viejo de Caldas 8 años', claims: 700, points: 350_000 },
+      { sku: 'AGC-1', name: 'Aguardiente Cristal', claims: 540, points: 162_000 },
+    ],
+    byCampaign: [{ slug: 'feria-manizales-2027', title: 'Feria de Manizales 2027', claims: 1240, points: 512_000 }],
+  },
+  routeB: {
+    missionsStarted: 900,
+    missionsCompleted: 630,
+    completionRate: 0.7,
+    xpGranted: 18_400,
+    badgesAwarded: 210,
+    sessionsCreated: 150,
+    sessionsJoined: 420,
+    byDay: Array.from({ length: 14 }, (_, i) => ({ label: String(i + 1), count: 10 + ((i * 5) % 40) })),
+    byModule: [
+      { moduleId: 'trivia-origen', started: 500, completed: 380 },
+      { moduleId: 'explorador-origen', started: 400, completed: 250 },
+    ],
+  },
+  ops: {
+    codeChecks: { total: 5200, unrecognized: 140 },
+    ageGatePassed: 3100,
+    consentUpdates: 980,
+    securityEvents: { total: 12, open: 2, high: 0 },
+    campaignsByStatus: [
+      { label: 'Activa', count: 2 },
+      { label: 'Borrador', count: 1 },
+    ],
+    rewardZonesLowStock: 3,
+    modulesAwaitingApproval: 1,
+    shareCards: 75,
+  },
+};

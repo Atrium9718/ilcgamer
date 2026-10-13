@@ -32,7 +32,7 @@ describe('Recompensas en la consola', () => {
 
   it('quien no es de Marca ni TI no tiene la sección', async () => {
     open(['REVISOR_JURIDICO']);
-    expect(await screen.findAllByText('Sin acceso')).toHaveLength(4);
+    expect(await screen.findAllByText('Sin acceso')).toHaveLength(5);
   });
 });
 

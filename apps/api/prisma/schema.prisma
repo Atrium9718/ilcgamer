@@ -874,12 +874,15 @@ model ReferralCode {
 }
 
 model ReferralAttribution {
-  referredId String    @id @db.Uuid
-  referred   User      @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
-  referrerId String    @db.Uuid
-  referrer   User      @relation("Referrer", fields: [referrerId], references: [id])
-  rewardedAt DateTime?
-  createdAt  DateTime  @default(now())
+  referredId        String    @id @db.Uuid
+  referred          User      @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
+  referrerId        String    @db.Uuid
+  referrer          User      @relation("Referrer", fields: [referrerId], references: [id])
+  rewardedAt        DateTime?
+  /// Bonificación ya aplicada por la primera activación válida (Ruta A) y por la primera misión (Ruta B).
+  claimRewardedAt   DateTime?
+  missionRewardedAt DateTime?
+  createdAt         DateTime  @default(now())
 
   @@index([referrerId, createdAt])
   @@map("referral_attributions")

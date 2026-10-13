@@ -14,6 +14,7 @@ import {
   WheelConfigSchema,
 } from '@ilc/contracts';
 import { Inject, Injectable } from '@nestjs/common';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import { canonicalJson } from '../campaigns/content-hash.ts';
 import { startOfColombiaDay } from '../codes/rules.ts';
@@ -26,6 +27,7 @@ import type { User } from '../generated/prisma/client.ts';
 import { Prisma } from '../generated/prisma/client.ts';
 import { ParcheService } from '../parche/parche.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
+import { ReferralsService } from '../referrals/referrals.service.ts';
 import { type ActiveModule, CatalogService } from './catalog.service.ts';
 import { type Evaluation, evaluateChapter, evaluateTrivia, evaluateWheel, type Prepared, prepareChapters, prepareTrivia, prepareWheel } from './engines.ts';
 import { providerSecret } from './modules.service.ts';
@@ -56,6 +58,8 @@ export class MissionsService {
     private readonly progress: ProgressService,
     private readonly parche: ParcheService,
     private readonly audit: AuditService,
+    private readonly analytics: AnalyticsService,
+    private readonly referrals: ReferralsService,
     @Inject(ENV) private readonly env: Env,
   ) {}
 
@@ -131,15 +135,11 @@ export class MissionsService {
         },
       });
       if (!preview) {
-        await tx.analyticsEvent.create({
-          data: {
-            name: 'mission_started',
-            schemaVersion: 1,
-            campaignId: ctx?.campaign?.id ?? null,
-            properties: { moduleId: module.slug, route: manifest.route },
-            occurredAt: now,
-          },
-        });
+        await this.analytics.emit(
+          'mission_started',
+          { campaignId: ctx?.campaign?.id ?? null, properties: { moduleId: module.slug, route: manifest.route }, occurredAt: now },
+          tx,
+        );
       }
       return { mission, fresh: true };
     });
@@ -335,9 +335,8 @@ export class MissionsService {
             },
             tx,
           );
-          await tx.analyticsEvent.create({
-            data: { name: 'mission_completed', schemaVersion: 1, properties: { moduleId: slug, route: manifest.route, xp }, occurredAt: now },
-          });
+          await this.analytics.emit('mission_completed', { properties: { moduleId: slug, route: manifest.route, xp }, occurredAt: now }, tx);
+          if (m.userId) await this.referrals.onFirstMission(tx, m.userId, m.id, now);
         } else {
           hasNext = !!config;
         }

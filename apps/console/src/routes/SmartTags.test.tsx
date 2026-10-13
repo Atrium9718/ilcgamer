@@ -47,6 +47,6 @@ describe('Smart Tags en la consola', () => {
     installFakeApi({ roles: ['REVISOR_MARCA'] });
     renderAt('/campanas');
     expect(await screen.findByRole('button', { name: /Smart Tags/ })).toBeDisabled();
-    expect(screen.getAllByText('Sin acceso')).toHaveLength(4);
+    expect(screen.getAllByText('Sin acceso')).toHaveLength(5);
   });
 });

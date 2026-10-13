@@ -1,5 +1,6 @@
 import { CampaignDraftSchema, type CreateParche, type ParcheState, PIN_LOCK_MINUTES, PIN_MAX_FAILURES } from '@ilc/contracts';
 import { Inject, Injectable } from '@nestjs/common';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import { isCampaignOpen } from '../campaigns/campaign-state.ts';
 import { hmac, randomDigits, safeEqualHex } from '../common/crypto.ts';
@@ -34,6 +35,7 @@ export class ParcheService {
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
     private readonly bus: ParcheBus,
+    private readonly analytics: AnalyticsService,
     @Inject(ENV) private readonly env: Env,
   ) {}
 
@@ -84,6 +86,7 @@ export class ParcheService {
             },
             tx,
           );
+          await this.analytics.emit('session_created', { properties: { route: s.route, mode: s.mode } }, tx);
           return { s, left };
         });
         for (const id of session.left) void this.bus.publish(id);
@@ -189,7 +192,10 @@ export class ParcheService {
         create: { sessionId, userId: user.id, alias: alias.trim() },
       });
       await this.touch(tx, sessionId, now);
-      if (!existing) await this.audit.record({ actorId: user.id, action: 'parche.joined', resource: 'session', resourceId: sessionId, requestId }, tx);
+      if (!existing) {
+        await this.audit.record({ actorId: user.id, action: 'parche.joined', resource: 'session', resourceId: sessionId, requestId }, tx);
+        await this.analytics.emit('session_joined', {}, tx);
+      }
       return others;
     });
     for (const id of [...left, sessionId]) void this.bus.publish(id);
@@ -215,6 +221,7 @@ export class ParcheService {
       if (s.hostId !== user.id) throw new DomainError('FORBIDDEN', 'Solo el anfitrión puede cerrar el Parche.');
       await tx.session.update({ where: { id: sessionId }, data: { status: 'FINALIZADA', closedAt: now, stateVersion: { increment: 1 } } });
       await this.audit.record({ actorId: user.id, action: 'parche.closed', resource: 'session', resourceId: sessionId, requestId }, tx);
+      await this.analytics.emit('session_closed', { properties: { reason: 'host' } }, tx);
     });
     await this.redis.client.del(this.pinKey(sessionId)).catch(() => undefined);
     void this.bus.publish(sessionId);

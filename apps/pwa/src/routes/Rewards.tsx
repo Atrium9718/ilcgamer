@@ -3,6 +3,7 @@ import { Button, type ClaimRow, MyClaimsView, type RewardCategory, type RewardDe
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ApiRequestError, newIdempotencyKey } from '../lib/api.ts';
+import { track } from '../lib/events.ts';
 import { rewardsApi } from '../lib/rewards.ts';
 import { useTabNavigate } from './shell.tsx';
 
@@ -89,6 +90,7 @@ export function RewardsRoute() {
         onSelect={(id) => {
           setError(undefined);
           setSelectedId(id);
+          track({ name: 'reward_viewed', rewardId: id });
         }}
         onCloseDetail={() => setSelectedId(undefined)}
         redeeming={redeeming}

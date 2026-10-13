@@ -59,6 +59,7 @@ packages/design-tokens ──▶ dist/theme.css (Tailwind v4)   design/stitch-ex
 | 26 · Consola · Comercios | `9954d4b9428544d6be3472d689e1abee` | `VenuesAdminView` (sin datos de personas ni correos reales) |
 | 27 · Staff · Mi actividad | `9ccc76ead08640a3aec621c6867b2fdf` | `StaffPanelView` (código y QR; sin nombres de participantes) |
 | 28 · Comercio · Mi establecimiento | `3781fffce2ef4786bd69bd4c44fa8fb2` | `DealerPanelView` (solo posición propia, sin ranking con nombres) |
+| 29 · Consola · Analítica | `d56a8eba4a6c488592cd210f2ca3e9fe` | `AnalyticsView` (tableros separados; sin puntuación única ni personas) |
 
 Los prompts comparten `prompts/_reglas-comunes.md` (paleta, salvaguardas y advertencia legal) para reducir correcciones.
 

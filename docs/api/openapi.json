@@ -1274,6 +1274,108 @@
         ]
       }
     },
+    "/api/v1/referrals/me": {
+      "get": {
+        "operationId": "ReferralsController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Referidos"
+        ]
+      }
+    },
+    "/api/v1/referrals/attribute": {
+      "post": {
+        "operationId": "ReferralsController_attribute",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Referidos"
+        ]
+      }
+    },
+    "/api/v1/admin/referrals/settings": {
+      "get": {
+        "operationId": "AdminReferralsController_settings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Referidos"
+        ]
+      },
+      "put": {
+        "operationId": "AdminReferralsController_save",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Referidos"
+        ]
+      }
+    },
+    "/api/v1/admin/referrals/summary": {
+      "get": {
+        "operationId": "AdminReferralsController_summary",
+        "parameters": [
+          {
+            "name": "days",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Referidos"
+        ]
+      }
+    },
     "/api/v1/product-codes/{token}/status": {
       "get": {
         "operationId": "CodesController_status",
@@ -2241,6 +2343,53 @@
         ],
         "tags": [
           "Consola · Comercios"
+        ]
+      }
+    },
+    "/api/v1/events": {
+      "post": {
+        "operationId": "EventsController_record",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Analítica"
+        ]
+      }
+    },
+    "/api/v1/admin/analytics": {
+      "get": {
+        "operationId": "AdminAnalyticsController_dashboard",
+        "parameters": [
+          {
+            "name": "days",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "tags": [
+          "Consola · Analítica"
         ]
       }
     }

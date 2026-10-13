@@ -1,5 +1,6 @@
 import { CampaignDraftSchema, type ClaimResult, SmartTagTokenSchema } from '@ilc/contracts';
 import { Injectable } from '@nestjs/common';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import { isCampaignOpen } from '../campaigns/campaign-state.ts';
 import { DomainError } from '../common/domain-error.ts';
@@ -9,6 +10,7 @@ import type { AuthContext } from '../identity/auth.guard.ts';
 import { ParcheService } from '../parche/parche.service.ts';
 import { SettingsService } from '../platform/settings.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
+import { ReferralsService } from '../referrals/referrals.service.ts';
 import { needsReview } from './product-codes.service.ts';
 import { addDays, pointsFor, startOfColombiaDay } from './rules.ts';
 import { campaignCodeHash, productTokenHash } from './tokens.ts';
@@ -27,6 +29,8 @@ export class ClaimsService {
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
     private readonly parche: ParcheService,
+    private readonly referrals: ReferralsService,
+    private readonly analytics: AnalyticsService,
   ) {}
 
   async claim(
@@ -155,9 +159,16 @@ export class ClaimsService {
           await tx.claim.update({ where: { id: created.id }, data: { sessionId } });
           if (staff) await tx.session.updateMany({ where: { id: sessionId, venueId: null }, data: { venueId: staff.venueId } });
         }
-        await tx.analyticsEvent.create({
-          data: { name: 'campaign_code_claimed', schemaVersion: 1, campaignId: code.campaignId, properties: { points, factor }, occurredAt: now },
-        });
+        await this.analytics.emit('campaign_code_claimed', { campaignId: code.campaignId, properties: { points, factor }, occurredAt: now }, tx);
+        if (points > 0)
+          await this.analytics.emit(
+            'commercial_points_credited',
+            { campaignId: code.campaignId, properties: { amount: points, source: 'claim' }, occurredAt: now },
+            tx,
+          );
+        if (staff) await this.analytics.emit('staff_activation_recorded', { campaignId: code.campaignId, occurredAt: now }, tx);
+        // Bonificación al referente por la primera activación válida del referido (si está habilitada y dentro de topes).
+        await this.referrals.onFirstClaim(tx, auth.user.id, created.id, now);
         return { claim: created, replayed: false, recharged };
       });
       if (outcome.replayed) return this.replay(outcome.claim, auth, token);

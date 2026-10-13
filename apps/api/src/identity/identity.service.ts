@@ -1,6 +1,7 @@
 import { CONSENT_PURPOSES, type ConsentChange, type ConsentState, type Me, type OtpChannel } from '@ilc/contracts';
 import { Injectable } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import { DomainError } from '../common/domain-error.ts';
 import type { User } from '../generated/prisma/client.ts';
@@ -27,16 +28,19 @@ export class IdentityService {
     private readonly sessions: AuthSessionService,
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
+    private readonly analytics: AnalyticsService,
   ) {}
 
   /** Calcula la edad, registra SOLO el resultado (fecha y método) y descarta la fecha de nacimiento. */
   async passAgeGate(birthDate: string, campaignSlug: string | undefined, auth: AuthContext | null, reply: FastifyReply, requestId: string): Promise<Me> {
     const minAge = await this.minAgeFor(campaignSlug);
     if (isFutureDate(birthDate) || ageOn(birthDate) < minAge) {
-      // No se crea cuenta ni se guarda ningún dato de quien no cumple la edad (§9.4).
+      // No se crea cuenta ni se guarda ningún dato de quien no cumple la edad (§9.4); solo el resultado agregado.
+      await this.analytics.emit('age_gate_result_recorded', { properties: { result: 'blocked' } });
       throw new DomainError('AGE_REQUIREMENT_NOT_MET', `Este contenido es solo para mayores de ${minAge} años.`);
     }
     const now = new Date();
+    await this.analytics.emit('age_gate_result_recorded', { properties: { result: 'passed' }, occurredAt: now });
     if (auth) {
       const ageVerifiedMinAge = Math.max(auth.user.ageVerifiedMinAge ?? 18, minAge);
       const user = await this.prisma.user.update({
@@ -111,6 +115,7 @@ export class IdentityService {
       throw new DomainError('CONFLICT', 'El aviso de privacidad cambió. Revísalo de nuevo para continuar.');
     }
     await this.prisma.consentRecord.create({ data: { userId, ...change } });
+    await this.analytics.emit('consent_updated', { properties: { purpose: change.purpose, granted: change.granted } });
     return this.consentState(userId);
   }
 

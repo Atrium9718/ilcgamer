@@ -25,6 +25,34 @@ export const DRAFT: CampaignDraft = {
   modules: [],
 };
 
+const SERIES = [{ date: '2026-10-12', count: 3 }];
+const ANALYTICS = {
+  days: 30,
+  from: '2026-09-13T00:00:00.000Z',
+  routeA: { claims: 1240, pointsIssued: 512000, reversals: { count: 0, points: 0 }, redemptions: 5, staffLinked: 2, byDay: SERIES, bySku: [], byCampaign: [] },
+  routeB: {
+    missionsStarted: 10,
+    missionsCompleted: 7,
+    completionRate: 0.7,
+    xpGranted: 100,
+    badgesAwarded: 3,
+    sessionsCreated: 2,
+    sessionsJoined: 4,
+    byDay: SERIES,
+    byModule: [],
+  },
+  ops: {
+    codeChecks: { total: 9, unrecognized: 1 },
+    ageGate: { passed: 20 },
+    consentUpdates: 4,
+    securityEvents: { total: 1, open: 1, high: 0 },
+    campaignsByStatus: { ACTIVA: 2 },
+    rewardZonesLowStock: 0,
+    modulesAwaitingApproval: 0,
+    shareCards: 0,
+  },
+};
+
 const VENUE = {
   id: '00000000-0000-7000-8000-0000000000c1',
   name: 'Bar de prueba',
@@ -287,6 +315,11 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
     if (url.startsWith('/admin/economy/accounts?userId=')) return json(200, ACCOUNT);
     if (url.endsWith('/reverse')) return json(200, { ...ACCOUNT, balance: 0, ledgerSum: 0 });
     if (url === '/admin/economy/badges') return json(200, []);
+    if (url.startsWith('/admin/analytics')) return json(200, ANALYTICS);
+    if (url === '/admin/referrals/settings' && method === 'GET')
+      return json(200, { enabled: false, referrerPoints: 0, referrerXp: 0, dailyCap: 5, weeklyCap: 20, attributionWindowDays: 7 });
+    if (url === '/admin/referrals/settings' && method === 'PUT') return json(200, body);
+    if (url.startsWith('/admin/referrals/summary')) return json(200, { days: 30, attributed: 4, rewardedByClaim: 1, rewardedByMission: 1, capped: 0 });
     if (url === '/admin/venues') return json(200, [VENUE]);
     if (url.startsWith('/admin/venues/') && url.endsWith('/approve')) return json(200, { ...VENUE, status: 'APROBADO' });
     if (url === '/staff/me') return json(200, STAFF_DASH);

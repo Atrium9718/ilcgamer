@@ -4,6 +4,7 @@ import { Navigate, useNavigate, useParams } from 'react-router';
 import { ApiRequestError } from '../lib/api.ts';
 import { fetchPublicCampaign, rememberCampaignTheme } from '../lib/campaign.ts';
 import { data } from '../lib/data.ts';
+import { track } from '../lib/events.ts';
 import { KEYS, writeLocal } from '../lib/storage.ts';
 
 /** /r/:ref — guarda el código de referido para atribuirlo al registrarse (Instrucciones §8). */
@@ -29,6 +30,7 @@ export function EventEntryRoute() {
       (campaign) => {
         if (cancelled) return;
         rememberCampaignTheme(campaign.theme);
+        track({ name: 'campaign_viewed', campaignSlug: slug });
         enter();
       },
       (err) => {

@@ -1,23 +1,28 @@
-import type { Progress } from '@ilc/contracts';
+import type { Progress, ReferralMe } from '@ilc/contracts';
 import {
   Button,
   type Chapter,
+  LEGAL_COPY,
   ProfileView,
   ProgressView,
   ShareCardView,
+  type ShareTarget,
   type ShareTemplate,
   Sheet,
   StatusMessage,
   type WalletFilter,
   WalletView,
 } from '@ilc/ui';
+import QRCode from 'qrcode';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { DEMO } from '../demo/fixtures.ts';
 import { ApiRequestError } from '../lib/api.ts';
 import { data, type WalletData } from '../lib/data.ts';
+import { track } from '../lib/events.ts';
 import { identityApi } from '../lib/identity.ts';
+import { referralsApi } from '../lib/referrals.ts';
 import { useSession } from '../lib/session.tsx';
+import { buildCardContent, renderCard } from '../lib/shareCard.ts';
 import { useTabNavigate } from './shell.tsx';
 
 export function WalletRoute() {
@@ -108,11 +113,17 @@ export function ProfileRoute() {
   const navigate = useNavigate();
   const onNavigate = useTabNavigate();
   const [params] = useSearchParams();
-  const { me, setMe, config } = useSession();
+  const { me, setMe } = useSession();
   const [confirmDelete, setConfirmDelete] = useState(params.get('eliminar') === '1');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
+  const [referral, setReferral] = useState<ReferralMe | null>(null);
+  const [qr, setQr] = useState<string | null>(null);
+  useEffect(() => {
+    referralsApi.me().then(setReferral, () => setReferral(null));
+  }, []);
   if (!me) return null;
+  const inviteUrl = referral ? `${location.origin}${referral.linkPath}` : undefined;
   const marketing = me.consents.find((c) => c.purpose === 'MARKETING')?.granted ?? false;
 
   const logout = async () => {
@@ -138,16 +149,14 @@ export function ProfileRoute() {
       <ProfileView
         alias={me.alias}
         verified={me.status === 'ACTIVA'}
-        referral={{
-          code: 'DEMO-7K2Q',
-          rewardText: `Ganas 50 ${config.currencyName} cuando tu invitado (+18) completa su perfil o se une a su primer Parche. Máximo 5 bonificaciones por semana.`,
-          joined: 0,
-        }}
+        referral={referral && { code: referral.code, rewardText: referral.rewardText, joined: referral.joined }}
         marketingOptIn={marketing}
         onEdit={() => navigate(me.status === 'ACTIVA' ? '/perfil/autorizaciones' : '/registro')}
-        onCopyCode={() => navigator.clipboard?.writeText('DEMO-7K2Q').catch(() => undefined)}
-        onShareLink={() => navigator.share?.({ title: 'ILC Origen', url: `${location.origin}/r/DEMO-7K2Q` }).catch(() => undefined)}
-        onShowQr={() => undefined}
+        onCopyCode={() => referral && navigator.clipboard?.writeText(referral.code).catch(() => undefined)}
+        onShareLink={() => inviteUrl && navigator.share?.({ title: 'ILC Origen', text: 'Descubre el origen con ILC', url: inviteUrl }).catch(() => undefined)}
+        onShowQr={() => {
+          if (inviteUrl) void QRCode.toDataURL(inviteUrl, { margin: 1, width: 280 }).then(setQr);
+        }}
         onOpenSetting={(id) =>
           id === 'consentimientos'
             ? navigate('/perfil/autorizaciones')
@@ -159,6 +168,12 @@ export function ProfileRoute() {
         onDeleteAccount={() => setConfirmDelete(true)}
         onNavigate={onNavigate}
       />
+      <Sheet open={qr !== null} onClose={() => setQr(null)} title="Tu código QR de invitación" actions={<Button onClick={() => setQr(null)}>Listo</Button>}>
+        <div className="flex flex-col items-center gap-3">
+          {qr && <img src={qr} alt="Código QR con tu enlace de invitación" className="w-56 h-56 rounded-xl bg-white p-2" />}
+          <p className="text-center">Quien lo escanee puede crear su cuenta con tu invitación. Invitar es voluntario.</p>
+        </div>
+      </Sheet>
       <Sheet
         open={confirmDelete}
         onClose={() => setConfirmDelete(false)}
@@ -185,18 +200,54 @@ export function ProfileRoute() {
 export function ShareRoute() {
   const navigate = useNavigate();
   const [template, setTemplate] = useState<ShareTemplate>('bosque');
+  const [badge, setBadge] = useState<{ name: string; icon: string } | null>(null);
+  const [referral, setReferral] = useState<ReferralMe | null>(null);
+  const [notice, setNotice] = useState<string>();
+  useEffect(() => {
+    data.progress().then(
+      (p) => {
+        const earned = p.badges.filter((b) => b.earned).sort((a, b) => (b.awardedAt ?? '').localeCompare(a.awardedAt ?? ''))[0];
+        setBadge(earned ? { name: earned.name, icon: earned.icon } : null);
+      },
+      () => undefined,
+    );
+    referralsApi.me().then(setReferral, () => undefined);
+  }, []);
+  const content = buildCardContent(badge);
+
+  const share = async (target: ShareTarget) => {
+    try {
+      const blob = await renderCard(content, template, LEGAL_COPY);
+      const file = new File([blob], 'logro-ilc.png', { type: 'image/png' });
+      const url = referral ? `${location.origin}${referral.linkPath}` : undefined;
+      if (target !== 'download' && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'ILC Origen', text: content.headline, ...(url ? { url } : {}) });
+      } else {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = file.name;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
+      }
+      track({ name: 'share_card_generated', template, target });
+      setNotice(target === 'download' ? 'Tarjeta guardada.' : undefined);
+    } catch (err) {
+      // Cancelar el cuadro de compartir no es un error.
+      if (!(err instanceof DOMException && err.name === 'AbortError')) setNotice('No pudimos generar la tarjeta. Intenta de nuevo.');
+    }
+  };
+
   return (
-    <ShareCardView
-      content={{
-        badgeName: 'Guardianes del bosque de niebla',
-        badgeIcon: 'filter_vintage',
-        headline: 'Guardianes del bosque de niebla',
-        message: `El Parche '${DEMO.parche.name}' completó la Ruta del Origen`,
-      }}
-      template={template}
-      onTemplateChange={setTemplate}
-      onShare={() => undefined}
-      onClose={() => navigate(-1)}
-    />
+    <>
+      <ShareCardView content={content} template={template} onTemplateChange={setTemplate} onShare={(t) => void share(t)} onClose={() => navigate(-1)} />
+      {notice && (
+        <p
+          role="status"
+          className="fixed bottom-4 inset-x-4 max-w-md mx-auto text-center rounded-xl bg-surface-container-high text-on-surface px-4 py-3 border border-outline-variant"
+        >
+          {notice}
+        </p>
+      )}
+    </>
   );
 }

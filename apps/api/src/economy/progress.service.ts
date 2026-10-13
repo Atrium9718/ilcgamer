@@ -1,5 +1,6 @@
 import { type BadgeAdmin, type BadgeAdminView, type Progress, XpLevelsSchema } from '@ilc/contracts';
 import { Injectable } from '@nestjs/common';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import type { Actor } from '../campaigns/campaigns.service.ts';
 import { DomainError } from '../common/domain-error.ts';
@@ -21,6 +22,7 @@ export class ProgressService {
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
+    private readonly analytics: AnalyticsService,
   ) {}
 
   /** Otorga XP una sola vez por clave. Devuelve false si esa clave ya se había usado. */
@@ -35,6 +37,7 @@ export class ProgressService {
     const badge = await tx.badge.findUnique({ where: { slug } });
     if (!badge) throw new DomainError('NOT_FOUND', 'No existe esa insignia.');
     const res = await tx.badgeAward.createMany({ data: [{ userId, badgeId: badge.id, missionId: missionId ?? null }], skipDuplicates: true });
+    if (res.count === 1) await this.analytics.emit('badge_awarded', { properties: { badge: slug } }, tx);
     return res.count === 1;
   }
 

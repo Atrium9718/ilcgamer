@@ -1,5 +1,6 @@
 import { type AdminAccount, CampaignDraftSchema, type Reconciliation, type Wallet, type WalletEntry, XpLevelsSchema } from '@ilc/contracts';
 import { Injectable } from '@nestjs/common';
+import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import type { Actor } from '../campaigns/campaigns.service.ts';
 import { DomainError } from '../common/domain-error.ts';
@@ -29,6 +30,7 @@ export class LedgerService {
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
+    private readonly analytics: AnalyticsService,
   ) {}
 
   // ───────── Billetera del titular ─────────
@@ -196,6 +198,7 @@ export class LedgerService {
           },
         });
         await tx.ledgerAccount.update({ where: { id: entry.accountId }, data: { balance: { decrement: left } } });
+        await this.analytics.emit('commercial_points_reversed', { campaignId: null, properties: { amount: left } }, tx);
         await this.audit.record(
           {
             actorId: actor.userId,
