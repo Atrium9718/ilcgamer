@@ -17,6 +17,7 @@ echo "==> Excepciones de staging (código de acceso en el log y un solo administ
 set_env OTP_PROVIDER console
 set_env STAGING_OTP_LOG_ACK "$PHRASE"
 set_env STAGING_RELAX_SEPARATION_ACK "$PHRASE"
+set_env STAGING_AUTO_ACCOUNT_ACK "$PHRASE"   # tras el control de edad la cuenta nace activa (sin «guardar mi progreso»)
 $COMPOSE up -d api
 APP="$(grep '^APP_DOMAIN=' .env.production | cut -d= -f2)"
 for i in $(seq 1 30); do curl -fsS "https://$APP/api/v1/health" >/dev/null && break; sleep 5; done

@@ -50,6 +50,12 @@ export const EnvSchema = z.object({
    * recompensas). Exige la misma frase; con usuarios reales debe estar vacío.
    */
   STAGING_RELAX_SEPARATION_ACK: z.string().optional(),
+  /**
+   * Excepción SOLO para staging sin usuarios reales: tras el control de edad la cuenta nace ACTIVA (sin registrarse con celular
+   * o correo), para recorrer la demostración «como si estuvieras con sesión». Exige la misma frase; con usuarios reales debe
+   * estar vacío. No registra autorizaciones por la persona: las decisiones de consentimiento se siguen pidiendo.
+   */
+  STAGING_AUTO_ACCOUNT_ACK: z.string().optional(),
   OTP_WEBHOOK_URL: z.url({ protocol: /^https?$/ }).optional(),
   OTP_WEBHOOK_TOKEN: z.string().min(16, 'OTP_WEBHOOK_TOKEN debe tener al menos 16 caracteres').optional(),
   /** Límite por IP de la consulta pública de códigos (protección contra enumeración — §5.6). */
@@ -80,6 +86,11 @@ export function separationOfDutiesApplies(env: Pick<Env, 'STAGING_RELAX_SEPARATI
   return env.STAGING_RELAX_SEPARATION_ACK !== STAGING_OTP_LOG_PHRASE;
 }
 
+/** true solo en staging con la frase de confirmación: las cuentas nacen activas tras el control de edad. */
+export function autoAccountEnabled(env: Pick<Env, 'STAGING_AUTO_ACCOUNT_ACK'>): boolean {
+  return env.STAGING_AUTO_ACCOUNT_ACK === STAGING_OTP_LOG_PHRASE;
+}
+
 export type Env = z.infer<typeof EnvSchema>;
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
@@ -97,6 +108,9 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   }
   if (parsed.data.STAGING_RELAX_SEPARATION_ACK && parsed.data.STAGING_RELAX_SEPARATION_ACK !== STAGING_OTP_LOG_PHRASE) {
     throw new Error('Configuración inválida: STAGING_RELAX_SEPARATION_ACK tiene un valor distinto a la frase de confirmación');
+  }
+  if (parsed.data.STAGING_AUTO_ACCOUNT_ACK && parsed.data.STAGING_AUTO_ACCOUNT_ACK !== STAGING_OTP_LOG_PHRASE) {
+    throw new Error('Configuración inválida: STAGING_AUTO_ACCOUNT_ACK tiene un valor distinto a la frase de confirmación');
   }
   if (parsed.data.OTP_PROVIDER === 'webhook') {
     if (!parsed.data.OTP_WEBHOOK_URL || !parsed.data.OTP_WEBHOOK_TOKEN)

@@ -1,9 +1,11 @@
 import { CONSENT_PURPOSES, type ConsentChange, type ConsentState, type Me, type OtpChannel } from '@ilc/contracts';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import { AnalyticsService } from '../analytics/analytics.service.ts';
 import { AuditService } from '../audit/audit.service.ts';
 import { DomainError } from '../common/domain-error.ts';
+import { ENV } from '../config/config.module.ts';
+import { autoAccountEnabled, type Env } from '../config/env.ts';
 import type { User } from '../generated/prisma/client.ts';
 import { SettingsService } from '../platform/settings.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
@@ -29,6 +31,7 @@ export class IdentityService {
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
     private readonly analytics: AnalyticsService,
+    @Inject(ENV) private readonly env: Env,
   ) {}
 
   /** Calcula la edad, registra SOLO el resultado (fecha y método) y descarta la fecha de nacimiento. */
@@ -51,7 +54,13 @@ export class IdentityService {
     }
     const user = await this.prisma.$transaction(async (tx) => {
       const created = await tx.user.create({
-        data: { alias: DEFAULT_ALIAS, status: 'TEMPORAL', ageVerifiedAt: now, ageGateMethod: AGE_GATE_METHOD, ageVerifiedMinAge: minAge },
+        data: {
+          alias: DEFAULT_ALIAS,
+          status: autoAccountEnabled(this.env) ? 'ACTIVA' : 'TEMPORAL',
+          ageVerifiedAt: now,
+          ageGateMethod: AGE_GATE_METHOD,
+          ageVerifiedMinAge: minAge,
+        },
       });
       await this.sessions.create(created.id, reply, tx);
       await this.audit.record(
@@ -71,6 +80,9 @@ export class IdentityService {
   }
 
   async me(user: User): Promise<Me> {
+    // Staging sin usuarios reales: las cuentas temporales ya existentes también pasan a activas (sin pedir registro).
+    if (autoAccountEnabled(this.env) && user.status === 'TEMPORAL' && user.ageVerifiedAt)
+      user = await this.prisma.user.update({ where: { id: user.id }, data: { status: 'ACTIVA' } });
     const [credentials, consents, pii, roles] = await Promise.all([
       this.prisma.identityCredential.findMany({ where: { userId: user.id }, select: { provider: true } }),
       this.consentState(user.id),

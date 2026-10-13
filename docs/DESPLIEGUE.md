@@ -77,6 +77,11 @@ La pasarela decide si entrega por WhatsApp, SMS o correo. Sin pasarela configura
 deja el código en el log de la API (`docker compose … logs api | grep OTP`). Sin esa frase exacta la API no arranca. Hay que quitarla
 (y usar la pasarela) antes de abrir a personas reales.
 
+**Excepción solo para staging sin usuarios reales — cuentas activas sin registro:** `STAGING_AUTO_ACCOUNT_ACK=solo-staging-sin-usuarios-reales`
+(la pone `deploy/staging_demo.sh`). Tras el control de edad la cuenta nace `ACTIVA` (y las temporales existentes pasan a activas al llamar a `/me`),
+para recorrer la demostración sin «Guardar mi progreso». No registra autorizaciones por la persona: el juego El Impostor sigue pidiendo
+el «Acepto» de novedades. **Debe quedar vacía antes de usuarios reales.**
+
 **Excepción solo para staging con una sola persona administradora:** `STAGING_RELAX_SEPARATION_ACK=solo-staging-sin-usuarios-reales`
 relaja "quien crea no aprueba/activa" en juegos, campañas y recompensas. Autorizada expresamente por quien administra el proyecto;
 **debe quitarse antes de usuarios reales** (por defecto la separación de funciones siempre se exige).

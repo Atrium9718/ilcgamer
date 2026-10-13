@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadEnv, separationOfDutiesApplies } from '../src/config/env.ts';
+import { autoAccountEnabled, loadEnv, separationOfDutiesApplies } from '../src/config/env.ts';
 
 const base = {
   DATABASE_URL: 'postgresql://ilc@localhost:5432/x',
@@ -58,5 +58,13 @@ describe('separación de funciones relajada (solo staging)', () => {
     expect(separationOfDutiesApplies(loadEnv(base))).toBe(true);
     expect(separationOfDutiesApplies(loadEnv({ ...base, STAGING_RELAX_SEPARATION_ACK: 'solo-staging-sin-usuarios-reales' }))).toBe(false);
     expect(() => loadEnv({ ...base, STAGING_RELAX_SEPARATION_ACK: 'si' })).toThrow(/STAGING_RELAX_SEPARATION_ACK/);
+  });
+});
+
+describe('cuentas activas en staging (STAGING_AUTO_ACCOUNT_ACK)', () => {
+  it('por defecto no; solo con la frase exacta; un valor distinto falla', () => {
+    expect(autoAccountEnabled(loadEnv(base))).toBe(false);
+    expect(autoAccountEnabled(loadEnv({ ...base, STAGING_AUTO_ACCOUNT_ACK: 'solo-staging-sin-usuarios-reales' }))).toBe(true);
+    expect(() => loadEnv({ ...base, STAGING_AUTO_ACCOUNT_ACK: 'si' })).toThrow(/STAGING_AUTO_ACCOUNT_ACK/);
   });
 });
