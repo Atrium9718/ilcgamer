@@ -49,6 +49,16 @@ queda en `deploy/`. **Pendiente de aprobación de TI de ILC**: el proveedor de i
 8. **Verificación**: `curl https://APP_DOMAIN/api/v1/health` responde `ok`; abrir la PWA en un celular; recorrer la lista de
    `docs/PILOTO.md`.
 
+## Datos de demostración (solo staging)
+
+Con la excepción de separación de funciones de staging activa (ver arriba) y una cuenta SUPERADMIN:
+```bash
+docker compose --env-file .env.production -f deploy/compose.prod.yml run --rm -e APP_DOMAIN="$(grep ^APP_DOMAIN= .env.production | cut -d= -f2)" api \
+  node dist/seed-demo.js --as ti@ejemplo.com.co
+```
+Crea 3 juegos de prueba aprobados y activos, una campaña mixta publicada, un producto y un lote de 10 códigos, y 2 recompensas. Pasa
+por los servicios reales y es idempotente. Imprime los enlaces de los códigos **una sola vez**. Contenido de prueba, no de marca.
+
 ## Actualizar y volver atrás
 
 ```bash
