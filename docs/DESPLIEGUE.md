@@ -19,6 +19,10 @@ queda en `deploy/`. **Pendiente de aprobación de TI de ILC**: el proveedor de i
 | `web` | `deploy/Dockerfile.web` (Caddy) | HTTPS automático, sirve PWA y consola, proxy a `/api` |
 | `backup` | `deploy/Dockerfile.backup` | Copia diaria con rotación y cifrado opcional |
 
+## Atajo para staging
+
+`deploy/staging_bootstrap.sh` automatiza los pasos 2–5 y 7 en un servidor limpio (se lee y ejecuta en el servidor como usuario con sudo; genera los secretos allí). Ver la cabecera del script.
+
 ## Pasos
 
 1. **DNS**: dos nombres (PWA y consola) apuntando a la IP del servidor.
