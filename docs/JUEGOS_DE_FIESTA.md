@@ -8,8 +8,8 @@ Seis juegos para animar un grupo, instalados como módulos de la plataforma y **
 | Verdad o Reto | `verdad-o-reto` | Elige verdad o reto; hay una penitencia sin alcohol. |
 | Cultura Rumbera (antes «Cultura Chupística») | `cultura-rumbera` | Tema + cronómetro; «respondió bien» reinicia, si se acaba el tiempo se pierde. |
 | Yo Nunca Nunca | `yo-nunca-nunca` | Frases en orden, una a una. |
-| El Frentazo | `el-frentazo` | Palabras para adivinar con el celular en la frente, con cronómetro. |
-| Mano de Cirujano | `mano-de-cirujano` | Mantén el dedo sobre el círculo que se mueve; si te sales, pierdes. |
+| El Frentazo | `el-frentazo` | Palabras para adivinar con el celular en la frente: se inclina hacia el piso si aciertan y hacia el techo para pasar (sensor de movimiento; hay botones como alternativa). |
+| Mano de Cirujano | `mano-de-cirujano` | Mantén el dedo dentro del círculo, que acelera, frena, crece y se encoge; si te sales o levantas el dedo, pierdes. |
 
 ## Cómo se personalizan (consola → «Juegos de fiesta»)
 1. Entra como TI o Admin de Marca → **Juegos de fiesta** → **Personalizar** (o crea uno nuevo desde una plantilla).

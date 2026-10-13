@@ -1,5 +1,6 @@
 import { type TouchEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LegalNotice } from '../components/LegalNotice.tsx';
+import { screenFacing, steadyTarget, tiltStep } from './motion.ts';
 import { PartyButton, PartyCompactContext, PartyDialog, PartyFrame, useCompact } from './PartyFrame.tsx';
 import { sound, vibrate } from './sound.ts';
 import type {
@@ -350,22 +351,93 @@ export function NeverNeverGame({ config, onExit }: { config: NeverNeverConfigVie
 
 // ───────────────────────── Adivina en la frente ─────────────────────────
 
+type DeviceOrientationCtor = typeof DeviceOrientationEvent & { requestPermission?: () => Promise<'granted' | 'denied'> };
+
+/**
+ * El Frentazo: el celular va en la frente con la pantalla hacia los demás. Inclinar hacia el piso = acertó;
+ * hacia el techo = pasar (con el sensor de movimiento). Los botones siguen disponibles como alternativa accesible.
+ */
 export function HeadbandGame({ config, onExit }: { config: HeadbandConfigView; onExit: () => void }) {
-  const [phase, setPhase] = useState<'setup' | 'play' | 'over'>('setup');
+  const [phase, setPhase] = useState<'setup' | 'ready' | 'play' | 'over'>('setup');
   const [words, setWords] = useState<string[]>([]);
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [left, setLeft] = useState(config.seconds);
-  const scoreRef = useRef(0);
-  scoreRef.current = score;
+  const [count, setCount] = useState(3);
+  const [sensor, setSensor] = useState<'off' | 'on' | 'denied'>('off');
+  const [flash, setFlash] = useState<'correct' | 'pass' | null>(null);
+  const live = useRef({ facing: null as number | null, base: 0, armed: true, playing: false });
+  const flashTimer = useRef(0);
 
-  const start = () => {
+  const answer = useCallback((kind: 'correct' | 'pass') => {
+    if (kind === 'correct') {
+      sound.success();
+      vibrate(120);
+      setScore((s) => s + 1);
+    } else {
+      sound.buzzer();
+      vibrate([60, 40, 60]);
+    }
+    setIdx((i) => i + 1);
+    setFlash(kind);
+    window.clearTimeout(flashTimer.current);
+    flashTimer.current = window.setTimeout(() => setFlash(null), 650);
+  }, []);
+
+  const start = async () => {
+    // iOS exige pedir permiso al sensor de movimiento dentro de un toque.
+    const Ctor = typeof DeviceOrientationEvent === 'undefined' ? undefined : (DeviceOrientationEvent as DeviceOrientationCtor);
+    if (Ctor?.requestPermission) {
+      try {
+        setSensor((await Ctor.requestPermission()) === 'granted' ? 'on' : 'denied');
+      } catch {
+        setSensor('denied');
+      }
+    } else setSensor(Ctor ? 'on' : 'off');
     setWords([...config.words].sort(() => Math.random() - 0.5));
     setIdx(0);
     setScore(0);
     setLeft(config.seconds);
-    setPhase('play');
+    setCount(3);
+    setPhase('ready');
   };
+
+  // Sensor de orientación: se mantiene la última lectura; al empezar la ronda se calibra con el celular recto en la frente.
+  useEffect(() => {
+    if (sensor !== 'on') return;
+    const onOrientation = (e: DeviceOrientationEvent) => {
+      if (e.beta == null || e.gamma == null) return;
+      const l = live.current;
+      l.facing = screenFacing(e.beta, e.gamma);
+      if (!l.playing) return;
+      const step = tiltStep(l.facing, l.base, l.armed);
+      l.armed = step.armed;
+      if (step.action) answer(step.action);
+    };
+    window.addEventListener('deviceorientation', onOrientation);
+    return () => window.removeEventListener('deviceorientation', onOrientation);
+  }, [sensor, answer]);
+
+  // Cuenta regresiva para ponerse el celular en la frente.
+  useEffect(() => {
+    if (phase !== 'ready') return;
+    const t = setInterval(() => {
+      setCount((c) => {
+        sound.tick();
+        if (c <= 1) {
+          clearInterval(t);
+          live.current.base = live.current.facing ?? 0;
+          live.current.armed = true;
+          live.current.playing = true;
+          sound.success();
+          setPhase('play');
+          return 0;
+        }
+        return c - 1;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'play') return;
@@ -375,63 +447,86 @@ export function HeadbandGame({ config, onExit }: { config: HeadbandConfigView; o
         if (s - 1 <= 0) {
           clearInterval(t);
           sound.buzzer();
+          live.current.playing = false;
           setPhase('over');
           return 0;
         }
         return s - 1;
       });
     }, 1000);
-    return () => clearInterval(t);
+    return () => {
+      clearInterval(t);
+      live.current.playing = false;
+    };
+  }, [phase]);
+
+  // Mantener la pantalla encendida durante la ronda (si el navegador lo permite).
+  useEffect(() => {
+    if (phase !== 'play' && phase !== 'ready') return;
+    let lock: { release: () => Promise<void> } | undefined;
+    const nav = navigator as Navigator & { wakeLock?: { request: (t: 'screen') => Promise<{ release: () => Promise<void> }> } };
+    nav.wakeLock?.request('screen').then(
+      (l) => {
+        lock = l;
+      },
+      () => undefined,
+    );
+    return () => void lock?.release().catch(() => undefined);
   }, [phase]);
 
   const message = config.endMessage.replace('{n}', String(score));
+  const flashBg = flash === 'correct' ? '#0a7a4f' : flash === 'pass' ? '#7a1a1a' : '#111';
   return (
     <PartyFrame look={config.look} heading={config.heading} onExit={onExit} center>
-      {phase !== 'play' ? (
+      {phase === 'setup' || phase === 'over' ? (
         <div className="z-10 flex w-full max-w-[420px] flex-col items-center gap-5 text-center">
           <p className="text-[#aaa]">{config.intro}</p>
-          <PartyButton className="w-full max-w-[320px]" onClick={start}>
+          <p className="text-[0.9rem] text-[#cfcfcf]">
+            Con el celular en la frente: <strong>inclínalo hacia el piso si aciertan</strong> y <strong>hacia el techo para pasar</strong>.
+          </p>
+          <PartyButton className="w-full max-w-[320px]" onClick={() => void start()}>
             {config.startLabel}
           </PartyButton>
           <Legal />
+        </div>
+      ) : phase === 'ready' ? (
+        <div role="status" className="z-10 flex w-full max-w-[420px] flex-col items-center gap-3 text-center">
+          <p className="text-[1.2rem] font-bold">Ponte el celular en la frente, con la pantalla hacia los demás</p>
+          <p className="text-[6rem] font-black leading-none" style={{ color: 'var(--p-accent2)' }}>
+            {count}
+          </p>
+          {sensor !== 'on' && <p className="text-[0.85rem] text-[#cfcfcf]">Sin sensor de movimiento: otra persona usa los botones.</p>}
         </div>
       ) : (
         <div className="z-10 flex w-full max-w-[500px] flex-col items-center">
           <section
             aria-live="polite"
-            className="flex min-h-[260px] w-full flex-col items-center justify-center rounded-3xl border-[3px] bg-[#111] p-5 text-center"
-            style={{ borderColor: 'var(--p-accent2)' }}
+            className="flex min-h-[260px] w-full flex-col items-center justify-center rounded-3xl border-[3px] p-5 text-center motion-safe:transition-colors"
+            style={{ borderColor: 'var(--p-accent2)', background: flashBg }}
           >
-            <p className="text-[2.8rem] font-black uppercase leading-tight" style={{ color: 'var(--p-accent2)' }}>
-              {words[idx] ?? 'FIN'}
+            <p className="text-[2.8rem] font-black uppercase leading-tight" style={{ color: flash ? '#fff' : 'var(--p-accent2)' }}>
+              {flash === 'correct' ? '¡ACERTÓ!' : flash === 'pass' ? 'PASÓ' : (words[idx] ?? 'FIN')}
             </p>
-            <p role="timer" aria-label={`Quedan ${left} segundos`} className="mt-5 text-[1.8rem] font-black" style={{ color: 'var(--p-accent)' }}>
+            <p
+              role="timer"
+              aria-label={`Quedan ${left} segundos`}
+              className="mt-5 text-[1.8rem] font-black"
+              style={{ color: flash ? '#fff' : 'var(--p-accent)' }}
+            >
               <span aria-hidden="true">{left}s</span>
             </p>
           </section>
           <div className="mt-5 flex w-full gap-3">
-            <PartyButton
-              tone="gray"
-              className="flex-1 !py-5"
-              onClick={() => {
-                sound.buzzer();
-                setIdx((i) => i + 1);
-              }}
-            >
+            <PartyButton tone="gray" className="flex-1 !py-5" onClick={() => answer('pass')}>
               {config.passLabel} <span aria-hidden="true">❌</span>
             </PartyButton>
-            <PartyButton
-              tone="green"
-              className="flex-1 !py-5"
-              onClick={() => {
-                sound.success();
-                setScore((s) => s + 1);
-                setIdx((i) => i + 1);
-              }}
-            >
+            <PartyButton tone="green" className="flex-1 !py-5" onClick={() => answer('correct')}>
               {config.correctLabel} <span aria-hidden="true">✅</span>
             </PartyButton>
           </div>
+          <p className="mt-3 text-center text-[0.8rem] text-[#9a9a9a]">
+            {sensor === 'on' ? 'Sensor activo: abajo = acertó · arriba = pasar' : 'Usa los botones para marcar acierto o pase'}
+          </p>
         </div>
       )}
       {phase === 'over' && <PartyDialog text={message} actionLabel="Continuar" onClose={() => setPhase('setup')} />}
@@ -441,80 +536,109 @@ export function HeadbandGame({ config, onExit }: { config: HeadbandConfigView; o
 
 // ───────────────────────── Pulso firme ─────────────────────────
 
+/**
+ * Mano de Cirujano: hay que mantener el dedo dentro del círculo, que acelera, frena, crece y se encoge.
+ * Se pierde al salirse del círculo o al levantar el dedo.
+ */
 export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigView; onExit: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hudRef = useRef<HTMLDivElement>(null);
   const [lostAt, setLostAt] = useState<string | null>(null);
-  const st = useRef({ playing: false, start: 0, px: 0, py: 0, w: 0, h: 0, raf: 0 });
+  const [round, setRound] = useState(0);
   const radius = config.safeRadius;
   const compact = useCompact();
-  const hudText = useMemo(() => 'Tiempo: 0.0s', []);
+  const hudText = useMemo(() => 'Toca el círculo para empezar', []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: round reinicia el juego tras perder
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    const s = st.current;
+    const s = { playing: false, start: 0, px: 0, py: 0, w: 0, h: 0, raf: 0, pointerId: -1 };
     const resize = () => {
       s.w = canvas.width = canvas.parentElement?.clientWidth ?? 300;
       s.h = canvas.height = canvas.parentElement?.clientHeight ?? 400;
-      s.px = s.w / 2;
-      s.py = s.h / 2;
     };
     resize();
-    window.addEventListener('resize', resize);
-    const loop = (now: number) => {
-      if (!s.playing || !ctx) return;
-      const elapsed = ((now - s.start) / 1000).toFixed(1);
-      if (hudRef.current) hudRef.current.textContent = `Tiempo: ${elapsed}s`;
-      const dotX = s.w / 2 + Math.sin(now * 0.002) * (s.w * 0.35);
-      const dotY = s.h / 2 + Math.cos(now * 0.0015) * (s.h * 0.35);
+    if (hudRef.current) hudRef.current.textContent = hudText;
+    const draw = (t: number, showPlayer: boolean) => {
+      if (!ctx) return { x: 0, y: 0, r: radius };
+      const c = steadyTarget(t, s.w, s.h, radius);
       ctx.clearRect(0, 0, s.w, s.h);
       ctx.beginPath();
-      ctx.arc(dotX, dotY, radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 168, 120, 0.2)';
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 168, 120, 0.22)';
       ctx.fill();
       ctx.strokeStyle = '#00A878';
       ctx.lineWidth = 3;
       ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(s.px, s.py, 15, 0, Math.PI * 2);
-      ctx.fillStyle = config.look.accent2;
-      ctx.fill();
-      if (Math.hypot(s.px - dotX, s.py - dotY) > radius) {
-        sound.buzzer();
-        vibrate(300);
-        s.playing = false;
-        if (hudRef.current) hudRef.current.textContent = config.restartHint;
-        setLostAt(elapsed);
-        return;
+      if (showPlayer) {
+        ctx.beginPath();
+        ctx.arc(s.px, s.py, 10, 0, Math.PI * 2);
+        ctx.fillStyle = config.look.accent2;
+        ctx.fill();
       }
+      return c;
+    };
+    const lose = (elapsed: string) => {
+      if (!s.playing) return;
+      s.playing = false;
+      cancelAnimationFrame(s.raf);
+      sound.buzzer();
+      vibrate(300);
+      if (hudRef.current) hudRef.current.textContent = config.restartHint;
+      setLostAt(elapsed);
+    };
+    const loop = (now: number) => {
+      if (!s.playing) return;
+      const t = (now - s.start) / 1000;
+      const c = draw(t, true);
+      if (hudRef.current) hudRef.current.textContent = `Tiempo: ${t.toFixed(1)}s`;
+      if (Math.hypot(s.px - c.x, s.py - c.y) > c.r) return lose(t.toFixed(1));
       s.raf = requestAnimationFrame(loop);
     };
-    const point = (e: PointerEvent) => {
+    const place = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       s.px = e.clientX - rect.left;
       s.py = e.clientY - rect.top;
-      if (!s.playing) {
-        s.playing = true;
-        s.start = performance.now();
-        sound.success();
-        s.raf = requestAnimationFrame(loop);
+    };
+    const down = (e: PointerEvent) => {
+      if (s.playing) return;
+      place(e);
+      const c = steadyTarget(0, s.w, s.h, radius);
+      // Solo arranca si el dedo empieza dentro del círculo.
+      if (Math.hypot(s.px - c.x, s.py - c.y) > c.r) return;
+      try {
+        canvas.setPointerCapture(e.pointerId);
+      } catch {
+        /* sin captura: se sigue con los eventos normales */
       }
+      s.pointerId = e.pointerId;
+      s.playing = true;
+      s.start = performance.now();
+      sound.success();
+      s.raf = requestAnimationFrame(loop);
     };
     const move = (e: PointerEvent) => {
-      if (s.playing) point(e);
+      if (s.playing && e.pointerId === s.pointerId) place(e);
     };
-    canvas.addEventListener('pointerdown', point);
+    const up = (e: PointerEvent) => {
+      if (s.playing && e.pointerId === s.pointerId) lose(((performance.now() - s.start) / 1000).toFixed(1));
+    };
+    draw(0, false);
+    canvas.addEventListener('pointerdown', down);
     canvas.addEventListener('pointermove', move);
+    canvas.addEventListener('pointerup', up);
+    canvas.addEventListener('pointercancel', up);
     return () => {
       s.playing = false;
       cancelAnimationFrame(s.raf);
-      window.removeEventListener('resize', resize);
-      canvas.removeEventListener('pointerdown', point);
+      canvas.removeEventListener('pointerdown', down);
       canvas.removeEventListener('pointermove', move);
+      canvas.removeEventListener('pointerup', up);
+      canvas.removeEventListener('pointercancel', up);
     };
-  }, [radius, config.look.accent2, config.restartHint]);
+  }, [radius, config.look.accent2, config.restartHint, hudText, round]);
 
   return (
     <PartyFrame look={config.look} heading={config.heading} subtitle={config.instructions} onExit={onExit}>
@@ -527,7 +651,7 @@ export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigVie
       >
         <canvas
           ref={canvasRef}
-          aria-label="Área de juego: mantén presionado y sigue el círculo verde"
+          aria-label="Área de juego: pon el dedo dentro del círculo verde, mantenlo presionado y síguelo sin salirte"
           className="block h-full w-full"
           style={{ touchAction: 'none' }}
         />
@@ -536,7 +660,16 @@ export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigVie
         {config.footer}
         <Legal />
       </footer>
-      {lostAt !== null && <PartyDialog text={config.lostMessage.replace('{t}', lostAt)} actionLabel="Continuar" onClose={() => setLostAt(null)} />}
+      {lostAt !== null && (
+        <PartyDialog
+          text={config.lostMessage.replace('{t}', lostAt)}
+          actionLabel="Continuar"
+          onClose={() => {
+            setLostAt(null);
+            setRound((r) => r + 1);
+          }}
+        />
+      )}
     </PartyFrame>
   );
 }

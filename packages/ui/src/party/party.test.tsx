@@ -129,6 +129,10 @@ describe('adivina en la frente', () => {
     const user = setup();
     render(<PartyGameView config={{ ...HEADBAND, seconds: 20 }} onExit={vi.fn()} />);
     await user.click(screen.getByRole('button', { name: '¡INICIAR RONDA!' }));
+    expect(screen.getByText(/Ponte el celular en la frente/)).toBeInTheDocument();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3_100);
+    });
     expect(screen.getByRole('timer')).toHaveAccessibleName('Quedan 20 segundos');
     await user.click(screen.getByRole('button', { name: /ACERTÓ/ }));
     await user.click(screen.getByRole('button', { name: /PASAR/ }));
@@ -142,12 +146,37 @@ describe('adivina en la frente', () => {
   });
 });
 
+describe('adivina en la frente con el sensor de movimiento', () => {
+  const tilt = (beta: number) =>
+    act(() => {
+      window.dispatchEvent(Object.assign(new Event('deviceorientation'), { beta, gamma: 0 }));
+    });
+  it('inclinar hacia el piso acierta, hacia el techo pasa, y exige volver a la frente entre gestos', async () => {
+    vi.stubGlobal('DeviceOrientationEvent', class {});
+    const user = setup();
+    render(<PartyGameView config={{ ...HEADBAND, seconds: 60 }} onExit={vi.fn()} />);
+    await user.click(screen.getByRole('button', { name: '¡INICIAR RONDA!' }));
+    await tilt(90); // recto en la frente
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3_100);
+    });
+    expect(screen.getByText(/Sensor activo/)).toBeInTheDocument();
+    await tilt(150); // hacia el piso → acierta
+    expect(screen.getByText('¡ACERTÓ!', { selector: 'p' })).toBeInTheDocument();
+    await tilt(160); // sigue abajo: no cuenta otra vez
+    await tilt(90); // vuelve a la frente
+    await tilt(30); // hacia el techo → pasa
+    expect(screen.getByText('PASÓ', { selector: 'p' })).toBeInTheDocument();
+    vi.unstubAllGlobals();
+  });
+});
+
 describe('pulso firme', () => {
   it('muestra las instrucciones, el cronómetro y el área de juego', () => {
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
     render(<PartyGameView config={STEADY_HAND} onExit={vi.fn()} />);
     expect(screen.getByText(STEADY_HAND.instructions)).toBeInTheDocument();
-    expect(screen.getByText('Tiempo: 0.0s')).toBeInTheDocument();
+    expect(screen.getByText('Toca el círculo para empezar')).toBeInTheDocument();
     expect(screen.getByLabelText(/Área de juego/)).toBeInTheDocument();
     expect(screen.getByText(STEADY_HAND.footer)).toBeInTheDocument();
   });

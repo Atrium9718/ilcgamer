@@ -135,7 +135,13 @@ async function signUp(page, goal) {
   await signUp(page, '/jugar');
   const open = async (game) => {
     await page.goto(`${PWA}/jugar`);
-    await page.getByRole('button', { name: new RegExp(game.title) }).click();
+    await page
+      .getByRole('button', { name: new RegExp(game.title) })
+      .click({ timeout: 8000 })
+      .catch(async (e) => {
+        console.log((await page.innerText('body')).slice(0, 800));
+        throw e;
+      });
   };
   const by = Object.fromEntries(manifests.map((m) => [m.delivery.config.game, m]));
 
