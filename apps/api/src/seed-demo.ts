@@ -6,8 +6,10 @@ import { hmac } from './common/crypto.ts';
 import { DomainError } from './common/domain-error.ts';
 import { ENV } from './config/config.module.ts';
 import { type Env, separationOfDutiesApplies } from './config/env.ts';
+import { DEMO_CONTEST_PHOTOS } from './demo/contest-photos.ts';
 import { DEMO_MANIFESTS } from './demo/manifests.ts';
 import { ProgressService } from './economy/progress.service.ts';
+import { EventsService } from './events/events.service.ts';
 import { ModulesService } from './games/modules.service.ts';
 import { normalizeDestination } from './identity/destination.ts';
 import { PrismaService } from './prisma/prisma.service.ts';
@@ -47,6 +49,7 @@ const campaigns = app.get(CampaignsService);
 const rewards = app.get(RewardsService);
 const progress = app.get(ProgressService);
 const smart = app.get(SmartTagsAdminService);
+const events = app.get(EventsService);
 
 /** Ejecuta un paso y tolera que ya exista (idempotencia). */
 async function step<T>(label: string, fn: () => Promise<T>): Promise<T | undefined> {
@@ -171,7 +174,93 @@ for (const r of REWARDS) {
   await step(`activar ${r.slug}`, () => rewards.setActive(actor, created.id, true));
 }
 
-console.log('5/5 Listo');
+console.log('5/6 Evento y concursos de disfraces');
+const HOUR = 3_600_000;
+const EVENT_SLUG = 'feria-demo';
+let ev = await prisma.event.findUnique({ where: { slug: EVENT_SLUG } });
+if (!ev) {
+  const created = await events.createEvent(actor, {
+    slug: EVENT_SLUG,
+    title: 'Feria de demostración',
+    description: 'Evento de prueba con concursos para mostrar la plataforma.',
+    city: 'Manizales',
+    startsAt: new Date(Date.now() - DAY).toISOString(),
+    endsAt: new Date(Date.now() + 30 * DAY).toISOString(),
+  });
+  await events.setEventStatus(actor, created.id, 'PUBLICADO');
+  ev = await prisma.event.findUniqueOrThrow({ where: { slug: EVENT_SLUG } });
+  console.log('  ✓ evento «Feria de demostración» publicado');
+} else console.log('  · el evento ya existe');
+
+/** Persona de demostración: cuenta activa sin credenciales (no puede iniciar sesión), solo para poblar el concurso. */
+async function demoPerson(alias: string) {
+  return (
+    (await prisma.user.findFirst({ where: { alias } })) ??
+    prisma.user.create({ data: { alias, status: 'ACTIVA', ageVerifiedAt: new Date(), ageVerifiedMinAge: 18, ageGateMethod: 'demo' } })
+  );
+}
+const contestUrls: string[] = [];
+const dates = (up: number, open: number, close: number) => ({
+  uploadsCloseAt: new Date(Date.now() + up * HOUR),
+  votingOpensAt: new Date(Date.now() + open * HOUR),
+  votingClosesAt: new Date(Date.now() + close * HOUR),
+});
+
+// Concurso 1: ya en votación, con 4 disfraces aprobados y votos de prueba (para mostrar el ranking y la pantalla).
+if (!(await prisma.contest.findFirst({ where: { eventId: ev.id, slug: 'disfraces-votacion' } }))) {
+  const d = dates(1, 1, 72);
+  const c = await events.createContest(actor, ev.id, {
+    slug: 'disfraces-votacion',
+    kind: 'DISFRACES',
+    title: 'Concurso de disfraces (votación abierta)',
+    description: 'Vota por tu disfraz favorito. Contenido de demostración.',
+    prize: 'Palco para la feria',
+    prizeConditions: 'El premio se entrega en persona con el código del ganador. Demostración, sin valor comercial.',
+    uploadsCloseAt: d.uploadsCloseAt.toISOString(),
+    votingOpensAt: d.votingOpensAt.toISOString(),
+    votingClosesAt: d.votingClosesAt.toISOString(),
+  });
+  await events.openContest(actor, c.id);
+  const entryIds: string[] = [];
+  for (const p of DEMO_CONTEST_PHOTOS) {
+    const u = await demoPerson(p.alias);
+    await events.upsertEntry(u, c.id, { title: p.title, caption: p.caption, consentDisplay: true });
+    await events.putPhoto(u, c.id, Buffer.from(p.base64, 'base64'));
+    const row = await prisma.contestEntry.findFirstOrThrow({ where: { contestId: c.id, userId: u.id } });
+    await events.moderate(actor, c.id, row.id, { decision: 'APROBADA' });
+    entryIds.push(row.id);
+  }
+  // Pasa a la fase de votación (las fechas las fija esta herramienta de demostración; la fase la calcula el servidor).
+  await prisma.contest.update({ where: { id: c.id }, data: { uploadsCloseAt: new Date(Date.now() - 2 * HOUR), votingOpensAt: new Date(Date.now() - HOUR) } });
+  const plan = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3];
+  for (const [i, target] of plan.entries()) await events.vote(await demoPerson(`Votante ${i + 1} (demo)`), c.id, entryIds[target] as string);
+  console.log('  ✓ concurso con votación abierta, 4 disfraces y 10 votos de prueba');
+} else console.log('  · el concurso de votación ya existe');
+
+// Concurso 2: con inscripciones abiertas, vacío (para mostrar cómo se sube una foto).
+if (!(await prisma.contest.findFirst({ where: { eventId: ev.id, slug: 'disfraces-inscripcion' } }))) {
+  const d = dates(48, 49, 120);
+  const c = await events.createContest(actor, ev.id, {
+    slug: 'disfraces-inscripcion',
+    kind: 'DISFRACES',
+    title: 'Concurso de disfraces (inscripciones abiertas)',
+    description: 'Inscribe tu disfraz con una foto. Contenido de demostración.',
+    prize: 'Palco para la feria',
+    prizeConditions: 'El premio se entrega en persona con el código del ganador. Demostración, sin valor comercial.',
+    uploadsCloseAt: d.uploadsCloseAt.toISOString(),
+    votingOpensAt: d.votingOpensAt.toISOString(),
+    votingClosesAt: d.votingClosesAt.toISOString(),
+  });
+  await events.openContest(actor, c.id);
+  console.log('  ✓ concurso con inscripciones abiertas');
+} else console.log('  · el concurso de inscripciones ya existe');
+for (const c of await prisma.contest.findMany({ where: { eventId: ev.id } }))
+  contestUrls.push(
+    `${c.title}\n    Votar/participar: https://${process.env.APP_DOMAIN ?? 'APP_DOMAIN'}/concursos/${c.id}\n    Pantalla del evento: https://${process.env.APP_DOMAIN ?? 'APP_DOMAIN'}/pantalla/${c.screenToken}`,
+  );
+
+console.log('6/6 Listo');
+if (contestUrls.length) console.log(`\nConcursos de demostración:\n  ${contestUrls.join('\n  ')}`);
 if (tokens.length) {
   const domain = process.env.APP_DOMAIN ?? 'APP_DOMAIN';
   console.log('\nCódigos de demostración (cada uno se activa una sola vez):');

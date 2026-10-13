@@ -294,6 +294,16 @@ Cada paso termina con: código + pruebas + demo navegable + commit. No se avanza
 - [x] Verificado: 372 pruebas (API 195 contra PostgreSQL), axe 174 combinaciones sin violaciones, E2E de ruta crítica en verde.
 - [ ] **Pendiente (depende de ILC o de dispositivos reales)** — ver `docs/PILOTO.md`: proveedor de infraestructura y de códigos de acceso; aprobaciones y textos legales; contenido y premios reales; pruebas manuales en iOS y en navegadores integrados; dimensionar con tráfico real; prueba de penetración externa; construir y probar las imágenes de Docker en el servidor.
 
+### Paso 14 — Eventos y concurso de disfraces ✅
+Pedido del cliente: un espacio de **eventos** y, dentro, un **concurso de disfraces** con foto, votación, premio (p. ej. un palco para la feria) y una **pantalla** con las votaciones en vivo. Guía en `docs/EVENTOS_Y_CONCURSOS.md`.
+- [x] **Modelo y reglas** (`packages/contracts/src/events.ts`, migración `20261013120000_eventos_y_concursos`): evento → concursos; fases por fecha calculadas en el servidor; **un voto por cuenta** (UNIQUE) y nunca por el propio disfraz; trigger en la base que impide votos a otro concurso, a inscripciones sin aprobar y la edición de votos; desempate determinista (más votos; si empatan, quien se inscribió primero).
+- [x] **Fotos como dato personal**: autorización expresa para mostrarlas, **moderación previa** de Marca, solo JPEG, el servidor **quita EXIF/ubicación** (`apps/api/src/events/jpeg.ts`), se eliminan al cerrar la cuenta y 30 días después del concurso (`retention.contestPhotosDays`); norma visible: sin copas, botellas ni consumo de alcohol.
+- [x] **Economías separadas**: participar y votar no da Puntos ILC ni XP (hay una prueba que lo verifica); el premio se entrega en persona con un **código del ganador** y queda auditado.
+- [x] **Pantalla pública** `/pantalla/:token` (sin sesión; el acceso es un enlace secreto que la consola puede **rotar**): ranking en vivo con alias, título, foto aprobada y conteos, más un QR para votar; texto grande, siempre en tema oscuro.
+- [x] **Consola** (sección Eventos): crear evento y concurso, abrir (otra persona distinta a quien lo creó), moderar con foto, copiar/rotar el enlace de la pantalla, cerrar y registrar la entrega del premio. **PWA**: Jugar → Eventos y concursos → inscribir, subir foto (el navegador la reduce a JPEG) y votar.
+- [x] Verificado: 403 pruebas (API 213 contra PostgreSQL), axe 200 combinaciones sin violaciones, E2E en navegador real (`tools/e2e/contest.cjs`: inscripción con foto → moderación → voto → pantalla en vivo → rotar enlace).
+- [ ] **Pendiente (ILC/Jurídica)**: texto legal de autorización de imagen y tratamiento de fotos, reglas y bases del concurso, y quién entrega el premio.
+
 **Orden de valor:** pasos 1–2 dan un prototipo visual navegable rápido para validar con ILC;
 pasos 3–8 son el MVP P0; 9–12 completan P0/P1; 13 prepara el piloto controlado.
 

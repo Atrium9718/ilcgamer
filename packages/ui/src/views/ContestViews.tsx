@@ -18,6 +18,9 @@ const PHASE: Record<ContestPhaseView, { label: string; tone: string }> = {
   TERMINADO: { label: 'Terminado', tone: 'bg-surface-container-high text-on-surface-variant' },
 };
 
+/** «1 voto», «2 votos». */
+export const votesLabel = (n: number): string => `${formatNumber(n)} ${n === 1 ? 'voto' : 'votos'}`;
+
 export const phaseLabel = (p: ContestPhaseView): string => PHASE[p].label;
 
 // ───────────────────────── Lista de eventos ─────────────────────────
@@ -453,10 +456,10 @@ export function ContestScreenView({
   const max = Math.max(1, ...entries.map((e) => e.votes));
   const top = entries.slice(0, 8);
   return (
-    <main className="min-h-dvh bg-inverse-surface text-inverse-on-surface p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-10">
+    <main className="min-h-dvh bg-surface text-on-surface p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-10">
       <section aria-labelledby="titulo" className="space-y-6 min-w-0">
         <header className="space-y-2">
-          <p className="font-label-lg text-[20px] uppercase tracking-widest text-inverse-primary">{eventTitle}</p>
+          <p className="font-label-lg text-[20px] uppercase tracking-widest text-primary">{eventTitle}</p>
           <h1 id="titulo" className="font-headline-lg text-[48px] leading-[1.05] lg:text-[64px]">
             {title}
           </h1>
@@ -470,11 +473,11 @@ export function ContestScreenView({
             <p className="font-label-lg text-[20px] uppercase tracking-widest">¡Ganador!</p>
             <p className="font-headline-lg text-[56px] leading-tight">«{winner.title}»</p>
             <p className="font-body-md text-[28px]">
-              {winner.alias} · {formatNumber(winner.votes)} votos
+              {winner.alias} · {votesLabel(winner.votes)}
             </p>
           </div>
         ) : (
-          <p className="font-body-md text-[20px] text-inverse-primary">
+          <p className="font-body-md text-[20px] text-primary">
             {PHASE[phase].label} · {closesLabel}
           </p>
         )}
@@ -485,25 +488,25 @@ export function ContestScreenView({
           <ol className="space-y-4" aria-label="Clasificación en vivo">
             {top.map((e) => (
               <li key={e.id} className="flex items-center gap-5">
-                <span className="w-12 text-center font-headline-lg text-[40px] text-inverse-primary" aria-hidden="true">
+                <span className="w-12 text-center font-headline-lg text-[40px] text-primary" aria-hidden="true">
                   {e.rank}
                 </span>
                 <Photo url={e.photoUrl} alt={`Disfraz «${e.title}» de ${e.alias}`} className="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl shrink-0" />
                 <div className="flex-1 min-w-0 space-y-2">
                   <p className="font-headline-md text-[28px] leading-tight truncate">
                     <span className="sr-only">Puesto {e.rank}: </span>
-                    {e.title} <span className="font-body-md text-[20px] text-inverse-primary">· {e.alias}</span>
+                    {e.title} <span className="font-body-md text-[20px] text-primary">· {e.alias}</span>
                   </p>
-                  <div className="h-4 rounded-full bg-white/15 overflow-hidden" aria-hidden="true">
+                  <div className="h-4 rounded-full bg-surface-container-high overflow-hidden" aria-hidden="true">
                     <div
-                      className="h-full rounded-full bg-inverse-primary motion-safe:transition-[width] motion-safe:duration-700"
+                      className="h-full rounded-full bg-primary motion-safe:transition-[width] motion-safe:duration-700"
                       style={{ width: `${Math.max(4, Math.round((e.votes / max) * 100))}%` }}
                     />
                   </div>
                 </div>
                 <p className="w-28 text-right font-headline-lg text-[40px] tabular-nums">
                   {formatNumber(e.votes)}
-                  <span className="sr-only"> votos</span>
+                  <span className="sr-only">{e.votes === 1 ? ' voto' : ' votos'}</span>
                 </p>
               </li>
             ))}
@@ -511,15 +514,15 @@ export function ContestScreenView({
         )}
       </section>
 
-      <aside aria-label="Cómo votar" className="rounded-3xl bg-white text-on-surface p-6 flex flex-col items-center text-center gap-4 self-start">
+      <aside aria-label="Cómo votar" className="rounded-3xl bg-white text-[#1b1b1b] p-6 flex flex-col items-center text-center gap-4 self-start">
         <h2 className="font-headline-md text-[28px]">Vota con tu celular</h2>
         {qrDataUrl && <img src={qrDataUrl} alt={`Código QR para votar en ${voteAddress}`} width={288} height={288} className="w-72 h-72" />}
-        <p className="font-label-lg text-[20px] break-all">{voteAddress}</p>
+        <p className="font-label-lg text-[14px] break-all">{voteAddress}</p>
         <p className="font-body-md text-[18px]" aria-live="polite">
-          {formatNumber(totalVotes)} votos en total
+          {votesLabel(totalVotes)} en total
         </p>
         {offline && (
-          <p role="status" className="font-body-md text-[16px] text-error">
+          <p role="status" className="font-body-md text-[16px] text-[#8c1d18]">
             Reconectando… se muestra el último resultado.
           </p>
         )}

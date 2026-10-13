@@ -15,7 +15,7 @@ const contest = (over: Partial<ContestDetail> = {}): ContestDetail => ({
   prize: 'Palco para la feria',
   prizeConditions: 'El premio se entrega en persona con el código del ganador.',
   phase: 'VOTACION',
-  phaseNote: 'Vota hasta el 15 de enero, 8:00 p. m. Un voto por persona.',
+  phaseNote: 'Vota hasta: 15 de enero, 8:00 p. m. · Un voto por persona',
   guidelines: [
     'Solo tu disfraz: sin copas, botellas ni consumo de alcohol en la foto.',
     'Sin menores de edad ni datos personales visibles (documentos, teléfonos).',

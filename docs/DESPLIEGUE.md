@@ -56,7 +56,7 @@ Con la excepción de separación de funciones de staging activa (ver arriba) y u
 docker compose --env-file .env.production -f deploy/compose.prod.yml run --rm -e APP_DOMAIN="$(grep ^APP_DOMAIN= .env.production | cut -d= -f2)" api \
   node dist/seed-demo.js --as ti@ejemplo.com.co
 ```
-Crea 3 juegos de prueba aprobados y activos, una campaña mixta publicada, un producto y un lote de 10 códigos, y 2 recompensas. Pasa
+Crea 3 juegos de prueba aprobados y activos, una campaña mixta publicada, un producto y un lote de 10 códigos, 2 recompensas y una **Feria de demostración** con dos concursos de disfraces (uno en votación con 4 disfraces y votos de prueba, y otro con inscripciones abiertas); imprime sus enlaces y los de la **pantalla del evento**. Pasa
 por los servicios reales y es idempotente. Imprime los enlaces de los códigos **una sola vez**. Contenido de prueba, no de marca.
 
 ## Actualizar y volver atrás

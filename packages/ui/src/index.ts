@@ -64,6 +64,7 @@ export {
   type EventsListViewProps,
   phaseLabel,
   type ScreenEntryRow,
+  votesLabel,
 } from './views/ContestViews.tsx';
 export { CreateParcheView, type CreateParcheViewProps, type ParcheMode } from './views/CreateParcheView.tsx';
 export { GameResultView, type GameResultViewProps, type ResultState, type VerifiedResult } from './views/GameResultView.tsx';

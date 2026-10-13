@@ -25,11 +25,11 @@ export function toEventRows(events: PublicEvent[]): EventRow[] {
 function phaseNote(c: ContestView): string {
   switch (c.phase) {
     case 'INSCRIPCION':
-      return `Inscripciones hasta el ${whenFmt.format(new Date(c.uploadsCloseAt))}. La votación abre el ${whenFmt.format(new Date(c.votingOpensAt))}.`;
+      return `Inscripciones hasta: ${whenFmt.format(new Date(c.uploadsCloseAt))} · La votación abre: ${whenFmt.format(new Date(c.votingOpensAt))}`;
     case 'ENTRE_FASES':
-      return `La votación abre el ${whenFmt.format(new Date(c.votingOpensAt))}.`;
+      return `La votación abre: ${whenFmt.format(new Date(c.votingOpensAt))}`;
     case 'VOTACION':
-      return `Vota hasta el ${whenFmt.format(new Date(c.votingClosesAt))}. Un voto por persona.`;
+      return `Vota hasta: ${whenFmt.format(new Date(c.votingClosesAt))} · Un voto por persona`;
     case 'TERMINADO':
       return 'El concurso terminó.';
     default:
@@ -157,6 +157,15 @@ export function ContestRoute() {
 /** Pantalla del evento (se proyecta): sin sesión ni control de edad; se actualiza sola cada 4 s. */
 export function ContestScreenRoute() {
   const { token = '' } = useParams();
+  // La pantalla del evento siempre es oscura (proyector): ignora el tema que haya elegido la persona o la campaña.
+  useEffect(() => {
+    const root = document.documentElement;
+    const previous = root.dataset.theme;
+    delete root.dataset.theme;
+    return () => {
+      if (previous) root.dataset.theme = previous;
+    };
+  }, []);
   const [screen, setScreen] = useState<ContestScreen>();
   const [state, setState] = useState<'loading' | 'ok' | 'gone' | 'offline'>('loading');
   const [qr, setQr] = useState<string | null>(null);
@@ -189,13 +198,13 @@ export function ContestScreenRoute() {
 
   if (state === 'gone')
     return (
-      <main className="min-h-dvh flex items-center justify-center bg-inverse-surface text-inverse-on-surface p-8 text-center">
+      <main className="min-h-dvh flex items-center justify-center bg-surface text-on-surface p-8 text-center">
         <p className="font-headline-md text-[28px]">Esta pantalla ya no está disponible.</p>
       </main>
     );
   if (!screen)
     return (
-      <main className="min-h-dvh flex items-center justify-center bg-inverse-surface text-inverse-on-surface p-8 text-center">
+      <main className="min-h-dvh flex items-center justify-center bg-surface text-on-surface p-8 text-center">
         <p role="status" className="font-headline-md text-[28px]">
           {state === 'offline' ? 'Reconectando…' : 'Cargando…'}
         </p>
