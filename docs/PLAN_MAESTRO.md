@@ -312,7 +312,7 @@ Pedido del cliente: montar seis juegos que ya existían como archivos HTML suelt
 - [x] **Consola → «Juegos de fiesta»**: lista, plantillas, editor con **vista previa jugable**, validación en vivo y guardado como siguiente versión (borrador). La puede usar TI (SUPERADMIN) y Marca; registrar otros motores sigue siendo solo de TI.
 - [x] **Demo**: `seed-demo.ts` instala los 6 por el flujo de aprobaciones y los deja en el catálogo general.
 - [x] Verificado: pruebas de contratos, API (216), vistas, PWA y consola; E2E en navegador (`tools/e2e/party.cjs`: instalación con aprobaciones, rechazo de texto con alcohol, versión personalizada y los 6 juegos jugados en un celular emulado).
-- [ ] **Pendiente (ILC)**: subir imágenes propias (hoy se personalizan colores, forma y rótulos del girador), aprobar el contenido final de cada juego y decidir si se permite volver al texto original.
+- [ ] **Pendiente (ILC)**: validación jurídica del consentimiento obligatorio de El Impostor (ver docs/JUEGOS_DE_FIESTA.md), aprobar el contenido final de cada juego y decidir si se permite volver al texto original.
 
 **Orden de valor:** pasos 1–2 dan un prototipo visual navegable rápido para validar con ILC;
 pasos 3–8 son el MVP P0; 9–12 completan P0/P1; 13 prepara el piloto controlado.

@@ -337,6 +337,11 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
       return json(200, { enabled: false, referrerPoints: 0, referrerXp: 0, dailyCap: 5, weeklyCap: 20, attributionWindowDays: 7 });
     if (url === '/admin/referrals/settings' && method === 'PUT') return json(200, body);
     if (url.startsWith('/admin/referrals/summary')) return json(200, { days: 30, attributed: 4, rewardedByClaim: 1, rewardedByMission: 1, capped: 0 });
+    if (url === '/admin/contacts/opt-ins')
+      return json(200, {
+        total: 1,
+        rows: [{ alias: 'Ana', email: 'ana@ejemplo.test', phone: null, optedInAt: '2026-10-01T15:00:00.000Z', source: 'registro' }],
+      });
     if (url === '/admin/venues') return json(200, [VENUE]);
     if (url.startsWith('/admin/venues/') && url.endsWith('/approve')) return json(200, { ...VENUE, status: 'APROBADO' });
     if (url === '/staff/me') return json(200, STAFF_DASH);

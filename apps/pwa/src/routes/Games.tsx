@@ -7,6 +7,7 @@ import {
   GamesCatalogView,
   IframeGameView,
   PartyGameView,
+  PlayerDataGateView,
   type QuickGame,
   type ResultState,
   StatusMessage,
@@ -18,7 +19,9 @@ import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { ApiRequestError, newIdempotencyKey } from '../lib/api.ts';
 import { GameFrame } from '../lib/gameFrame.tsx';
 import { gamesApi } from '../lib/games.ts';
+import { identityApi } from '../lib/identity.ts';
 import { useSession } from '../lib/session.tsx';
+import { KEYS, writeLocal } from '../lib/storage.ts';
 import { useTabNavigate } from './shell.tsx';
 
 /** Contexto de juego: el Parche (`?parche=`) o la campaña del evento (`?evento=`). Nunca ambos. */
@@ -79,12 +82,20 @@ export function GamePlayRoute() {
   const { sessionId, campaignSlug, search } = useGameContext();
   const [mission, setMission] = useState<MissionStart>();
   const [error, setError] = useState<string>();
+  const [need, setNeed] = useState<'account' | 'marketing'>();
+  const [gateBusy, setGateBusy] = useState(false);
+  const { me, setMe, config } = useSession();
   const key = useRef(newIdempotencyKey());
 
   const start = useCallback(async () => {
     try {
       setMission(await gamesApi.start({ moduleId: gameId, sessionId, campaignSlug }, key.current));
     } catch (e) {
+      // Juegos que exigen datos: el servidor dice qué falta (cuenta o autorización de novedades).
+      if (e instanceof ApiRequestError && e.code === 'CONSENT_REQUIRED') {
+        setNeed(e.fields?.need?.includes('account') ? 'account' : 'marketing');
+        return;
+      }
       setError(messageOf(e));
     }
   }, [gameId, sessionId, campaignSlug]);
@@ -96,6 +107,45 @@ export function GamePlayRoute() {
   const exit = () => navigate(`/jugar${search}`);
   const finish = (missionId: string) => navigate(`/jugar/${encodeURIComponent(gameId)}/resultado?m=${missionId}${search ? `&${search.slice(1)}` : ''}`);
 
+  if (need)
+    return (
+      <PlayerDataGateView
+        gameTitle="El Impostor"
+        need={need}
+        busy={gateBusy}
+        error={error}
+        privacyHref="/legal/privacidad"
+        onPrivacy={() => navigate('/legal/privacidad')}
+        onBack={exit}
+        onSaveAccount={() => {
+          // Al terminar el registro vuelve a este juego.
+          writeLocal(KEYS.afterSignup, `/jugar/${encodeURIComponent(gameId)}${search}`, 'session');
+          navigate('/registro');
+        }}
+        onAccept={() => {
+          void (async () => {
+            setGateBusy(true);
+            setError(undefined);
+            try {
+              const consents = await identityApi.recordConsent({
+                purpose: 'MARKETING',
+                granted: true,
+                noticeVersion: config.legalNoticeVersion,
+                source: 'campana',
+              });
+              if (me) setMe({ ...me, consents });
+              setNeed(undefined);
+              key.current = newIdempotencyKey();
+              await start();
+            } catch (e) {
+              setError(messageOf(e));
+            } finally {
+              setGateBusy(false);
+            }
+          })();
+        }}
+      />
+    );
   if (error) return <StatusMessage kind="error" title="No pudimos iniciar el juego" body={error} />;
   if (!mission) return <StatusMessage kind="pending" title="Preparando tu partida…" />;
 

@@ -1,6 +1,7 @@
 import type {
   CategoriesConfigView,
   HeadbandConfigView,
+  ImpostorConfigView,
   NeverNeverConfigView,
   PartyLookView,
   SpinnerConfigView,
@@ -87,4 +88,35 @@ export const STEADY_HAND: SteadyHandConfigView = {
   lostMessage: '¡PERDISTE EL PULSO! Tiempo logrado: {t}s. ¡Pierdes el turno!',
   restartHint: 'Toca para reiniciar',
   safeRadius: 40,
+};
+
+export const IMPOSTOR: ImpostorConfigView = {
+  game: 'impostor',
+  look: { accent: '#7C4DFF', accent2: '#FFD700', bgFrom: '#140A24', bgTo: '#06040C' },
+  heading: 'EL IMPOSTOR',
+  badge: 'Rumba Caldense',
+  intro: 'Pásense el celular: todos ven la misma palabra menos el impostor.',
+  startLabel: '¡EMPEZAR!',
+  playersLabel: '¿CUÁNTOS JUEGAN?',
+  categoryLabel: 'CATEGORÍA',
+  randomCategoryLabel: 'Al azar',
+  impostors: 1,
+  impostorSeesCategory: true,
+  discussionSeconds: 60,
+  passTitle: 'PASA EL CELULAR A',
+  seeRoleLabel: 'VER MI ROL',
+  hideRoleLabel: 'OCULTAR Y PASAR',
+  wordTag: 'TU PALABRA ES',
+  impostorTitle: 'ERES EL IMPOSTOR',
+  impostorHint: 'Disimula: nadie debe descubrirte.',
+  discussionTitle: '¡A DISCUTIR!',
+  discussionHint: 'Cada quien da una pista sin decir la palabra.',
+  voteLabel: 'REVELAR AL IMPOSTOR',
+  revealTitle: 'EL IMPOSTOR ERA',
+  playAgainLabel: 'JUGAR OTRA VEZ',
+  requireData: true,
+  categories: [
+    { name: 'Comida', words: ['Arepa', 'Ajiaco', 'Empanada', 'Tamal', 'Sancocho'] },
+    { name: 'Deportes', words: ['Fútbol', 'Ciclismo', 'Tenis', 'Natación', 'Voleibol'] },
+  ],
 };

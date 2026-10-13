@@ -2,6 +2,7 @@ import './locale.ts';
 
 export * from './analytics.ts';
 export * from './campaigns.ts';
+export * from './contacts.ts';
 export * from './domain.ts';
 export * from './economy.ts';
 export * from './errors.ts';

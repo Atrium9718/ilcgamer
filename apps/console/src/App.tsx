@@ -6,6 +6,7 @@ import { Analytics } from './routes/Analytics.tsx';
 import { CampaignDetail } from './routes/CampaignDetail.tsx';
 import { CampaignEditor } from './routes/CampaignEditor.tsx';
 import { CampaignList } from './routes/CampaignList.tsx';
+import { Contacts } from './routes/Contacts.tsx';
 import { Economy } from './routes/Economy.tsx';
 import { Events } from './routes/Events.tsx';
 import { Games } from './routes/Games.tsx';
@@ -28,6 +29,7 @@ const SECTION_PATHS: Partial<Record<ConsoleSection, string>> = {
   eventos: '/eventos',
   'smart-tags': '/smart-tags',
   economia: '/economia',
+  contactos: '/contactos',
 };
 
 function breadcrumbsFor(pathname: string, go: (to: string) => void) {
@@ -44,6 +46,7 @@ function breadcrumbsFor(pathname: string, go: (to: string) => void) {
   if (parts[0] === 'eventos') return [{ label: 'Eventos' }];
   if (parts[0] === 'comercios') return [{ label: 'Comercios' }];
   if (parts[0] === 'analitica') return [{ label: 'Analítica' }];
+  if (parts[0] === 'contactos') return [{ label: 'Contactos' }];
   if (parts[0] === 'mi-actividad') return [{ label: 'Mi actividad' }];
   if (parts[0] === 'mi-comercio') return [{ label: 'Mi establecimiento' }];
   const crumbs: Array<{ label: string; onSelect?: () => void }> = [{ label: 'Campañas', onSelect: parts.length > 1 ? () => go('/campanas') : undefined }];
@@ -85,7 +88,7 @@ function Shell() {
 
   const smartTags = me.roles.some((r) => SMARTTAG_ROLES.includes(r));
   const consoleSections: ConsoleSection[] = smartTags
-    ? ['campanas', 'juegos', 'fiesta', 'recompensas', 'eventos', 'comercios', 'analitica', 'smart-tags', 'economia']
+    ? ['campanas', 'juegos', 'fiesta', 'recompensas', 'eventos', 'comercios', 'analitica', 'contactos', 'smart-tags', 'economia']
     : ['campanas', 'juegos'];
   const fieldSections: ConsoleSection[] = [...(isStaff ? (['mi-actividad'] as const) : []), ...(isDealer ? (['mi-comercio'] as const) : [])];
   const sections: ConsoleSection[] = [...fieldSections, ...(isConsole ? consoleSections : [])];
@@ -95,7 +98,7 @@ function Shell() {
     <ConsoleLayout
       active={active}
       sections={sections}
-      restricted={smartTags ? [] : ['fiesta', 'recompensas', 'eventos', 'comercios', 'analitica', 'smart-tags', 'economia']}
+      restricted={smartTags ? [] : ['fiesta', 'recompensas', 'eventos', 'comercios', 'analitica', 'contactos', 'smart-tags', 'economia']}
       only={only}
       userAlias={me.alias}
       roleLabel={roleLabel(me.roles)}
@@ -136,6 +139,7 @@ export function AppRoutes() {
         <Route path="eventos" element={<Events />} />
         <Route path="comercios" element={<Venues />} />
         <Route path="analitica" element={<Analytics />} />
+        <Route path="contactos" element={<Contacts />} />
         <Route path="mi-actividad" element={<StaffPanel />} />
         <Route path="mi-comercio" element={<DealerPanel />} />
         <Route path="smart-tags" element={<SmartTags />} />

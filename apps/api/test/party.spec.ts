@@ -31,8 +31,46 @@ const err = (r: Res) => ApiErrorSchema.parse(r.json()).error;
 let n = 0;
 const key = () => `p${Date.now().toString(36)}${(n++).toString(36)}`.padEnd(20, 'x');
 
+describe('El Impostor exige datos con consentimiento (decidido en el servidor)', () => {
+  it('sin cuenta o sin autorización de novedades responde CONSENT_REQUIRED; con ella y tras retirarla, se bloquea de nuevo', async () => {
+    const t = await team(app, db);
+    const m = defaultPartyManifest('impostor');
+    await activateModule(t, m);
+    await t.admin.request('PUT', '/admin/games/defaults', { modules: [m.moduleId] });
+    const start = (who: { request: (...a: never[]) => Promise<unknown> } & Record<string, unknown>) =>
+      (who as never as { request: (m: string, u: string, b?: unknown, h?: Record<string, string>) => Promise<Res> }).request(
+        'POST',
+        '/games/start',
+        { moduleId: m.moduleId },
+        { 'idempotency-key': key() },
+      );
+
+    // Cuenta temporal (sin guardar progreso)
+    const temp = await person(app, db);
+    await db.user.update({ where: { id: temp.user.id }, data: { status: 'TEMPORAL' } });
+    const noAccount = await start(temp as never);
+    expect(noAccount.statusCode).toBe(409);
+    expect(ApiErrorSchema.parse(noAccount.json()).error).toMatchObject({ code: 'CONSENT_REQUIRED', fields: { need: ['account'] } });
+
+    // Cuenta activa sin autorización
+    const p = await person(app, db);
+    const noConsent = await start(p as never);
+    expect(ApiErrorSchema.parse(noConsent.json()).error).toMatchObject({ code: 'CONSENT_REQUIRED', fields: { need: ['marketing'] } });
+    await p.request('POST', '/consents', { purpose: 'MARKETING', granted: false, noticeVersion: '1.0', source: 'perfil' });
+    expect((await start(p as never)).statusCode).toBe(409);
+
+    // Con autorización juega; si la retira, vuelve a bloquearse
+    await p.request('POST', '/consents', { purpose: 'MARKETING', granted: true, noticeVersion: '1.0', source: 'perfil' });
+    const ok = await start(p as never);
+    expect(ok.statusCode, ok.json() as never).toBe(200);
+    await p.request('POST', '/consents', { purpose: 'MARKETING', granted: false, noticeVersion: '1.0', source: 'perfil' });
+    expect((await start(p as never)).statusCode).toBe(409);
+    expect(await db.ledgerEntry.count()).toBe(0);
+  });
+});
+
 describe('juegos de fiesta (motor propio, sin puntuación)', () => {
-  it('las seis plantillas recorren el ciclo normal y se juegan sin recibir ni acreditar nada', async () => {
+  it('las siete plantillas recorren el ciclo normal y se juegan sin recibir ni acreditar nada', async () => {
     const t = await team(app, db);
     // Los juegos disponibles por defecto salen de los ajustes (campaña o plataforma)
     const ids: string[] = [];
@@ -45,6 +83,8 @@ describe('juegos de fiesta (motor propio, sin puntuación)', () => {
     const player = await person(app, db);
     const catalog = (await player.request('GET', '/games')).json() as { games: Array<{ moduleId: string; kind: string }> };
     expect(catalog.games.map((x) => x.moduleId).sort()).toEqual([...ids].sort());
+    // El Impostor exige datos con consentimiento: se prueba aparte
+    await player.request('POST', '/consents', { purpose: 'MARKETING', granted: true, noticeVersion: '1.0', source: 'perfil' });
     for (const id of ids) {
       const res = await player.request('POST', '/games/start', { moduleId: id }, { 'idempotency-key': key() });
       expect(res.statusCode, `${id}: ${res.body}`).toBe(200);
@@ -97,5 +137,27 @@ describe('juegos de fiesta (motor propio, sin puntuación)', () => {
       delivery: { kind: 'iframe', entryUrl: 'https://juegos.ejemplo.co/x', allowedOrigin: 'https://juegos.ejemplo.co' },
     };
     expect((await t.admin.request('POST', '/admin/games/modules', { manifest: trivia })).statusCode).toBe(403);
+  });
+});
+
+describe('contactos con autorización de novedades', () => {
+  it('solo aparecen quienes la tienen vigente; retirarla los quita; se audita y exige rol', async () => {
+    const admin = await person(app, db, ['ADMIN_MARCA'], 'Admin');
+    const a = await person(app, db, [], 'Ana');
+    const b = await person(app, db, [], 'Beto');
+    await db.userPii.create({ data: { userId: a.user.id, email: 'ana@ejemplo.test' } });
+    await db.userPii.create({ data: { userId: b.user.id, phone: '3001112233' } });
+    const consent = (who: typeof a, granted: boolean) =>
+      who.request('POST', '/consents', { purpose: 'MARKETING', granted, noticeVersion: '1.0', source: 'perfil' });
+    await consent(a, true);
+    await consent(b, true);
+    await consent(b, false);
+    const res = await admin.request('GET', '/admin/contacts/opt-ins');
+    expect(res.statusCode).toBe(200);
+    const body = res.json() as { total: number; rows: Array<{ alias: string; email: string | null }> };
+    expect(body.total).toBe(1);
+    expect(body.rows[0]).toMatchObject({ alias: 'Ana', email: 'ana@ejemplo.test' });
+    expect(await db.auditEvent.count({ where: { action: 'contacts.listed' } })).toBe(1);
+    expect((await a.request('GET', '/admin/contacts/opt-ins')).statusCode).toBe(403);
   });
 });

@@ -24,6 +24,7 @@ import type {
   ImportPreview,
   Me,
   ModuleView,
+  OptInContacts,
   ProductView,
   Reconciliation,
   ReferralSettings,
@@ -173,4 +174,8 @@ export const eventsAdminApi = {
     apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/entries/${enc(entryId)}/moderate`, { method: 'POST', body: { decision, reason } }),
   rotateScreen: (id: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/screen/rotate`, { method: 'POST' }),
   deliverPrize: (id: string, code: string) => apiRequest<ContestAdminView>(`${ev}/contests/${enc(id)}/prize/deliver`, { method: 'POST', body: { code } }),
+};
+
+export const contactsAdminApi = {
+  optIns: () => apiRequest<OptInContacts>('/admin/contacts/opt-ins'),
 };

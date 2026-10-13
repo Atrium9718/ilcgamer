@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { defaultPartyManifest, MAX_PARTY_IMAGE_CHARS, PARTY_GAMES, PARTY_TEMPLATES, partyTextIssue, validateManifest } from '../src/index.ts';
 
 describe('juegos de fiesta: contrato', () => {
-  it('las seis plantillas son manifiestos válidos (Ruta A, sin puntuación, sin presión de alcohol)', () => {
+  it('las siete plantillas son manifiestos válidos (Ruta A, sin puntuación, sin presión de alcohol)', () => {
     for (const g of PARTY_GAMES) {
       const r = validateManifest(defaultPartyManifest(g));
       expect(r.ok, `${g}: ${JSON.stringify(!r.ok && r.errors)}`).toBe(true);
     }
-    expect(PARTY_GAMES).toHaveLength(6);
+    expect(PARTY_GAMES).toHaveLength(7);
   });
 
   it('rechaza textos que incitan o penalizan con consumo de alcohol, con o sin tildes y mayúsculas', () => {

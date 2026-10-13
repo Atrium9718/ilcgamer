@@ -179,6 +179,10 @@ async function signUp(page, goal) {
   await page.mouse.up();
   assert(await area.isVisible(), 'pulso firme: el área responde al toque');
 
+  await open(by.impostor);
+  await page.getByText('Guarda tu progreso para jugar').waitFor({ timeout: 8000 });
+  assert(true, 'el impostor: sin cuenta, el servidor exige guardar el progreso antes de jugar');
+
   assert(errors.length === 0, `sin errores de JavaScript en el navegador (${errors.join(' | ')})`);
   await browser.close();
   console.log('\nE2E de juegos de fiesta: OK');

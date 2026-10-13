@@ -19,7 +19,9 @@ type Field =
   | { kind: 'image'; path: string; label: string; hint: string }
   | { kind: 'select'; path: string; label: string; options: Array<{ value: string; label: string }>; hint?: string }
   | { kind: 'lines'; path: string; label: string; hint: string }
-  | { kind: 'pairs'; path: string; label: string; hint: string };
+  | { kind: 'pairs'; path: string; label: string; hint: string }
+  | { kind: 'toggle'; path: string; label: string; hint?: string }
+  | { kind: 'groups'; path: string; label: string; hint: string };
 
 const LOOK_FIELDS: Field[] = [
   { kind: 'color', path: 'look.accent', label: 'Color de acento (botones y bordes)' },
@@ -124,6 +126,46 @@ export const PARTY_EDITOR: Record<PartyGameKind, { appearance: Field[]; texts: F
     ],
     content: [{ kind: 'lines', path: 'words', label: 'Palabras (una por línea)', hint: 'Mínimo 5.' }],
   },
+  impostor: {
+    appearance: LOOK_FIELDS,
+    texts: [
+      { kind: 'text', path: 'heading', label: 'Título en pantalla', max: 40 },
+      { kind: 'text', path: 'badge', label: 'Insignia bajo el título', max: 40 },
+      { kind: 'long', path: 'intro', label: 'Mensaje inicial', max: 200 },
+      { kind: 'number', path: 'impostors', label: 'Cantidad de impostores', min: 1, max: 2 },
+      { kind: 'toggle', path: 'impostorSeesCategory', label: 'El impostor ve el nombre de la categoría' },
+      { kind: 'number', path: 'discussionSeconds', label: 'Segundos para discutir', min: 60, max: 600 },
+      { kind: 'text', path: 'startLabel', label: 'Botón de empezar', max: 30 },
+      { kind: 'text', path: 'playersLabel', label: 'Título de «cuántos juegan»', max: 40 },
+      { kind: 'text', path: 'categoryLabel', label: 'Título de la categoría', max: 40 },
+      { kind: 'text', path: 'randomCategoryLabel', label: 'Opción «al azar»', max: 30 },
+      { kind: 'text', path: 'passTitle', label: 'Título al pasar el celular', max: 40 },
+      { kind: 'text', path: 'seeRoleLabel', label: 'Botón para ver el rol', max: 30 },
+      { kind: 'text', path: 'hideRoleLabel', label: 'Botón para ocultar y pasar', max: 30 },
+      { kind: 'text', path: 'wordTag', label: 'Etiqueta de la palabra', max: 30 },
+      { kind: 'text', path: 'impostorTitle', label: 'Título del impostor', max: 30 },
+      { kind: 'text', path: 'impostorHint', label: 'Consejo para el impostor', max: 120 },
+      { kind: 'text', path: 'discussionTitle', label: 'Título de la discusión', max: 40 },
+      { kind: 'long', path: 'discussionHint', label: 'Instrucción de la discusión', max: 160 },
+      { kind: 'text', path: 'voteLabel', label: 'Botón para revelar', max: 30 },
+      { kind: 'text', path: 'revealTitle', label: 'Título al revelar', max: 40 },
+      { kind: 'text', path: 'playAgainLabel', label: 'Botón de jugar otra vez', max: 30 },
+      {
+        kind: 'toggle',
+        path: 'requireData',
+        label: 'Exigir cuenta y autorización de novedades de ILC para jugar',
+        hint: 'Decisión de ILC para captar datos con consentimiento. El servidor lo exige; el texto legal lo valida Jurídica.',
+      },
+    ],
+    content: [
+      {
+        kind: 'groups',
+        path: 'categories',
+        label: 'Categorías (una por línea: nombre | palabra, palabra, ...)',
+        hint: 'Mínimo 2 categorías con 5 palabras cada una. Ej.: Comida | Arepa, Ajiaco, Tamal, Empanada, Sancocho',
+      },
+    ],
+  },
   'steady-hand': {
     appearance: LOOK_FIELDS,
     texts: [
@@ -145,6 +187,20 @@ const textToLines = (t: string): string[] =>
     .split('\n')
     .map((l) => l.trim())
     .filter(Boolean);
+const groupsToText = (v: unknown): string =>
+  Array.isArray(v) ? v.map((g: { name: string; words: string[] }) => `${g.name} | ${g.words.join(', ')}`).join('\n') : '';
+const textToGroups = (t: string): Array<{ name: string; words: string[] }> =>
+  textToLines(t).map((l) => {
+    const [name = '', ...rest] = l.split('|');
+    return {
+      name: name.trim(),
+      words: rest
+        .join('|')
+        .split(',')
+        .map((w) => w.trim())
+        .filter(Boolean),
+    };
+  });
 const pairsToText = (v: unknown): string => (Array.isArray(v) ? v.map((p: { topic: string; example: string }) => `${p.topic} | ${p.example}`).join('\n') : '');
 const textToPairs = (t: string): Array<{ topic: string; example: string }> =>
   textToLines(t).map((l) => {
@@ -270,11 +326,13 @@ const errorsAt = (errors: Record<string, string[]>, ...paths: string[]): string[
 function BufferedTextarea({
   value,
   parse,
+  format,
   onParsed,
   ...rest
 }: {
   value: string;
   parse: (text: string) => unknown;
+  format: (v: unknown) => string;
   onParsed: (v: unknown) => void;
 } & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'value' | 'onChange'>) {
   const [text, setText] = useState(value);
@@ -293,7 +351,7 @@ function BufferedTextarea({
         const t = e.target.value;
         setText(t);
         const parsed = parse(t);
-        last.current = Array.isArray(parsed) ? (typeof parsed[0] === 'object' ? pairsToText(parsed) : linesToText(parsed)) : String(parsed);
+        last.current = format(parsed);
         onParsed(parsed);
       }}
     />
@@ -435,6 +493,17 @@ function FieldInput({
         />
       </div>
     );
+  if (f.kind === 'toggle')
+    return (
+      <div className="space-y-1">
+        <label className="flex items-center gap-3 min-h-12 font-label-lg text-label-lg text-on-surface">
+          <input type="checkbox" checked={value === true} onChange={(e) => set(e.target.checked)} className="h-6 w-6" />
+          <span className="flex-1">{f.label}</span>
+        </label>
+        {f.hint && <p className="font-body-md text-[12px] text-on-surface-variant">{f.hint}</p>}
+        {errNode}
+      </div>
+    );
   if (f.kind === 'image')
     return (
       <ImageField id={full} label={f.label} hint={f.hint} value={typeof value === 'string' ? value : undefined} onChange={(v) => set(v)} error={errs[0]} />
@@ -478,6 +547,7 @@ function FieldInput({
       </div>
     );
   const isPairs = f.kind === 'pairs';
+  const isGroups = f.kind === 'groups';
   const isLong = f.kind === 'long';
   return (
     <div className="space-y-1">
@@ -486,8 +556,9 @@ function FieldInput({
       </label>
       <BufferedTextarea
         id={full}
-        value={f.kind === 'lines' ? linesToText(value) : isPairs ? pairsToText(value) : String(value ?? '')}
-        parse={(t) => (f.kind === 'lines' ? textToLines(t) : isPairs ? textToPairs(t) : t)}
+        value={f.kind === 'lines' ? linesToText(value) : isPairs ? pairsToText(value) : isGroups ? groupsToText(value) : String(value ?? '')}
+        parse={(t) => (f.kind === 'lines' ? textToLines(t) : isPairs ? textToPairs(t) : isGroups ? textToGroups(t) : t)}
+        format={(v) => (f.kind === 'lines' ? linesToText(v) : isPairs ? pairsToText(v) : isGroups ? groupsToText(v) : String(v))}
         onParsed={set}
         rows={isLong ? 3 : 10}
         maxLength={isLong ? f.max : undefined}

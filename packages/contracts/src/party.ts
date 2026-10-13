@@ -13,7 +13,7 @@ import { z } from 'zod';
  *  - Los juegos de fiesta no puntúan: no suman al Parche, no dan XP y jamás Puntos ILC.
  */
 
-export const PARTY_GAMES = ['spinner', 'truth-dare', 'categories', 'never-never', 'headband', 'steady-hand'] as const;
+export const PARTY_GAMES = ['spinner', 'truth-dare', 'categories', 'never-never', 'headband', 'steady-hand', 'impostor'] as const;
 export const PartyGameSchema = z.enum(PARTY_GAMES);
 export type PartyGame = z.infer<typeof PartyGameSchema>;
 
@@ -24,6 +24,7 @@ export const PARTY_GAME_LABEL: Record<PartyGame, string> = {
   'never-never': 'Yo nunca nunca',
   headband: 'Adivina en la frente',
   'steady-hand': 'Pulso firme',
+  impostor: 'El Impostor',
 };
 
 // ─────────────── Regla de contenido: sin presión para consumir alcohol ───────────────
@@ -194,6 +195,45 @@ export const SteadyHandConfigSchema = z
   })
   .strict();
 
+/**
+ * El Impostor: se juega pasándose un solo celular. Cada persona ve en secreto una palabra (menos una, que ve «IMPOSTOR»); luego
+ * hablan por turnos y votan quién es. No se guardan nombres ni resultados de la partida. `requireData` hace que el servidor
+ * exija cuenta con el aviso de privacidad y la autorización de novedades de ILC antes de empezar (decisión de ILC; el texto
+ * legal lo valida Jurídica).
+ */
+export const ImpostorConfigSchema = z
+  .object({
+    game: z.literal('impostor'),
+    ...base,
+    badge: Safe(40, 0).default(''),
+    intro: Safe(200),
+    startLabel: Safe(30).default('¡EMPEZAR!'),
+    playersLabel: Safe(40).default('¿CUÁNTOS JUEGAN?'),
+    categoryLabel: Safe(40).default('CATEGORÍA'),
+    randomCategoryLabel: Safe(30).default('Al azar'),
+    impostors: z.number().int().min(1).max(2).default(1),
+    /** Si el impostor ve el nombre de la categoría (más fácil para él). */
+    impostorSeesCategory: z.boolean().default(true),
+    discussionSeconds: z.number().int().min(60).max(600).default(180),
+    passTitle: Safe(40).default('PASA EL CELULAR A'),
+    seeRoleLabel: Safe(30).default('VER MI ROL'),
+    hideRoleLabel: Safe(30).default('OCULTAR Y PASAR'),
+    wordTag: Safe(30).default('TU PALABRA ES'),
+    impostorTitle: Safe(30).default('ERES EL IMPOSTOR'),
+    impostorHint: Safe(120).default('Disimula: nadie debe descubrirte.'),
+    discussionTitle: Safe(40).default('¡A DISCUTIR!'),
+    discussionHint: Safe(160).default('Cada quien da una pista de la palabra sin decirla. Descubran al impostor.'),
+    voteLabel: Safe(30).default('REVELAR AL IMPOSTOR'),
+    revealTitle: Safe(40).default('EL IMPOSTOR ERA'),
+    playAgainLabel: Safe(30).default('JUGAR OTRA VEZ'),
+    requireData: z.boolean().default(true),
+    categories: z
+      .array(z.object({ name: Safe(40), words: z.array(Safe(40)).min(5).max(60) }).strict())
+      .min(2)
+      .max(20),
+  })
+  .strict();
+
 export const PartyConfigSchema = z.discriminatedUnion('game', [
   SpinnerConfigSchema,
   TruthDareConfigSchema,
@@ -201,6 +241,7 @@ export const PartyConfigSchema = z.discriminatedUnion('game', [
   NeverNeverConfigSchema,
   HeadbandConfigSchema,
   SteadyHandConfigSchema,
+  ImpostorConfigSchema,
 ]);
 export type PartyConfig = z.infer<typeof PartyConfigSchema>;
 export type SpinnerConfig = z.infer<typeof SpinnerConfigSchema>;
@@ -209,6 +250,10 @@ export type CategoriesConfig = z.infer<typeof CategoriesConfigSchema>;
 export type NeverNeverConfig = z.infer<typeof NeverNeverConfigSchema>;
 export type HeadbandConfig = z.infer<typeof HeadbandConfigSchema>;
 export type SteadyHandConfig = z.infer<typeof SteadyHandConfigSchema>;
+export type ImpostorConfig = z.infer<typeof ImpostorConfigSchema>;
+
+/** Mínimo y máximo de personas que juegan El Impostor en un mismo celular. */
+export const IMPOSTOR_PLAYERS = { min: 3, max: 12 } as const;
 
 // ─────────────── Plantillas (contenido inicial, adaptado a las reglas de contenido) ───────────────
 
@@ -353,6 +398,50 @@ export const PARTY_TEMPLATES: Record<
         'Yo nunca nunca he llorado para librarme de una multa de tránsito.',
         'Yo nunca nunca he stalkeado tanto a alguien que le di like a una foto vieja.',
         'Yo nunca nunca he vuelto con un/a ex después de jurar que jamás lo haría.',
+      ],
+    },
+  },
+  impostor: {
+    moduleId: 'el-impostor',
+    title: 'El Impostor',
+    description: 'Una palabra secreta para todos menos uno. Descubran quién es el impostor.',
+    icon: 'person_search',
+    minutes: 15,
+    players: { min: 3, max: 12 },
+    config: {
+      game: 'impostor',
+      look: { accent: '#7C4DFF', accent2: '#FFD700', bgFrom: '#140A24', bgTo: '#06040C' },
+      heading: 'EL IMPOSTOR',
+      badge: 'Rumba Caldense',
+      intro: 'Pásense el celular: todos ven la misma palabra menos el impostor. Hablen, den pistas y voten.',
+      startLabel: '¡EMPEZAR!',
+      playersLabel: '¿CUÁNTOS JUEGAN?',
+      categoryLabel: 'CATEGORÍA',
+      randomCategoryLabel: 'Al azar',
+      impostors: 1,
+      impostorSeesCategory: true,
+      discussionSeconds: 180,
+      passTitle: 'PASA EL CELULAR A',
+      seeRoleLabel: 'VER MI ROL',
+      hideRoleLabel: 'OCULTAR Y PASAR',
+      wordTag: 'TU PALABRA ES',
+      impostorTitle: 'ERES EL IMPOSTOR',
+      impostorHint: 'Disimula: nadie debe descubrirte.',
+      discussionTitle: '¡A DISCUTIR!',
+      discussionHint: 'Cada quien da una pista de la palabra sin decirla. Descubran al impostor.',
+      voteLabel: 'REVELAR AL IMPOSTOR',
+      revealTitle: 'EL IMPOSTOR ERA',
+      playAgainLabel: 'JUGAR OTRA VEZ',
+      requireData: true,
+      categories: [
+        { name: 'Comida colombiana', words: ['Bandeja paisa', 'Arepa con queso', 'Ajiaco', 'Empanada', 'Sancocho', 'Buñuelo', 'Tamal', 'Lechona'] },
+        {
+          name: 'Lugares de Caldas',
+          words: ['Termales de Santa Rosa', 'Nevado del Ruiz', 'Feria de Manizales', 'Salamina', 'Parque de la Mujer', 'Chipre', 'Los Yarumos'],
+        },
+        { name: 'Música', words: ['Salsa', 'Vallenato', 'Cumbia', 'Reggaetón', 'Bambuco', 'Merengue', 'Tango', 'Rock'] },
+        { name: 'Deportes', words: ['Fútbol', 'Ciclismo', 'Tenis', 'Baloncesto', 'Natación', 'Atletismo', 'Patinaje', 'Voleibol'] },
+        { name: 'Oficios', words: ['Panadero', 'Médico', 'Profesor', 'Conductor', 'Bombero', 'Cantante', 'Arquitecto', 'Cocinero'] },
       ],
     },
   },

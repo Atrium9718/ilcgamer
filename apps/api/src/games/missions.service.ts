@@ -95,6 +95,7 @@ export class MissionsService {
     }
     if (!module) throw new DomainError('GAME_NOT_AVAILABLE', 'Este juego no está disponible.');
     const manifest = module.manifest;
+    if (!preview) await this.assertPlayerData(user, manifest);
 
     const created = await this.prisma.$transaction(async (tx) => {
       await lockUserModule(tx, user.id, module.moduleId);
@@ -155,6 +156,23 @@ export class MissionsService {
       return { mission, fresh: true };
     });
     return this.stored(created.mission, user.id);
+  }
+
+  /**
+   * Juegos que exigen datos (p. ej. El Impostor con `requireData`): hace falta una cuenta con contacto y la autorización de
+   * novedades de ILC vigente. Lo decide el servidor; el cliente solo muestra lo que falta (`fields.need`). El retiro de la
+   * autorización en el perfil vuelve a bloquear el juego.
+   */
+  private async assertPlayerData(user: User, manifest: GameManifest): Promise<void> {
+    const d = manifest.delivery;
+    if (d.kind !== 'engine' || d.engine !== 'party') return;
+    const cfg = PartyConfigSchema.parse(d.config);
+    if (cfg.game !== 'impostor' || !cfg.requireData) return;
+    if (user.status !== 'ACTIVA')
+      throw new DomainError('CONSENT_REQUIRED', 'Para jugar guarda tu progreso con tu celular o correo.', { fields: { need: ['account'] } });
+    const last = await this.prisma.consentRecord.findFirst({ where: { userId: user.id, purpose: 'MARKETING' }, orderBy: { createdAt: 'desc' } });
+    if (!last?.granted)
+      throw new DomainError('CONSENT_REQUIRED', 'Para jugar necesitas autorizar que ILC te envíe novedades.', { fields: { need: ['marketing'] } });
   }
 
   private prepare(manifest: GameManifest, completed: readonly string[]): Prepared {

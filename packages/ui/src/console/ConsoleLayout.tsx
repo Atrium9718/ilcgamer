@@ -15,6 +15,7 @@ export type ConsoleSection =
   | 'comercios'
   | 'economia'
   | 'analitica'
+  | 'contactos'
   | 'auditoria';
 
 const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = [
@@ -29,6 +30,7 @@ const NAV: ReadonlyArray<{ id: ConsoleSection; label: string; icon: string }> = 
   { id: 'comercios', label: 'Comercios', icon: 'storefront' },
   { id: 'economia', label: 'Economía', icon: 'account_balance_wallet' },
   { id: 'analitica', label: 'Analítica', icon: 'query_stats' },
+  { id: 'contactos', label: 'Contactos', icon: 'contacts' },
   { id: 'auditoria', label: 'Auditoría', icon: 'shield' },
 ];
 

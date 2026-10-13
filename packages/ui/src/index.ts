@@ -31,6 +31,7 @@ export { TextField, type TextFieldProps } from './components/TextField.tsx';
 export { Toast, type ToastProps, type ToastTone } from './components/Toast.tsx';
 export { TopBar, type TopBarProps } from './components/TopBar.tsx';
 export { CODE_STATUS_COPY, type CodeStatus, VerificationSeal, type VerificationSealProps } from './components/VerificationSeal.tsx';
+export { type ContactRow, ContactsView, type ContactsViewProps } from './console/ContactsView.tsx';
 export {
   type AdminContestDetail,
   type AdminContestSummaryRow,
@@ -94,6 +95,7 @@ export { type JoinMethod, JoinParcheView, type JoinParcheViewProps, type ParcheP
 export { type ClaimRow, type ClaimState, MyClaimsView, type MyClaimsViewProps } from './views/MyClaimsView.tsx';
 export { type OtpChannelView, type OtpStep, OtpView, type OtpViewProps } from './views/OtpView.tsx';
 export { type ConnectionState, type GameEntry, ParcheRoomView, type ParcheRoomViewProps } from './views/ParcheRoomView.tsx';
+export { PlayerDataGateView, type PlayerDataGateViewProps } from './views/PlayerDataGateView.tsx';
 export {
   ChapterPlayView,
   type ChapterPlayViewProps,

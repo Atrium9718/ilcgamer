@@ -1,7 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { CATEGORIES, HEADBAND, NEVER_NEVER, SPINNER, STEADY_HAND, TRUTH_DARE } from './fixtures.ts';
+import { CATEGORIES, HEADBAND, IMPOSTOR, NEVER_NEVER, SPINNER, STEADY_HAND, TRUTH_DARE } from './fixtures.ts';
 import { PartyGameView, SpinnerArt } from './PartyGames.tsx';
 
 const setup = () => userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
@@ -192,5 +192,31 @@ describe('pulso firme', () => {
     expect(screen.getByText('Toca el círculo para empezar')).toBeInTheDocument();
     expect(screen.getByLabelText(/Área de juego/)).toBeInTheDocument();
     expect(screen.getByText(STEADY_HAND.footer)).toBeInTheDocument();
+  });
+});
+
+describe('El Impostor', () => {
+  it('se pasa el celular: cada persona ve su rol, luego hay discusión con cronómetro y se revela al impostor', async () => {
+    const user = setup();
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    render(<PartyGameView config={IMPOSTOR} onExit={vi.fn()} />);
+    expect(screen.getByRole('status', { name: '4 personas' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Una persona menos/ }));
+    expect(screen.getByRole('status', { name: '3 personas' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '¡EMPEZAR!' }));
+    const seen: string[] = [];
+    for (let i = 1; i <= 3; i++) {
+      expect(screen.getByText(`Persona ${i}`)).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'VER MI ROL' }));
+      seen.push(screen.queryByText('ERES EL IMPOSTOR') ? 'impostor' : 'palabra');
+      await user.click(screen.getByRole('button', { name: 'OCULTAR Y PASAR' }));
+    }
+    expect(seen.filter((x) => x === 'impostor')).toHaveLength(1);
+    expect(screen.getByText('¡A DISCUTIR!')).toBeInTheDocument();
+    expect(screen.getByRole('timer')).toHaveAccessibleName('Quedan 60 segundos');
+    await user.click(screen.getByRole('button', { name: 'REVELAR AL IMPOSTOR' }));
+    expect(screen.getByText(/Persona \d/, { selector: 'p[role="status"]' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'JUGAR OTRA VEZ' }));
+    expect(screen.getByRole('button', { name: '¡EMPEZAR!' })).toBeInTheDocument();
   });
 });

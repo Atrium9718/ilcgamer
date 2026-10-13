@@ -1,17 +1,23 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LegalNotice } from '../components/LegalNotice.tsx';
+import { dealImpostor, type ImpostorDeal } from './impostor.ts';
 import { angleToPoint, screenFacing, spinTarget, steadyTarget, tiltStep } from './motion.ts';
 import { PartyButton, PartyCompactContext, PartyDialog, PartyFrame, useCompact } from './PartyFrame.tsx';
 import { sound, vibrate } from './sound.ts';
 import type {
   CategoriesConfigView,
   HeadbandConfigView,
+  ImpostorConfigView,
   NeverNeverConfigView,
   PartyConfigView,
   SpinnerConfigView,
   SteadyHandConfigView,
   TruthDareConfigView,
 } from './types.ts';
+
+/** Personas que pueden jugar El Impostor en un mismo celular (igual que `IMPOSTOR_PLAYERS` del contrato). */
+const IMPOSTOR_MIN = 3;
+const IMPOSTOR_MAX = 12;
 
 const pick = <T,>(items: readonly T[]): T => items[Math.floor(Math.random() * items.length)] as T;
 const prefersReducedMotion = (): boolean => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -773,6 +779,200 @@ export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigVie
   );
 }
 
+// ───────────────────────── El Impostor ─────────────────────────
+
+type ImpostorPhase = 'setup' | 'pass' | 'role' | 'discuss' | 'reveal';
+
+/** El Impostor: un celular que se pasa de mano en mano. No se guardan nombres ni resultados. */
+export function ImpostorGame({ config, onExit }: { config: ImpostorConfigView; onExit: () => void }) {
+  const [phase, setPhase] = useState<ImpostorPhase>('setup');
+  const [players, setPlayers] = useState(4);
+  const [category, setCategory] = useState<number | null>(null);
+  const [deal, setDeal] = useState<ImpostorDeal>();
+  const [turn, setTurn] = useState(0);
+  const [left, setLeft] = useState(config.discussionSeconds);
+  const min = IMPOSTOR_MIN;
+  const max = IMPOSTOR_MAX;
+
+  const start = () => {
+    setDeal(dealImpostor(players, config.impostors, config.categories, category));
+    setTurn(0);
+    setPhase('pass');
+    sound.success();
+  };
+  const next = () => {
+    if (turn + 1 >= players) {
+      setLeft(config.discussionSeconds);
+      setPhase('discuss');
+      sound.success();
+    } else {
+      setTurn((t) => t + 1);
+      setPhase('pass');
+    }
+  };
+
+  useEffect(() => {
+    if (phase !== 'discuss') return;
+    const t = setInterval(() => {
+      setLeft((s) => {
+        if (s <= 1) {
+          clearInterval(t);
+          sound.buzzer();
+          vibrate([200, 100, 200]);
+          return 0;
+        }
+        if (s <= 10) sound.tick();
+        return s - 1;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [phase]);
+
+  const isImpostor = !!deal?.impostors.includes(turn);
+  const mmss = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
+  return (
+    <PartyFrame look={config.look} heading={config.heading} badge={config.badge} onExit={onExit} center>
+      {phase === 'setup' && (
+        <div className="z-10 flex w-full max-w-[420px] flex-col items-center gap-5 text-center">
+          <p className="text-[#cfcfcf]">{config.intro}</p>
+          <div className="w-full space-y-2">
+            <p className="text-[0.85rem] font-bold uppercase tracking-wider" style={{ color: 'var(--p-accent2)' }}>
+              {config.playersLabel}
+            </p>
+            <div className="flex items-center justify-center gap-5">
+              <PartyButton tone="ghost" className="!min-h-14 !w-14 !px-0" disabled={players <= min} onClick={() => setPlayers((p) => Math.max(min, p - 1))}>
+                <span aria-hidden="true">−</span>
+                <span className="sr-only">Una persona menos</span>
+              </PartyButton>
+              <p role="status" aria-label={`${players} personas`} className="w-20 text-[3rem] font-black leading-none">
+                {players}
+              </p>
+              <PartyButton tone="ghost" className="!min-h-14 !w-14 !px-0" disabled={players >= max} onClick={() => setPlayers((p) => Math.min(max, p + 1))}>
+                <span aria-hidden="true">+</span>
+                <span className="sr-only">Una persona más</span>
+              </PartyButton>
+            </div>
+          </div>
+          <div className="w-full space-y-2">
+            <label htmlFor="impostor-cat" className="block text-[0.85rem] font-bold uppercase tracking-wider" style={{ color: 'var(--p-accent2)' }}>
+              {config.categoryLabel}
+            </label>
+            <select
+              id="impostor-cat"
+              value={category ?? ''}
+              onChange={(e) => setCategory(e.target.value === '' ? null : Number(e.target.value))}
+              className="min-h-12 w-full rounded-xl border border-white/25 bg-[#18181b] px-3 text-white"
+            >
+              <option value="">{config.randomCategoryLabel}</option>
+              {config.categories.map((c, i) => (
+                <option key={c.name} value={i}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <PartyButton className="w-full max-w-[320px]" onClick={start}>
+            {config.startLabel}
+          </PartyButton>
+          <Legal />
+        </div>
+      )}
+
+      {phase === 'pass' && (
+        <div role="status" className="z-10 flex w-full max-w-[420px] flex-col items-center gap-5 text-center">
+          <p className="text-[0.95rem] font-bold uppercase tracking-wider" style={{ color: 'var(--p-accent2)' }}>
+            {config.passTitle}
+          </p>
+          <p className="text-[4rem] font-black leading-none">Persona {turn + 1}</p>
+          <p className="text-[0.85rem] text-[#9a9a9a]">
+            {turn + 1} de {players}
+          </p>
+          <PartyButton className="w-full max-w-[320px]" onClick={() => setPhase('role')}>
+            {config.seeRoleLabel}
+          </PartyButton>
+        </div>
+      )}
+
+      {phase === 'role' && deal && (
+        <div className="z-10 flex w-full max-w-[420px] flex-col items-center gap-5 text-center">
+          <section
+            aria-live="polite"
+            className="flex min-h-[260px] w-full flex-col items-center justify-center rounded-3xl border-[3px] bg-[#111] px-5 py-8"
+            style={{ borderColor: isImpostor ? 'var(--p-accent)' : 'var(--p-accent2)' }}
+          >
+            {isImpostor ? (
+              <>
+                <p className="text-[2.2rem] font-black uppercase leading-tight" style={{ color: 'var(--p-accent)' }}>
+                  {config.impostorTitle}
+                </p>
+                <p className="mt-3 text-[#cfcfcf]">{config.impostorHint}</p>
+                {config.impostorSeesCategory && (
+                  <p className="mt-4 text-[0.9rem] text-[#9a9a9a]">
+                    {config.categoryLabel}: <strong className="text-white">{deal.category}</strong>
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="text-[0.85rem] font-bold uppercase tracking-wider" style={{ color: 'var(--p-accent2)' }}>
+                  {config.wordTag}
+                </p>
+                <p className="mt-3 text-[2.6rem] font-black uppercase leading-tight">{deal.word}</p>
+                <p className="mt-4 text-[0.9rem] text-[#9a9a9a]">
+                  {config.categoryLabel}: <strong className="text-white">{deal.category}</strong>
+                </p>
+              </>
+            )}
+          </section>
+          <PartyButton tone="gray" className="w-full max-w-[320px]" onClick={next}>
+            {config.hideRoleLabel}
+          </PartyButton>
+        </div>
+      )}
+
+      {phase === 'discuss' && deal && (
+        <div className="z-10 flex w-full max-w-[420px] flex-col items-center gap-4 text-center">
+          <p className="text-[1.6rem] font-black uppercase" style={{ color: 'var(--p-accent2)' }}>
+            {config.discussionTitle}
+          </p>
+          <p className="text-[#cfcfcf]">{config.discussionHint}</p>
+          <p className="text-[0.95rem]">
+            Empieza la <strong>Persona {deal.starter + 1}</strong>
+          </p>
+          <p
+            role="timer"
+            aria-label={`Quedan ${left} segundos`}
+            className="text-[4rem] font-black tabular-nums"
+            style={{ color: left <= 10 ? 'var(--p-accent)' : '#fff' }}
+          >
+            <span aria-hidden="true">{mmss}</span>
+          </p>
+          <PartyButton className="w-full max-w-[320px]" onClick={() => setPhase('reveal')}>
+            {config.voteLabel}
+          </PartyButton>
+        </div>
+      )}
+
+      {phase === 'reveal' && deal && (
+        <div className="z-10 flex w-full max-w-[420px] flex-col items-center gap-4 text-center">
+          <p className="text-[0.95rem] font-bold uppercase tracking-wider" style={{ color: 'var(--p-accent2)' }}>
+            {config.revealTitle}
+          </p>
+          <p role="status" className="text-[2.4rem] font-black leading-tight" style={{ color: 'var(--p-accent)' }}>
+            {deal.impostors.map((i) => `Persona ${i + 1}`).join(' y ')}
+          </p>
+          <p className="text-[#cfcfcf]">
+            {config.wordTag} <strong className="text-white">{deal.word}</strong> ({deal.category})
+          </p>
+          <PartyButton className="w-full max-w-[320px]" onClick={() => setPhase('setup')}>
+            {config.playAgainLabel}
+          </PartyButton>
+        </div>
+      )}
+    </PartyFrame>
+  );
+}
+
 // ───────────────────────── Selector ─────────────────────────
 
 /** Muestra el juego de fiesta que corresponde a la configuración. */
@@ -798,5 +998,7 @@ function PartyGameBody({ config, onExit }: { config: PartyConfigView; onExit: ()
       return <HeadbandGame config={config} onExit={onExit} />;
     case 'steady-hand':
       return <SteadyHandGame config={config} onExit={onExit} />;
+    case 'impostor':
+      return <ImpostorGame config={config} onExit={onExit} />;
   }
 }

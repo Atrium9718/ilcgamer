@@ -8,6 +8,7 @@ import { AllExceptionsFilter } from './common/exception.filter.ts';
 import { IdempotencyKeyGuard } from './common/idempotency.ts';
 import { OriginGuard } from './common/origin.guard.ts';
 import { ConfigModule } from './config/config.module.ts';
+import { ContactsModule } from './contacts/contacts.module.ts';
 import { EconomyModule } from './economy/economy.module.ts';
 import { EventsModule } from './events/events.module.ts';
 import { GamesModule } from './games/games.module.ts';
@@ -44,6 +45,7 @@ import { VenuesModule } from './venues/venues.module.ts';
     VenuesModule,
     AnalyticsModule,
     ReferralsModule,
+    ContactsModule,
     EventsModule,
   ],
   providers: [

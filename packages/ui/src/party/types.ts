@@ -76,4 +76,37 @@ export interface SteadyHandConfigView extends Base {
   safeRadius: number;
 }
 
-export type PartyConfigView = SpinnerConfigView | TruthDareConfigView | CategoriesConfigView | NeverNeverConfigView | HeadbandConfigView | SteadyHandConfigView;
+export interface ImpostorConfigView extends Base {
+  game: 'impostor';
+  badge: string;
+  intro: string;
+  startLabel: string;
+  playersLabel: string;
+  categoryLabel: string;
+  randomCategoryLabel: string;
+  impostors: number;
+  impostorSeesCategory: boolean;
+  discussionSeconds: number;
+  passTitle: string;
+  seeRoleLabel: string;
+  hideRoleLabel: string;
+  wordTag: string;
+  impostorTitle: string;
+  impostorHint: string;
+  discussionTitle: string;
+  discussionHint: string;
+  voteLabel: string;
+  revealTitle: string;
+  playAgainLabel: string;
+  requireData: boolean;
+  categories: Array<{ name: string; words: string[] }>;
+}
+
+export type PartyConfigView =
+  | SpinnerConfigView
+  | TruthDareConfigView
+  | CategoriesConfigView
+  | NeverNeverConfigView
+  | HeadbandConfigView
+  | SteadyHandConfigView
+  | ImpostorConfigView;

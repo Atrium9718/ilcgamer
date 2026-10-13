@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { CATEGORIES, HEADBAND, NEVER_NEVER, SPINNER, STEADY_HAND, TRUTH_DARE } from './fixtures.ts';
+import { CATEGORIES, HEADBAND, IMPOSTOR, NEVER_NEVER, SPINNER, STEADY_HAND, TRUTH_DARE } from './fixtures.ts';
 import { PartyGameView } from './PartyGames.tsx';
 
 const meta = { title: 'Vistas/15 · Juegos de fiesta' } satisfies Meta;
@@ -25,3 +25,4 @@ export const CategoriasConCronometro: Story = { render: () => <PartyGameView con
 export const YoNuncaNunca: Story = { render: () => <PartyGameView config={NEVER_NEVER} onExit={fn()} /> };
 export const AdivinaEnLaFrente: Story = { render: () => <PartyGameView config={HEADBAND} onExit={fn()} /> };
 export const PulsoFirme: Story = { render: () => <PartyGameView config={STEADY_HAND} onExit={fn()} /> };
+export const ElImpostor: Story = { render: () => <PartyGameView config={IMPOSTOR} onExit={fn()} /> };
