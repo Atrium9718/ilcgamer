@@ -100,7 +100,7 @@ export const SpinnerConfigSchema = z
       .strict()
       .default({ shape: 'flecha', body: '#E8C340', tip: '#2E6B3B', labelColor: '#2E6B3B', labelTop: '', labelBottom: '' }),
     spinLabel: Safe(30).default('¡GIRAR!'),
-    hint: Safe(120, 0).default('Pon varios dedos en la pantalla o presiona Girar'),
+    hint: Safe(120, 0).default('Pon un dedo cada quien, espera 1–2 segundos y la flecha señala a uno; o presiona Girar'),
     modalTag: Safe(40).default('EL DESTINO DECIDIÓ'),
     continueLabel: Safe(40).default('¡CONTINUAR LA RUMBA!'),
     prompts: List(160, 3, 60),
@@ -222,7 +222,7 @@ export const PARTY_TEMPLATES: Record<
       badge: 'Rumba Caldense Oficial',
       spinner: { shape: 'flecha', body: '#E8C340', tip: '#2E6B3B', labelColor: '#2E6B3B', labelTop: 'AMARILLO', labelBottom: 'DE MANZANARES' },
       spinLabel: '¡GIRAR!',
-      hint: 'Pon varios dedos en la pantalla o presiona Girar',
+      hint: 'Pon un dedo cada quien, espera 1–2 segundos y la flecha señala a uno; o presiona Girar',
       modalTag: 'EL DESTINO DECIDIÓ',
       continueLabel: '¡CONTINUAR LA RUMBA!',
       prompts: [

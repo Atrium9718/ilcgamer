@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { screenFacing, steadyTarget, tiltStep } from './motion.ts';
+import { angleToPoint, screenFacing, spinTarget, steadyTarget, tiltStep } from './motion.ts';
 
 describe('El Frentazo: gesto de inclinación', () => {
   it('la pantalla vertical vale ~0, hacia el piso -1 y hacia el techo +1', () => {
@@ -38,5 +38,23 @@ describe('Mano de Cirujano: movimiento del círculo', () => {
     }
     expect(Math.max(...speeds)).toBeGreaterThan(Math.min(...speeds) * 3);
     expect(Math.max(...radii) - Math.min(...radii)).toBeGreaterThan(12);
+  });
+});
+
+describe('Pico de Flecha: hacia dónde apunta', () => {
+  it('calcula el ángulo del centro hacia un dedo (0 = arriba, horario)', () => {
+    expect(angleToPoint(100, 100, 100, 20)).toBeCloseTo(0);
+    expect(angleToPoint(100, 100, 180, 100)).toBeCloseTo(90);
+    expect(angleToPoint(100, 100, 100, 180)).toBeCloseTo(180);
+    expect(angleToPoint(100, 100, 20, 100)).toBeCloseTo(270);
+  });
+  it('gira varias vueltas y termina exactamente en el ángulo del dedo', () => {
+    for (const current of [0, 123, 720, 1000.5]) {
+      for (const target of [0, 45, 200, 359]) {
+        const next = spinTarget(current, target, 6);
+        expect(((next % 360) + 360) % 360).toBeCloseTo(target);
+        expect(next - current).toBeGreaterThan(5 * 360 - 1);
+      }
+    }
   });
 });

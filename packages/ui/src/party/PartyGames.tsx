@@ -1,6 +1,6 @@
-import { type TouchEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LegalNotice } from '../components/LegalNotice.tsx';
-import { screenFacing, steadyTarget, tiltStep } from './motion.ts';
+import { angleToPoint, screenFacing, spinTarget, steadyTarget, tiltStep } from './motion.ts';
 import { PartyButton, PartyCompactContext, PartyDialog, PartyFrame, useCompact } from './PartyFrame.tsx';
 import { sound, vibrate } from './sound.ts';
 import type {
@@ -65,88 +65,171 @@ export function SpinnerArt({ spinner }: { spinner: SpinnerConfigView['spinner'] 
   );
 }
 
+/** Segundos que hay que mantener los dedos quietos para que el girador los detecte. */
+const HOLD_MS = 1500;
+type Finger = { x: number; y: number; color: string };
+
+/**
+ * Girador: cada persona pone un dedo; tras ~1,5 s con los dedos quietos se detectan sus posiciones y la flecha gira
+ * hasta señalar a una de ellas. También se puede girar con el botón (al azar).
+ */
 export function SpinnerGame({ config, onExit }: { config: SpinnerConfigView; onExit: () => void }) {
   const [angle, setAngle] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [prompt, setPrompt] = useState<string | null>(null);
-  const [touches, setTouches] = useState<Record<number, { x: number; y: number; color: string }>>({});
+  const [fingers, setFingers] = useState<Record<number, Finger>>({});
+  const [chosen, setChosen] = useState<number | null>(null);
+  const [holding, setHolding] = useState(false);
   const compact = useCompact();
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const areaRef = useRef<HTMLDivElement>(null);
+  const live = useRef({ fingers: {} as Record<number, Finger>, spinning: false, angle: 0 });
+  const timers = useRef<{ hold?: ReturnType<typeof setTimeout>; end?: ReturnType<typeof setTimeout> }>({});
   const reduced = prefersReducedMotion();
   const duration = reduced ? 1200 : 3500;
-  useEffect(() => () => clearTimeout(timer.current), []);
+  const COLORS = [config.look.accent, config.look.accent2, '#00A878', '#4361EE', '#F77F00', '#9D4EDD', '#00F0FF'];
+  useEffect(
+    () => () => {
+      clearTimeout(timers.current.hold);
+      clearTimeout(timers.current.end);
+    },
+    [],
+  );
 
-  const spin = () => {
-    if (spinning) return;
+  const spin = (toFinger?: number) => {
+    const l = live.current;
+    if (l.spinning) return;
+    l.spinning = true;
+    clearTimeout(timers.current.hold);
+    setHolding(false);
     setSpinning(true);
+    setChosen(null);
     sound.spin();
     vibrate([80, 50, 80]);
-    setAngle((a) => a + (5 + Math.floor(Math.random() * 5)) * 360 + Math.floor(Math.random() * 360));
-    timer.current = setTimeout(() => {
+    let next: number;
+    const f = toFinger === undefined ? undefined : l.fingers[toFinger];
+    const rect = areaRef.current?.getBoundingClientRect();
+    if (f && rect)
+      next = spinTarget(l.angle, angleToPoint(rect.left + rect.width / 2, rect.top + rect.height / 2, f.x, f.y), 5 + Math.floor(Math.random() * 3));
+    else next = l.angle + (5 + Math.floor(Math.random() * 5)) * 360 + Math.floor(Math.random() * 360);
+    l.angle = next;
+    setAngle(next);
+    timers.current.end = setTimeout(() => {
+      l.spinning = false;
       setSpinning(false);
+      if (toFinger !== undefined) setChosen(toFinger);
       sound.success();
       vibrate(200);
       setPrompt(pick(config.prompts));
     }, duration + 100);
   };
 
-  const COLORS = [config.look.accent, config.look.accent2, '#00A878', '#4361EE', '#F77F00', '#9D4EDD', '#00F0FF'];
-  const onTouchStart = (e: TouchEvent) => {
-    if (spinning) return;
-    const added: Record<number, { x: number; y: number; color: string }> = {};
-    for (const t of Array.from(e.changedTouches)) added[t.identifier] = { x: t.clientX, y: t.clientY, color: COLORS[t.identifier % COLORS.length] as string };
-    setTouches((cur) => ({ ...cur, ...added }));
-    if (Object.keys(touches).length + Object.keys(added).length >= 2) vibrate(40);
+  // Tras HOLD_MS con 2 o más dedos y sin que cambie su número, se toma la posición de los dedos y gira hacia uno de ellos.
+  const armHold = () => {
+    const l = live.current;
+    clearTimeout(timers.current.hold);
+    const ids = Object.keys(l.fingers).map(Number);
+    setHolding(ids.length >= 2 && !l.spinning);
+    if (ids.length < 2 || l.spinning) return;
+    timers.current.hold = setTimeout(() => {
+      const now = Object.keys(live.current.fingers).map(Number);
+      if (now.length >= 2) spin(pick(now));
+    }, HOLD_MS);
   };
-  const onTouchEnd = (e: TouchEvent) =>
-    setTouches((cur) => {
-      const next = { ...cur };
-      for (const t of Array.from(e.changedTouches)) delete next[t.identifier];
-      return next;
-    });
+  const update = (fn: (f: Record<number, Finger>) => Record<number, Finger>, rearm: boolean) => {
+    const l = live.current;
+    l.fingers = fn(l.fingers);
+    setFingers(l.fingers);
+    if (rearm) armHold();
+  };
+  const onDown = (e: PointerEvent) => {
+    if (live.current.spinning || e.pointerType === 'mouse') return;
+    update((f) => ({ ...f, [e.pointerId]: { x: e.clientX, y: e.clientY, color: COLORS[Object.keys(f).length % COLORS.length] as string } }), true);
+    if (Object.keys(live.current.fingers).length >= 2) vibrate(40);
+  };
+  const onMove = (e: PointerEvent) => {
+    const cur = live.current.fingers[e.pointerId];
+    if (!cur || live.current.spinning) return;
+    live.current.fingers = { ...live.current.fingers, [e.pointerId]: { ...cur, x: e.clientX, y: e.clientY } };
+    setFingers(live.current.fingers);
+  };
+  const onUp = (e: PointerEvent) => {
+    if (live.current.spinning) return;
+    if (!(e.pointerId in live.current.fingers)) return;
+    update((f) => {
+      const { [e.pointerId]: _gone, ...rest } = f;
+      return rest;
+    }, true);
+  };
+
+  const closePrompt = () => {
+    setPrompt(null);
+    setChosen(null);
+    update(() => ({}), false);
+  };
 
   return (
     <PartyFrame look={config.look} heading={config.heading} badge={config.badge} onExit={onExit} center>
       <div
+        ref={areaRef}
         className={`relative flex w-full items-center justify-center ${compact ? 'h-[300px]' : 'h-[52vh]'}`}
         style={{ touchAction: 'none' }}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
+        onPointerDown={(e) => onDown(e.nativeEvent)}
+        onPointerMove={(e) => onMove(e.nativeEvent)}
+        onPointerUp={(e) => onUp(e.nativeEvent)}
+        onPointerCancel={(e) => onUp(e.nativeEvent)}
       >
-        {/* Tocar el girador también lo hace girar; el botón «Girar» de abajo es la vía accesible. */}
-        <button type="button" tabIndex={-1} aria-hidden="true" onClick={spin} className="border-0 bg-transparent p-0">
-          <svg
-            viewBox="0 0 100 300"
-            aria-hidden="true"
-            width={90}
-            height={270}
-            style={{
-              transform: `rotate(${angle}deg)`,
-              transition: `transform ${duration}ms cubic-bezier(0.15, 0.9, 0.2, 1)`,
-              filter: 'drop-shadow(0 15px 25px color-mix(in srgb, var(--p-accent) 40%, transparent))',
-            }}
-          >
-            <SpinnerArt spinner={config.spinner} />
-          </svg>
-        </button>
-        {Object.entries(touches).map(([id, t]) => (
-          <div
-            key={id}
-            aria-hidden="true"
-            className="pointer-events-none fixed h-[70px] w-[70px] rounded-full border-[3px]"
-            style={{ left: t.x, top: t.y, transform: 'translate(-50%, -50%)', borderColor: t.color, boxShadow: `0 0 20px ${t.color}` }}
-          />
-        ))}
+        <svg
+          viewBox="0 0 100 300"
+          aria-hidden="true"
+          width={90}
+          height={270}
+          style={{
+            transform: `rotate(${angle}deg)`,
+            transition: `transform ${duration}ms cubic-bezier(0.15, 0.9, 0.2, 1)`,
+            filter: 'drop-shadow(0 15px 25px color-mix(in srgb, var(--p-accent) 40%, transparent))',
+          }}
+        >
+          <SpinnerArt spinner={config.spinner} />
+        </svg>
+        {Object.entries(fingers).map(([id, t]) => {
+          const win = chosen === Number(id);
+          return (
+            <div
+              key={id}
+              aria-hidden="true"
+              className={`pointer-events-none fixed rounded-full border-[4px] ${holding && !spinning ? 'motion-safe:animate-pulse' : ''}`}
+              style={{
+                left: t.x,
+                top: t.y,
+                width: win ? 96 : 70,
+                height: win ? 96 : 70,
+                transform: 'translate(-50%, -50%)',
+                borderColor: win ? '#fff' : t.color,
+                background: win ? t.color : 'transparent',
+                boxShadow: `0 0 ${win ? 40 : 20}px ${t.color}`,
+                opacity: chosen !== null && !win ? 0.35 : 1,
+              }}
+            />
+          );
+        })}
       </div>
       <div className="z-10 flex w-full max-w-[400px] flex-col gap-3">
-        <PartyButton onClick={spin} disabled={spinning}>
+        <p role="status" className="text-center text-[0.95rem] font-bold" style={{ color: 'var(--p-accent2)' }}>
+          {spinning
+            ? 'Girando…'
+            : holding
+              ? 'Quietos… detectando dedos'
+              : Object.keys(fingers).length === 1
+                ? 'Falta al menos otro dedo'
+                : 'Pongan 2 o más dedos y esperen 1–2 segundos'}
+        </p>
+        <PartyButton onClick={() => spin()} disabled={spinning}>
           {config.spinLabel}
         </PartyButton>
         {config.hint && <p className="text-center text-[0.8rem] opacity-70">{config.hint}</p>}
         <Legal />
       </div>
-      {prompt && <PartyDialog tag={config.modalTag} text={prompt} actionLabel={config.continueLabel} onClose={() => setPrompt(null)} />}
+      {prompt && <PartyDialog tag={config.modalTag} text={prompt} actionLabel={config.continueLabel} onClose={closePrompt} />}
     </PartyFrame>
   );
 }
@@ -554,29 +637,39 @@ export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigVie
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    const s = { playing: false, start: 0, px: 0, py: 0, w: 0, h: 0, raf: 0, pointerId: -1 };
+    const s = { playing: false, start: 0, px: 0, py: 0, w: 0, h: 0, raf: 0, pointerId: -1, outSince: 0 };
     const resize = () => {
-      s.w = canvas.width = canvas.parentElement?.clientWidth ?? 300;
-      s.h = canvas.height = canvas.parentElement?.clientHeight ?? 400;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      s.w = canvas.parentElement?.clientWidth ?? 300;
+      s.h = canvas.parentElement?.clientHeight ?? 400;
+      canvas.width = s.w * dpr;
+      canvas.height = s.h * dpr;
+      ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     if (hudRef.current) hudRef.current.textContent = hudText;
     const draw = (t: number, showPlayer: boolean) => {
       if (!ctx) return { x: 0, y: 0, r: radius };
       const c = steadyTarget(t, s.w, s.h, radius);
+      // Se pone naranja cuando el dedo se acerca al borde (aviso antes de perder).
+      const edge = showPlayer && Math.hypot(s.px - c.x, s.py - c.y) > c.r * 0.75;
+      const tone = edge ? '#F77F00' : '#00A878';
       ctx.clearRect(0, 0, s.w, s.h);
       ctx.beginPath();
       ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 168, 120, 0.22)';
+      ctx.fillStyle = edge ? 'rgba(247, 127, 0, 0.25)' : 'rgba(0, 168, 120, 0.22)';
       ctx.fill();
-      ctx.strokeStyle = '#00A878';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = tone;
+      ctx.lineWidth = 4;
       ctx.stroke();
       if (showPlayer) {
         ctx.beginPath();
-        ctx.arc(s.px, s.py, 10, 0, Math.PI * 2);
+        ctx.arc(s.px, s.py, 12, 0, Math.PI * 2);
         ctx.fillStyle = config.look.accent2;
         ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
       }
       return c;
     };
@@ -594,7 +687,11 @@ export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigVie
       const t = (now - s.start) / 1000;
       const c = draw(t, true);
       if (hudRef.current) hudRef.current.textContent = `Tiempo: ${t.toFixed(1)}s`;
-      if (Math.hypot(s.px - c.x, s.py - c.y) > c.r) return lose(t.toFixed(1));
+      // Margen de tolerancia: el dedo puede rozar el borde un instante (~0,2 s) sin perder.
+      if (Math.hypot(s.px - c.x, s.py - c.y) > c.r + 10) {
+        if (!s.outSince) s.outSince = now;
+        if (now - s.outSince > 200) return lose(t.toFixed(1));
+      } else s.outSince = 0;
       s.raf = requestAnimationFrame(loop);
     };
     const place = (e: PointerEvent) => {
@@ -607,7 +704,8 @@ export function SteadyHandGame({ config, onExit }: { config: SteadyHandConfigVie
       place(e);
       const c = steadyTarget(0, s.w, s.h, radius);
       // Solo arranca si el dedo empieza dentro del círculo.
-      if (Math.hypot(s.px - c.x, s.py - c.y) > c.r) return;
+      if (Math.hypot(s.px - c.x, s.py - c.y) > c.r + 10) return;
+      s.outSince = 0;
       try {
         canvas.setPointerCapture(e.pointerId);
       } catch {

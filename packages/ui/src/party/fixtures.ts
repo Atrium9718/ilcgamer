@@ -18,7 +18,7 @@ export const SPINNER: SpinnerConfigView = {
   badge: 'Rumba Caldense Oficial',
   spinner: { shape: 'flecha', body: '#E8C340', tip: '#2E6B3B', labelColor: '#2E6B3B', labelTop: 'AMARILLO', labelBottom: 'DE MANZANARES' },
   spinLabel: '¡GIRAR!',
-  hint: 'Pon varios dedos en la pantalla o presiona Girar',
+  hint: 'Pon un dedo cada quien, espera 1–2 segundos y la flecha señala a uno; o presiona Girar',
   modalTag: 'EL DESTINO DECIDIÓ',
   continueLabel: '¡CONTINUAR LA RUMBA!',
   prompts: ['Reto de prueba uno', 'Reto de prueba dos', 'Reto de prueba tres'],
