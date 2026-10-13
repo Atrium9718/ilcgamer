@@ -45,6 +45,11 @@ export const EnvSchema = z.object({
    * el log de la API). Exige escribir exactamente esta frase; con usuarios reales debe estar vacío y usarse la pasarela.
    */
   STAGING_OTP_LOG_ACK: z.string().optional(),
+  /**
+   * Excepción SOLO para staging con una sola persona administradora: relaja "quien crea no aprueba/activa" (juegos, campañas,
+   * recompensas). Exige la misma frase; con usuarios reales debe estar vacío.
+   */
+  STAGING_RELAX_SEPARATION_ACK: z.string().optional(),
   OTP_WEBHOOK_URL: z.url({ protocol: /^https?$/ }).optional(),
   OTP_WEBHOOK_TOKEN: z.string().min(16, 'OTP_WEBHOOK_TOKEN debe tener al menos 16 caracteres').optional(),
   /** Límite por IP de la consulta pública de códigos (protección contra enumeración — §5.6). */
@@ -70,6 +75,11 @@ export const EnvSchema = z.object({
 
 export const STAGING_OTP_LOG_PHRASE = 'solo-staging-sin-usuarios-reales';
 
+/** true = se exige separación de funciones (lo normal). Solo es false en staging con la frase de confirmación. */
+export function separationOfDutiesApplies(env: Pick<Env, 'STAGING_RELAX_SEPARATION_ACK'>): boolean {
+  return env.STAGING_RELAX_SEPARATION_ACK !== STAGING_OTP_LOG_PHRASE;
+}
+
 export type Env = z.infer<typeof EnvSchema>;
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
@@ -84,6 +94,9 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   }
   if (deployed && parsed.data.OTP_PROVIDER === 'console' && parsed.data.STAGING_OTP_LOG_ACK !== STAGING_OTP_LOG_PHRASE) {
     throw new Error('Configuración inválida: OTP_PROVIDER=console solo se permite en desarrollo y pruebas (o en staging con STAGING_OTP_LOG_ACK explícito)');
+  }
+  if (parsed.data.STAGING_RELAX_SEPARATION_ACK && parsed.data.STAGING_RELAX_SEPARATION_ACK !== STAGING_OTP_LOG_PHRASE) {
+    throw new Error('Configuración inválida: STAGING_RELAX_SEPARATION_ACK tiene un valor distinto a la frase de confirmación');
   }
   if (parsed.data.OTP_PROVIDER === 'webhook') {
     if (!parsed.data.OTP_WEBHOOK_URL || !parsed.data.OTP_WEBHOOK_TOKEN)

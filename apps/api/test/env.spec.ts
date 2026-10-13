@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadEnv } from '../src/config/env.ts';
+import { loadEnv, separationOfDutiesApplies } from '../src/config/env.ts';
 
 const base = {
   DATABASE_URL: 'postgresql://ilc@localhost:5432/x',
@@ -48,5 +48,15 @@ describe('código en el log (excepción de staging)', () => {
     expect(loadEnv({ ...base, NODE_ENV: 'production', OTP_PROVIDER: 'console', STAGING_OTP_LOG_ACK: 'solo-staging-sin-usuarios-reales' }).OTP_PROVIDER).toBe(
       'console',
     );
+  });
+});
+
+describe('separación de funciones relajada (solo staging)', () => {
+  const base = { DATABASE_URL: 'postgresql://u:p@localhost:5432/db', REDIS_URL: 'redis://localhost:6379', APP_SECRET: 'x'.repeat(40) };
+
+  it('por defecto se exige; solo con la frase exacta se relaja; un valor distinto falla', () => {
+    expect(separationOfDutiesApplies(loadEnv(base))).toBe(true);
+    expect(separationOfDutiesApplies(loadEnv({ ...base, STAGING_RELAX_SEPARATION_ACK: 'solo-staging-sin-usuarios-reales' }))).toBe(false);
+    expect(() => loadEnv({ ...base, STAGING_RELAX_SEPARATION_ACK: 'si' })).toThrow(/STAGING_RELAX_SEPARATION_ACK/);
   });
 });

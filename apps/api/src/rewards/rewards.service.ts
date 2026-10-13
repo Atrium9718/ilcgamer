@@ -11,11 +11,13 @@ import {
   type RewardCatalog,
   type RewardClaimResult,
 } from '@ilc/contracts';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuditService } from '../audit/audit.service.ts';
 import { isCampaignOpen } from '../campaigns/campaign-state.ts';
 import type { Actor } from '../campaigns/campaigns.service.ts';
 import { DomainError } from '../common/domain-error.ts';
+import { ENV } from '../config/config.module.ts';
+import { type Env, separationOfDutiesApplies } from '../config/env.ts';
 import type { User } from '../generated/prisma/client.ts';
 import { Prisma } from '../generated/prisma/client.ts';
 import { SettingsService } from '../platform/settings.service.ts';
@@ -45,6 +47,7 @@ export class RewardsService {
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
     private readonly audit: AuditService,
+    @Inject(ENV) private readonly env: Env,
   ) {}
 
   // ───────────────────────── Persona ─────────────────────────
@@ -327,7 +330,8 @@ export class RewardsService {
     const reward = await this.prisma.reward.findUnique({ where: { id } });
     if (!reward) throw new DomainError('NOT_FOUND', 'No existe esa recompensa.');
     if (active) {
-      if (reward.createdById === actor.userId) throw new DomainError('FORBIDDEN', 'Quien creó la recompensa no puede activarla: pide a otra persona de Marca.');
+      if (separationOfDutiesApplies(this.env) && reward.createdById === actor.userId)
+        throw new DomainError('FORBIDDEN', 'Quien creó la recompensa no puede activarla: pide a otra persona de Marca.');
       if (reward.endsAt <= new Date()) throw new DomainError('CONFLICT', 'La fecha final de esta recompensa ya pasó.');
     }
     await this.prisma.$transaction(async (tx) => {

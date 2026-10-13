@@ -12,9 +12,11 @@ import {
   type PublicCampaign,
   type Role,
 } from '@ilc/contracts';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuditService } from '../audit/audit.service.ts';
 import { DomainError } from '../common/domain-error.ts';
+import { ENV } from '../config/config.module.ts';
+import { type Env, separationOfDutiesApplies } from '../config/env.ts';
 import { ModulesService } from '../games/modules.service.ts';
 import type { ApprovalRecord, Campaign, CampaignVersion, Prisma } from '../generated/prisma/client.ts';
 import type { CampaignStatus } from '../generated/prisma/enums.ts';
@@ -69,6 +71,7 @@ export class CampaignsService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly modules: ModulesService,
+    @Inject(ENV) private readonly env: Env,
   ) {}
 
   /** Juegos de la campaña que todavía no tienen una versión activa: bloquean la publicación (§5.4). */
@@ -244,7 +247,7 @@ export class CampaignsService {
     if (!actor.roles.includes(APPROVER_ROLE[input.kind]) && !actor.roles.includes('SUPERADMIN')) {
       throw new DomainError('FORBIDDEN', 'Tu rol no puede emitir esta aprobación.');
     }
-    if (actor.userId === working.createdById || actor.userId === working.submittedById) {
+    if (separationOfDutiesApplies(this.env) && (actor.userId === working.createdById || actor.userId === working.submittedById)) {
       throw new DomainError('FORBIDDEN', 'Quien crea o envía una versión no puede aprobarla.');
     }
     if (!this.requiredKinds(working).includes(input.kind)) throw new DomainError('CONFLICT', 'Esta versión no requiere esa aprobación.');

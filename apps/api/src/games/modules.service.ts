@@ -17,7 +17,7 @@ import { contentHash } from '../campaigns/content-hash.ts';
 import { hmac } from '../common/crypto.ts';
 import { DomainError } from '../common/domain-error.ts';
 import { ENV } from '../config/config.module.ts';
-import type { Env } from '../config/env.ts';
+import { type Env, separationOfDutiesApplies } from '../config/env.ts';
 import { Prisma } from '../generated/prisma/client.ts';
 import { SettingsService } from '../platform/settings.service.ts';
 import { PrismaService } from '../prisma/prisma.service.ts';
@@ -184,7 +184,7 @@ export class ModulesService {
     if (v.status !== 'EN_PRUEBA') throw new DomainError('CONFLICT', 'Solo se aprueba una versión que está en prueba.');
     if (!actor.roles.includes(APPROVER_ROLE[input.kind]) && !actor.roles.includes('SUPERADMIN'))
       throw new DomainError('FORBIDDEN', 'Tu rol no puede emitir esta aprobación.');
-    if (actor.userId === v.createdById || actor.userId === v.submittedById)
+    if (separationOfDutiesApplies(this.env) && (actor.userId === v.createdById || actor.userId === v.submittedById))
       throw new DomainError('FORBIDDEN', 'Quien registra o envía a prueba un módulo no puede aprobarlo.');
     const manifest = GameManifestSchema.parse(v.manifest);
     if (!requiredModuleApprovals(manifest).includes(input.kind)) throw new DomainError('CONFLICT', 'Este módulo no requiere esa aprobación.');
