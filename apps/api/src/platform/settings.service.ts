@@ -70,6 +70,7 @@ export class SettingsService {
       otpChannels: this.env.OTP_PROVIDER === 'none' ? [] : ['whatsapp', 'sms', 'email'],
       // Google/Apple se habilitan al registrar credenciales de cliente (Guía Técnica §5.2, §15).
       oauthProviders: [],
+      ...(this.env.REQUIRE_PROFILE_AT_ENTRY ? { requireProfile: true } : {}),
     };
   }
 }

@@ -106,6 +106,7 @@ export {
   WheelPlayView,
   type WheelPlayViewProps,
 } from './views/PlayViews.tsx';
+export { type ProfileCaptureValue, ProfileCaptureView, type ProfileCaptureViewProps } from './views/ProfileCaptureView.tsx';
 export { ProfileView, type ProfileViewProps } from './views/ProfileView.tsx';
 export { type BadgeView, ProgressView, type ProgressViewProps, type StoryView } from './views/ProgressView.tsx';
 export { type RewardCategory, type RewardDetail, RewardsView, type RewardsViewProps } from './views/RewardsView.tsx';

@@ -56,6 +56,7 @@ marcar los 11 puntos de la lista; cada marca queda con su autor y el contenido e
 | Estado privado de misiones | Evaluar en servidor | Funcional | 30 días tras terminar | Nadie |
 | Fotos y votos de concursos | Concurso de disfraces | Consentimiento expreso (mostrar la foto) | Foto: 30 días tras cerrar el concurso o al eliminar la cuenta; título y resultado se conservan | Marca (moderación); en pantalla solo alias, título y foto aprobada |
 | Juegos de fiesta | Entretenimiento en grupo (sin puntos) | Ninguno: no se guarda nada de la partida | No aplica | Marca y Jurídica aprueban cada versión del contenido |
+| Registro al entrar (nombre, correo, celular) | Gestión de la participación y comunicaciones autorizadas de ILC | Autorización expresa de tratamiento de datos (obligatoria) y de novedades (opcional, aparte) | Hasta que la persona pida eliminarlos o termine la finalidad (definir con Jurídica) | Marca y TI (panel Contactos, con auditoría) |
 | Ubicación / contactos / huella de dispositivo | — | — | **No se recogen** | — |
 
 Pendiente: aprobación legal del inventario, canal de atención a derechos (acceso, corrección, supresión) y textos finales de aviso.

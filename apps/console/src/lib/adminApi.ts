@@ -29,6 +29,7 @@ import type {
   Reconciliation,
   ReferralSettings,
   ReferralSummary,
+  Registrations,
   RewardAdminView,
   StaffDashboard,
   UrlTemplate,
@@ -178,4 +179,5 @@ export const eventsAdminApi = {
 
 export const contactsAdminApi = {
   optIns: () => apiRequest<OptInContacts>('/admin/contacts/opt-ins'),
+  registrations: (days: number) => apiRequest<Registrations>(`/admin/contacts/registrations?days=${days}`),
 };

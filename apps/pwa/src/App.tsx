@@ -6,7 +6,7 @@ import { CodeLandingRoute } from './routes/CodeLanding.tsx';
 import { ContestRoute, ContestScreenRoute, EventsRoute } from './routes/Contests.tsx';
 import { EventEntryRoute, ReferralEntryRoute, StaffEntryRoute } from './routes/Entry.tsx';
 import { GamePlayRoute, GameResultRoute, GamesRoute } from './routes/Games.tsx';
-import { ConsentsRoute, OtpRoute, SignUpRoute } from './routes/Identity.tsx';
+import { ConsentsRoute, OtpRoute, ProfileCaptureRoute, SignUpRoute } from './routes/Identity.tsx';
 import { CreateParcheRoute, JoinParcheRoute, ParcheRoomRoute } from './routes/Parche.tsx';
 import { MyClaimsRoute, RewardsRoute } from './routes/Rewards.tsx';
 import { NotFound, RequireAge, RootLayout } from './routes/shell.tsx';
@@ -48,6 +48,7 @@ export const routes = [
           { path: '/progreso', element: <ProgressRoute /> },
           { path: '/perfil', element: <ProfileRoute /> },
           { path: '/compartir', element: <ShareRoute /> },
+          { path: '/bienvenida', element: <ProfileCaptureRoute /> },
           { path: '/registro', element: <SignUpRoute /> },
           { path: '/registro/codigo', element: <OtpRoute /> },
           { path: '/perfil/autorizaciones', element: <ConsentsRoute /> },

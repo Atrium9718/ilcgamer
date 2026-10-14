@@ -337,10 +337,34 @@ export function installFakeApi(options: { roles?: string[]; loggedIn?: boolean; 
       return json(200, { enabled: false, referrerPoints: 0, referrerXp: 0, dailyCap: 5, weeklyCap: 20, attributionWindowDays: 7 });
     if (url === '/admin/referrals/settings' && method === 'PUT') return json(200, body);
     if (url.startsWith('/admin/referrals/summary')) return json(200, { days: 30, attributed: 4, rewardedByClaim: 1, rewardedByMission: 1, capped: 0 });
-    if (url === '/admin/contacts/opt-ins')
+    if (url.startsWith('/admin/contacts/registrations'))
       return json(200, {
-        total: 1,
-        rows: [{ alias: 'Ana', email: 'ana@ejemplo.test', phone: null, optedInAt: '2026-10-01T15:00:00.000Z', source: 'registro' }],
+        days: 30,
+        summary: { total: 2, withMarketing: 1, withEmail: 2, withPhone: 2, inPeriod: 2, today: 1 },
+        byDay: [
+          { date: '2026-10-12', count: 1 },
+          { date: '2026-10-13', count: 1 },
+        ],
+        rows: [
+          {
+            fullName: 'Ana Gómez',
+            email: 'ana@ejemplo.test',
+            phone: '+573001112233',
+            registeredAt: '2026-10-13T15:00:00.000Z',
+            marketing: true,
+            marketingAt: '2026-10-13T15:00:00.000Z',
+            source: 'registro',
+          },
+          {
+            fullName: 'Beto Ruiz',
+            email: 'beto@ejemplo.test',
+            phone: '+573009998877',
+            registeredAt: '2026-10-12T15:00:00.000Z',
+            marketing: false,
+            marketingAt: null,
+            source: 'registro',
+          },
+        ],
       });
     if (url === '/admin/venues') return json(200, [VENUE]);
     if (url.startsWith('/admin/venues/') && url.endsWith('/approve')) return json(200, { ...VENUE, status: 'APROBADO' });

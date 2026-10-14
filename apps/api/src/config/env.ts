@@ -56,6 +56,11 @@ export const EnvSchema = z.object({
    * estar vacío. No registra autorizaciones por la persona: las decisiones de consentimiento se siguen pidiendo.
    */
   STAGING_AUTO_ACCOUNT_ACK: z.string().optional(),
+  /** true = la PWA exige el registro (nombre, correo, celular y tratamiento de datos) al entrar. Por defecto no (pruebas y CI). */
+  REQUIRE_PROFILE_AT_ENTRY: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   OTP_WEBHOOK_URL: z.url({ protocol: /^https?$/ }).optional(),
   OTP_WEBHOOK_TOKEN: z.string().min(16, 'OTP_WEBHOOK_TOKEN debe tener al menos 16 caracteres').optional(),
   /** Límite por IP de la consulta pública de códigos (protección contra enumeración — §5.6). */

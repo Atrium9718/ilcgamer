@@ -9,6 +9,8 @@ import {
   OtpRequestSchema,
   type OtpVerify,
   OtpVerifySchema,
+  type ProfileCapture,
+  ProfileCaptureSchema,
   UpdateMeSchema,
 } from '@ilc/contracts';
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
@@ -48,6 +50,17 @@ export class IdentityController {
     @Res({ passthrough: true }) reply: FastifyReply,
   ): Promise<Me> {
     return this.identity.passAgeGate(body.birthDate, body.campaignSlug, auth, reply, String(req.id));
+  }
+
+  /** Registro al entrar: nombre, correo, celular y autorización de tratamiento de datos (más novedades, opcional). */
+  @Post('me/profile')
+  @HttpCode(200)
+  @RouteConfig(STRICT)
+  @UseGuards(AuthGuard)
+  @ApiCookieAuth()
+  @ApiOkResponse({ schema: { $ref: '#/components/schemas/Me' } })
+  captureProfile(@Body(new ZodValidationPipe(ProfileCaptureSchema)) body: ProfileCapture, @Auth() auth: AuthContext, @Req() req: FastifyRequest): Promise<Me> {
+    return this.identity.captureProfile(auth.user, body, String(req.id));
   }
 
   @Get('me')

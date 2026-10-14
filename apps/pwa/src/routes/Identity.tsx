@@ -1,5 +1,5 @@
 import type { OtpChannel } from '@ilc/contracts';
-import { type AuthProvider, ConsentsView, OtpView, SignUpView, Toast } from '@ilc/ui';
+import { type AuthProvider, ConsentsView, OtpView, type ProfileCaptureValue, ProfileCaptureView, SignUpView, Toast } from '@ilc/ui';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { ApiRequestError } from '../lib/api.ts';
@@ -11,6 +11,64 @@ import { useTabNavigate } from './shell.tsx';
 
 const dateLabel = (iso: string | null) =>
   iso ? new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso)) : undefined;
+
+/** Registro al entrar: nombre, correo, celular y autorización del tratamiento de datos (obligatoria). Al terminar vuelve a donde iba. */
+export function ProfileCaptureRoute() {
+  const navigate = useNavigate();
+  const { config, setMe } = useSession();
+  const [value, setValue] = useState<ProfileCaptureValue>({ fullName: '', email: '', phone: '', acceptDataTreatment: false, acceptMarketing: false });
+  const [errors, setErrors] = useState<Partial<Record<keyof ProfileCaptureValue, string>>>({});
+  const [error, setError] = useState<string>();
+  const [submitting, setSubmitting] = useState(false);
+
+  const submit = async () => {
+    const local: Partial<Record<keyof ProfileCaptureValue, string>> = {};
+    if (value.fullName.trim().length < 3) local.fullName = 'Escribe tu nombre completo.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.email.trim())) local.email = 'Escribe un correo válido.';
+    if (!/^3\d{9}$/.test(value.phone.replace(/\D/g, '').replace(/^57(?=3\d{9}$)/, '')))
+      local.phone = 'Escribe un celular colombiano de 10 dígitos que empiece por 3.';
+    if (!value.acceptDataTreatment) local.acceptDataTreatment = 'Debes autorizar el tratamiento de tus datos para continuar.';
+    setErrors(local);
+    setError(undefined);
+    if (Object.keys(local).length > 0) return;
+    setSubmitting(true);
+    try {
+      setMe(
+        await identityApi.captureProfile({
+          fullName: value.fullName.trim(),
+          email: value.email.trim(),
+          phone: value.phone.trim(),
+          noticeVersion: config.legalNoticeVersion,
+          acceptDataTreatment: true,
+          acceptMarketing: value.acceptMarketing,
+        }),
+      );
+      const back = readLocal<string>(KEYS.returnTo, '/', 'session');
+      removeLocal(KEYS.returnTo, 'session');
+      navigate(back.startsWith('/') && !back.startsWith('//') && !back.startsWith('/bienvenida') ? back : '/', { replace: true });
+    } catch (e) {
+      if (e instanceof ApiRequestError) {
+        const f = e.fields ?? {};
+        setErrors({ fullName: f.fullName?.[0], email: f.email?.[0], phone: f.phone?.[0] });
+        setError(Object.keys(f).length ? undefined : e.message);
+      } else setError('No pudimos guardar tus datos. Intenta de nuevo.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <ProfileCaptureView
+      value={value}
+      onChange={setValue}
+      errors={errors}
+      error={error}
+      submitting={submitting}
+      privacyHref="/legal/privacidad"
+      onSubmit={() => void submit()}
+    />
+  );
+}
 
 /** Registro progresivo: términos (obligatorio) y marketing (opcional, desmarcado) antes del acceso persistente. */
 export function SignUpRoute() {

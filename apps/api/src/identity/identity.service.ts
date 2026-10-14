@@ -1,4 +1,4 @@
-import { CONSENT_PURPOSES, type ConsentChange, type ConsentState, type Me, type OtpChannel } from '@ilc/contracts';
+import { CONSENT_PURPOSES, type ConsentChange, type ConsentState, type Me, type OtpChannel, type ProfileCapture } from '@ilc/contracts';
 import { Inject, Injectable } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import { AnalyticsService } from '../analytics/analytics.service.ts';
@@ -12,7 +12,7 @@ import { PrismaService } from '../prisma/prisma.service.ts';
 import { ageOn, isFutureDate } from './age.ts';
 import type { AuthContext } from './auth.guard.ts';
 import { AuthSessionService } from './auth-session.service.ts';
-import { maskDestination } from './destination.ts';
+import { maskDestination, normalizeDestination } from './destination.ts';
 
 export const AGE_GATE_METHOD = 'fecha_y_declaracion';
 const DEFAULT_ALIAS = 'Jugador';
@@ -119,6 +119,36 @@ export class IdentityService {
       const r = rows.find((x) => x.purpose === purpose);
       return { purpose, granted: r?.granted ?? false, noticeVersion: r?.noticeVersion ?? null, updatedAt: r?.createdAt.toISOString() ?? null };
     });
+  }
+
+  /**
+   * Registro al entrar (Paso 16): guarda nombre, correo y celular (sin verificar por ahora) y registra, de forma separada y
+   * trazable, la autorización del tratamiento de datos (obligatoria) y la de novedades (opcional). Idempotente por persona.
+   */
+  async captureProfile(user: User, input: ProfileCapture, requestId: string): Promise<Me> {
+    const email = normalizeDestination('email', input.email);
+    const phone = normalizeDestination('whatsapp', input.phone);
+    const clash = await this.prisma.userPii.findFirst({ where: { userId: { not: user.id }, OR: [{ email }, { phone }] }, select: { userId: true } });
+    if (clash)
+      throw new DomainError('CONFLICT', 'Ese correo o celular ya está registrado.', { fields: { email: ['Ese correo o celular ya está registrado.'] } });
+    const current = String(await this.settings.get('legal.noticeVersion'));
+    if (input.noticeVersion !== current) throw new DomainError('CONFLICT', 'El aviso de privacidad cambió. Revísalo de nuevo para continuar.');
+    const fullName = input.fullName.replace(/\s+/g, ' ').trim();
+    await this.prisma.$transaction(async (tx) => {
+      await tx.userPii.upsert({ where: { userId: user.id }, update: { fullName, email, phone }, create: { userId: user.id, fullName, email, phone } });
+      const source = 'registro';
+      await tx.consentRecord.create({ data: { userId: user.id, purpose: 'TERMINOS_Y_PRIVACIDAD', granted: true, noticeVersion: input.noticeVersion, source } });
+      await tx.consentRecord.create({
+        data: { userId: user.id, purpose: 'MARKETING', granted: input.acceptMarketing, noticeVersion: input.noticeVersion, source },
+      });
+      await this.audit.record(
+        { actorId: user.id, action: 'profile.captured', resource: 'user', resourceId: user.id, requestId, metadata: { marketing: input.acceptMarketing } },
+        tx,
+      );
+    });
+    await this.analytics.emit('consent_updated', { properties: { purpose: 'TERMINOS_Y_PRIVACIDAD', granted: true } });
+    const fresh = await this.prisma.user.findUniqueOrThrow({ where: { id: user.id } });
+    return this.me(fresh);
   }
 
   async recordConsent(userId: string, change: ConsentChange): Promise<ConsentState[]> {

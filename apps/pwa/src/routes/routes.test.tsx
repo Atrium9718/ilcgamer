@@ -314,3 +314,33 @@ describe('referidos (Guía Gamificación §16.2)', () => {
     expect(localStorage.getItem('ilc.referral')).toBeNull();
   });
 });
+
+describe('registro al entrar (requireProfile)', () => {
+  it('tras el control de edad pide nombre, correo, celular y tratamiento de datos, y luego sigue al destino', async () => {
+    const api = installFakeApi({ requireProfile: true });
+    const router = renderAt('/v/demo-reconocido');
+    await passAgeGate();
+    expect(await screen.findByRole('heading', { name: 'Bienvenido a ILC Origen' })).toBeInTheDocument();
+    expect(router.state.location.pathname).toBe('/bienvenida');
+
+    // Sin autorizar el tratamiento de datos no avanza
+    await userEvent.type(screen.getByLabelText('Nombre completo'), 'Ana Gómez');
+    await userEvent.type(screen.getByLabelText('Correo electrónico'), 'ana@ejemplo.test');
+    await userEvent.type(screen.getByLabelText('Celular'), '300 111 2233');
+    await userEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    expect(await screen.findByText(/Debes autorizar el tratamiento de tus datos/)).toBeInTheDocument();
+    expect(api.profile).toBeUndefined();
+
+    await userEvent.click(screen.getByRole('checkbox', { name: /Autorizo a la Industria Licorera de Caldas/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/v/demo-reconocido'));
+    expect(api.profile).toMatchObject({ fullName: 'Ana Gómez', email: 'ana@ejemplo.test', acceptDataTreatment: true, acceptMarketing: false });
+  });
+
+  it('sin la exigencia, la app se usa directamente (como hasta ahora)', async () => {
+    installFakeApi();
+    const router = renderAt('/v/demo-reconocido');
+    await passAgeGate();
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/v/demo-reconocido'));
+  });
+});

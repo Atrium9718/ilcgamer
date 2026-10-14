@@ -89,5 +89,23 @@ export const PublicConfigSchema = z.object({
   minAge: z.number().int().min(18),
   otpChannels: z.array(OtpChannelSchema),
   oauthProviders: z.array(z.enum(['google', 'apple'])),
+  /** true = al entrar hay que completar el registro (nombre, correo, celular y tratamiento de datos) antes de usar la app. */
+  requireProfile: z.boolean().optional(),
 });
 export type PublicConfig = z.infer<typeof PublicConfigSchema>;
+
+/**
+ * Registro al entrar a la app (Paso 16): datos de contacto para ILC con autorización de tratamiento de datos. El tratamiento
+ * de datos es obligatorio para continuar; las novedades y promociones son una autorización aparte. En esta etapa el correo y el
+ * celular se guardan sin verificar con código (se verifican cuando haya pasarela de correo/SMS).
+ */
+export const ProfileCaptureSchema = z.object({
+  fullName: z.string().trim().min(3, 'Escribe tu nombre completo.').max(80),
+  email: z.email('Correo inválido.').max(120),
+  phone: z.string().trim().min(7, 'Escribe tu celular.').max(20),
+  /** Versión del aviso de privacidad que la persona vio. */
+  noticeVersion: z.string().regex(/^\d+\.\d+(\.\d+)?$/),
+  acceptDataTreatment: z.literal(true, { error: 'Debes autorizar el tratamiento de tus datos para continuar.' }),
+  acceptMarketing: z.boolean().default(false),
+});
+export type ProfileCapture = z.infer<typeof ProfileCaptureSchema>;

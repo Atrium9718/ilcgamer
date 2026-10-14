@@ -5,7 +5,7 @@ import { vi } from 'vitest';
  * API falsa en memoria para pruebas de la PWA. Replica los contratos y reglas de identidad de la API real
  * (las reglas reales se prueban en apps/api/test/identity.spec.ts contra PostgreSQL y Redis).
  */
-export function installFakeApi(options: { loggedIn?: boolean; status?: Me['status'] } = {}) {
+export function installFakeApi(options: { loggedIn?: boolean; status?: Me['status']; requireProfile?: boolean } = {}) {
   const purposes = ['TERMINOS_Y_PRIVACIDAD', 'MARKETING', 'UBICACION'] as const;
   const state = {
     me: null as Me | null,
@@ -13,6 +13,7 @@ export function installFakeApi(options: { loggedIn?: boolean; status?: Me['statu
     otpCode: '123456',
     requests: [] as string[],
     lastAgeGate: undefined as unknown,
+    profile: undefined as unknown,
   };
   const consents = (): ConsentState[] =>
     purposes.map((purpose) => {
@@ -41,7 +42,14 @@ export function installFakeApi(options: { loggedIn?: boolean; status?: Me['statu
     state.requests.push(`${method} ${url}`);
 
     if (url === '/config')
-      return json(200, { currencyName: 'Puntos ILC', legalNoticeVersion: '1.0', minAge: 18, otpChannels: ['whatsapp', 'sms', 'email'], oauthProviders: [] });
+      return json(200, {
+        currencyName: 'Puntos ILC',
+        legalNoticeVersion: '1.0',
+        minAge: 18,
+        otpChannels: ['whatsapp', 'sms', 'email'],
+        oauthProviders: [],
+        ...(options.requireProfile ? { requireProfile: true } : {}),
+      });
     if (url === '/campaigns/feria-cristal')
       return json(200, {
         slug: 'feria-cristal',
@@ -71,6 +79,15 @@ export function installFakeApi(options: { loggedIn?: boolean; status?: Me['statu
     if (url === '/me' && method === 'DELETE') {
       state.me = null;
       return json(204);
+    }
+    if (url === '/me/profile' && method === 'POST') {
+      state.profile = body;
+      state.consentLog.push(
+        { purpose: 'TERMINOS_Y_PRIVACIDAD', granted: true, source: 'registro' },
+        { purpose: 'MARKETING', granted: body.acceptMarketing, source: 'registro' },
+      );
+      state.me = { ...state.me, status: state.me.status, consents: consents() };
+      return json(200, state.me);
     }
     if (url === '/consents' && method === 'POST') {
       state.consentLog.push(body);

@@ -36,7 +36,7 @@ export function RootLayout() {
 /** Ninguna pantalla promocional se muestra sin control de edad registrado en el servidor (Guía Técnica §5.1, §12.2). */
 export function RequireAge() {
   const location = useLocation();
-  const { status, me, refresh } = useSession();
+  const { status, me, config, refresh } = useSession();
   if (status === 'loading') return <StatusMessage kind="pending" title="Cargando…" body="Un momento." className="min-h-dvh justify-center bg-surface" />;
   if (status === 'error')
     return (
@@ -51,6 +51,13 @@ export function RequireAge() {
   if (!me?.ageVerified) {
     writeLocal(KEYS.returnTo, `${location.pathname}${location.search}`, 'session');
     return <Navigate to="/edad" replace />;
+  }
+  // Registro al entrar (si la plataforma lo exige): nombre, correo, celular y tratamiento de datos antes de usar la app.
+  const registered = me.consents.some((c) => c.purpose === 'TERMINOS_Y_PRIVACIDAD' && c.granted);
+  const exempt = location.pathname.startsWith('/bienvenida') || location.pathname.startsWith('/registro') || location.pathname.startsWith('/legal');
+  if (config.requireProfile && !registered && !exempt) {
+    writeLocal(KEYS.returnTo, `${location.pathname}${location.search}`, 'session');
+    return <Navigate to="/bienvenida" replace />;
   }
   return <Outlet />;
 }
