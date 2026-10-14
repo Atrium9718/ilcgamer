@@ -81,7 +81,7 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
-          ssh -i ~/.ssh/id_deploy -o BatchMode=yes "$VPS_USER@$VPS_HOST" bash -s -- "$REF" "$APP_DOMAIN" "$CONSOLE_DOMAIN" <<'REMOTE'
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=40 "$VPS_USER@$VPS_HOST" bash -s -- "$REF" "$APP_DOMAIN" "$CONSOLE_DOMAIN" <<'REMOTE'
           set -euo pipefail
           REF="$1"; NEW_APP="${2:-}"; NEW_CONSOLE="${3:-}"
           cd /opt/ilc
@@ -110,4 +110,4 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
           if [ -z "$DEMO_ADMINS" ]; then echo "Sin demostración"; exit 0; fi
-          ssh -i ~/.ssh/id_deploy -o BatchMode=yes "$VPS_USER@$VPS_HOST" "cd /opt/ilc && bash deploy/staging_demo.sh $DEMO_ADMINS"
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=40 "$VPS_USER@$VPS_HOST" "cd /opt/ilc && bash deploy/staging_demo.sh $DEMO_ADMINS"
